@@ -1,13 +1,13 @@
 package net.wooga.uiengine.displaylistselector.selectorcomparator {
-	import net.wooga.uiengine.displaylistselector.DisplayListSelector;
+	import net.wooga.uiengine.displaylistselector.stuff.DisplayListSelectorMatcher;
 
 	import org.as3commons.collections.framework.IComparator;
 
 	public class SelectorComparator implements IComparator {
 
-		private var _selectorParser:DisplayListSelector;
+		private var _selectorParser:DisplayListSelectorMatcher;
 
-		public function SelectorComparator(selectorParser:DisplayListSelector) {
+		public function SelectorComparator(selectorParser:DisplayListSelectorMatcher) {
 			_selectorParser = selectorParser;
 		}
 

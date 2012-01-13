@@ -1,5 +1,5 @@
 package net.wooga.uiengine.displaylistselector.parser {
-	import net.wooga.uiengine.displaylistselector.IExternalPropertySource;
+	import net.wooga.uiengine.displaylistselector.stuff.IExternalPropertySource;
 	import net.wooga.uiengine.displaylistselector.input.ParserInput;
 	import net.wooga.uiengine.displaylistselector.matchers.IMatcher;
 	import net.wooga.uiengine.displaylistselector.matchers.implementations.ChildSelectorMatcher;
@@ -58,7 +58,6 @@ package net.wooga.uiengine.displaylistselector.parser {
 				return;
 			}
 
-			//TODO (arneschroppe 12/12/11) using ',' does not work currently, because we don't insert the implicit DescendantMatcher before the second group. need to fix this!
 			combinator();
 			selectorsGroup();
 		}
@@ -141,8 +140,8 @@ package net.wooga.uiengine.displaylistselector.parser {
 			var className:String;
 			if (_input.isNext("*")) {
 				_input.consume(1);
-				//className = "*";
-				_matchers.push(getSingletonMatcher(ClassNameMatcher, "*", new ClassNameMatcher("*")));
+				className = "*";
+				_matchers.push(getSingletonMatcher(ClassNameMatcher, className, new ClassNameMatcher(className)));
 				//The *-selector does not limit the result set, so we wouldn't need to add it. We get exceptions though,
 				//if *-selector is the last selector, so we add it anyway.
 				//TODO (arneschroppe 12/1/12) come up with a better solution than this

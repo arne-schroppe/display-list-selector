@@ -13,38 +13,20 @@ package net.wooga.uiengine.displaylistselector.matchers {
 	import org.as3commons.collections.framework.IIterator;
 	import org.as3commons.collections.framework.ISet;
 
-	public class Matchers {
+	public class MatcherTool {
 
 		private var _matchedObjects:Set;
 		private var _rootObject:DisplayObject;
-		private var _selectorToMatcherMap:Map = new Map();
-
 
 		private var _currentlyMatchedMatchers:Vector.<IMatcher>;
-		private var _currentlyMatchedSelector:String;
 
-		private var _selectorToResultMap:Map = new Map();
-		
-		private var _matchedSelectors:ISet;
-		private var _knownSelectors:ISet = new Set();
 
-		public function Matchers(rootObject:DisplayObject) {
+		public function MatcherTool(rootObject:DisplayObject) {
 			_rootObject = rootObject;
 		}
 
 
-		public function findMatchesFor(selector:String):Set {
-			if (_selectorToResultMap.hasKey(selector)) {
-				return _selectorToResultMap.itemFor(selector);
-			}
-			else {
-				var matchers:Vector.<IMatcher>;
-				matchers = _selectorToMatcherMap.itemFor(selector);
-				return findMatches(matchers, selector);
-			}
-		}
-
-
+/*
 		public function objectHasChanged(object:DisplayObject):void {
 			var iterator:IIterator = _selectorToResultMap.keyIterator();
 			var selector:String;
@@ -63,28 +45,22 @@ package net.wooga.uiengine.displaylistselector.matchers {
 			});
 		}
 
-
-		public function hasMatchersForSelector(selector:String):Boolean {
-			return _selectorToMatcherMap.hasKey(selector);
-		}
-
-
-		public function setMatchersForSelector(selector:String, matchers:Vector.<IMatcher>):void {
-			_selectorToMatcherMap.add(selector, matchers);
-			_knownSelectors.add(selector);
-		}
+		*/
+		//
+		//
+		//public function hasMatchersForSelector(selector:String):Boolean {
+		//	return _selectorToMatcherMap.hasKey(selector);
+		//}
 
 
-		private function findMatches(matchers:Vector.<IMatcher>, selector:String):Set {
+
+		public function findMatchingObjects(matchers:Vector.<IMatcher>):Set {
 
 
 			_matchedObjects = new Set();
-
 			_currentlyMatchedMatchers = matchers;
-			_currentlyMatchedSelector = selector;
-			match(_rootObject, new <MatcherPointer>[]);
 
-			_selectorToResultMap.add(selector, _matchedObjects);
+			match(_rootObject, new <MatcherPointer>[]);
 
 
 			return _matchedObjects;
@@ -187,59 +163,44 @@ package net.wooga.uiengine.displaylistselector.matchers {
 		}
 
 
-		public function getSelectorsMatchingObject(displayObject:DisplayObject, selectors:IIterable, comparator:SelectorComparator):ISet {
-			_matchedSelectors = new SortedSet(comparator);
-			reverseMatchSelectors(displayObject, selectors.iterator());
-			return _matchedSelectors;
-		}
+		//TODO (arneschroppe 13/1/12) implement this outside of this library
+		//public function getSelectorsMatchingObject(displayObject:DisplayObject, selectors:IIterable, comparator:SelectorComparator):ISet {
+		//	_matchedSelectors = new SortedSet(comparator);
+		//	reverseMatchSelectors(displayObject, selectors.iterator());
+		//	return _matchedSelectors;
+		//}
 
 
+
+		
 		/*
 		private function reverseMatchAllKnownSelectors(object:DisplayObject):void {
 			reverseMatchSelectors(object, knownSelectors.iterator());
 		}
 		*/
 
-		private function reverseMatchSelectors(object:DisplayObject, selectors:IIterator):void {
-
-			while (selectors.hasNext()) {
-				var selector:String = selectors.next();
-
-				_currentlyMatchedSelector = selector;
-				_currentlyMatchedMatchers = _selectorToMatcherMap.itemFor(selector);
-
-				if(!_currentlyMatchedMatchers) {
-					continue;
-				}
-				else if (_currentlyMatchedMatchers.length == 0) {
-					addToResultSet(_currentlyMatchedSelector, object);
-				}
-				else {
-					reverseMatch(object, _currentlyMatchedMatchers.length - 1, object);
-				}
-			}
-		}
 
 
-		private function addToResultSet(selector:String, object:DisplayObject):void {
-
-			_matchedSelectors.add(selector);
-
-			var results:Set = _selectorToResultMap.itemFor(selector);
-
-			if (!results || results.has(object)) {
-				return;
-			}
-
-			results.add(object);
-		}
 
 		//TODO (arneschroppe 9/1/12) write a test for this!!!!!!
+		public function isObjectMatching(object:DisplayObject, matchers:Vector.<IMatcher>):Boolean {
 
-		private function reverseMatch(subject:DisplayObject, nextMatcher:int, originalSubject:DisplayObject):void {
+
+			_currentlyMatchedMatchers = matchers
+
+			if (_currentlyMatchedMatchers.length == 0) {
+				return true
+			}
+			else {
+				return reverseMatch(object, _currentlyMatchedMatchers.length - 1);
+			}
+		}
+
+
+		private function reverseMatch(subject:DisplayObject, nextMatcher:int):Boolean {
 
 			if (!subject) {
-				return;
+				return false;
 			}
 
 			var retryParent:Boolean = false;
@@ -253,14 +214,12 @@ package net.wooga.uiengine.displaylistselector.matchers {
 			}
 
 
-			var didNotMatch:Boolean = false;
 
 			for (var i:int = nextMatcher; i >= 0; --i) {
 				var matcher:IMatcher = _currentlyMatchedMatchers[i];
 
 				if (!matcher.isMatching(subject)) {
-					didNotMatch = true;
-					return;
+					return false;
 				}
 
 				if (matcher is ICombinator) {
@@ -269,30 +228,21 @@ package net.wooga.uiengine.displaylistselector.matchers {
 			}
 
 
-			if (didNotMatch) {
-
-				if (retryParent) {
-					reverseMatch(subject.parent, nextMatcher, originalSubject);
-				}
-
-				return;
+			if (retryParent) {
+				reverseMatch(subject.parent, nextMatcher);
 			}
 			else if (subject == _rootObject) {
-				return;
+				return false;
 			}
 
 			if (i < 0) {
-				addToResultSet(_currentlyMatchedSelector, originalSubject);
-				return;
+				return true;
 			}
 
-			reverseMatch(subject.parent, i, originalSubject);
+			return reverseMatch(subject.parent, i);
 		}
 
 
-		private function get knownSelectors():IIterable {
-			return _knownSelectors;
-		}
 	}
 }
 

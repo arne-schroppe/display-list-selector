@@ -2,7 +2,7 @@ package net.wooga.uiengine.displaylistselector.matchers.implementations {
 	import net.wooga.uiengine.displaylistselector.matchers.*;
 	import flash.display.DisplayObject;
 
-	import net.wooga.uiengine.displaylistselector.IExternalPropertySource;
+	import net.wooga.uiengine.displaylistselector.stuff.IExternalPropertySource;
 
 	import org.as3commons.collections.Set;
 

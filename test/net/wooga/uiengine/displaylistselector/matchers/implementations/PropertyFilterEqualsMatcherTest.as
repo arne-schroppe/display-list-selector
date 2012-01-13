@@ -99,7 +99,7 @@ package net.wooga.uiengine.displaylistselector.matchers.implementations {
 import flash.display.DisplayObject;
 import flash.utils.getQualifiedClassName;
 
-import net.wooga.uiengine.displaylistselector.IExternalPropertySource;
+import net.wooga.uiengine.displaylistselector.stuff.IExternalPropertySource;
 
 import org.as3commons.collections.Set;
 

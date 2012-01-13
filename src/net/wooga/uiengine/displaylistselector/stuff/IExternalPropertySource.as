@@ -1,4 +1,4 @@
-package net.wooga.uiengine.displaylistselector {
+package net.wooga.uiengine.displaylistselector.stuff {
 	import flash.display.DisplayObject;
 
 	import org.as3commons.collections.Set;

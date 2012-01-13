@@ -5,6 +5,7 @@ package net.wooga.uiengine.displaylistselector {
 	import net.wooga.fixtures.TestSpriteA;
 	import net.wooga.fixtures.TestSpriteB;
 	import net.wooga.fixtures.TestSpriteC;
+	import net.wooga.uiengine.displaylistselector.stuff.DisplayListSelectorMatcher;
 	import net.wooga.utils.flexunit.hamcrestcollection.containsExactly;
 	import net.wooga.utils.flexunit.hamcrestcollection.everyItemInCollection;
 	import net.wooga.utils.flexunit.hamcrestcollection.hasItemInCollection;
@@ -22,14 +23,14 @@ package net.wooga.uiengine.displaylistselector {
 
 	public class DisplayListSelectorTest extends ContextViewBasedTest {
 
-		private var _selector:DisplayListSelector;
+		private var _selector:DisplayListSelectorMatcher;
 		private var _displayList:DisplayTreeBuilder;
 		private var _propertyDictionary:PropertyDictionary;
 
 		override public function setUp():void {
 			super.setUp();
 			_propertyDictionary = new PropertyDictionary();
-			_selector = new DisplayListSelector(contextView, _propertyDictionary, "id", "class");
+			_selector = new DisplayListSelectorMatcher(contextView, _propertyDictionary, "id", "class");
 			_displayList = new DisplayTreeBuilder();
 		}
 
@@ -471,7 +472,7 @@ package net.wooga.uiengine.displaylistselector {
 import flash.display.DisplayObject;
 import flash.utils.Dictionary;
 
-import net.wooga.uiengine.displaylistselector.IExternalPropertySource;
+import net.wooga.uiengine.displaylistselector.stuff.IExternalPropertySource;
 import net.wooga.utils.flexunit.assertcollection.itemasserts.IItemAssert;
 
 import org.as3commons.collections.Set;

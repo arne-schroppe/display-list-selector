@@ -1,11 +1,12 @@
-package net.wooga.uiengine.displaylistselector {
+package net.wooga.uiengine.displaylistselector.stuff {
+	import net.wooga.uiengine.displaylistselector.*;
 
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 
-	import net.wooga.uiengine.displaylistselector.matchers.Matchers;
+	import net.wooga.uiengine.displaylistselector.matchers.MatcherTool;
 	import net.wooga.uiengine.displaylistselector.parser.Parser;
 	import net.wooga.uiengine.displaylistselector.parser.ParserResult;
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.FirstChild;
@@ -26,16 +27,13 @@ package net.wooga.uiengine.displaylistselector {
 	import org.as3commons.collections.framework.IIterator;
 	import org.as3commons.collections.framework.ISet;
 
-	public class DisplayListSelector extends EventDispatcher {
+	public class DisplayListSelectorMatcher extends EventDispatcher {
 
 
 		private var _rootObject:DisplayObjectContainer;
 
 		private var _parser:Parser;
-		private var _matchers:Matchers;
-
-
-		private var _externalPropertySource:IExternalPropertySource;
+		private var _matchers:MatcherTool;
 		private var _pseudoClassProvider:PseudoClassProvider;
 
 		private var _selectorToSpecificityMap:Map = new Map();
@@ -43,23 +41,22 @@ package net.wooga.uiengine.displaylistselector {
 		private var _objectsBeingAdded:Set;
 
 
-		public function DisplayListSelector(rootObject:DisplayObjectContainer, externalPropertySource:IExternalPropertySource = null, idAttribute:String = "name", classAttribute:String = "group") {
+		public function DisplayListSelectorMatcher(rootObject:DisplayObjectContainer, externalPropertySource:IExternalPropertySource = null, idAttribute:String = "name", classAttribute:String = "group") {
 			_rootObject = rootObject;
 
 			_rootObject.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage, true);
-			_rootObject.addEventListener(Event.ADDED, onAdded);
 			_rootObject.addEventListener(Event.REMOVED_FROM_STAGE, onRemoved, true);
 
-			_externalPropertySource = externalPropertySource;
-			if (_externalPropertySource == null) {
-				_externalPropertySource = new NullPropertySource();
+			var externalPropertySource:IExternalPropertySource = externalPropertySource;
+			if (externalPropertySource == null) {
+				externalPropertySource = new NullPropertySource();
 			}
 
 			_pseudoClassProvider = new PseudoClassProvider();
 			addDefaultPseudoClasses();
 
-			_parser = new Parser(_externalPropertySource, _pseudoClassProvider, idAttribute, classAttribute);
-			_matchers = new Matchers(_rootObject);
+			_parser = new Parser(externalPropertySource, _pseudoClassProvider, idAttribute, classAttribute);
+			_matchers = new MatcherTool(_rootObject);
 		}
 
 
@@ -78,12 +75,6 @@ package net.wooga.uiengine.displaylistselector {
 			//TODO (arneschroppe 11/1/12) use objectWasRemoved here
 		}
 
-
-		private var _isAddedDirectly:Set = new Set();
-		private function onAdded(event:Event):void {
-			_isAddedDirectly.add(event.target);
-
-		}
 
 		private function onAddedToStage(event:Event):void {
 

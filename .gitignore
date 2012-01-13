@@ -1,0 +1,9 @@
+*.cache
+.DS_Store
+
+.idea/workspace.xml
+.idea/misc.xml
+.idea/dictionaries
+.idea/copyright
+.idea/vcs.xml
+bin/*

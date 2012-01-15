@@ -1,17 +1,12 @@
 package net.wooga.uiengine.displaylistselector.matchers {
+
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 
 	import net.wooga.uiengine.displaylistselector.matchers.implementations.ChildSelectorMatcher;
 	import net.wooga.uiengine.displaylistselector.matchers.implementations.DescendantSelectorMatcher;
-	import net.wooga.uiengine.displaylistselector.selectorcomparator.SelectorComparator;
 
-	import org.as3commons.collections.Map;
 	import org.as3commons.collections.Set;
-	import org.as3commons.collections.SortedSet;
-	import org.as3commons.collections.framework.IIterable;
-	import org.as3commons.collections.framework.IIterator;
-	import org.as3commons.collections.framework.ISet;
 
 	public class MatcherTool {
 
@@ -25,32 +20,6 @@ package net.wooga.uiengine.displaylistselector.matchers {
 			_rootObject = rootObject;
 		}
 
-
-//
-//		public function objectHasChanged(object:DisplayObject):void {
-//			var iterator:IIterator = _selectorToResultMap.keyIterator();
-//			var selector:String;
-//			var invalidResults:Array = [];
-//
-//			while (iterator.hasNext()) {
-//				selector = iterator.next();
-//				var result:Set = _selectorToResultMap.itemFor(selector);
-//				if (result.has(object)) {
-//					invalidResults.push(selector);
-//				}
-//			}
-//
-//			invalidResults.every(function (item:String, index:int, array:Array):void {
-//				_selectorToResultMap.removeKey(item);
-//			});
-//		}
-
-
-		//
-		//
-		//public function hasMatchersForSelector(selector:String):Boolean {
-		//	return _selectorToMatcherMap.hasKey(selector);
-		//}
 
 
 

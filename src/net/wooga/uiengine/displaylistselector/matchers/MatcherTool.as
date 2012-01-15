@@ -26,26 +26,26 @@ package net.wooga.uiengine.displaylistselector.matchers {
 		}
 
 
-/*
-		public function objectHasChanged(object:DisplayObject):void {
-			var iterator:IIterator = _selectorToResultMap.keyIterator();
-			var selector:String;
-			var invalidResults:Array = [];
+//
+//		public function objectHasChanged(object:DisplayObject):void {
+//			var iterator:IIterator = _selectorToResultMap.keyIterator();
+//			var selector:String;
+//			var invalidResults:Array = [];
+//
+//			while (iterator.hasNext()) {
+//				selector = iterator.next();
+//				var result:Set = _selectorToResultMap.itemFor(selector);
+//				if (result.has(object)) {
+//					invalidResults.push(selector);
+//				}
+//			}
+//
+//			invalidResults.every(function (item:String, index:int, array:Array):void {
+//				_selectorToResultMap.removeKey(item);
+//			});
+//		}
 
-			while (iterator.hasNext()) {
-				selector = iterator.next();
-				var result:Set = _selectorToResultMap.itemFor(selector);
-				if (result.has(object)) {
-					invalidResults.push(selector);
-				}
-			}
 
-			invalidResults.every(function (item:String, index:int, array:Array):void {
-				_selectorToResultMap.removeKey(item);
-			});
-		}
-
-		*/
 		//
 		//
 		//public function hasMatchersForSelector(selector:String):Boolean {
@@ -161,24 +161,6 @@ package net.wooga.uiengine.displaylistselector.matchers {
 				match(container.getChildAt(i), runningMatcherPointers);
 			}
 		}
-
-
-		//TODO (arneschroppe 13/1/12) implement this outside of this library
-		//public function getSelectorsMatchingObject(displayObject:DisplayObject, selectors:IIterable, comparator:SelectorComparator):ISet {
-		//	_matchedSelectors = new SortedSet(comparator);
-		//	reverseMatchSelectors(displayObject, selectors.iterator());
-		//	return _matchedSelectors;
-		//}
-
-
-
-		
-		/*
-		private function reverseMatchAllKnownSelectors(object:DisplayObject):void {
-			reverseMatchSelectors(object, knownSelectors.iterator());
-		}
-		*/
-
 
 
 

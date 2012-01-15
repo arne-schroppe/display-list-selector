@@ -1,5 +1,5 @@
 package net.wooga.uiengine.displaylistselector.parser {
-	import net.wooga.uiengine.displaylistselector.stuff.IExternalPropertySource;
+	import net.wooga.uiengine.displaylistselector.IExternalPropertySource;
 
 	import org.flexunit.rules.IMethodRule;
 

@@ -6,6 +6,7 @@ package net.wooga.uiengine.displaylistselector {
 
 
 		public static const OBJECT_WAS_ADDED:String = "object_was_added";
+		public static const OBJECT_WAS_CHANGED:String = "object_was_changed";
 
 		private var _object:DisplayObject;
 

@@ -1,6 +1,6 @@
 package {
 
-	import net.wooga.uiengine.displaylistselector.DisplayListSelectorTest;
+	import net.wooga.uiengine.displaylistselector.SelectorTest;
 	import net.wooga.uiengine.displaylistselector.input.ParserInputTest;
 	import net.wooga.uiengine.displaylistselector.matchers.implementations.ChildSelectorMatcherTest;
 	import net.wooga.uiengine.displaylistselector.matchers.implementations.ClassNameMatcherTest;
@@ -21,7 +21,7 @@ package {
 	[RunWith("org.flexunit.runners.Suite")]
 	public class TestSuite {
 
-		public var displayListSelectorTest:DisplayListSelectorTest;
+		public var displayListSelectorTest:SelectorTest;
 
 		public var parserInputTest:ParserInputTest;
 		public var childSelectorMatcherTest:ChildSelectorMatcherTest;

@@ -1,4 +1,4 @@
-package net.wooga.uiengine.displaylistselector.stuff {
+package net.wooga.uiengine.displaylistselector {
 	import net.wooga.uiengine.displaylistselector.parser.IPseudoClassProvider;
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.IPseudoClass;
 

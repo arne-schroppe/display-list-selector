@@ -2,7 +2,7 @@ package net.wooga.uiengine.displaylistselector.matchers.implementations {
 	import net.wooga.uiengine.displaylistselector.matchers.*;
 	import flash.display.DisplayObject;
 
-	import net.wooga.uiengine.displaylistselector.stuff.IExternalPropertySource;
+	import net.wooga.uiengine.displaylistselector.IExternalPropertySource;
 
 	public class PropertyFilterEqualsMatcher implements IMatcher {
 		private var _property:String;

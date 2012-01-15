@@ -1,5 +1,5 @@
 package net.wooga.uiengine.displaylistselector.parser {
-	import net.wooga.uiengine.displaylistselector.stuff.IExternalPropertySource;
+	import net.wooga.uiengine.displaylistselector.IExternalPropertySource;
 	import net.wooga.uiengine.displaylistselector.input.ParserInput;
 	import net.wooga.uiengine.displaylistselector.matchers.IMatcher;
 	import net.wooga.uiengine.displaylistselector.matchers.implementations.ChildSelectorMatcher;
@@ -14,16 +14,14 @@ package net.wooga.uiengine.displaylistselector.parser {
 
 		private var _matchers:Vector.<IMatcher>;
 		private var _input:ParserInput;
-
 		private var _specificity:Specificity;
-
-		private var _externalPropertySource:IExternalPropertySource;
-
-		private var _idAttribute:String;
-		private var _classAttribute:String;
-
 		private var _pseudoClassArguments:Array;
 		private var _pseudoClassProvider:IPseudoClassProvider;
+
+
+		private var _externalPropertySource:IExternalPropertySource;
+		private var _idAttribute:String;
+		private var _classAttribute:String;
 
 		private var _matcherMap:DynamicMultiMap = new DynamicMultiMap();
 

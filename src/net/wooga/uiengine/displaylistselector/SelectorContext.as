@@ -53,6 +53,10 @@ package net.wooga.uiengine.displaylistselector {
 		}
 
 
+		selector_internal function get matcherTool():MatcherTool {
+			return _matcher;
+		}
+
 
 		private function onAddedToStage(event:Event):void {
 
@@ -126,29 +130,6 @@ package net.wooga.uiengine.displaylistselector {
 		public function objectWasChanged(object:DisplayObject):void {
 			dispatchEvent(new DisplayListSelectorEvent(DisplayListSelectorEvent.OBJECT_WAS_CHANGED, object));
 		}
-
-		public function get matcherTool():MatcherTool {
-			return _matcher;
-		}
-
-
-
-		/*
-
-		 //TODO (arneschroppe 12/1/12) we should not have this method, it clutters up our interface. maybe have the option to parse multiple selectors, then sort result by selectors
-		 public function sortSelectors(selectors:IIterable):IIterable {
-		 var sortedSelectors:SortedSet = new SortedSet(new SelectorComparator(this));
-
-		 var iterator:IIterator = selectors.iterator();
-		 while(iterator.hasNext()) {
-		 var currentSelector:String = iterator.next();
-		 parseIfNeeded(currentSelector);
-		 sortedSelectors.add(currentSelector);
-		 }
-
-		 return sortedSelectors;
-		 }
-		 */
 
 
 	}

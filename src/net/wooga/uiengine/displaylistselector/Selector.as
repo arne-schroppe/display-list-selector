@@ -48,7 +48,7 @@ package net.wooga.uiengine.displaylistselector {
 		}
 
 		private function onObjectWasChanged(event:DisplayListSelectorEvent):void {
-			if (_matchedObjects.has(event.object)) {
+			if (_matchedObjects && _matchedObjects.has(event.object)) {
 				_matchedObjects = null;
 			}
 		}

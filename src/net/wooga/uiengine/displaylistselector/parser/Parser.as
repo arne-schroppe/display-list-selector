@@ -25,6 +25,7 @@ package net.wooga.uiengine.displaylistselector.parser {
 
 		private var _matcherMap:DynamicMultiMap = new DynamicMultiMap();
 
+		private var _isSyntaxExtensionAllowed:Boolean = true;
 
 		public function Parser(externalPropertySource:IExternalPropertySource, pseudoClassProvider:IPseudoClassProvider, idAttribute:String, classAttribute:String) {
 			_externalPropertySource = externalPropertySource;
@@ -42,7 +43,6 @@ package net.wooga.uiengine.displaylistselector.parser {
 			_specificity = new Specificity();
 
 			selectorsGroup();
-			//_selectorToSpecificity.add(inputString, _specificity.asNumber());
 
 			return new ParserResult(_matchers, _specificity.asNumber());
 		}
@@ -67,12 +67,6 @@ package net.wooga.uiengine.displaylistselector.parser {
 
 
 		private function combinator():void {
-//			var combinator:String = _input.consumeRegex(/(\s*>\s*)/);
-//
-//			if (combinator.replace(/\s*/g, "") == ">") {
-//				_matchers.push(getSingletonMatcher(ChildSelectorMatcher, new ChildSelectorMatcher()));
-//			}
-
 
 			var combinator:String = _input.consumeRegex(/(\s*>\s*)|(\s+)/);
 
@@ -87,12 +81,21 @@ package net.wooga.uiengine.displaylistselector.parser {
 
 		private function simpleSelectorSequence():void {
 			whitespace();
-
-			if (_input.isNextMatching(/\*|\w+/) ) {
+			
+			if(_isSyntaxExtensionAllowed && _input.isNext("^")) {
+				superClassSelector();
+			}
+			else if (_input.isNextMatching(/\*|\w+/) ) {
 				typeSelector();
 			}
 
 			simpleSelectorSequence2();
+		}
+
+		private function superClassSelector():void {
+			_input.consume(1); //consuming ^
+			//TODO (arneschroppe 16/1/12) add special type selector
+			typeSelector();
 		}
 
 

@@ -1,5 +1,8 @@
 package net.wooga.uiengine.displaylistselector {
 
+	import flash.display.MovieClip;
+	import flash.display.Sprite;
+
 	import net.arneschroppe.displaytreebuilder.DisplayTreeBuilder;
 	import net.wooga.fixtures.ContextViewBasedTest;
 	import net.wooga.fixtures.TestSpriteA;
@@ -467,6 +470,25 @@ package net.wooga.uiengine.displaylistselector {
 			assertThat(matchedObjects, containsExactly(1, isA(TestSpriteB)));
 		}
 
+		[Test]
+		public function should_match_superclass_selector():void {
+
+			_displayList.startWith(contextView).begin
+					.add(Sprite)
+					.add(MovieClip)
+					.add(MovieClip)
+					.add(TestSpriteB)
+					.end;
+
+			_selector = new Selector(":root > ^Sprite", _selectorContext);
+			var matchedObjects:Set = _selector.getMatchedObjects();
+
+
+			assertThat(matchedObjects.size, equalTo(4));
+			assertThat(matchedObjects, containsExactly(1, isA(Sprite)));
+			assertThat(matchedObjects, containsExactly(2, isA(MovieClip)));
+			assertThat(matchedObjects, containsExactly(1, isA(TestSpriteB)));
+		}
 
 		private function assertContainsObjectOfClass(objects:IIterable, Type:Class):void {
 			assertThat(objects, hasItemInCollection(isA(Type)));

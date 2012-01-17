@@ -31,3 +31,32 @@ of changes though, for example if properties change. You can do this through the
 
 Selectors are modeled after the CSS3 selector standard, but not all features are implemented
 yet.
+
+
+##Extended syntax
+
+This library also allows an extended syntax, that is better suited in dealing with ActionScript objects. 
+
+
+###The isA-matcher
+The usual element selector only matches, if the classname of the element itself is the given identifier. Prefixing
+the identifier with ^ makes it also match superclasses and interfaces. For example:
+
+    Container:first-child > ^Sprite
+    
+matches elements of type Sprite, MovieClip, etc. that are children of the first Container-element
+
+
+###Partly or fully qualified class names
+Identifiers in element selectors can also be partly and fully qualified with package names, by wrapping them
+in parentheses. The use of the wildcard * is also possible. Examples of valid identifiers are:
+
+
+    /* Fully qualified name */
+    Sprite > (net.company.tool.view.Image)
+    
+    /* Partly qualified name */
+    Sprite > (otherview.Image)
+        
+    /* Using wildcards, matches both net.company.tool.view.Image and net.company.tool.otherview.Image */
+    Sprite > (net.company.tool.*.Image)

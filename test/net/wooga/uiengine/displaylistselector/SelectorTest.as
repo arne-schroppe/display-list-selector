@@ -1,10 +1,14 @@
 package net.wooga.uiengine.displaylistselector {
 
+	import flash.display.MovieClip;
+	import flash.display.Sprite;
+
 	import net.arneschroppe.displaytreebuilder.DisplayTreeBuilder;
 	import net.wooga.fixtures.ContextViewBasedTest;
 	import net.wooga.fixtures.TestSpriteA;
 	import net.wooga.fixtures.TestSpriteB;
 	import net.wooga.fixtures.TestSpriteC;
+	import net.wooga.fixtures.TestSpriteWithInterface;
 	import net.wooga.utils.flexunit.hamcrestcollection.containsExactly;
 	import net.wooga.utils.flexunit.hamcrestcollection.everyItemInCollection;
 	import net.wooga.utils.flexunit.hamcrestcollection.hasItemInCollection;
@@ -467,6 +471,66 @@ package net.wooga.uiengine.displaylistselector {
 			assertThat(matchedObjects, containsExactly(1, isA(TestSpriteB)));
 		}
 
+		[Test]
+		public function should_match_isA_selector():void {
+
+			_displayList.startWith(contextView).begin
+					.add(TestSpriteA)
+					.add(MovieClip)
+					.add(MovieClip)
+					.add(TestSpriteB)
+					.end;
+
+			_selector = new Selector(":root > ^Sprite", _selectorContext);
+			var matchedObjects:Set = _selector.getMatchedObjects();
+
+
+			assertThat(matchedObjects.size, equalTo(4));
+			assertThat(matchedObjects, containsExactly(1, isA(TestSpriteA)));
+			assertThat(matchedObjects, containsExactly(2, isA(MovieClip)));
+			assertThat(matchedObjects, containsExactly(1, isA(TestSpriteB)));
+
+		}
+
+
+		[Test]
+		public function should_match_interface_selector():void {
+
+			_displayList.startWith(contextView).begin
+					.add(TestSpriteA)
+					.add(MovieClip)
+					.add(MovieClip)
+					.add(TestSpriteB)
+					.end;
+
+			_selector = new Selector(":root > ^Sprite", _selectorContext);
+			var matchedObjects:Set = _selector.getMatchedObjects();
+
+
+			assertThat(matchedObjects.size, equalTo(4));
+			assertThat(matchedObjects, containsExactly(1, isA(TestSpriteA)));
+			assertThat(matchedObjects, containsExactly(2, isA(MovieClip)));
+			assertThat(matchedObjects, containsExactly(1, isA(TestSpriteB)));
+
+		}
+
+
+		[Test]
+		public function should_match_qualified_selector():void {
+
+			_displayList.startWith(contextView).begin
+					.add(TestSpriteWithInterface)
+					.add(TestSpriteA)
+					.add(TestSpriteA)
+					.add(TestSpriteWithInterface)
+					.end;
+
+			_selector = new Selector(":root > ^TestInterface", _selectorContext);
+			var matchedObjects:Set = _selector.getMatchedObjects();
+
+			assertThat(matchedObjects.size, equalTo(2));
+			assertThat(matchedObjects, containsExactly(2, isA(TestSpriteWithInterface)));
+		}
 
 		private function assertContainsObjectOfClass(objects:IIterable, Type:Class):void {
 			assertThat(objects, hasItemInCollection(isA(Type)));

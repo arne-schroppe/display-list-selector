@@ -97,10 +97,7 @@ package net.wooga.uiengine.displaylistselector.matchers.implementations {
 			packagePart(typeNameWithoutWhitespace);
 
 			_processedTypeRegEx += "$";
-			trace(_processedTypeRegEx);
-
 			return new RegExp(_processedTypeRegEx);
-
 		}
 
 		private function packagePart(input:String):void {

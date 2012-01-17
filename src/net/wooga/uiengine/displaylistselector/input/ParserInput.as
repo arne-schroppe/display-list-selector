@@ -51,7 +51,6 @@ package net.wooga.uiengine.displaylistselector.input {
 		}
 
 
-
 		public function isNextMatching(expression:RegExp):Boolean {
 			var result:Object = expression.exec(_remainingContent);
 			if (result == null || result.index != 0) {

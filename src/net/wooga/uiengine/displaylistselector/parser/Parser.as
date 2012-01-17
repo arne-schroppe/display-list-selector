@@ -3,7 +3,7 @@ package net.wooga.uiengine.displaylistselector.parser {
 	import net.wooga.uiengine.displaylistselector.input.ParserInput;
 	import net.wooga.uiengine.displaylistselector.matchers.IMatcher;
 	import net.wooga.uiengine.displaylistselector.matchers.implementations.ChildSelectorMatcher;
-	import net.wooga.uiengine.displaylistselector.matchers.implementations.ClassNameMatcher;
+	import net.wooga.uiengine.displaylistselector.matchers.implementations.TypeNameMatcher;
 	import net.wooga.uiengine.displaylistselector.matchers.implementations.DescendantSelectorMatcher;
 	import net.wooga.uiengine.displaylistselector.matchers.implementations.PropertyFilterContainsMatcher;
 	import net.wooga.uiengine.displaylistselector.matchers.implementations.PropertyFilterEqualsMatcher;
@@ -26,6 +26,7 @@ package net.wooga.uiengine.displaylistselector.parser {
 		private var _matcherMap:DynamicMultiMap = new DynamicMultiMap();
 
 		private var _isSyntaxExtensionAllowed:Boolean = true;
+		private var _isExactTypeMatcher:Boolean;
 
 		public function Parser(externalPropertySource:IExternalPropertySource, pseudoClassProvider:IPseudoClassProvider, idAttribute:String, classAttribute:String) {
 			_externalPropertySource = externalPropertySource;
@@ -81,23 +82,59 @@ package net.wooga.uiengine.displaylistselector.parser {
 
 		private function simpleSelectorSequence():void {
 			whitespace();
-			
-			if(_isSyntaxExtensionAllowed && _input.isNext("^")) {
+
+			_isExactTypeMatcher = true;
+			if(_input.isNext("^")) {
+				checkSyntaxExtensionsAllowed();
 				superClassSelector();
 			}
-			else if (_input.isNextMatching(/\*|\w+/) ) {
+			else if (_input.isNextMatching(/\*|\w+|\(/) ) {
 				typeSelector();
 			}
 
 			simpleSelectorSequence2();
 		}
 
+		private function checkSyntaxExtensionsAllowed():void {
+			if (!_isSyntaxExtensionAllowed) {
+				throw new ParserError("Syntax extensions must be enabled before using them");
+			}
+		}
+
 		private function superClassSelector():void {
-			_input.consume(1); //consuming ^
-			//TODO (arneschroppe 16/1/12) add special type selector
+			_input.consume(1); //consuming '^'
+			_isExactTypeMatcher = false;
 			typeSelector();
 		}
 
+
+		//TODO (arneschroppe 23/12/11) find out what makes up a valid identifier
+		private function typeSelector():void {
+			var className:String;
+			if (_input.isNext("*")) {
+				_input.consume(1);
+				className = "*";
+				//The *-selector does not limit the result set, so we wouldn't need to add it. We get exceptions though,
+				//if *-selector is the last selector, so we add it anyway.
+				_matchers.push(getSingletonMatcher(TypeNameMatcher, className, new TypeNameMatcher(className)));
+
+			}
+			else if (_input.isNext("(")) {
+				checkSyntaxExtensionsAllowed();
+
+				_input.consume(1);
+				className = _input.consumeRegex(/(\w|\.|\*)+/);
+				_input.consumeString(")");
+
+				_matchers.push(getSingletonMatcher(TypeNameMatcher, className, _isExactTypeMatcher, new TypeNameMatcher(className, _isExactTypeMatcher)));
+				_specificity.c++;
+			}
+			else {
+				className = _input.consumeRegex(/\w+/);
+				_matchers.push(getSingletonMatcher(TypeNameMatcher, className, _isExactTypeMatcher, new TypeNameMatcher(className, _isExactTypeMatcher)));
+				_specificity.c++;
+			}
+		}
 
 		private function simpleSelectorSequence2():void {
 			if (_input.isNext("[")) {
@@ -136,24 +173,7 @@ package net.wooga.uiengine.displaylistselector.parser {
 		}
 
 
-		//TODO (arneschroppe 23/12/11) find out what makes up a valid identifier
-		private function typeSelector():void {
-			var className:String;
-			if (_input.isNext("*")) {
-				_input.consume(1);
-				className = "*";
-				_matchers.push(getSingletonMatcher(ClassNameMatcher, className, new ClassNameMatcher(className)));
-				//The *-selector does not limit the result set, so we wouldn't need to add it. We get exceptions though,
-				//if *-selector is the last selector, so we add it anyway.
-				//TODO (arneschroppe 12/1/12) come up with a better solution than this
-			} else {
-				className = _input.consumeRegex(/\w+/);
-				_matchers.push(getSingletonMatcher(ClassNameMatcher, className, new ClassNameMatcher(className)));
-				_specificity.c++;
-			}
 
-
-		}
 
 
 		private function pseudo():void {

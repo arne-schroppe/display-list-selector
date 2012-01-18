@@ -5,21 +5,24 @@ package net.wooga.uiengine.displaylistselector.matchers.implementations {
 	import flash.utils.getQualifiedClassName;
 
 	import net.wooga.uiengine.displaylistselector.matchers.*;
+	import net.wooga.uiengine.displaylistselector.matchers.implementations.qualifiedtypename.QualifiedTypeNameParser;
+	import net.wooga.uiengine.displaylistselector.tools.MultiMap;
 
 	public class TypeNameMatcher implements IMatcher {
 
 		private var _matchAny:Boolean = false;
 		private var _onlyMatchImmediateClassType:Boolean;
 		private var _typeMatcherRegEx:RegExp;
-		
-		private var _processedTypeRegEx:String;
-		private var _originalTypeName:String;
+		private var _typeName:String;
 
-		private static const NOT_FOUND:String = null;
-		
+
+		private static const _typeMatchCache:MultiMap = new MultiMap(2);
+		private static const _typeNameParser:QualifiedTypeNameParser = new QualifiedTypeNameParser();
+
 		public function TypeNameMatcher(typeName:String, onlyMatchImmediateClassType:Boolean = true) {
 
-			_originalTypeName = typeName;
+			_typeName = typeName;
+
 
 			_onlyMatchImmediateClassType = onlyMatchImmediateClassType;
 			if (typeName == "*") {
@@ -33,22 +36,11 @@ package net.wooga.uiengine.displaylistselector.matchers.implementations {
 		private function createTypeNameMatcherRegEx(typeName:String):void {
 
 			var normalizedName:String = typeName.replace("::", ".");
-			_typeMatcherRegEx = createTypeMatcherRegEx(normalizedName);
-			
-			// fixtures\.package2\.TestSpritePack$
+			_typeMatcherRegEx = _typeNameParser.createTypeMatcherRegEx(normalizedName);
 
 		}
 
 
-		private function matchAndReturnNext(expression:RegExp, subject:String):String {
-			var result:Object = expression.exec(subject);
-			if (result == null || result.index != 0) {
-				return NOT_FOUND;
-			}
-
-			return result[0] as String;
-		}
-		
 		
 		public function isMatching(subject:DisplayObject):Boolean {
 			if (_matchAny || matchesType(subject)) {
@@ -64,13 +56,26 @@ package net.wooga.uiengine.displaylistselector.matchers.implementations {
 				return isMatchingTypeName(getQualifiedClassName(subject));
 			}
 
-			return isMatchingTypeName(getQualifiedClassName(subject)) || isAnySuperClassMatchingTypeName(subject);
-
+			return isAnySuperClassMatchingTypeName(subject);
 		}
 
 		//TODO (arneschroppe 17/1/12) maybe we can cache these results
 		private function isAnySuperClassMatchingTypeName(subject:DisplayObject):Boolean {
 
+			var className:String = getQualifiedClassName(subject);
+			var cacheEntry:MatchCacheEntry = _typeMatchCache.itemFor(_typeName, className);
+			if(cacheEntry !== null) {
+				return cacheEntry.isMatching;
+			}
+
+			var isMatching:Boolean = isMatchingTypeName(className) || hasSuperClassMatch(subject);
+			_typeMatchCache.addOrReplace(_typeName, className, new MatchCacheEntry(isMatching));
+
+			return isMatching;
+		}
+
+
+		public function hasSuperClassMatch(subject:DisplayObject):Boolean {
 			var types:XMLList = describeType(subject).*.@type;
 
 			for each(var type:XML in types) {
@@ -80,6 +85,7 @@ package net.wooga.uiengine.displaylistselector.matchers.implementations {
 			}
 
 			return false;
+
 		}
 
 
@@ -88,55 +94,15 @@ package net.wooga.uiengine.displaylistselector.matchers.implementations {
 			return _typeMatcherRegEx.test(typeName);
 		}
 
-
-		private function createTypeMatcherRegEx(typeName:String):RegExp {
-
-			_processedTypeRegEx = "";
-			var typeNameWithoutWhitespace:String = typeName.replace(/^\s*/, '');
-			typeNameWithoutWhitespace = typeNameWithoutWhitespace.replace(/\s*$/, '');
-			packagePart(typeNameWithoutWhitespace);
-
-			_processedTypeRegEx += "$";
-			return new RegExp(_processedTypeRegEx);
-		}
-
-		private function packagePart(input:String):void {
-			var matchResult:String;
-			if((matchResult = matchAndReturnNext(/\w+/, input)) !== NOT_FOUND ) {
-				_processedTypeRegEx += matchResult;
-			}
-			else if((matchResult = matchAndReturnNext(/\*/, input)) !== NOT_FOUND ) {
-				_processedTypeRegEx += "\\w*";
-			}
-			else {
-				malformed();
-			}
-
-
-			var rest:String = input.substring(matchResult.length);
-
-			if(rest.length > 0) {
-				delimiter(rest);
-			}
-		}
-
-
-		private function delimiter(input:String):void {
-			var matchResult:String;
-			if((matchResult = matchAndReturnNext(/\./, input)) !== NOT_FOUND ) {
-				_processedTypeRegEx += "\\.";
-			}
-			else {
-				malformed();
-			}
-
-			var rest:String = input.substring(matchResult.length);
-			packagePart(rest);
-		}
-
-
-		private function malformed():void {
-			throw new ArgumentError("Malformed type identifier: " + _originalTypeName);
-		}
 	}
+}
+
+
+class MatchCacheEntry {
+
+	public function MatchCacheEntry(isMatching:Boolean) {
+		this.isMatching = isMatching;
+	}
+
+	public var isMatching:Boolean;
 }

@@ -5,25 +5,34 @@ package net.wooga.uiengine.displaylistselector.matchers.implementations {
 	import flash.utils.getQualifiedClassName;
 
 	import net.wooga.uiengine.displaylistselector.matchers.*;
+	import net.wooga.uiengine.displaylistselector.matchers.implementations.qualifiedtypename.QualifiedTypeNameParser;
+
+	import org.as3commons.collections.Map;
+	import org.as3commons.collections.framework.IMap;
 
 	public class TypeNameMatcher implements IMatcher {
 
 		private var _matchAny:Boolean = false;
+		private var _simpleMatch:Boolean = false;
+
 		private var _onlyMatchImmediateClassType:Boolean;
 		private var _typeMatcherRegEx:RegExp;
-		
-		private var _processedTypeRegEx:String;
-		private var _originalTypeName:String;
+		private var _typeName:String;
 
-		private static const NOT_FOUND:String = null;
-		
+
+		private static const _typeMatchCache:IMap = new Map();
+		private static const _directMatchTypeMatchCache:IMap = new Map();
+		private static const _typeNameParser:QualifiedTypeNameParser = new QualifiedTypeNameParser();
+
 		public function TypeNameMatcher(typeName:String, onlyMatchImmediateClassType:Boolean = true) {
-
-			_originalTypeName = typeName;
-
 			_onlyMatchImmediateClassType = onlyMatchImmediateClassType;
-			if (typeName == "*") {
+
+			_typeName = typeName;
+			if (_typeName == "*") {
 				_matchAny = true;
+			}
+			else if(/^(\w|\$)+$/i.test(_typeName)) {
+				_simpleMatch = true;
 			}
 			else {
 				createTypeNameMatcherRegEx(typeName);
@@ -31,25 +40,12 @@ package net.wooga.uiengine.displaylistselector.matchers.implementations {
 		}
 
 		private function createTypeNameMatcherRegEx(typeName:String):void {
-
 			var normalizedName:String = typeName.replace("::", ".");
-			_typeMatcherRegEx = createTypeMatcherRegEx(normalizedName);
-			
-			// fixtures\.package2\.TestSpritePack$
-
+			var regExString:String = _typeNameParser.createTypeMatcherRegEx(normalizedName);
+			_typeMatcherRegEx = new RegExp(regExString, "i")
 		}
 
 
-		private function matchAndReturnNext(expression:RegExp, subject:String):String {
-			var result:Object = expression.exec(subject);
-			if (result == null || result.index != 0) {
-				return NOT_FOUND;
-			}
-
-			return result[0] as String;
-		}
-		
-		
 		public function isMatching(subject:DisplayObject):Boolean {
 			if (_matchAny || matchesType(subject)) {
 				return true;
@@ -60,21 +56,39 @@ package net.wooga.uiengine.displaylistselector.matchers.implementations {
 
 		private function matchesType(subject:DisplayObject):Boolean {
 			if(_onlyMatchImmediateClassType) {
+				var className:String = getQualifiedClassName(subject);
+				return isMatchingType(className);
 
-				return isMatchingTypeName(getQualifiedClassName(subject));
 			}
 
-			return isMatchingTypeName(getQualifiedClassName(subject)) || isAnySuperClassMatchingTypeName(subject);
-
+			return isAnySuperClassMatchingTypeName(subject);
 		}
 
-		//TODO (arneschroppe 17/1/12) maybe we can cache these results
+
+
+
+
 		private function isAnySuperClassMatchingTypeName(subject:DisplayObject):Boolean {
 
+			var className:String = getQualifiedClassName(subject);
+			var key:String = _typeName + "&" + className;
+			var cacheEntry:MatchCacheEntry = _typeMatchCache.itemFor(key);
+			if(cacheEntry !== null) {
+				return cacheEntry.isMatching;
+			}
+
+			var isMatching:Boolean = isMatchingType(className) || hasSuperClassMatch(subject);
+			_typeMatchCache.add(key, new MatchCacheEntry(isMatching));
+
+			return isMatching;
+		}
+
+
+		public function hasSuperClassMatch(subject:DisplayObject):Boolean {
 			var types:XMLList = describeType(subject).*.@type;
 
 			for each(var type:XML in types) {
-				if(isMatchingTypeName(type.toString())) {
+				if(isMatchingType(type.toString())) {
 					return true;
 				}
 			}
@@ -82,61 +96,38 @@ package net.wooga.uiengine.displaylistselector.matchers.implementations {
 			return false;
 		}
 
+		private function isMatchingType(className:String):Boolean {
 
-		private function isMatchingTypeName(typeName:String):Boolean {
+
+			if(_simpleMatch) {
+				return className.split("::").pop() == _typeName;
+			}
+
+			var key:String = _typeName + "&" + className;
+			var cacheEntry:MatchCacheEntry = _directMatchTypeMatchCache.itemFor(key);
+			if(cacheEntry !== null) {
+				return cacheEntry.isMatching;
+			}
+
+			var isMatching:Boolean = isTypeRegExMatching(className);
+			_directMatchTypeMatchCache.add(key, new MatchCacheEntry(isMatching));
+			return isMatching;
+		}
+
+
+		private function isTypeRegExMatching(typeName:String):Boolean {
 			typeName = typeName.replace("::", ".");
 			return _typeMatcherRegEx.test(typeName);
 		}
-
-
-		private function createTypeMatcherRegEx(typeName:String):RegExp {
-
-			_processedTypeRegEx = "";
-			var typeNameWithoutWhitespace:String = typeName.replace(/^\s*/, '');
-			typeNameWithoutWhitespace = typeNameWithoutWhitespace.replace(/\s*$/, '');
-			packagePart(typeNameWithoutWhitespace);
-
-			_processedTypeRegEx += "$";
-			return new RegExp(_processedTypeRegEx);
-		}
-
-		private function packagePart(input:String):void {
-			var matchResult:String;
-			if((matchResult = matchAndReturnNext(/\w+/, input)) !== NOT_FOUND ) {
-				_processedTypeRegEx += matchResult;
-			}
-			else if((matchResult = matchAndReturnNext(/\*/, input)) !== NOT_FOUND ) {
-				_processedTypeRegEx += "\\w*";
-			}
-			else {
-				malformed();
-			}
-
-
-			var rest:String = input.substring(matchResult.length);
-
-			if(rest.length > 0) {
-				delimiter(rest);
-			}
-		}
-
-
-		private function delimiter(input:String):void {
-			var matchResult:String;
-			if((matchResult = matchAndReturnNext(/\./, input)) !== NOT_FOUND ) {
-				_processedTypeRegEx += "\\.";
-			}
-			else {
-				malformed();
-			}
-
-			var rest:String = input.substring(matchResult.length);
-			packagePart(rest);
-		}
-
-
-		private function malformed():void {
-			throw new ArgumentError("Malformed type identifier: " + _originalTypeName);
-		}
 	}
+}
+
+
+class MatchCacheEntry {
+
+	public function MatchCacheEntry(isMatching:Boolean) {
+		this.isMatching = isMatching;
+	}
+
+	public var isMatching:Boolean;
 }

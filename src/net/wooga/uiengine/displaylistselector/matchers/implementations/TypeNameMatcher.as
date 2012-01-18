@@ -6,27 +6,33 @@ package net.wooga.uiengine.displaylistselector.matchers.implementations {
 
 	import net.wooga.uiengine.displaylistselector.matchers.*;
 	import net.wooga.uiengine.displaylistselector.matchers.implementations.qualifiedtypename.QualifiedTypeNameParser;
-	import net.wooga.uiengine.displaylistselector.tools.MultiMap;
+
+	import org.as3commons.collections.Map;
+	import org.as3commons.collections.framework.IMap;
 
 	public class TypeNameMatcher implements IMatcher {
 
 		private var _matchAny:Boolean = false;
+		private var _simpleMatch:Boolean = false;
+
 		private var _onlyMatchImmediateClassType:Boolean;
 		private var _typeMatcherRegEx:RegExp;
 		private var _typeName:String;
 
 
-		private static const _typeMatchCache:MultiMap = new MultiMap(2);
+		private static const _typeMatchCache:IMap = new Map();
+		private static const _directMatchTypeMatchCache:IMap = new Map();
 		private static const _typeNameParser:QualifiedTypeNameParser = new QualifiedTypeNameParser();
 
 		public function TypeNameMatcher(typeName:String, onlyMatchImmediateClassType:Boolean = true) {
+			_onlyMatchImmediateClassType = onlyMatchImmediateClassType;
 
 			_typeName = typeName;
-
-
-			_onlyMatchImmediateClassType = onlyMatchImmediateClassType;
-			if (typeName == "*") {
+			if (_typeName == "*") {
 				_matchAny = true;
+			}
+			else if(/^(\w|\$)+$/i.test(_typeName)) {
+				_simpleMatch = true;
 			}
 			else {
 				createTypeNameMatcherRegEx(typeName);
@@ -34,10 +40,9 @@ package net.wooga.uiengine.displaylistselector.matchers.implementations {
 		}
 
 		private function createTypeNameMatcherRegEx(typeName:String):void {
-
 			var normalizedName:String = typeName.replace("::", ".");
-			_typeMatcherRegEx = _typeNameParser.createTypeMatcherRegEx(normalizedName);
-
+			var regExString:String = _typeNameParser.createTypeMatcherRegEx(normalizedName);
+			_typeMatcherRegEx = new RegExp(regExString, "i")
 		}
 
 
@@ -51,24 +56,29 @@ package net.wooga.uiengine.displaylistselector.matchers.implementations {
 
 		private function matchesType(subject:DisplayObject):Boolean {
 			if(_onlyMatchImmediateClassType) {
+				var className:String = getQualifiedClassName(subject);
+				return isMatchingType(className);
 
-				return isMatchingTypeName(getQualifiedClassName(subject));
 			}
 
 			return isAnySuperClassMatchingTypeName(subject);
 		}
 
 
+
+
+
 		private function isAnySuperClassMatchingTypeName(subject:DisplayObject):Boolean {
 
 			var className:String = getQualifiedClassName(subject);
-			var cacheEntry:MatchCacheEntry = _typeMatchCache.itemFor(_typeName, className);
+			var key:String = _typeName + "&" + className;
+			var cacheEntry:MatchCacheEntry = _typeMatchCache.itemFor(key);
 			if(cacheEntry !== null) {
 				return cacheEntry.isMatching;
 			}
 
-			var isMatching:Boolean = isMatchingTypeName(className) || hasSuperClassMatch(subject);
-			_typeMatchCache.addOrReplace(_typeName, className, new MatchCacheEntry(isMatching));
+			var isMatching:Boolean = isMatchingType(className) || hasSuperClassMatch(subject);
+			_typeMatchCache.add(key, new MatchCacheEntry(isMatching));
 
 			return isMatching;
 		}
@@ -78,7 +88,7 @@ package net.wooga.uiengine.displaylistselector.matchers.implementations {
 			var types:XMLList = describeType(subject).*.@type;
 
 			for each(var type:XML in types) {
-				if(isMatchingTypeName(type.toString())) {
+				if(isMatchingType(type.toString())) {
 					return true;
 				}
 			}
@@ -86,8 +96,26 @@ package net.wooga.uiengine.displaylistselector.matchers.implementations {
 			return false;
 		}
 
+		private function isMatchingType(className:String):Boolean {
 
-		private function isMatchingTypeName(typeName:String):Boolean {
+
+			if(_simpleMatch) {
+				return className.split("::").pop() == _typeName;
+			}
+
+			var key:String = _typeName + "&" + className;
+			var cacheEntry:MatchCacheEntry = _directMatchTypeMatchCache.itemFor(key);
+			if(cacheEntry !== null) {
+				return cacheEntry.isMatching;
+			}
+
+			var isMatching:Boolean = isTypeRegExMatching(className);
+			_directMatchTypeMatchCache.add(key, new MatchCacheEntry(isMatching));
+			return isMatching;
+		}
+
+
+		private function isTypeRegExMatching(typeName:String):Boolean {
 			typeName = typeName.replace("::", ".");
 			return _typeMatcherRegEx.test(typeName);
 		}

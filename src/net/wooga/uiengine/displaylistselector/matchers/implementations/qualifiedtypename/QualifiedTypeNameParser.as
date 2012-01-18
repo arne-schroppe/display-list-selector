@@ -7,7 +7,7 @@ package net.wooga.uiengine.displaylistselector.matchers.implementations.qualifie
 		private static const NOT_FOUND:String = null;
 
 
-		public function createTypeMatcherRegEx(typeName:String):RegExp {
+		public function createTypeMatcherRegEx(typeName:String):String {
 
 			_originalTypeName = typeName;
 			_processedTypeRegEx = "";
@@ -16,13 +16,13 @@ package net.wooga.uiengine.displaylistselector.matchers.implementations.qualifie
 			packagePart(typeNameWithoutWhitespace);
 
 			_processedTypeRegEx += "$";
-			return new RegExp(_processedTypeRegEx, "i");
+			return _processedTypeRegEx;
 		}
 
 		private function packagePart(input:String):void {
 			var matchResult:String;
-			if((matchResult = matchAndReturnNext(/\w+/, input)) !== NOT_FOUND ) {
-				_processedTypeRegEx += matchResult;
+			if((matchResult = matchAndReturnNext(/(\w|\$)+/, input)) !== NOT_FOUND ) {
+				_processedTypeRegEx += matchResult.replace("$", "\\$");
 			}
 			else if((matchResult = matchAndReturnNext(/\*/, input)) !== NOT_FOUND ) {
 				_processedTypeRegEx += "\\w*";

@@ -41,7 +41,6 @@ package net.wooga.uiengine.displaylistselector.matchers.implementations {
 		}
 
 
-		
 		public function isMatching(subject:DisplayObject):Boolean {
 			if (_matchAny || matchesType(subject)) {
 				return true;
@@ -59,7 +58,7 @@ package net.wooga.uiengine.displaylistselector.matchers.implementations {
 			return isAnySuperClassMatchingTypeName(subject);
 		}
 
-		//TODO (arneschroppe 17/1/12) maybe we can cache these results
+
 		private function isAnySuperClassMatchingTypeName(subject:DisplayObject):Boolean {
 
 			var className:String = getQualifiedClassName(subject);
@@ -85,7 +84,6 @@ package net.wooga.uiengine.displaylistselector.matchers.implementations {
 			}
 
 			return false;
-
 		}
 
 
@@ -93,7 +91,6 @@ package net.wooga.uiengine.displaylistselector.matchers.implementations {
 			typeName = typeName.replace("::", ".");
 			return _typeMatcherRegEx.test(typeName);
 		}
-
 	}
 }
 

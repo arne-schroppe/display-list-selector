@@ -16,7 +16,7 @@ package net.wooga.uiengine.displaylistselector.matchers.implementations.qualifie
 			packagePart(typeNameWithoutWhitespace);
 
 			_processedTypeRegEx += "$";
-			return new RegExp(_processedTypeRegEx);
+			return new RegExp(_processedTypeRegEx, "i");
 		}
 
 		private function packagePart(input:String):void {

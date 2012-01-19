@@ -14,8 +14,8 @@ package net.wooga.uiengine.displaylistselector.matchers.implementations {
 
 		private var _matchAny:Boolean = false;
 		private var _simpleMatch:Boolean = false;
+		private var _onlyMatchImmediateClassType:Boolean = true;
 
-		private var _onlyMatchImmediateClassType:Boolean;
 		private var _typeMatcherRegEx:RegExp;
 		private var _typeName:String;
 
@@ -47,11 +47,8 @@ package net.wooga.uiengine.displaylistselector.matchers.implementations {
 
 
 		public function isMatching(subject:DisplayObject):Boolean {
-			if (_matchAny || matchesType(subject)) {
-				return true;
-			} else {
-				return false;
-			}
+			return _matchAny || matchesType(subject);
+
 		}
 
 		private function matchesType(subject:DisplayObject):Boolean {
@@ -65,13 +62,10 @@ package net.wooga.uiengine.displaylistselector.matchers.implementations {
 		}
 
 
-
-
-
 		private function isAnySuperClassMatchingTypeName(subject:DisplayObject):Boolean {
 
 			var className:String = getQualifiedClassName(subject);
-			var key:String = _typeName + "&" + className;
+			var key:String = createDictKeyFor(className);
 			var cacheEntry:MatchCacheEntry = _typeMatchCache.itemFor(key);
 			if(cacheEntry !== null) {
 				return cacheEntry.isMatching;
@@ -103,7 +97,7 @@ package net.wooga.uiengine.displaylistselector.matchers.implementations {
 				return className.split("::").pop() == _typeName;
 			}
 
-			var key:String = _typeName + "&" + className;
+			var key:String = createDictKeyFor(className);
 			var cacheEntry:MatchCacheEntry = _directMatchTypeMatchCache.itemFor(key);
 			if(cacheEntry !== null) {
 				return cacheEntry.isMatching;
@@ -119,6 +113,13 @@ package net.wooga.uiengine.displaylistselector.matchers.implementations {
 			typeName = typeName.replace("::", ".");
 			return _typeMatcherRegEx.test(typeName);
 		}
+
+
+
+		private function createDictKeyFor(className:String):String {
+			return _typeName + "&" + className;
+		}
+
 	}
 }
 

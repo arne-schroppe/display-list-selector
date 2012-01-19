@@ -50,7 +50,7 @@ package net.wooga.uiengine.displaylistselector.matchers.implementations {
 				.add(TestSpriteC)
 				.add(TestSpriteC)
 				.add(TestSpriteA)
-			.end
+			.end.finish();
 
 			_matcher = new TypeNameMatcher("TestSpriteB", true);
 
@@ -82,7 +82,7 @@ package net.wooga.uiengine.displaylistselector.matchers.implementations {
 					.add(InheritedTestSprite)
 					.add(TestSpriteA)
 					.add(InheritedTestSprite)
-					.end
+					.end.finish();
 
 			_matcher = new TypeNameMatcher("TestSpriteB", false);
 
@@ -113,7 +113,7 @@ package net.wooga.uiengine.displaylistselector.matchers.implementations {
 					.add(ImplementingTestSprite)
 					.add(ImplementingTestSprite)
 					.add(TestSpriteA)
-				.end
+				.end.finish();
 
 			_matcher = new TypeNameMatcher("TestInterface", false);
 
@@ -147,7 +147,7 @@ package net.wooga.uiengine.displaylistselector.matchers.implementations {
 					.add(net.wooga.fixtures.package2.TestSpritePack).andStoreInstanceIn(items)
 					.add(net.wooga.fixtures.package2.TestSpritePack).andStoreInstanceIn(items)
 					.add(net.wooga.fixtures.package2.TestSpritePack).andStoreInstanceIn(items)
-					.end
+					.end.finish();
 
 			_matcher = new TypeNameMatcher("fixtures.package2.TestSpritePack", true);
 
@@ -183,7 +183,7 @@ package net.wooga.uiengine.displaylistselector.matchers.implementations {
 					.add(net.wooga.fixtures.package2.TestSpritePack).andStoreInstanceIn(items)
 					.add(net.wooga.fixtures.package2.TestSpritePack).andStoreInstanceIn(items)
 					.add(net.wooga.fixtures.package2.TestSpritePack).andStoreInstanceIn(items)
-					.end
+					.end.finish();
 
 			_matcher = new TypeNameMatcher("fixtures.*.TestSpritePack", true);
 

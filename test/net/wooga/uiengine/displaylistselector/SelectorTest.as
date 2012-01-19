@@ -50,7 +50,7 @@ package net.wooga.uiengine.displaylistselector {
 				.add(TestSpriteA)
 				.add(TestSpriteB)
 				.add(TestSpriteC)
-			.end;
+			.end.finish();
 
 			_selector = new Selector("TestSpriteB", _selectorContext);
 			var matchedObjects:Set = _selector.getMatchedObjects();
@@ -68,7 +68,7 @@ package net.wooga.uiengine.displaylistselector {
 					.add(TestSpriteA)
 					.add(TestSpriteB)
 					.add(TestSpriteC)
-				.end;
+				.end.finish();
 
 
 			_selector = new Selector("*", _selectorContext);
@@ -89,7 +89,7 @@ package net.wooga.uiengine.displaylistselector {
 						.add(TestSpriteC)
 					.end
 					.add(TestSpriteC)
-				.end;
+				.end.finish();
 
 			_selector = new Selector("TestSpriteB > TestSpriteC", _selectorContext);
 			var matchedObjects:Set = _selector.getMatchedObjects();
@@ -112,7 +112,7 @@ package net.wooga.uiengine.displaylistselector {
 						.add(TestSpriteC)
 					.end
 					.add(TestSpriteC).withName(expectedName)
-				.end;
+				.end.finish();
 
 			_selector = new Selector("TestSpriteC[name='" + expectedName + "']", _selectorContext);
 			var matchedObjects:Set = _selector.getMatchedObjects();
@@ -129,7 +129,7 @@ package net.wooga.uiengine.displaylistselector {
 
 			_displayList.startWith(contextView).begin
 					.add(TestSpriteA)
-				.end;
+				.end.finish();
 
 			var propertyName:String = "obscureExternalProperty";
 			var value:String = "success";
@@ -148,7 +148,7 @@ package net.wooga.uiengine.displaylistselector {
 
 			_displayList.startWith(contextView).begin
 					.add(TestSpriteA)
-				.end;
+				.end.finish();
 
 			var propertyName:String = "id";
 			var value:String = "test";
@@ -170,7 +170,7 @@ package net.wooga.uiengine.displaylistselector {
 					.add(TestSpriteA)
 					.add(TestSpriteB)
 					.add(TestSpriteC)
-				.end;
+				.end.finish();
 
 			var values:Set = new Set();
 			values.add("A");
@@ -196,7 +196,7 @@ package net.wooga.uiengine.displaylistselector {
 					.add(TestSpriteA)
 					.add(TestSpriteB)
 					.add(TestSpriteC)
-				.end;
+				.end.finish();
 
 			var values:Set = new Set();
 			values.add("A");
@@ -224,7 +224,7 @@ package net.wooga.uiengine.displaylistselector {
 					.add(TestSpriteA).begin
 						.add(TestSpriteC)
 					.end
-				.end;
+				.end.finish();
 
 			_selector = new Selector("* > TestSpriteC", _selectorContext);
 			var matchedObjects:Set = _selector.getMatchedObjects();
@@ -253,7 +253,7 @@ package net.wooga.uiengine.displaylistselector {
 						.end
 					.end
 					.add(TestSpriteC)
-				.end;
+				.end.finish();
 
 			_selector = new Selector("TestSpriteA TestSpriteC", _selectorContext);
 			var matchedObjects:Set = _selector.getMatchedObjects();
@@ -287,7 +287,7 @@ package net.wooga.uiengine.displaylistselector {
 						.end
 					.end
 					.add(TestSpriteC)
-				.end;
+				.end.finish();
 
 			_selector = new Selector("TestSpriteA TestSpriteC", _selectorContext);
 			var matchedObjects:Set = _selector.getMatchedObjects();
@@ -315,7 +315,7 @@ package net.wooga.uiengine.displaylistselector {
 						.end
 					.end
 					.add(TestSpriteC)
-				.end;
+				.end.finish();
 
 			_selector = new Selector("*:root", _selectorContext);
 			var matchedObjects:Set = _selector.getMatchedObjects();
@@ -332,7 +332,7 @@ package net.wooga.uiengine.displaylistselector {
 					.add(TestSpriteA)
 					.add(TestSpriteB)
 					.add(TestSpriteC)
-				.end;
+				.end.finish();
 
 			_selector = new Selector("*:root > *:first-child", _selectorContext);
 			var matchedObjects:Set = _selector.getMatchedObjects();
@@ -349,7 +349,7 @@ package net.wooga.uiengine.displaylistselector {
 					.add(TestSpriteA)
 					.add(TestSpriteB)
 					.add(TestSpriteC)
-				.end;
+				.end.finish();
 
 			_selector = new Selector("*:root > *:last-child", _selectorContext);
 			var matchedObjects:Set = _selector.getMatchedObjects();
@@ -393,7 +393,7 @@ package net.wooga.uiengine.displaylistselector {
 					.add(TestSpriteA)
 					.add(TestSpriteA)
 					.add(TestSpriteA)
-					.end;
+					.end.finish();
 
 			_selector = new Selector("*:root > *:nth-child(-2n + 5)", _selectorContext);
 			var matchedObjects:Set = _selector.getMatchedObjects();
@@ -415,7 +415,7 @@ package net.wooga.uiengine.displaylistselector {
 					.add(TestSpriteB)
 					.add(TestSpriteA)
 					.add(TestSpriteA)
-				.end;
+				.end.finish();
 
 			_selector = new Selector("*:root > *:nth-last-child(3)", _selectorContext);
 			var matchedObjects:Set = _selector.getMatchedObjects();
@@ -430,7 +430,7 @@ package net.wooga.uiengine.displaylistselector {
 
 			_displayList.startWith(contextView).begin
 					.add(TestSpriteC)
-				.end;
+				.end.finish();
 
 
 			var values:Set = new Set();
@@ -459,7 +459,7 @@ package net.wooga.uiengine.displaylistselector {
 					.add(TestSpriteA)
 					.add(TestSpriteB)
 					.add(TestSpriteC)
-				.end;
+				.end.finish();
 
 			/*IMPORTANT: We need to add ":root >" in front of the selector under test. Otherwise
 			 the contextView (which is :root in this case) is ALSO matched, which might lead to erratic
@@ -481,7 +481,7 @@ package net.wooga.uiengine.displaylistselector {
 					.add(MovieClip)
 					.add(MovieClip)
 					.add(TestSpriteB)
-					.end;
+					.end.finish();
 
 			_selector = new Selector(":root > ^Sprite", _selectorContext);
 			var matchedObjects:Set = _selector.getMatchedObjects();
@@ -503,7 +503,7 @@ package net.wooga.uiengine.displaylistselector {
 					.add(net.wooga.fixtures.package2.TestSpritePack)
 					.add(TestSpriteA)
 					.add(TestSpriteB)
-					.end;
+					.end.finish();
 
 			_selector = new Selector("(fixtures.*.TestSpritePack)", _selectorContext);
 			var matchedObjects:Set = _selector.getMatchedObjects();
@@ -522,7 +522,7 @@ package net.wooga.uiengine.displaylistselector {
 					.add(TestSpriteA)
 					.add(TestSpriteA)
 					.add(TestSpriteWithInterface)
-					.end;
+					.end.finish();
 
 			_selector = new Selector(":root > ^TestInterface", _selectorContext);
 			var matchedObjects:Set = _selector.getMatchedObjects();

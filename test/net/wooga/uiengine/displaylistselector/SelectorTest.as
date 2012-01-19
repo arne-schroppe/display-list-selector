@@ -371,7 +371,7 @@ package net.wooga.uiengine.displaylistselector {
 					.add(TestSpriteB)
 					.add(TestSpriteA)
 					.add(TestSpriteA)
-				.end;
+				.end.finish();
 
 			_selector = new Selector("*:root > *:nth-child(6)", _selectorContext);
 			var matchedObjects:Set = _selector.getMatchedObjects();

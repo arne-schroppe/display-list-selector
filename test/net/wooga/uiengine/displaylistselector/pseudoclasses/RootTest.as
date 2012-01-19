@@ -35,7 +35,7 @@ package net.wooga.uiengine.displaylistselector.pseudoclasses {
 					.add(TestSpriteB).andStoreInstanceIn(instances)
 					.add(TestSpriteC).andStoreInstanceIn(instances)
 				.end
-			.end;
+			.end.finish();
 
 			_pseudoClass = new Root(contextView);
 

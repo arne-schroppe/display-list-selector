@@ -39,7 +39,7 @@ package net.wooga.uiengine.displaylistselector.matchers.implementations {
 					.add(TestSpriteC)
 					.add(TestSpriteC)
 					.add(TestSpriteA)
-				.end;
+				.end.finish();
 
 			_matcher = new PseudoClassMatcher(new TestPseudoClass());
 

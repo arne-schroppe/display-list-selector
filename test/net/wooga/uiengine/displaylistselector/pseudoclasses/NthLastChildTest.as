@@ -39,7 +39,7 @@ package net.wooga.uiengine.displaylistselector.pseudoclasses {
 					.add(TestSpriteA).andStoreInstanceIn(instances)
 					.add(TestSpriteA).andStoreInstanceIn(instances)
 					.add(TestSpriteA).andStoreInstanceIn(instances)
-				.end;
+				.end.finish();
 
 			_pseudoClass = new NthLastChild();
 			_pseudoClass.setArguments([2]);
@@ -69,7 +69,7 @@ package net.wooga.uiengine.displaylistselector.pseudoclasses {
 					.add(TestSpriteA).andStoreInstanceIn(instances)
 					.add(TestSpriteA).andStoreInstanceIn(instances)
 					.add(TestSpriteA).andStoreInstanceIn(instances)
-					.end;
+					.end.finish();
 
 			_pseudoClass = new NthLastChild();
 			_pseudoClass.setArguments(["2n + 1"]);
@@ -95,7 +95,7 @@ package net.wooga.uiengine.displaylistselector.pseudoclasses {
 					.add(TestSpriteA).andStoreInstanceIn(instances)
 					.add(TestSpriteA).andStoreInstanceIn(instances)
 					.add(TestSpriteA).andStoreInstanceIn(instances)
-					.end;
+					.end.finish();
 
 			_pseudoClass = new NthLastChild();
 			_pseudoClass.setArguments(["even"]);
@@ -124,7 +124,7 @@ package net.wooga.uiengine.displaylistselector.pseudoclasses {
 					.add(TestSpriteA).andStoreInstanceIn(instances)
 					.add(TestSpriteA).andStoreInstanceIn(instances)
 					.add(TestSpriteA).andStoreInstanceIn(instances)
-					.end;
+					.end.finish();
 
 			_pseudoClass = new NthLastChild();
 			_pseudoClass.setArguments(["odd"]);
@@ -153,7 +153,7 @@ package net.wooga.uiengine.displaylistselector.pseudoclasses {
 					.add(TestSpriteA).andStoreInstanceIn(instances)
 					.add(TestSpriteA).andStoreInstanceIn(instances)
 					.add(TestSpriteA).andStoreInstanceIn(instances)
-					.end;
+					.end.finish();
 
 			_pseudoClass = new NthLastChild();
 			_pseudoClass.setArguments(["-n+3"]);

@@ -40,7 +40,7 @@ package net.wooga.uiengine.displaylistselector.pseudoclasses {
 				.add(TestSpriteC).andStoreInstanceIn(instances).begin
 					.add(TestSpriteD)
 				.end
-			.end;
+			.end.finish();
 
 			_pseudoClass = new IsEmpty();
 

@@ -35,7 +35,7 @@ package net.wooga.uiengine.displaylistselector.pseudoclasses {
 				.add(TestSpriteA).andStoreInstanceIn(instances)
 				.add(TestSpriteB).andStoreInstanceIn(instances)
 				.add(TestSpriteC).andStoreInstanceIn(instances)
-			.end;
+			.end.finish();
 
 			_pseudoClass = new FirstChild();
 

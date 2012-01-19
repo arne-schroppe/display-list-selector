@@ -38,7 +38,7 @@ package net.wooga.uiengine.displaylistselector.matchers.implementations {
 					.end
 				.end
 				.add(TestSpriteA)
-			.end;
+			.end.finish();
 
 			//TODO fix test
 //			var matchedObjects:Array = _matcher.isMatching(contextView);

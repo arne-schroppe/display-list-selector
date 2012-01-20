@@ -32,7 +32,6 @@ package net.wooga.uiengine.displaylistselector {
 
 			_context.addEventListener(DisplayListSelectorEvent.OBJECT_WAS_CHANGED, onObjectWasChanged, false, 0, true);
 
-
 			parseAndStore(selectorString);
 		}
 
@@ -70,5 +69,7 @@ package net.wooga.uiengine.displaylistselector {
 		public function get specificity():Number {
 			return _specificity;
 		}
+
+		//TODO (arneschroppe 20/1/12) add queries on selectors?
 	}
 }

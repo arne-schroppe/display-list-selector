@@ -15,7 +15,7 @@ package net.wooga.uiengine.displaylistselector {
 		private var _matchers:Vector.<IMatcher>;
 		private var _matchedObjects:Set;
 
-		private var _specificity:Number;
+		private var _specificity:ISpecificity;
 
 		public static const USE_DEFAULT_CONTEXT:SelectorContext = null;
 
@@ -66,7 +66,7 @@ package net.wooga.uiengine.displaylistselector {
 			return _context.matcherTool.isObjectMatching(object as DisplayObject, _matchers);
 		}
 
-		public function get specificity():Number {
+		public function get specificity():ISpecificity {
 			return _specificity;
 		}
 

@@ -24,6 +24,7 @@ package net.wooga.uiengine.displaylistselector {
 	import org.hamcrest.core.not;
 	import org.hamcrest.object.equalTo;
 	import org.hamcrest.object.hasPropertyWithValue;
+	import org.hamcrest.object.isTrue;
 
 	public class SelectorTest extends ContextViewBasedTest {
 
@@ -529,6 +530,16 @@ package net.wooga.uiengine.displaylistselector {
 
 			assertThat(matchedObjects.size, equalTo(2));
 			assertThat(matchedObjects, containsExactly(2, isA(TestSpriteWithInterface)));
+		}
+
+		[Test]
+		public function isA_selector_should_have_lower_specificity_than_element_selector():void {
+
+			var isASelector:Selector = new Selector("^TestSpriteA", _selectorContext);
+			var elementSelector:Selector = new Selector("TestSpriteA", _selectorContext);
+
+			assertThat(isASelector.specificity.isLessThan(elementSelector.specificity), isTrue());
+
 		}
 
 		private function assertContainsObjectOfClass(objects:IIterable, Type:Class):void {

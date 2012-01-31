@@ -45,7 +45,7 @@ package net.wooga.uiengine.displaylistselector.parser {
 
 			selectorsGroup();
 
-			return new ParserResult(_matchers, _specificity.asNumber());
+			return new ParserResult(_matchers, _specificity);
 		}
 
 
@@ -117,9 +117,10 @@ package net.wooga.uiengine.displaylistselector.parser {
 				//The *-selector does not limit the result set, so we wouldn't need to add it. We get exceptions though,
 				//if *-selector is the last selector, so we add it anyway.
 				_matchers.push(getSingletonMatcher(TypeNameMatcher, className, new TypeNameMatcher(className)));
-
+				return;
 			}
-			else if (_input.isNext("(")) {
+
+			if (_input.isNext("(")) {
 				checkSyntaxExtensionsAllowed();
 
 				_input.consume(1);
@@ -127,13 +128,21 @@ package net.wooga.uiengine.displaylistselector.parser {
 				_input.consumeString(")");
 
 				_matchers.push(getSingletonMatcher(TypeNameMatcher, className, _isExactTypeMatcher, new TypeNameMatcher(className, _isExactTypeMatcher)));
-				_specificity.c++;
+
 			}
 			else {
 				className = _input.consumeRegex(/\w+/);
 				_matchers.push(getSingletonMatcher(TypeNameMatcher, className, _isExactTypeMatcher, new TypeNameMatcher(className, _isExactTypeMatcher)));
-				_specificity.c++;
+
 			}
+
+			if(_isExactTypeMatcher) {
+				_specificity.d++;
+			}
+			else {
+				_specificity.e++;
+			}
+
 		}
 
 		private function simpleSelectorSequence2():void {
@@ -159,7 +168,7 @@ package net.wooga.uiengine.displaylistselector.parser {
 			var matcher:IMatcher = new PropertyFilterContainsMatcher(_externalPropertySource, _classAttribute, className);
 			_matchers.push(getSingletonMatcher(PropertyFilterContainsMatcher, _externalPropertySource, _classAttribute, className, matcher));
 
-			_specificity.b++;
+			_specificity.c++;
 		}
 
 
@@ -169,7 +178,7 @@ package net.wooga.uiengine.displaylistselector.parser {
 			var matcher:IMatcher = new PropertyFilterEqualsMatcher(_externalPropertySource, _idAttribute, id);
 			_matchers.push(getSingletonMatcher(PropertyFilterEqualsMatcher, _externalPropertySource, _idAttribute, id, matcher));
 
-			_specificity.a++;
+			_specificity.b++;
 		}
 
 
@@ -193,7 +202,7 @@ package net.wooga.uiengine.displaylistselector.parser {
 			singletonAttributes.push(matcher);
 
 			_matchers.push(getSingletonMatcher.apply(this, singletonAttributes));
-			_specificity.b++;
+			_specificity.c++;
 		}
 
 
@@ -255,7 +264,7 @@ package net.wooga.uiengine.displaylistselector.parser {
 			var matcher:IMatcher = matcherForCompareFunction(compareFunction, property, value);
 
 			_matchers.push(matcher);
-			_specificity.b++;
+			_specificity.c++;
 		}
 
 
@@ -314,14 +323,4 @@ package net.wooga.uiengine.displaylistselector.parser {
 }
 
 
-class Specificity {
-	private static const SPECIFICITY_BASE:int = 60;
 
-	public var a:int;
-	public var b:int;
-	public var c:int;
-
-	public function asNumber():Number {
-		return a * Math.pow(SPECIFICITY_BASE, 2) + b * Math.pow(SPECIFICITY_BASE, 1) + c;
-	}
-}

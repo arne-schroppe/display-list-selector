@@ -7,6 +7,7 @@ package {
 	import net.wooga.uiengine.displaylistselector.matchers.implementations.PropertyFilterContainsMatcherTest;
 	import net.wooga.uiengine.displaylistselector.matchers.implementations.PropertyFilterEqualsMatcherTest;
 	import net.wooga.uiengine.displaylistselector.matchers.implementations.PseudoClassMatcherTest;
+	import net.wooga.uiengine.displaylistselector.parser.SpecificityTest;
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.FirstChildTest;
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.IsEmptyTest;
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.LastChildTest;
@@ -38,6 +39,7 @@ package {
 		public var nthLastOfTypeTest:NthLastOfTypeTest;
 		public var rootTest:RootTest;
 		public var nthParserTest:NthParserTest;
+		public var specificityTest:SpecificityTest;
 		//public var parserTest:ParserTest;
 
 	}

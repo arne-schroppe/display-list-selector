@@ -23,14 +23,15 @@ package net.wooga.uiengine.displaylistselector.matchers {
 
 
 
-		public function findMatchingObjects(matchers:Vector.<IMatcher>):Set {
+		public function findMatchingObjects(matchers:Vector.<Vector.<IMatcher>>):Set {
 
 
 			_matchedObjects = new Set();
-			_currentlyMatchedMatchers = matchers;
 
-			match(_rootObject, new <MatcherPointer>[]);
-
+			for each(var currentMatcherSet:Vector.<IMatcher> in matchers) {
+				_currentlyMatchedMatchers = currentMatcherSet;
+				match(_rootObject, new <MatcherPointer>[]);
+			}
 
 			return _matchedObjects;
 		}
@@ -134,17 +135,20 @@ package net.wooga.uiengine.displaylistselector.matchers {
 
 
 		//TODO (arneschroppe 9/1/12) write a test for this!!!!!!
-		public function isObjectMatching(object:DisplayObject, matchers:Vector.<IMatcher>):Boolean {
+		public function isObjectMatching(object:DisplayObject, matchers:Vector.<Vector.<IMatcher>>):Boolean {
 
+			for each(var currentMatcherSet:Vector.<IMatcher> in matchers) {
+				_currentlyMatchedMatchers = currentMatcherSet;
 
-			_currentlyMatchedMatchers = matchers
-
-			if (_currentlyMatchedMatchers.length == 0) {
-				return true
+				if (_currentlyMatchedMatchers.length == 0) {
+					continue;
+				}
+				else {
+					return reverseMatch(object, _currentlyMatchedMatchers.length - 1);
+				}
 			}
-			else {
-				return reverseMatch(object, _currentlyMatchedMatchers.length - 1);
-			}
+
+			return true;
 		}
 
 

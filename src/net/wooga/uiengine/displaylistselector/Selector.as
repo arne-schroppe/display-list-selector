@@ -12,7 +12,7 @@ package net.wooga.uiengine.displaylistselector {
 		private var _selectorString:String;
 		private var _context:SelectorContext;
 
-		private var _matchers:Vector.<IMatcher>;
+		private var _matchers:Vector.<Vector.<IMatcher>>;
 		private var _matchedObjects:Set;
 
 		private var _specificity:ISpecificity;

@@ -1,7 +1,5 @@
 package net.wooga.uiengine.displaylistselector.matchers.implementations {
-	import flash.utils.getTimer;
-
-	import net.arneschroppe.displaytreebuilder.DisplayTreeBuilder;
+	import net.arneschroppe.displaytreebuilder.DisplayTree;
 	import net.wooga.fixtures.ContextViewBasedTest;
 	import net.wooga.fixtures.TestSpriteA;
 	import net.wooga.fixtures.TestSpriteB;
@@ -14,7 +12,6 @@ package net.wooga.uiengine.displaylistselector.matchers.implementations {
 	import org.hamcrest.core.allOf;
 	import org.hamcrest.core.isA;
 	import org.hamcrest.core.throws;
-	import org.hamcrest.number.lessThan;
 	import org.hamcrest.object.equalTo;
 
 	public class TypeNameMatcherTest extends ContextViewBasedTest {
@@ -38,18 +35,18 @@ package net.wooga.uiengine.displaylistselector.matchers.implementations {
 		[Test]
 		public function should_select_elements_with_class_name():void {
 
-			var tree:DisplayTreeBuilder = new DisplayTreeBuilder();
+			var tree:DisplayTree = new DisplayTree();
 
-			tree.startWith(contextView).begin
-				.add(TestSpriteA)
-				.add(TestSpriteB)
-				.add(TestSpriteC)
-				.add(TestSpriteB)
-				.add(TestSpriteA)
-				.add(TestSpriteA)
-				.add(TestSpriteC)
-				.add(TestSpriteC)
-				.add(TestSpriteA)
+			tree.hasA(contextView).containing
+				.a(TestSpriteA)
+				.a(TestSpriteB)
+				.a(TestSpriteC)
+				.a(TestSpriteB)
+				.a(TestSpriteA)
+				.a(TestSpriteA)
+				.a(TestSpriteC)
+				.a(TestSpriteC)
+				.a(TestSpriteA)
 			.end.finish();
 
 			_matcher = new TypeNameMatcher("TestSpriteB", true);
@@ -70,18 +67,18 @@ package net.wooga.uiengine.displaylistselector.matchers.implementations {
 
 		[Test]
 		public function should_select_elements_that_subclass_a_type():void {
-			var tree:DisplayTreeBuilder = new DisplayTreeBuilder();
+			var tree:DisplayTree = new DisplayTree();
 
-			tree.startWith(contextView).begin
-					.add(TestSpriteA)
-					.add(TestSpriteA)
-					.add(InheritedTestSprite)
-					.add(TestSpriteA)
-					.add(TestSpriteA)
-					.add(InheritedTestSprite)
-					.add(InheritedTestSprite)
-					.add(TestSpriteA)
-					.add(InheritedTestSprite)
+			tree.hasA(contextView).containing
+					.a(TestSpriteA)
+					.a(TestSpriteA)
+					.a(InheritedTestSprite)
+					.a(TestSpriteA)
+					.a(TestSpriteA)
+					.a(InheritedTestSprite)
+					.a(InheritedTestSprite)
+					.a(TestSpriteA)
+					.a(InheritedTestSprite)
 					.end.finish();
 
 			_matcher = new TypeNameMatcher("TestSpriteB", false);
@@ -101,18 +98,18 @@ package net.wooga.uiengine.displaylistselector.matchers.implementations {
 
 		[Test]
 		public function should_select_elements_that_implements_a_type():void {
-			var tree:DisplayTreeBuilder = new DisplayTreeBuilder();
+			var tree:DisplayTree = new DisplayTree();
 
-			tree.startWith(contextView).begin
-					.add(TestSpriteA)
-					.add(TestSpriteA)
-					.add(ImplementingTestSprite)
-					.add(TestSpriteA)
-					.add(TestSpriteA)
-					.add(TestSpriteA)
-					.add(ImplementingTestSprite)
-					.add(ImplementingTestSprite)
-					.add(TestSpriteA)
+			tree.hasA(contextView).containing
+					.a(TestSpriteA)
+					.a(TestSpriteA)
+					.a(ImplementingTestSprite)
+					.a(TestSpriteA)
+					.a(TestSpriteA)
+					.a(TestSpriteA)
+					.a(ImplementingTestSprite)
+					.a(ImplementingTestSprite)
+					.a(TestSpriteA)
 				.end.finish();
 
 			_matcher = new TypeNameMatcher("TestInterface", false);
@@ -133,20 +130,20 @@ package net.wooga.uiengine.displaylistselector.matchers.implementations {
 
 		[Test]
 		public function should_match_partly_qualified_class_names():void {
-			var tree:DisplayTreeBuilder = new DisplayTreeBuilder();
+			var tree:DisplayTree = new DisplayTree();
 
 			var items:Array = [];
 
-			tree.startWith(contextView).begin
-					.add(net.wooga.fixtures.package1.TestSpritePack).andStoreInstanceIn(items)
-					.add(net.wooga.fixtures.package1.TestSpritePack).andStoreInstanceIn(items)
-					.add(net.wooga.fixtures.package1.TestSpritePack).andStoreInstanceIn(items)
-					.add(TestSpriteA).andStoreInstanceIn(items)
-					.add(TestSpriteA).andStoreInstanceIn(items)
-					.add(net.wooga.fixtures.package2.TestSpritePack).andStoreInstanceIn(items)
-					.add(net.wooga.fixtures.package2.TestSpritePack).andStoreInstanceIn(items)
-					.add(net.wooga.fixtures.package2.TestSpritePack).andStoreInstanceIn(items)
-					.add(net.wooga.fixtures.package2.TestSpritePack).andStoreInstanceIn(items)
+			tree.hasA(contextView).containing
+					.a(net.wooga.fixtures.package1.TestSpritePack).whichWillBeStoredIn(items)
+					.a(net.wooga.fixtures.package1.TestSpritePack).whichWillBeStoredIn(items)
+					.a(net.wooga.fixtures.package1.TestSpritePack).whichWillBeStoredIn(items)
+					.a(TestSpriteA).whichWillBeStoredIn(items)
+					.a(TestSpriteA).whichWillBeStoredIn(items)
+					.a(net.wooga.fixtures.package2.TestSpritePack).whichWillBeStoredIn(items)
+					.a(net.wooga.fixtures.package2.TestSpritePack).whichWillBeStoredIn(items)
+					.a(net.wooga.fixtures.package2.TestSpritePack).whichWillBeStoredIn(items)
+					.a(net.wooga.fixtures.package2.TestSpritePack).whichWillBeStoredIn(items)
 					.end.finish();
 
 			_matcher = new TypeNameMatcher("fixtures.package2.TestSpritePack", true);
@@ -169,20 +166,20 @@ package net.wooga.uiengine.displaylistselector.matchers.implementations {
 
 		[Test]
 		public function should_match_wildcard_package_names():void {
-			var tree:DisplayTreeBuilder = new DisplayTreeBuilder();
+			var tree:DisplayTree = new DisplayTree();
 
 			var items:Array = [];
 
-			tree.startWith(contextView).begin
-					.add(net.wooga.fixtures.package1.TestSpritePack).andStoreInstanceIn(items)
-					.add(net.wooga.fixtures.package1.TestSpritePack).andStoreInstanceIn(items)
-					.add(net.wooga.fixtures.package1.TestSpritePack).andStoreInstanceIn(items)
-					.add(TestSpriteA).andStoreInstanceIn(items)
-					.add(TestSpriteA).andStoreInstanceIn(items)
-					.add(net.wooga.fixtures.package2.TestSpritePack).andStoreInstanceIn(items)
-					.add(net.wooga.fixtures.package2.TestSpritePack).andStoreInstanceIn(items)
-					.add(net.wooga.fixtures.package2.TestSpritePack).andStoreInstanceIn(items)
-					.add(net.wooga.fixtures.package2.TestSpritePack).andStoreInstanceIn(items)
+			tree.hasA(contextView).containing
+					.a(net.wooga.fixtures.package1.TestSpritePack).whichWillBeStoredIn(items)
+					.a(net.wooga.fixtures.package1.TestSpritePack).whichWillBeStoredIn(items)
+					.a(net.wooga.fixtures.package1.TestSpritePack).whichWillBeStoredIn(items)
+					.a(TestSpriteA).whichWillBeStoredIn(items)
+					.a(TestSpriteA).whichWillBeStoredIn(items)
+					.a(net.wooga.fixtures.package2.TestSpritePack).whichWillBeStoredIn(items)
+					.a(net.wooga.fixtures.package2.TestSpritePack).whichWillBeStoredIn(items)
+					.a(net.wooga.fixtures.package2.TestSpritePack).whichWillBeStoredIn(items)
+					.a(net.wooga.fixtures.package2.TestSpritePack).whichWillBeStoredIn(items)
 					.end.finish();
 
 			_matcher = new TypeNameMatcher("fixtures.*.TestSpritePack", true);
@@ -258,22 +255,22 @@ package net.wooga.uiengine.displaylistselector.matchers.implementations {
 		//
 		//
 		//
-		//	var tree:DisplayTreeBuilder = new DisplayTreeBuilder();
+		//	var tree:DisplayTree = new DisplayTree();
 		//
 		//	var items:Array = [];
 		//
 		//	_matcher = new TypeNameMatcher("fixtures.package1.TestSpritePack", false);
 		//
-		//	tree.startWith(contextView).begin
-		//			.add(net.wooga.fixtures.package1.TestSpritePack).andStoreInstanceIn(items)
-		//			.add(net.wooga.fixtures.package1.TestSpritePack).andStoreInstanceIn(items)
-		//			.add(net.wooga.fixtures.package1.TestSpritePack).andStoreInstanceIn(items)
-		//			.add(TestSpriteA).andStoreInstanceIn(items)
-		//			.add(TestSpriteA).andStoreInstanceIn(items)
-		//			.add(net.wooga.fixtures.package2.TestSpritePack).andStoreInstanceIn(items)
-		//			.add(net.wooga.fixtures.package2.TestSpritePack).andStoreInstanceIn(items)
-		//			.add(net.wooga.fixtures.package2.TestSpritePack).andStoreInstanceIn(items)
-		//			.add(net.wooga.fixtures.package2.TestSpritePack).andStoreInstanceIn(items)
+		//	tree.hasA(contextView).containing
+		//			.a(net.wooga.fixtures.package1.TestSpritePack).whichWillBeStoredIn(items)
+		//			.a(net.wooga.fixtures.package1.TestSpritePack).whichWillBeStoredIn(items)
+		//			.a(net.wooga.fixtures.package1.TestSpritePack).whichWillBeStoredIn(items)
+		//			.a(TestSpriteA).whichWillBeStoredIn(items)
+		//			.a(TestSpriteA).whichWillBeStoredIn(items)
+		//			.a(net.wooga.fixtures.package2.TestSpritePack).whichWillBeStoredIn(items)
+		//			.a(net.wooga.fixtures.package2.TestSpritePack).whichWillBeStoredIn(items)
+		//			.a(net.wooga.fixtures.package2.TestSpritePack).whichWillBeStoredIn(items)
+		//			.a(net.wooga.fixtures.package2.TestSpritePack).whichWillBeStoredIn(items)
 		//			.end
 		//
 		//

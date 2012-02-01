@@ -1,5 +1,5 @@
 package net.wooga.uiengine.displaylistselector.matchers.implementations {
-	import net.arneschroppe.displaytreebuilder.DisplayTreeBuilder;
+	import net.arneschroppe.displaytreebuilder.DisplayTree;
 	import net.wooga.fixtures.ContextViewBasedTest;
 	import net.wooga.fixtures.TestSpriteA;
 	import net.wooga.fixtures.TestSpriteB;
@@ -29,18 +29,18 @@ package net.wooga.uiengine.displaylistselector.matchers.implementations {
 
 		[Test]
 		public function should_filter_elements_that_contain_property():void {
-			var tree:DisplayTreeBuilder = new DisplayTreeBuilder();
+			var tree:DisplayTree = new DisplayTree();
 
-			tree.startWith(contextView).begin
-				.add(TestSpriteA)
-				.add(TestSpriteB)
-				.add(TestSpriteC)
-				.add(TestSpriteB)
-				.add(TestSpriteA)
-				.add(TestSpriteA)
-				.add(TestSpriteC)
-				.add(TestSpriteC)
-				.add(TestSpriteA)
+			tree.hasA(contextView).containing
+				.a(TestSpriteA)
+				.a(TestSpriteB)
+				.a(TestSpriteC)
+				.a(TestSpriteB)
+				.a(TestSpriteA)
+				.a(TestSpriteA)
+				.a(TestSpriteC)
+				.a(TestSpriteC)
+				.a(TestSpriteA)
 			.end.finish();
 
 			_matcher = new PropertyFilterContainsMatcher(new TestPropertySource(), "testProperty", "TestSpriteC");

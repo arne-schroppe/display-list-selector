@@ -1,13 +1,11 @@
 package net.wooga.uiengine.displaylistselector.pseudoclasses {
-	import net.arneschroppe.displaytreebuilder.DisplayTreeBuilder;
+	import net.arneschroppe.displaytreebuilder.DisplayTree;
 	import net.wooga.fixtures.ContextViewBasedTest;
 	import net.wooga.fixtures.TestSpriteA;
 	import net.wooga.fixtures.TestSpriteB;
 	import net.wooga.fixtures.TestSpriteC;
 
 	import org.hamcrest.assertThat;
-
-
 	import org.hamcrest.object.equalTo;
 
 	public class FirstChildTest extends ContextViewBasedTest {
@@ -30,11 +28,11 @@ package net.wooga.uiengine.displaylistselector.pseudoclasses {
 
 			var instances:Array = [];
 
-			var displayTree:DisplayTreeBuilder = new DisplayTreeBuilder();
-			displayTree.startWith(contextView).begin
-				.add(TestSpriteA).andStoreInstanceIn(instances)
-				.add(TestSpriteB).andStoreInstanceIn(instances)
-				.add(TestSpriteC).andStoreInstanceIn(instances)
+			var displayTree:DisplayTree = new DisplayTree();
+			displayTree.hasA(contextView).containing
+				.a(TestSpriteA).whichWillBeStoredIn(instances)
+				.a(TestSpriteB).whichWillBeStoredIn(instances)
+				.a(TestSpriteC).whichWillBeStoredIn(instances)
 			.end.finish();
 
 			_pseudoClass = new FirstChild();

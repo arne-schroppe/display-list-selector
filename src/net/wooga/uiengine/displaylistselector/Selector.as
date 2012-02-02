@@ -12,6 +12,7 @@ package net.wooga.uiengine.displaylistselector {
 		private var _selectorString:String;
 		private var _context:SelectorContext;
 
+
 		private var _matchers:Vector.<Vector.<IMatcher>>;
 		private var _matchedObjects:Set;
 
@@ -70,6 +71,12 @@ package net.wooga.uiengine.displaylistselector {
 			return _specificity;
 		}
 
+		public function get context():SelectorContext {
+			return _context;
+		}
+
+
+		
 		//TODO (arneschroppe 20/1/12) add queries on selectors?
 	}
 }

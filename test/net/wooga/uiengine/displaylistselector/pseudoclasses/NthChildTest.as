@@ -1,5 +1,5 @@
 package net.wooga.uiengine.displaylistselector.pseudoclasses {
-	import net.arneschroppe.displaytreebuilder.DisplayTreeBuilder;
+	import net.arneschroppe.displaytreebuilder.DisplayTree;
 	import net.wooga.fixtures.ContextViewBasedTest;
 	import net.wooga.fixtures.TestSpriteA;
 
@@ -26,13 +26,13 @@ package net.wooga.uiengine.displaylistselector.pseudoclasses {
 
 			var instances:Array = [];
 
-			var displayTree:DisplayTreeBuilder = new DisplayTreeBuilder();
-			displayTree.startWith(contextView).begin
-					.add(TestSpriteA).andStoreInstanceIn(instances)
-					.add(TestSpriteA).andStoreInstanceIn(instances)
-					.add(TestSpriteA).andStoreInstanceIn(instances)
-					.add(TestSpriteA).andStoreInstanceIn(instances)
-				.end;
+			var displayTree:DisplayTree = new DisplayTree();
+			displayTree.hasA(contextView).containing
+					.a(TestSpriteA).whichWillBeStoredIn(instances)
+					.a(TestSpriteA).whichWillBeStoredIn(instances)
+					.a(TestSpriteA).whichWillBeStoredIn(instances)
+					.a(TestSpriteA).whichWillBeStoredIn(instances)
+				.end.finish();
 
 			_pseudoClass = new NthChild();
 			_pseudoClass.setArguments([2]);
@@ -49,13 +49,13 @@ package net.wooga.uiengine.displaylistselector.pseudoclasses {
 
 			var instances:Array = [];
 
-			var displayTree:DisplayTreeBuilder = new DisplayTreeBuilder();
-			displayTree.startWith(contextView).begin
-					.add(TestSpriteA).andStoreInstanceIn(instances)
-					.add(TestSpriteA).andStoreInstanceIn(instances)
-					.add(TestSpriteA).andStoreInstanceIn(instances)
-					.add(TestSpriteA).andStoreInstanceIn(instances)
-				.end;
+			var displayTree:DisplayTree = new DisplayTree();
+			displayTree.hasA(contextView).containing
+					.a(TestSpriteA).whichWillBeStoredIn(instances)
+					.a(TestSpriteA).whichWillBeStoredIn(instances)
+					.a(TestSpriteA).whichWillBeStoredIn(instances)
+					.a(TestSpriteA).whichWillBeStoredIn(instances)
+				.end.finish();
 
 			_pseudoClass = new NthChild();
 			_pseudoClass.setArguments(["2n + 1"]);
@@ -73,15 +73,15 @@ package net.wooga.uiengine.displaylistselector.pseudoclasses {
 
 			var instances:Array = [];
 
-			var displayTree:DisplayTreeBuilder = new DisplayTreeBuilder();
-			displayTree.startWith(contextView).begin
-					.add(TestSpriteA).andStoreInstanceIn(instances)
-					.add(TestSpriteA).andStoreInstanceIn(instances)
-					.add(TestSpriteA).andStoreInstanceIn(instances)
-					.add(TestSpriteA).andStoreInstanceIn(instances)
-					.add(TestSpriteA).andStoreInstanceIn(instances)
-					.add(TestSpriteA).andStoreInstanceIn(instances)
-				.end;
+			var displayTree:DisplayTree = new DisplayTree();
+			displayTree.hasA(contextView).containing
+					.a(TestSpriteA).whichWillBeStoredIn(instances)
+					.a(TestSpriteA).whichWillBeStoredIn(instances)
+					.a(TestSpriteA).whichWillBeStoredIn(instances)
+					.a(TestSpriteA).whichWillBeStoredIn(instances)
+					.a(TestSpriteA).whichWillBeStoredIn(instances)
+					.a(TestSpriteA).whichWillBeStoredIn(instances)
+				.end.finish();
 
 			_pseudoClass = new NthChild();
 			_pseudoClass.setArguments(["even"]);
@@ -104,15 +104,15 @@ package net.wooga.uiengine.displaylistselector.pseudoclasses {
 
 			var instances:Array = [];
 
-			var displayTree:DisplayTreeBuilder = new DisplayTreeBuilder();
-			displayTree.startWith(contextView).begin
-					.add(TestSpriteA).andStoreInstanceIn(instances)
-					.add(TestSpriteA).andStoreInstanceIn(instances)
-					.add(TestSpriteA).andStoreInstanceIn(instances)
-					.add(TestSpriteA).andStoreInstanceIn(instances)
-					.add(TestSpriteA).andStoreInstanceIn(instances)
-					.add(TestSpriteA).andStoreInstanceIn(instances)
-					.end;
+			var displayTree:DisplayTree = new DisplayTree();
+			displayTree.hasA(contextView).containing
+					.a(TestSpriteA).whichWillBeStoredIn(instances)
+					.a(TestSpriteA).whichWillBeStoredIn(instances)
+					.a(TestSpriteA).whichWillBeStoredIn(instances)
+					.a(TestSpriteA).whichWillBeStoredIn(instances)
+					.a(TestSpriteA).whichWillBeStoredIn(instances)
+					.a(TestSpriteA).whichWillBeStoredIn(instances)
+					.end.finish();
 
 			_pseudoClass = new NthChild();
 			_pseudoClass.setArguments(["odd"]);
@@ -134,15 +134,15 @@ package net.wooga.uiengine.displaylistselector.pseudoclasses {
 
 			var instances:Array = [];
 
-			var displayTree:DisplayTreeBuilder = new DisplayTreeBuilder();
-			displayTree.startWith(contextView).begin
-					.add(TestSpriteA).andStoreInstanceIn(instances)
-					.add(TestSpriteA).andStoreInstanceIn(instances)
-					.add(TestSpriteA).andStoreInstanceIn(instances)
-					.add(TestSpriteA).andStoreInstanceIn(instances)
-					.add(TestSpriteA).andStoreInstanceIn(instances)
-					.add(TestSpriteA).andStoreInstanceIn(instances)
-					.end;
+			var displayTree:DisplayTree = new DisplayTree();
+			displayTree.hasA(contextView).containing
+					.a(TestSpriteA).whichWillBeStoredIn(instances)
+					.a(TestSpriteA).whichWillBeStoredIn(instances)
+					.a(TestSpriteA).whichWillBeStoredIn(instances)
+					.a(TestSpriteA).whichWillBeStoredIn(instances)
+					.a(TestSpriteA).whichWillBeStoredIn(instances)
+					.a(TestSpriteA).whichWillBeStoredIn(instances)
+					.end.finish();
 
 			_pseudoClass = new NthChild();
 			_pseudoClass.setArguments(["-n+3"]);

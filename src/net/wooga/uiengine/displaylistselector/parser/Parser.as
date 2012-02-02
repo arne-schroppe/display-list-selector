@@ -3,7 +3,7 @@ package net.wooga.uiengine.displaylistselector.parser {
 	import net.wooga.uiengine.displaylistselector.input.ParserInput;
 	import net.wooga.uiengine.displaylistselector.matchers.IMatcher;
 	import net.wooga.uiengine.displaylistselector.matchers.implementations.ChildSelectorMatcher;
-	import net.wooga.uiengine.displaylistselector.matchers.implementations.ClassNameMatcher;
+	import net.wooga.uiengine.displaylistselector.matchers.implementations.TypeNameMatcher;
 	import net.wooga.uiengine.displaylistselector.matchers.implementations.DescendantSelectorMatcher;
 	import net.wooga.uiengine.displaylistselector.matchers.implementations.PropertyFilterContainsMatcher;
 	import net.wooga.uiengine.displaylistselector.matchers.implementations.PropertyFilterEqualsMatcher;
@@ -12,20 +12,25 @@ package net.wooga.uiengine.displaylistselector.parser {
 
 	public class Parser {
 
-		private var _matchers:Vector.<IMatcher>;
-		private var _input:ParserInput;
-
-		private var _specificity:Specificity;
+		private var _allMatchers:Vector.<Vector.<IMatcher>>;
+		private var _currentMatchers:Vector.<IMatcher>;
 
 		private var _externalPropertySource:IExternalPropertySource;
-
+		private var _pseudoClassProvider:IPseudoClassProvider;
 		private var _idAttribute:String;
 		private var _classAttribute:String;
 
-		private var _pseudoClassArguments:Array;
-		private var _pseudoClassProvider:IPseudoClassProvider;
 
 		private var _matcherMap:DynamicMultiMap = new DynamicMultiMap();
+		private var _isSyntaxExtensionAllowed:Boolean = true;
+
+		private var _input:ParserInput;
+		private var _specificity:Specificity;
+
+
+		private var _pseudoClassArguments:Array;
+		private var _isExactTypeMatcher:Boolean;
+
 
 
 		public function Parser(externalPropertySource:IExternalPropertySource, pseudoClassProvider:IPseudoClassProvider, idAttribute:String, classAttribute:String) {
@@ -39,14 +44,24 @@ package net.wooga.uiengine.displaylistselector.parser {
 		public function parse(inputString:String):ParserResult {
 
 			_input = new ParserInput(inputString);
-			_matchers = new <IMatcher>[];
+
+			_allMatchers = new <Vector.<IMatcher>>[];
+			startNewMatcherSequence();
+
 
 			_specificity = new Specificity();
 
 			selectorsGroup();
-			//_selectorToSpecificity.add(inputString, _specificity.asNumber());
 
-			return new ParserResult(_matchers, _specificity.asNumber());
+			return new ParserResult(_allMatchers, _specificity);
+		}
+
+		private function startNewMatcherSequence():void {
+			_currentMatchers = new <IMatcher>[];
+			_allMatchers.push(_currentMatchers);
+
+			_pseudoClassArguments = [];
+			_isExactTypeMatcher = false;
 		}
 
 
@@ -58,7 +73,6 @@ package net.wooga.uiengine.displaylistselector.parser {
 				return;
 			}
 
-			//TODO (arneschroppe 12/12/11) using ',' does not work currently, because we don't insert the implicit DescendantMatcher before the second group. need to fix this!
 			combinator();
 			selectorsGroup();
 		}
@@ -70,20 +84,17 @@ package net.wooga.uiengine.displaylistselector.parser {
 
 
 		private function combinator():void {
-//			var combinator:String = _input.consumeRegex(/(\s*>\s*)/);
-//
-//			if (combinator.replace(/\s*/g, "") == ">") {
-//				_matchers.push(getSingletonMatcher(ChildSelectorMatcher, new ChildSelectorMatcher()));
-//			}
 
-
-			var combinator:String = _input.consumeRegex(/(\s*>\s*)|(\s+)/);
+			var combinator:String = _input.consumeRegex(/(\s*>\s*)|(\s*,\s*)|(\s+)/);
 
 			if (combinator.replace(/\s*/g, "") == ">") {
-				_matchers.push(getSingletonMatcher(ChildSelectorMatcher, new ChildSelectorMatcher()));
+				_currentMatchers.push(getSingletonMatcher(ChildSelectorMatcher, new ChildSelectorMatcher()));
+			}
+			else if(combinator.replace(/\s*/g, "") == ",") {
+				startNewMatcherSequence();
 			}
 			else if (/\s+/.test(combinator)) {
-				_matchers.push(getSingletonMatcher(DescendantSelectorMatcher, new DescendantSelectorMatcher()));
+				_currentMatchers.push(getSingletonMatcher(DescendantSelectorMatcher, new DescendantSelectorMatcher()));
 			}
 		}
 
@@ -91,13 +102,67 @@ package net.wooga.uiengine.displaylistselector.parser {
 		private function simpleSelectorSequence():void {
 			whitespace();
 
-			if (_input.isNextMatching(/\*|\w+/) ) {
+			_isExactTypeMatcher = true;
+			if(_input.isNext("^")) {
+				checkSyntaxExtensionsAllowed();
+				superClassSelector();
+			}
+			else if (_input.isNextMatching(/\*|\w+|\(/) ) {
 				typeSelector();
 			}
 
 			simpleSelectorSequence2();
 		}
 
+		private function checkSyntaxExtensionsAllowed():void {
+			if (!_isSyntaxExtensionAllowed) {
+				throw new ParserError("Syntax extensions must be enabled before using them");
+			}
+		}
+
+		private function superClassSelector():void {
+			_input.consume(1); //consuming '^'
+			_isExactTypeMatcher = false;
+			typeSelector();
+		}
+
+
+		//TODO (arneschroppe 23/12/11) find out what makes up a valid identifier
+		private function typeSelector():void {
+			var className:String;
+			if (_input.isNext("*")) {
+				_input.consume(1);
+				className = "*";
+				//The *-selector does not limit the result set, so we wouldn't need to add it. We get exceptions though,
+				//if *-selector is the last selector, so we add it anyway.
+				_currentMatchers.push(getSingletonMatcher(TypeNameMatcher, className, new TypeNameMatcher(className)));
+				return;
+			}
+
+			if (_input.isNext("(")) {
+				checkSyntaxExtensionsAllowed();
+
+				_input.consume(1);
+				className = _input.consumeRegex(/(\w|\.|\*)+/);
+				_input.consumeString(")");
+
+				_currentMatchers.push(getSingletonMatcher(TypeNameMatcher, className, _isExactTypeMatcher, new TypeNameMatcher(className, _isExactTypeMatcher)));
+
+			}
+			else {
+				className = _input.consumeRegex(/\w+/);
+				_currentMatchers.push(getSingletonMatcher(TypeNameMatcher, className, _isExactTypeMatcher, new TypeNameMatcher(className, _isExactTypeMatcher)));
+
+			}
+
+			if(_isExactTypeMatcher) {
+				_specificity.d++;
+			}
+			else {
+				_specificity.e++;
+			}
+
+		}
 
 		private function simpleSelectorSequence2():void {
 			if (_input.isNext("[")) {
@@ -120,9 +185,9 @@ package net.wooga.uiengine.displaylistselector.parser {
 			_input.consume(1);
 			var className:String = _input.consumeRegex(/[a-zA-Z]+/);
 			var matcher:IMatcher = new PropertyFilterContainsMatcher(_externalPropertySource, _classAttribute, className);
-			_matchers.push(getSingletonMatcher(PropertyFilterContainsMatcher, _externalPropertySource, _classAttribute, className, matcher));
+			_currentMatchers.push(getSingletonMatcher(PropertyFilterContainsMatcher, _externalPropertySource, _classAttribute, className, matcher));
 
-			_specificity.b++;
+			_specificity.c++;
 		}
 
 
@@ -130,30 +195,13 @@ package net.wooga.uiengine.displaylistselector.parser {
 			_input.consume(1);
 			var id:String = _input.consumeRegex(/[a-zA-Z]+/);
 			var matcher:IMatcher = new PropertyFilterEqualsMatcher(_externalPropertySource, _idAttribute, id);
-			_matchers.push(getSingletonMatcher(PropertyFilterEqualsMatcher, _externalPropertySource, _idAttribute, id, matcher));
+			_currentMatchers.push(getSingletonMatcher(PropertyFilterEqualsMatcher, _externalPropertySource, _idAttribute, id, matcher));
 
-			_specificity.a++;
+			_specificity.b++;
 		}
 
 
-		//TODO (arneschroppe 23/12/11) find out what makes up a valid identifier
-		private function typeSelector():void {
-			var className:String;
-			if (_input.isNext("*")) {
-				_input.consume(1);
-				//className = "*";
-				_matchers.push(getSingletonMatcher(ClassNameMatcher, "*", new ClassNameMatcher("*")));
-				//The *-selector does not limit the result set, so we wouldn't need to add it. We get exceptions though,
-				//if *-selector is the last selector, so we add it anyway.
-				//TODO (arneschroppe 12/1/12) come up with a better solution than this
-			} else {
-				className = _input.consumeRegex(/\w+/);
-				_matchers.push(getSingletonMatcher(ClassNameMatcher, className, new ClassNameMatcher(className)));
-				_specificity.c++;
-			}
 
-
-		}
 
 
 		private function pseudo():void {
@@ -172,8 +220,8 @@ package net.wooga.uiengine.displaylistselector.parser {
 			singletonAttributes = singletonAttributes.concat(_pseudoClassArguments);
 			singletonAttributes.push(matcher);
 
-			_matchers.push(getSingletonMatcher.apply(this, singletonAttributes));
-			_specificity.b++;
+			_currentMatchers.push(getSingletonMatcher.apply(this, singletonAttributes));
+			_specificity.c++;
 		}
 
 
@@ -234,8 +282,8 @@ package net.wooga.uiengine.displaylistselector.parser {
 
 			var matcher:IMatcher = matcherForCompareFunction(compareFunction, property, value);
 
-			_matchers.push(matcher);
-			_specificity.b++;
+			_currentMatchers.push(matcher);
+			_specificity.c++;
 		}
 
 
@@ -294,14 +342,4 @@ package net.wooga.uiengine.displaylistselector.parser {
 }
 
 
-class Specificity {
-	private static const SPECIFICITY_BASE:int = 60;
 
-	public var a:int;
-	public var b:int;
-	public var c:int;
-
-	public function asNumber():Number {
-		return a * Math.pow(SPECIFICITY_BASE, 2) + b * Math.pow(SPECIFICITY_BASE, 1) + c;
-	}
-}

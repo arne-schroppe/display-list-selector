@@ -1,12 +1,13 @@
 package {
 
-	import net.wooga.uiengine.displaylistselector.DisplayListSelectorTest;
+	import net.wooga.uiengine.displaylistselector.SelectorTest;
 	import net.wooga.uiengine.displaylistselector.input.ParserInputTest;
 	import net.wooga.uiengine.displaylistselector.matchers.implementations.ChildSelectorMatcherTest;
-	import net.wooga.uiengine.displaylistselector.matchers.implementations.ClassNameMatcherTest;
+	import net.wooga.uiengine.displaylistselector.matchers.implementations.TypeNameMatcherTest;
 	import net.wooga.uiengine.displaylistselector.matchers.implementations.PropertyFilterContainsMatcherTest;
 	import net.wooga.uiengine.displaylistselector.matchers.implementations.PropertyFilterEqualsMatcherTest;
 	import net.wooga.uiengine.displaylistselector.matchers.implementations.PseudoClassMatcherTest;
+	import net.wooga.uiengine.displaylistselector.parser.SpecificityTest;
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.FirstChildTest;
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.IsEmptyTest;
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.LastChildTest;
@@ -21,11 +22,11 @@ package {
 	[RunWith("org.flexunit.runners.Suite")]
 	public class TestSuite {
 
-		public var displayListSelectorTest:DisplayListSelectorTest;
+		public var displayListSelectorTest:SelectorTest;
 
 		public var parserInputTest:ParserInputTest;
 		public var childSelectorMatcherTest:ChildSelectorMatcherTest;
-		public var classNameMatcherTest:ClassNameMatcherTest;
+		public var classNameMatcherTest:TypeNameMatcherTest;
 		public var propertyFilterContainsMatcherTest:PropertyFilterContainsMatcherTest;
 		public var propertyFilterEqualsMatcherTest:PropertyFilterEqualsMatcherTest;
 		public var pseudoClassMatcherTest:PseudoClassMatcherTest;
@@ -38,6 +39,7 @@ package {
 		public var nthLastOfTypeTest:NthLastOfTypeTest;
 		public var rootTest:RootTest;
 		public var nthParserTest:NthParserTest;
+		public var specificityTest:SpecificityTest;
 		//public var parserTest:ParserTest;
 
 	}

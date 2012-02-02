@@ -1,26 +1,21 @@
 package net.wooga.uiengine.displaylistselector.matchers.implementations {
-	import net.arneschroppe.displaytreebuilder.DisplayTreeBuilder;
+	import net.arneschroppe.displaytreebuilder.DisplayTree;
 	import net.wooga.fixtures.ContextViewBasedTest;
 	import net.wooga.fixtures.TestSpriteA;
 	import net.wooga.fixtures.TestSpriteB;
 	import net.wooga.fixtures.TestSpriteC;
-	import net.wooga.fixtures.containsInArrayExactly;
 	import net.wooga.uiengine.displaylistselector.matchers.IMatcher;
-
-	import org.hamcrest.assertThat;
-	import org.hamcrest.core.isA;
-	import org.hamcrest.object.equalTo;
 
 	public class ChildSelectorMatcherTest extends ContextViewBasedTest {
 
 		private var _matcher:IMatcher;
-		private var _displayTree:DisplayTreeBuilder;
+		private var _displayTree:DisplayTree;
 
 		[Before]
 		override public function setUp():void {
 			super.setUp();
 			_matcher = new ChildSelectorMatcher();
-			_displayTree = new DisplayTreeBuilder();
+			_displayTree = new DisplayTree();
 		}
 
 		[After]
@@ -31,14 +26,14 @@ package net.wooga.uiengine.displaylistselector.matchers.implementations {
 
 		[Test]
 		public function should_select_direct_descendants():void {
-			_displayTree.startWith(contextView).begin
-				.add(TestSpriteB).begin
-					.add(TestSpriteC).begin
-						.times(4).add(TestSpriteA)
+			_displayTree.hasA(contextView).containing
+				.a(TestSpriteB).containing
+					.a(TestSpriteC).containing
+						.times(4).a(TestSpriteA)
 					.end
 				.end
-				.add(TestSpriteA)
-			.end;
+				.a(TestSpriteA)
+			.end.finish();
 
 			//TODO fix test
 //			var matchedObjects:Array = _matcher.isMatching(contextView);

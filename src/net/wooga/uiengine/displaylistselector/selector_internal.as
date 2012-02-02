@@ -1,3 +1,4 @@
 package net.wooga.uiengine.displaylistselector {
-	public namespace dlselector;
+
+	public namespace selector_internal;
 }

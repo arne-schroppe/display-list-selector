@@ -1,5 +1,5 @@
 package net.wooga.uiengine.displaylistselector.pseudoclasses {
-	import net.arneschroppe.displaytreebuilder.DisplayTreeBuilder;
+	import net.arneschroppe.displaytreebuilder.DisplayTree;
 	import net.wooga.fixtures.ContextViewBasedTest;
 	import net.wooga.fixtures.TestSpriteA;
 	import net.wooga.fixtures.TestSpriteB;
@@ -7,7 +7,6 @@ package net.wooga.uiengine.displaylistselector.pseudoclasses {
 	import net.wooga.fixtures.TestSpriteD;
 
 	import org.hamcrest.assertThat;
-
 	import org.hamcrest.object.equalTo;
 
 	public class IsEmptyTest extends ContextViewBasedTest {
@@ -30,17 +29,17 @@ package net.wooga.uiengine.displaylistselector.pseudoclasses {
 
 			var instances:Array = [];
 
-			var displayTree:DisplayTreeBuilder = new DisplayTreeBuilder();
-			displayTree.startWith(contextView).begin
-				.add(TestSpriteA).andStoreInstanceIn(instances).begin
-					.add(TestSpriteD)
+			var displayTree:DisplayTree = new DisplayTree();
+			displayTree.hasA(contextView).containing
+				.a(TestSpriteA).whichWillBeStoredIn(instances).containing
+					.a(TestSpriteD)
 				.end
-				.add(TestSpriteB).andStoreInstanceIn(instances).begin
+				.a(TestSpriteB).whichWillBeStoredIn(instances).containing
 				.end
-				.add(TestSpriteC).andStoreInstanceIn(instances).begin
-					.add(TestSpriteD)
+				.a(TestSpriteC).whichWillBeStoredIn(instances).containing
+					.a(TestSpriteD)
 				.end
-			.end;
+			.end.finish();
 
 			_pseudoClass = new IsEmpty();
 

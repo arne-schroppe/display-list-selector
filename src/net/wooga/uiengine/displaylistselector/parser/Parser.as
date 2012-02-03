@@ -3,7 +3,7 @@ package net.wooga.uiengine.displaylistselector.parser {
 	import net.wooga.uiengine.displaylistselector.input.ParserInput;
 	import net.wooga.uiengine.displaylistselector.matchers.IMatcher;
 	import net.wooga.uiengine.displaylistselector.matchers.implementations.ChildSelectorMatcher;
-	import net.wooga.uiengine.displaylistselector.matchers.implementations.TypeNameMatcher;
+	import net.wooga.uiengine.displaylistselector.matchers.implementations.TypeMatcher;
 	import net.wooga.uiengine.displaylistselector.matchers.implementations.DescendantSelectorMatcher;
 	import net.wooga.uiengine.displaylistselector.matchers.implementations.PropertyFilterContainsMatcher;
 	import net.wooga.uiengine.displaylistselector.matchers.implementations.PropertyFilterEqualsMatcher;
@@ -102,12 +102,13 @@ package net.wooga.uiengine.displaylistselector.parser {
 		private function simpleSelectorSequence():void {
 			whitespace();
 
-			_isExactTypeMatcher = true;
+
 			if(_input.isNext("^")) {
 				checkSyntaxExtensionsAllowed();
 				superClassSelector();
 			}
 			else if (_input.isNextMatching(/\*|\w+|\(/) ) {
+				_isExactTypeMatcher = true;
 				typeSelector();
 			}
 
@@ -135,7 +136,7 @@ package net.wooga.uiengine.displaylistselector.parser {
 				className = "*";
 				//The *-selector does not limit the result set, so we wouldn't need to add it. We get exceptions though,
 				//if *-selector is the last selector, so we add it anyway.
-				_currentMatchers.push(getSingletonMatcher(TypeNameMatcher, className, new TypeNameMatcher(className)));
+				_currentMatchers.push(getSingletonMatcher(TypeMatcher, className, new TypeMatcher(className)));
 				return;
 			}
 
@@ -146,12 +147,12 @@ package net.wooga.uiengine.displaylistselector.parser {
 				className = _input.consumeRegex(/(\w|\.|\*)+/);
 				_input.consumeString(")");
 
-				_currentMatchers.push(getSingletonMatcher(TypeNameMatcher, className, _isExactTypeMatcher, new TypeNameMatcher(className, _isExactTypeMatcher)));
+				_currentMatchers.push(getSingletonMatcher(TypeMatcher, className, _isExactTypeMatcher, new TypeMatcher(className, _isExactTypeMatcher)));
 
 			}
 			else {
 				className = _input.consumeRegex(/\w+/);
-				_currentMatchers.push(getSingletonMatcher(TypeNameMatcher, className, _isExactTypeMatcher, new TypeNameMatcher(className, _isExactTypeMatcher)));
+				_currentMatchers.push(getSingletonMatcher(TypeMatcher, className, _isExactTypeMatcher, new TypeMatcher(className, _isExactTypeMatcher)));
 
 			}
 

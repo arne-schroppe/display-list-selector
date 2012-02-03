@@ -3,7 +3,7 @@ package {
 	import net.wooga.uiengine.displaylistselector.SelectorTest;
 	import net.wooga.uiengine.displaylistselector.input.ParserInputTest;
 	import net.wooga.uiengine.displaylistselector.matchers.implementations.ChildSelectorMatcherTest;
-	import net.wooga.uiengine.displaylistselector.matchers.implementations.TypeNameMatcherTest;
+	import net.wooga.uiengine.displaylistselector.matchers.implementations.TypeMatcherTest;
 	import net.wooga.uiengine.displaylistselector.matchers.implementations.PropertyFilterContainsMatcherTest;
 	import net.wooga.uiengine.displaylistselector.matchers.implementations.PropertyFilterEqualsMatcherTest;
 	import net.wooga.uiengine.displaylistselector.matchers.implementations.PseudoClassMatcherTest;
@@ -26,7 +26,7 @@ package {
 
 		public var parserInputTest:ParserInputTest;
 		public var childSelectorMatcherTest:ChildSelectorMatcherTest;
-		public var classNameMatcherTest:TypeNameMatcherTest;
+		public var classNameMatcherTest:TypeMatcherTest;
 		public var propertyFilterContainsMatcherTest:PropertyFilterContainsMatcherTest;
 		public var propertyFilterEqualsMatcherTest:PropertyFilterEqualsMatcherTest;
 		public var pseudoClassMatcherTest:PseudoClassMatcherTest;

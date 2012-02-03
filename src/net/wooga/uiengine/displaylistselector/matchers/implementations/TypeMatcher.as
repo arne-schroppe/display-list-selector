@@ -10,7 +10,7 @@ package net.wooga.uiengine.displaylistselector.matchers.implementations {
 	import org.as3commons.collections.Map;
 	import org.as3commons.collections.framework.IMap;
 
-	public class TypeNameMatcher implements IMatcher {
+	public class TypeMatcher implements IMatcher {
 
 		private var _matchAny:Boolean = false;
 		private var _simpleMatch:Boolean = false;
@@ -19,12 +19,14 @@ package net.wooga.uiengine.displaylistselector.matchers.implementations {
 		private var _typeMatcherRegEx:RegExp;
 		private var _typeName:String;
 
+		private var _typeMatchCache:Map = new Map();
+
 
 		private static const _typeMatchCache:IMap = new Map();
 		private static const _directMatchTypeMatchCache:IMap = new Map();
 		private static const _typeNameParser:QualifiedTypeNameParser = new QualifiedTypeNameParser();
 
-		public function TypeNameMatcher(typeName:String, onlyMatchImmediateClassType:Boolean = true) {
+		public function TypeMatcher(typeName:String, onlyMatchImmediateClassType:Boolean = true) {
 			_onlyMatchImmediateClassType = onlyMatchImmediateClassType;
 
 			_typeName = typeName;
@@ -52,13 +54,24 @@ package net.wooga.uiengine.displaylistselector.matchers.implementations {
 		}
 
 		private function matchesType(subject:DisplayObject):Boolean {
-			if(_onlyMatchImmediateClassType) {
-				var className:String = getQualifiedClassName(subject);
-				return isMatchingType(className);
+			var className:String = getQualifiedClassName(subject);
 
+			if(_typeMatchCache.hasKey(className)) {
+				return _typeMatchCache.itemFor(className);
+			}
+			
+			var doesMatch:Boolean;
+			if(_onlyMatchImmediateClassType) {
+				doesMatch = isMatchingType(className);
+			}
+			else {
+				doesMatch = isAnySuperClassMatchingTypeName(subject);
 			}
 
-			return isAnySuperClassMatchingTypeName(subject);
+
+			_typeMatchCache.add(className, doesMatch);
+
+			return doesMatch;
 		}
 
 

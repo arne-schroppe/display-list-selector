@@ -109,5 +109,10 @@ package net.wooga.uiengine.displaylistselector.parser {
 		private function recalculateNumberValue():void {
 			_numberValue = _a * Math.pow(SPECIFICITY_BASE, 4) + _b * Math.pow(SPECIFICITY_BASE, 3) + _c * Math.pow(SPECIFICITY_BASE, 2) + _d * Math.pow(SPECIFICITY_BASE, 1) +  _e;
 		}
+
+
+		public function toString():String {
+			return "[Specificity " + _a + "." + _b + "." + _c + "." + _d + "." + _e + "]";
+		}
 	}
 }

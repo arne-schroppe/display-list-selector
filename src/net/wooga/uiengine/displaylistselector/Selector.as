@@ -64,7 +64,9 @@ package net.wooga.uiengine.displaylistselector {
 
 		public function isMatching(object:DisplayObject):Boolean {
 
-			return _context.matcherTool.isObjectMatching(object as DisplayObject, _matchers);
+			var isMatching:Boolean = _context.matcherTool.isObjectMatching(object as DisplayObject, _matchers);
+			if(isMatching){trace("MATCHER rev matches " + object);}//TODO (arneschroppe 2/2/12) delete
+			return isMatching;
 		}
 
 		public function get specificity():ISpecificity {

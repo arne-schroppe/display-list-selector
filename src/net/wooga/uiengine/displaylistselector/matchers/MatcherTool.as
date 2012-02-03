@@ -41,6 +41,7 @@ package net.wooga.uiengine.displaylistselector.matchers {
 
 
 			if (_currentlyMatchedMatchers.length == 0) {
+				trace("MATCHER matches " + currentObject);
 				_matchedObjects.add(currentObject);
 			}
 			else {
@@ -108,6 +109,7 @@ package net.wooga.uiengine.displaylistselector.matchers {
 				//don't add to new matcher pointers
 			}
 			else if (matcherPointer.nextMatcher == _currentlyMatchedMatchers.length) {
+				trace("MATCHER matches " + subject);
 				_matchedObjects.add(subject);
 			}
 			else {
@@ -134,6 +136,9 @@ package net.wooga.uiengine.displaylistselector.matchers {
 
 
 
+
+
+
 		//TODO (arneschroppe 9/1/12) write a test for this!!!!!!
 		public function isObjectMatching(object:DisplayObject, matchers:Vector.<Vector.<IMatcher>>):Boolean {
 
@@ -144,7 +149,10 @@ package net.wooga.uiengine.displaylistselector.matchers {
 					continue;
 				}
 				else {
-					return reverseMatch(object, _currentlyMatchedMatchers.length - 1);
+					var isMatching:Boolean = reverseMatch(object, _currentlyMatchedMatchers.length - 1);
+					if(isMatching) {
+						return true;
+					}
 				}
 			}
 

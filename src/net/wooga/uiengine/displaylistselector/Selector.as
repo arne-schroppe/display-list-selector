@@ -3,6 +3,7 @@ package net.wooga.uiengine.displaylistselector {
 	import flash.display.DisplayObject;
 
 	import net.wooga.uiengine.displaylistselector.matchers.IMatcher;
+	import net.wooga.uiengine.displaylistselector.parser.ParsedSelector;
 	import net.wooga.uiengine.displaylistselector.parser.ParserResult;
 
 	import org.as3commons.collections.Set;
@@ -13,7 +14,7 @@ package net.wooga.uiengine.displaylistselector {
 		private var _context:SelectorContext;
 
 
-		private var _matchers:Vector.<Vector.<IMatcher>>;
+		private var _matchers:Vector.<ParsedSelector>;
 		private var _matchedObjects:Set;
 
 		private var _specificity:ISpecificity;
@@ -35,7 +36,6 @@ package net.wooga.uiengine.displaylistselector {
 
 			parseAndStore(selectorString);
 		}
-
 
 		private function parseAndStore(selectorString:String):void {
 			var parseResult:ParserResult = _context.parser.parse(selectorString);

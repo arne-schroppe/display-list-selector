@@ -5,6 +5,11 @@ package net.wooga.uiengine.displaylistselector.matchers {
 
 	import net.wooga.uiengine.displaylistselector.matchers.implementations.ChildSelectorMatcher;
 	import net.wooga.uiengine.displaylistselector.matchers.implementations.DescendantSelectorMatcher;
+	import net.wooga.uiengine.displaylistselector.matchers.metadata.MatchMetaData;
+	import net.wooga.uiengine.displaylistselector.matchers.metadata.SelectorMatchMetaData;
+	import net.wooga.uiengine.displaylistselector.parser.ParsedSelector;
+
+	import org.as3commons.collections.Map;
 
 	import org.as3commons.collections.Set;
 
@@ -14,7 +19,9 @@ package net.wooga.uiengine.displaylistselector.matchers {
 		private var _rootObject:DisplayObject;
 
 		private var _currentlyMatchedMatchers:Vector.<IMatcher>;
+		private var _currentlyMatchedSelector:String;
 
+		private var _objectToMetaDataMap:Map = new Map();
 
 		public function MatcherTool(rootObject:DisplayObject) {
 			_rootObject = rootObject;
@@ -23,13 +30,14 @@ package net.wooga.uiengine.displaylistselector.matchers {
 
 
 
-		public function findMatchingObjects(matchers:Vector.<Vector.<IMatcher>>):Set {
-
+		public function findMatchingObjects(matchers:Vector.<ParsedSelector>):Set {
 
 			_matchedObjects = new Set();
 
-			for each(var currentMatcherSet:Vector.<IMatcher> in matchers) {
-				_currentlyMatchedMatchers = currentMatcherSet;
+			for each(var currentMatcherSet:ParsedSelector in matchers) {
+				_currentlyMatchedMatchers = currentMatcherSet.matchers;
+				_currentlyMatchedSelector = currentMatcherSet.selector;
+				
 				match(_rootObject, new <MatcherPointer>[]);
 			}
 
@@ -140,23 +148,61 @@ package net.wooga.uiengine.displaylistselector.matchers {
 
 
 		//TODO (arneschroppe 9/1/12) write a test for this!!!!!!
-		public function isObjectMatching(object:DisplayObject, matchers:Vector.<Vector.<IMatcher>>):Boolean {
+		public function isObjectMatching(object:DisplayObject, matchers:Vector.<ParsedSelector>):Boolean {
 
-			for each(var currentMatcherSet:Vector.<IMatcher> in matchers) {
-				_currentlyMatchedMatchers = currentMatcherSet;
+
+			for each(var currentMatchers:ParsedSelector in matchers) {
+				_currentlyMatchedMatchers = currentMatchers.matchers;
+				_currentlyMatchedSelector = currentMatchers.selector;
 
 				if (_currentlyMatchedMatchers.length == 0) {
 					continue;
 				}
 				else {
-					var isMatching:Boolean = reverseMatch(object, _currentlyMatchedMatchers.length - 1);
+					var isMatching:Boolean = isObjectReverseMatching(object);
 					if(isMatching) {
 						return true;
 					}
 				}
 			}
 
-			return true;
+			return false;
+		}
+
+
+		private function isObjectReverseMatching(object:DisplayObject):Boolean {
+
+			var metaData:MatchMetaData = metaDataForObject(object);
+
+			//TODO (arneschroppe 6/2/12) set _currentlyMatchedSelector
+			var selectorMetaData:SelectorMatchMetaData = selectorMetaDataForSelector(metaData);
+
+			if(selectorMetaData.needsRematch) {
+				return reverseMatch(object, _currentlyMatchedMatchers.length - 1);
+			}
+
+			return selectorMetaData.isValid;
+
+		}
+
+		private function selectorMetaDataForSelector(metaData:MatchMetaData):SelectorMatchMetaData {
+			var selectorMetaData:SelectorMatchMetaData = metaData.selectorToMetaDataMap.itemFor(_currentlyMatchedSelector);
+			if(selectorMetaData == null) {
+				selectorMetaData = new SelectorMatchMetaData();
+				metaData.selectorToMetaDataMap.add(_currentlyMatchedSelector, selectorMetaData);
+			}
+			return selectorMetaData;
+		}
+		
+
+		private function metaDataForObject(object:DisplayObject):MatchMetaData {
+			var metaData:MatchMetaData = _objectToMetaDataMap.itemFor(object);
+			if(metaData == null) {
+				metaData = new MatchMetaData();
+				_objectToMetaDataMap.add(object, metaData);
+			}
+
+			return metaData;
 		}
 
 
@@ -191,21 +237,24 @@ package net.wooga.uiengine.displaylistselector.matchers {
 			}
 
 
-			if (retryParent) {
-				reverseMatch(subject.parent, nextMatcher);
-			}
-			else if (subject == _rootObject) {
+
+
+			if (subject == _rootObject) {
 				return false;
 			}
+
+			if (i >= 0 && retryParent) { //TODO (arneschroppe 6/2/12) specifically test this line!
+				return reverseMatch(subject.parent, nextMatcher);
+			}
+
 
 			if (i < 0) {
 				return true;
 			}
 
+
 			return reverseMatch(subject.parent, i);
 		}
-
-
 	}
 }
 

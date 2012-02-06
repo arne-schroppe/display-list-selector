@@ -103,5 +103,9 @@ package net.wooga.uiengine.displaylistselector.input {
 		private function pointToCurrentPosition():String {
 			return _originalContent.substr(0, _consumedAmount) + " >>>" + _originalContent.substr(_consumedAmount);
 		}
+
+		public function get originalContent():String {
+			return _originalContent;
+		}
 	}
 }

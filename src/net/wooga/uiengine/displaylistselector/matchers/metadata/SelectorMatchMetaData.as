@@ -8,16 +8,16 @@ package net.wooga.uiengine.displaylistselector.matchers.metadata {
 		private var _parentObject:DisplayObjectContainer;
 		private var _matchers:Vector.<IMatcher>;
 		private var _matcherPointer:int;
-		private var _isValid:Boolean;
+		private var _isMatching:Boolean;
 		private var _needsRematch:Boolean = true;
 
-		public function get parentObject():DisplayObjectContainer {
-			return _parentObject;
-		}
-
-		public function set parentObject(value:DisplayObjectContainer):void {
-			_parentObject = value;
-		}
+		//public function get parentObject():DisplayObjectContainer {
+		//	return _parentObject;
+		//}
+		//
+		//public function set parentObject(value:DisplayObjectContainer):void {
+		//	_parentObject = value;
+		//}
 
 		public function get matchers():Vector.<IMatcher> {
 			return _matchers;
@@ -27,20 +27,20 @@ package net.wooga.uiengine.displaylistselector.matchers.metadata {
 			_matchers = value;
 		}
 
-		public function get matcherPointer():int {
-			return _matcherPointer;
+		//public function get matcherPointer():int {
+		//	return _matcherPointer;
+		//}
+		//
+		//public function set matcherPointer(value:int):void {
+		//	_matcherPointer = value;
+		//}
+
+		public function get isMatching():Boolean {
+			return _isMatching;
 		}
 
-		public function set matcherPointer(value:int):void {
-			_matcherPointer = value;
-		}
-
-		public function get isValid():Boolean {
-			return _isValid;
-		}
-
-		public function set isValid(value:Boolean):void {
-			_isValid = value;
+		public function set isMatching(value:Boolean):void {
+			_isMatching = value;
 		}
 
 

@@ -80,8 +80,6 @@ package net.wooga.uiengine.displaylistselector.parser {
 			}
 
 			_currentMatchers.selector = _subSelector;
-
-			trace("SUBSELECTOR: " + _subSelector + "   ORIG: " + _input.originalContent);
 		}
 
 

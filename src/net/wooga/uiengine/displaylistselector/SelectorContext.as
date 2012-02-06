@@ -74,6 +74,7 @@ package net.wooga.uiengine.displaylistselector {
 		private function addObjectAndChildren(object:DisplayObject):void {
 			if(!_objectsBeingAdded.has(object)) {
 				_objectsBeingAdded.add(object);
+				_matcher.invalidateObject(object);
 				dispatchEvent(new DisplayListSelectorEvent(DisplayListSelectorEvent.OBJECT_WAS_ADDED, object));
 			}
 
@@ -100,6 +101,7 @@ package net.wooga.uiengine.displaylistselector {
 				_objectsBeingAdded.remove(object);
 			}
 
+			_matcher.invalidateObject(object);
 			//objectHasChanged(object);
 			//TODO (arneschroppe 11/1/12) use objectWasRemoved here
 		}
@@ -128,7 +130,9 @@ package net.wooga.uiengine.displaylistselector {
 		}
 
 		public function objectWasChanged(object:DisplayObject):void {
+			_matcher.invalidateObject(object);
 			dispatchEvent(new DisplayListSelectorEvent(DisplayListSelectorEvent.OBJECT_WAS_CHANGED, object));
+
 		}
 
 

@@ -571,19 +571,20 @@ package net.wooga.uiengine.displaylistselector {
 		[Test]
 		public function should_cache_results():void {
 			_displayList.hasA(contextView).containing
-					.a(TestSpriteWithInterface)
-					.a(TestSpriteA)
-					.a(TestSpriteA)
-					.a(TestSpriteWithInterface)
-					.end.finish();
+					.a(TestSpriteA).containing
+						.a(TestSpriteB).containing
+							.times(3).a(TestSpriteC)
+						.end
+					.end
+				.end.finish();
 
-			_selector = new Selector(":root > ^TestInterface", _selectorContext);
+			_selector = new Selector("TestSpriteA > TestSpriteB > TestSpriteC", _selectorContext);
 			var matchedObjects:Set = _selector.getMatchedObjects();
-			matchedObjects = _selector.getMatchedObjects();
+
+			trace("+==============+");
+
 			matchedObjects = _selector.getMatchedObjects();
 
-			assertThat(matchedObjects.size, equalTo(2));
-			assertThat(matchedObjects, containsExactly(2, isA(TestSpriteWithInterface)));
 		}
 
 		private function assertContainsObjectOfClass(objects:IIterable, Type:Class):void {

@@ -87,7 +87,7 @@ package net.wooga.uiengine.displaylistselector.matching.metadata {
 			
 			if(store) {
 				var key:String = _currentSelector + "??" + _position;
-				trace(_currentSubject, key);
+				trace("bbbb " + _currentSubject + " " + key);
 				_objectSubMetaData.addOrReplace(_currentSubject, key, _currentData);
 				trace("new data");
 			}
@@ -132,7 +132,7 @@ package net.wooga.uiengine.displaylistselector.matching.metadata {
 
 			var key:String = _currentSelector + "??" + (_position - 1);
 
-			trace("aaaa " + _currentSubject, key);
+			trace("aaaa " + _currentSubject + " " + key);
 			var metaData:MatcherMetaData = _objectSubMetaData.itemFor(_currentSubject, key);
 			if(metaData) {
 

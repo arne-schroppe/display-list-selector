@@ -4,7 +4,7 @@ package net.wooga.uiengine.displaylistselector {
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 
-	import net.wooga.uiengine.displaylistselector.matchers.MatcherTool;
+	import net.wooga.uiengine.displaylistselector.matching.MatcherTool;
 	import net.wooga.uiengine.displaylistselector.parser.Parser;
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.FirstChild;
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.IPseudoClass;

@@ -2,11 +2,11 @@ package {
 
 	import net.wooga.uiengine.displaylistselector.SelectorTest;
 	import net.wooga.uiengine.displaylistselector.input.ParserInputTest;
-	import net.wooga.uiengine.displaylistselector.matchers.implementations.ChildSelectorMatcherTest;
-	import net.wooga.uiengine.displaylistselector.matchers.implementations.TypeNameMatcherTest;
-	import net.wooga.uiengine.displaylistselector.matchers.implementations.PropertyFilterContainsMatcherTest;
-	import net.wooga.uiengine.displaylistselector.matchers.implementations.PropertyFilterEqualsMatcherTest;
-	import net.wooga.uiengine.displaylistselector.matchers.implementations.PseudoClassMatcherTest;
+	import net.wooga.uiengine.displaylistselector.matching.matchers.ChildSelectorMatcherTest;
+	import net.wooga.uiengine.displaylistselector.matching.matchers.TypeNameMatcherTest;
+	import net.wooga.uiengine.displaylistselector.matching.matchers.PropertyFilterContainsMatcherTest;
+	import net.wooga.uiengine.displaylistselector.matching.matchers.PropertyFilterEqualsMatcherTest;
+	import net.wooga.uiengine.displaylistselector.matching.matchers.PseudoClassMatcherTest;
 	import net.wooga.uiengine.displaylistselector.parser.SpecificityTest;
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.FirstChildTest;
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.IsEmptyTest;

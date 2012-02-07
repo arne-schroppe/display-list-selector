@@ -1,6 +1,6 @@
 package net.wooga.uiengine.displaylistselector.parser {
 	import net.wooga.uiengine.displaylistselector.ISpecificity;
-	import net.wooga.uiengine.displaylistselector.matchers.IMatcher;
+	import net.wooga.uiengine.displaylistselector.matching.matchers.IMatcher;
 
 	public class ParserResult {
 		private var _matchers:Vector.<ParsedSelector>;

@@ -1,4 +1,4 @@
-package net.wooga.uiengine.displaylistselector.matchers {
+package net.wooga.uiengine.displaylistselector.matching.matchers {
 	import flash.display.DisplayObject;
 
 	public interface IMatcher {

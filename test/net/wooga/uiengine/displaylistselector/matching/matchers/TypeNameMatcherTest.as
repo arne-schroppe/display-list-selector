@@ -1,4 +1,4 @@
-package net.wooga.uiengine.displaylistselector.matchers.implementations {
+package net.wooga.uiengine.displaylistselector.matching.matchers {
 	import net.arneschroppe.displaytreebuilder.DisplayTree;
 	import net.wooga.fixtures.ContextViewBasedTest;
 	import net.wooga.fixtures.TestSpriteA;
@@ -7,6 +7,7 @@ package net.wooga.uiengine.displaylistselector.matchers.implementations {
 	import net.wooga.fixtures.containsInArrayExactly;
 	import net.wooga.fixtures.package1.TestSpritePack;
 	import net.wooga.fixtures.package2.TestSpritePack;
+	import net.wooga.uiengine.displaylistselector.matching.matchers.implementations.TypeNameMatcher;
 
 	import org.hamcrest.assertThat;
 	import org.hamcrest.core.allOf;

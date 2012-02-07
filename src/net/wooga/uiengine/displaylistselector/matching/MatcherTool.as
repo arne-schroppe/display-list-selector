@@ -1,11 +1,15 @@
-package net.wooga.uiengine.displaylistselector.matchers {
+package net.wooga.uiengine.displaylistselector.matching {
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 
-	import net.wooga.uiengine.displaylistselector.matchers.implementations.ChildSelectorMatcher;
-	import net.wooga.uiengine.displaylistselector.matchers.implementations.DescendantSelectorMatcher;
-	import net.wooga.uiengine.displaylistselector.matchers.metadata.MatchMetaData;
-	import net.wooga.uiengine.displaylistselector.matchers.metadata.SelectorMatchMetaData;
+	import net.wooga.uiengine.displaylistselector.matching.matchers.ICombinator;
+
+	import net.wooga.uiengine.displaylistselector.matching.matchers.IMatcher;
+
+	import net.wooga.uiengine.displaylistselector.matching.matchers.implementations.ChildSelectorMatcher;
+	import net.wooga.uiengine.displaylistselector.matching.matchers.implementations.DescendantSelectorMatcher;
+	import net.wooga.uiengine.displaylistselector.matching.metadata.MatchMetaData;
+	import net.wooga.uiengine.displaylistselector.matching.metadata.SelectorMatchMetaData;
 	import net.wooga.uiengine.displaylistselector.parser.ParsedSelector;
 
 	import org.as3commons.collections.Map;

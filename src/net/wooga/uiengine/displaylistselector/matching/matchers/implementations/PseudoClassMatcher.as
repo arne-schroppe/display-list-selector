@@ -1,7 +1,9 @@
-package net.wooga.uiengine.displaylistselector.matchers.implementations {
-	import net.wooga.uiengine.displaylistselector.matchers.*;
+package net.wooga.uiengine.displaylistselector.matching.matchers.implementations {
+	import net.wooga.uiengine.displaylistselector.matching.*;
 
 	import flash.display.DisplayObject;
+
+	import net.wooga.uiengine.displaylistselector.matching.matchers.IMatcher;
 
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.IPseudoClass;
 

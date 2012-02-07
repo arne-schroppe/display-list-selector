@@ -60,57 +60,58 @@ package net.wooga.uiengine.displaylistselector.parser {
 
 
 
-		public function get a():int {
+		public function get manualStyleRule():int {
 			return _digits[4];
 		}
 
 		//if style is set from a manual style rule
-		public function set a(value:int):void {
+		public function set manualStyleRule(value:int):void {
 			_digits[4] = value;
 			recalculateNumberValue();
 		}
 
-		public function get b():int {
+		public function get idSelector():int {
 			return _digits[3];
 		}
 
 		//for id selectors
-		public function set b(value:int):void {
+		public function set idSelector(value:int):void {
 			_digits[3] = value;
 			recalculateNumberValue();
 		}
 
-		public function get c():int {
+		public function get classAndAttributeAndPseudoSelectors():int {
 			return _digits[2];
 		}
 
 		//class selectors, attributes selectors, and pseudo-classes in the selector
-		public function set c(value:int):void {
+		public function set classAndAttributeAndPseudoSelectors(value:int):void {
 			_digits[2] = value;
 			recalculateNumberValue();
 		}
 
 
-		public function get d():int {
+		public function get elementSelectorsAndPseudoElements():int {
 			return _digits[1];
 		}
 
 		//type selectors and pseudo-elements in the selector
-		public function set d(value:int):void {
+		public function set elementSelectorsAndPseudoElements(value:int):void {
 			_digits[1] = value;
 			recalculateNumberValue();
 		}
 
 
-		public function get e():int {
+		public function get isAElementSelectors():int {
 			return _digits[0];
 		}
 
 		//is-A selectors
-		public function set e(value:int):void {
+		public function set isAElementSelectors(value:int):void {
 			_digits[0] = value;
 			recalculateNumberValue();
 		}
+
 
 
 		private function recalculateNumberValue():void {

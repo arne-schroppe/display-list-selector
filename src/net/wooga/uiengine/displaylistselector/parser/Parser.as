@@ -1,13 +1,13 @@
 package net.wooga.uiengine.displaylistselector.parser {
 	import net.wooga.uiengine.displaylistselector.IExternalPropertySource;
 	import net.wooga.uiengine.displaylistselector.input.ParserInput;
-	import net.wooga.uiengine.displaylistselector.matchers.IMatcher;
-	import net.wooga.uiengine.displaylistselector.matchers.implementations.ChildSelectorMatcher;
-	import net.wooga.uiengine.displaylistselector.matchers.implementations.TypeNameMatcher;
-	import net.wooga.uiengine.displaylistselector.matchers.implementations.DescendantSelectorMatcher;
-	import net.wooga.uiengine.displaylistselector.matchers.implementations.PropertyFilterContainsMatcher;
-	import net.wooga.uiengine.displaylistselector.matchers.implementations.PropertyFilterEqualsMatcher;
-	import net.wooga.uiengine.displaylistselector.matchers.implementations.PseudoClassMatcher;
+	import net.wooga.uiengine.displaylistselector.matching.matchers.IMatcher;
+	import net.wooga.uiengine.displaylistselector.matching.matchers.implementations.ChildSelectorMatcher;
+	import net.wooga.uiengine.displaylistselector.matching.matchers.implementations.TypeNameMatcher;
+	import net.wooga.uiengine.displaylistselector.matching.matchers.implementations.DescendantSelectorMatcher;
+	import net.wooga.uiengine.displaylistselector.matching.matchers.implementations.PropertyFilterContainsMatcher;
+	import net.wooga.uiengine.displaylistselector.matching.matchers.implementations.PropertyFilterEqualsMatcher;
+	import net.wooga.uiengine.displaylistselector.matching.matchers.implementations.PseudoClassMatcher;
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.IPseudoClass;
 
 	public class Parser {
@@ -178,10 +178,10 @@ package net.wooga.uiengine.displaylistselector.parser {
 			}
 
 			if(_isExactTypeMatcher) {
-				_specificity.d++;
+				_specificity.elementSelectorsAndPseudoElements++;
 			}
 			else {
-				_specificity.e++;
+				_specificity.isAElementSelectors++;
 			}
 
 		}
@@ -209,7 +209,7 @@ package net.wooga.uiengine.displaylistselector.parser {
 			var matcher:IMatcher = new PropertyFilterContainsMatcher(_externalPropertySource, _classAttribute, className);
 			_currentMatchers.matchers.push(getSingletonMatcher(PropertyFilterContainsMatcher, _externalPropertySource, _classAttribute, className, matcher));
 			_subSelector += "." + className;
-			_specificity.c++;
+			_specificity.classAndAttributeAndPseudoSelectors++;
 		}
 
 
@@ -220,7 +220,7 @@ package net.wooga.uiengine.displaylistselector.parser {
 			_currentMatchers.matchers.push(getSingletonMatcher(PropertyFilterEqualsMatcher, _externalPropertySource, _idAttribute, id, matcher));
 
 			_subSelector += "#" + id;
-			_specificity.b++;
+			_specificity.idSelector++;
 		}
 
 
@@ -245,7 +245,7 @@ package net.wooga.uiengine.displaylistselector.parser {
 			singletonAttributes.push(matcher);
 
 			_currentMatchers.matchers.push(getSingletonMatcher.apply(this, singletonAttributes));
-			_specificity.c++;
+			_specificity.classAndAttributeAndPseudoSelectors++;
 		}
 
 
@@ -316,7 +316,7 @@ package net.wooga.uiengine.displaylistselector.parser {
 			var matcher:IMatcher = matcherForCompareFunction(compareFunction, property, value);
 
 			_currentMatchers.matchers.push(matcher);
-			_specificity.c++;
+			_specificity.classAndAttributeAndPseudoSelectors++;
 		}
 
 

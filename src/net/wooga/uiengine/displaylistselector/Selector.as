@@ -2,7 +2,7 @@ package net.wooga.uiengine.displaylistselector {
 
 	import flash.display.DisplayObject;
 
-	import net.wooga.uiengine.displaylistselector.matchers.IMatcher;
+	import net.wooga.uiengine.displaylistselector.matching.matchers.IMatcher;
 	import net.wooga.uiengine.displaylistselector.parser.ParsedSelector;
 	import net.wooga.uiengine.displaylistselector.parser.ParserResult;
 

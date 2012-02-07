@@ -1,10 +1,11 @@
-package net.wooga.uiengine.displaylistselector.matchers.implementations {
+package net.wooga.uiengine.displaylistselector.matching.matchers {
 	import net.arneschroppe.displaytreebuilder.DisplayTree;
 	import net.wooga.fixtures.ContextViewBasedTest;
 	import net.wooga.fixtures.TestSpriteA;
 	import net.wooga.fixtures.TestSpriteB;
 	import net.wooga.fixtures.TestSpriteC;
-	import net.wooga.uiengine.displaylistselector.matchers.IMatcher;
+	import net.wooga.uiengine.displaylistselector.matching.matchers.IMatcher;
+	import net.wooga.uiengine.displaylistselector.matching.matchers.implementations.ChildSelectorMatcher;
 
 	public class ChildSelectorMatcherTest extends ContextViewBasedTest {
 

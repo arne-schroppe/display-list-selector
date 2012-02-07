@@ -136,7 +136,7 @@ package net.wooga.uiengine.displaylistselector {
 			var propertyName:String = "obscureExternalProperty";
 			var value:String = "success";
 
-			_propertyDictionary.aItem(propertyName, value);
+			_propertyDictionary.addItem(propertyName, value);
 			_selector = new Selector("TestSpriteA[" + propertyName + "='" + value + "']", _selectorContext);
 			var matchedObjects:Set = _selector.getMatchedObjects();
 
@@ -155,7 +155,7 @@ package net.wooga.uiengine.displaylistselector {
 			var propertyName:String = "id";
 			var value:String = "test";
 
-			_propertyDictionary.aItem(propertyName, value);
+			_propertyDictionary.addItem(propertyName, value);
 
 			_selector = new Selector("TestSpriteA#test", _selectorContext);
 			var matchedObjects:Set = _selector.getMatchedObjects();
@@ -179,7 +179,7 @@ package net.wooga.uiengine.displaylistselector {
 			values.add("B");
 			values.add("expectedValue");
 			values.add("C");
-			_propertyDictionary.aItem("state", values);
+			_propertyDictionary.addItem("state", values);
 
 			_selector = new Selector("TestSpriteA[state~='expectedValue']", _selectorContext);
 			var matchedObjects:Set = _selector.getMatchedObjects();
@@ -205,7 +205,7 @@ package net.wooga.uiengine.displaylistselector {
 			values.add("B");
 			values.add("testClass");
 			values.add("C");
-			_propertyDictionary.aItem("class", values);
+			_propertyDictionary.addItem("class", values);
 
 			_selector = new Selector("TestSpriteA.testClass", _selectorContext);
 			var matchedObjects:Set = _selector.getMatchedObjects();
@@ -440,11 +440,11 @@ package net.wooga.uiengine.displaylistselector {
 			values.add("B");
 			values.add("1234");
 			values.add("C");
-			_propertyDictionary.aItem("testattrib", values);
+			_propertyDictionary.addItem("testattrib", values);
 
 			var propertyName:String = "id";
 			var value:String = "testName";
-			_propertyDictionary.aItem(propertyName, value);
+			_propertyDictionary.addItem(propertyName, value);
 
 			_selector = new Selector("*:root > *#testName[testattrib~='1234']", _selectorContext);
 			var matchedObjects:Set = _selector.getMatchedObjects();
@@ -567,6 +567,25 @@ package net.wooga.uiengine.displaylistselector {
 			assertThat(matchedObjects, containsExactly(4, isA(TestSpriteB)));
 		}
 
+
+		[Test]
+		public function should_cache_results():void {
+			_displayList.hasA(contextView).containing
+					.a(TestSpriteWithInterface)
+					.a(TestSpriteA)
+					.a(TestSpriteA)
+					.a(TestSpriteWithInterface)
+					.end.finish();
+
+			_selector = new Selector(":root > ^TestInterface", _selectorContext);
+			var matchedObjects:Set = _selector.getMatchedObjects();
+			matchedObjects = _selector.getMatchedObjects();
+			matchedObjects = _selector.getMatchedObjects();
+
+			assertThat(matchedObjects.size, equalTo(2));
+			assertThat(matchedObjects, containsExactly(2, isA(TestSpriteWithInterface)));
+		}
+
 		private function assertContainsObjectOfClass(objects:IIterable, Type:Class):void {
 			assertThat(objects, hasItemInCollection(isA(Type)));
 		}
@@ -591,7 +610,7 @@ class PropertyDictionary implements IExternalPropertySource {
 
 	private var _values:Dictionary = new Dictionary();
 
-	public function aItem(key:String, value:*):void {
+	public function addItem(key:String, value:*):void {
 		_values[key] = value;
 	}
 

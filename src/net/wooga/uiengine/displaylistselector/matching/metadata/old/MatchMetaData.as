@@ -1,4 +1,4 @@
-package net.wooga.uiengine.displaylistselector.matching.metadata {
+package net.wooga.uiengine.displaylistselector.matching.metadata.old {
 	import org.as3commons.collections.Map;
 
 	public class MatchMetaData {

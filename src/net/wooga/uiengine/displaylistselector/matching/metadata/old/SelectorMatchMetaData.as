@@ -1,4 +1,4 @@
-package net.wooga.uiengine.displaylistselector.matching.metadata {
+package net.wooga.uiengine.displaylistselector.matching.metadata.old {
 	import flash.display.DisplayObjectContainer;
 
 	import net.wooga.uiengine.displaylistselector.matching.matchers.IMatcher;

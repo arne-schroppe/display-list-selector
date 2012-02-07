@@ -259,6 +259,7 @@ package net.wooga.uiengine.displaylistselector.matchers {
 
 
 
+
 			if (subject == _rootObject) {
 				selectorMetaData.isMatching = false;
 				selectorMetaData.needsRematch = false;

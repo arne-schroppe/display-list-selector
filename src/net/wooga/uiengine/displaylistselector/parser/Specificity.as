@@ -5,11 +5,9 @@ package net.wooga.uiengine.displaylistselector.parser {
 		
 		private static const SPECIFICITY_BASE:int = 60;
 
-		private var _a:int;
-		private var _b:int;
-		private var _c:int;
-		private var _d:int;
-		private var _e:int;
+
+		private var _digits:Vector.<int> = new Vector.<int>(5, true);
+		
 
 		
 		private var _numberValue:Number;
@@ -33,12 +31,21 @@ package net.wooga.uiengine.displaylistselector.parser {
 
 
 		private function compare(other:Specificity):int {
-			return comparePosition(other, 'a') || comparePosition(other, 'b') || comparePosition(other, 'c') || comparePosition(other, 'd') || comparePosition(other, 'e');
+			return compareFromPosition(other, _digits.length-1);
 		}
 
-		private function comparePosition(other:Specificity, position:String):int {
-			var here:int = this[position];
-			var there:int = other[position];
+
+		private function compareFromPosition(other:Specificity, position:int):int {
+			if(position < 0) {
+				return 0;
+			}
+
+			return comparePosition(other, position) || compareFromPosition(other, position - 1);
+		}
+
+		private function comparePosition(other:Specificity, position:int):int {
+			var here:int = this._digits[position];
+			var there:int = other._digits[position];
 			
 			if(here < there) {
 				return -1;
@@ -54,60 +61,66 @@ package net.wooga.uiengine.displaylistselector.parser {
 
 
 		public function get a():int {
-			return _a;
+			return _digits[4];
 		}
 
 		//if style is set from a manual style rule
 		public function set a(value:int):void {
-			_a = value;
+			_digits[4] = value;
 			recalculateNumberValue();
 		}
 
 		public function get b():int {
-			return _b;
+			return _digits[3];
 		}
 
 		//for id selectors
 		public function set b(value:int):void {
-			_b = value;
+			_digits[3] = value;
 			recalculateNumberValue();
 		}
 
 		public function get c():int {
-			return _c;
+			return _digits[2];
 		}
 
 		//class selectors, attributes selectors, and pseudo-classes in the selector
 		public function set c(value:int):void {
-			_c = value;
+			_digits[2] = value;
 			recalculateNumberValue();
 		}
 
 
 		public function get d():int {
-			return _d;
+			return _digits[1];
 		}
 
 		//type selectors and pseudo-elements in the selector
 		public function set d(value:int):void {
-			_d = value;
+			_digits[1] = value;
 			recalculateNumberValue();
 		}
 
 
 		public function get e():int {
-			return _e;
+			return _digits[0];
 		}
 
 		//is-A selectors
 		public function set e(value:int):void {
-			_e = value;
+			_digits[0] = value;
 			recalculateNumberValue();
 		}
 
 
 		private function recalculateNumberValue():void {
-			_numberValue = _a * Math.pow(SPECIFICITY_BASE, 4) + _b * Math.pow(SPECIFICITY_BASE, 3) + _c * Math.pow(SPECIFICITY_BASE, 2) + _d * Math.pow(SPECIFICITY_BASE, 1) +  _e;
+			
+			var result:Number = 0;
+			for(var position:int = 0; position < _digits.length; ++position) {
+				result += _digits[position] * Math.pow(SPECIFICITY_BASE, position)
+			}
+
+			_numberValue = result;
 		}
 	}
 }

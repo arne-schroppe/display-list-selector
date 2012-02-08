@@ -714,8 +714,8 @@ package net.wooga.uiengine.displaylistselector {
 
 			matchedObjects = _selector.getMatchedObjects();
 			assert_should_have_a_comma_separator_to_select_the_union_of_several_selectors(matchedObjects);
-
 		}
+
 
 		private function assert_should_have_a_comma_separator_to_select_the_union_of_several_selectors(matchedObjects:Set):void {
 			assertThat(matchedObjects.size, equalTo(6));

@@ -159,12 +159,11 @@ package net.wooga.uiengine.displaylistselector.matching.metadata {
 		}
 
 
-
-
 		private function advanceMatchers(matchers:Vector.<IMatcher>):void {
 			matchers.pop();
 			_position--;
 		}
+
 
 		private function cacheStep():void {
 			var key:String = _currentSelector + "??" + _position;

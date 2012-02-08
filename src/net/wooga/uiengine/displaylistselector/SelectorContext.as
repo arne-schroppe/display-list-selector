@@ -75,7 +75,7 @@ package net.wooga.uiengine.displaylistselector {
 		private function addObjectAndChildren(object:DisplayObject):void {
 			if(!_objectsBeingAdded.has(object)) {
 				_objectsBeingAdded.add(object);
-				_matcher.invalidateObject(object);
+				//_matcher.invalidateObject(object);
 				dispatchEvent(new DisplayListSelectorEvent(DisplayListSelectorEvent.OBJECT_WAS_ADDED, object));
 			}
 

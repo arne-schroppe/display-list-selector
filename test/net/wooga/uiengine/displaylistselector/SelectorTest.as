@@ -581,8 +581,6 @@ package net.wooga.uiengine.displaylistselector {
 			_selector = new Selector("TestSpriteA > TestSpriteB > TestSpriteC", _selectorContext);
 			var matchedObjects:Set = _selector.getMatchedObjects();
 
-			trace("+==============+");
-
 			matchedObjects = _selector.getMatchedObjects();
 
 		}

@@ -48,6 +48,7 @@ package net.wooga.uiengine.displaylistselector.matching {
 
 		private function match(currentObject:DisplayObject):void {
 
+			//trace("Matching " + currentObject);
 			if(isMatching(currentObject)) {
 				_matchedObjects.add(currentObject);
 			}
@@ -188,6 +189,8 @@ package net.wooga.uiengine.displaylistselector.matching {
 
 
 			//TODO (arneschroppe 7/2/12) adapt this
+
+			_metaDataPool.invalidate(object);
 		}
 
 

@@ -3,6 +3,9 @@ package net.wooga.uiengine.displaylistselector.matching.metadata {
 
 	import net.wooga.uiengine.displaylistselector.matching.matchers.IMatcher;
 
+	import org.as3commons.collections.Set;
+	import org.as3commons.collections.framework.IIterator;
+
 	public class MatcherMetaData {
 
 
@@ -13,6 +16,8 @@ package net.wooga.uiengine.displaylistselector.matching.metadata {
 		private var _isMatching:Boolean = false;
 
 		private var _parentMatcher:MatcherMetaData;
+
+		private var _children:Set = new Set();
 
 		public function MatcherMetaData(matcher:IMatcher) {
 			_matcher = matcher;
@@ -27,6 +32,7 @@ package net.wooga.uiengine.displaylistselector.matching.metadata {
 
 		public function set parentMatcher(value:MatcherMetaData):void {
 			_parentMatcher = value;
+			value._children.add(this);
 		}
 
 		//private var _nextMatchers:Vector.<MatcherMetaData>;
@@ -55,6 +61,21 @@ package net.wooga.uiengine.displaylistselector.matching.metadata {
 
 		public function set isStartMatcher(value:Boolean):void {
 			_isStartMatcher = value;
+		}
+
+		public function get subject():DisplayObject {
+			return _subject;
+		}
+
+		public function invalidate():void {
+			_needsRematch = true;
+
+
+			//var iterator:IIterator = _children.iterator();
+			//while(iterator.hasNext()) {
+			//	var child:MatcherMetaData = iterator.next();
+			//	child.invalidate();
+			//}
 		}
 	}
 }

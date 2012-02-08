@@ -32,7 +32,10 @@ package net.wooga.uiengine.displaylistselector.matching.metadata {
 
 		public function set parentMatcher(value:MatcherMetaData):void {
 			_parentMatcher = value;
+			
 			value._children.add(this);
+
+			//trace("Setting " + value._subject + " as parent, adding " + this._subject + " as child");
 		}
 
 		//private var _nextMatchers:Vector.<MatcherMetaData>;
@@ -69,13 +72,15 @@ package net.wooga.uiengine.displaylistselector.matching.metadata {
 
 		public function invalidate():void {
 			_needsRematch = true;
+			invalidateChildren();
+		}
 
-
-			//var iterator:IIterator = _children.iterator();
-			//while(iterator.hasNext()) {
-			//	var child:MatcherMetaData = iterator.next();
-			//	child.invalidate();
-			//}
+		private function invalidateChildren():void {
+			var iterator:IIterator = _children.iterator();
+			while (iterator.hasNext()) {
+				var child:MatcherMetaData = iterator.next();
+				child.invalidate();
+			}
 		}
 	}
 }

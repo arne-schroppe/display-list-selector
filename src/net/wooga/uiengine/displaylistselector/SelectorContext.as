@@ -44,9 +44,10 @@ package net.wooga.uiengine.displaylistselector {
 			addDefaultPseudoClasses();
 
 			_parser = new Parser(externalPropertySource, _pseudoClassProvider, idAttribute, classAttribute);
-
 			_matcher = new MatcherTool(_rootObject);
 		}
+
+
 
 		selector_internal function get parser():Parser {
 			return _parser;
@@ -134,7 +135,5 @@ package net.wooga.uiengine.displaylistselector {
 			dispatchEvent(new DisplayListSelectorEvent(DisplayListSelectorEvent.OBJECT_WAS_CHANGED, object));
 
 		}
-
-
 	}
 }

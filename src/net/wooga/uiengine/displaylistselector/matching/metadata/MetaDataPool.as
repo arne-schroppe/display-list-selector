@@ -11,6 +11,8 @@ package net.wooga.uiengine.displaylistselector.matching.metadata {
 	import org.as3commons.collections.Map;
 	import org.as3commons.collections.Set;
 	import org.as3commons.collections.framework.IIterator;
+	import org.flexunit.asserts.fail;
+	import org.hamcrest.object.isFalse;
 
 	public class MetaDataPool {
 
@@ -41,7 +43,7 @@ package net.wooga.uiengine.displaylistselector.matching.metadata {
 			if(!metaData) {
 
 
-				//trace("===== Building matcher list for " + object);
+				trace("===== Building matcher list for " + object);
 				
 				_currentSubject = object;
 				_position = matchers.length;
@@ -71,11 +73,7 @@ package net.wooga.uiengine.displaylistselector.matching.metadata {
 			}
 		}
 
-		
-		private function traceExpression(text:Object, val:*):* {
-			trace(text + val);
-			return val;
-		}
+
 
 		private function copyVector(matchers:Vector.<IMatcher>):Vector.<IMatcher> {
 			return matchers.concat();
@@ -91,61 +89,86 @@ package net.wooga.uiengine.displaylistselector.matching.metadata {
 				return;
 			}
 
-
-			var retryParent:Boolean = false;
 			var currentMatcher:IMatcher = matchers[matchers.length-1];
 
-			var storeStep:Boolean = false;
 			if (currentMatcher is ChildSelectorMatcher) {
+				handleChildSelector(matchers);
+			}
+			else if (currentMatcher is DescendantSelectorMatcher) {
+				handleDescendantMatcher(matchers);
+			}
+			else {
+				if(!handleMatcher(matchers)) {
+					return;
+				}
+
+				buildMatcherList(matchers);
+			}
+		}
+
+
+		private function handleDescendantMatcher(matchers:Vector.<IMatcher>):void {
+
+			advanceMatchers(matchers);
+			while(true) {
 
 				if(!advanceToParentElement()) {
 					return;
 				}
-				storeStep = true;
-				
 
-				matchers.pop();
-				_position--;
-				currentMatcher = matchers[matchers.length-1];
-			}
-			else if (currentMatcher is DescendantSelectorMatcher) {
-				retryParent = true;
-				currentMatcher = matchers[matchers.length-2];
-				//TODO (arneschroppe 8/2/12) handle key storage in this case
-			}
-
-			addMatcherStep(currentMatcher);
-
-
-			if(!currentMatcher.isMatching(_currentSubject)) {
-				if(retryParent) {
-
-					if(!advanceToParentElement()) {
-						return;
-					}
-					buildMatcherList(matchers);
+				if(handleMatcher(matchers)) {
+					break;
 				}
+			}
 
+			cacheStep();
+			buildMatcherList(matchers);
+
+		}
+
+
+		private function handleChildSelector(matchers:Vector.<IMatcher>):void {
+
+			advanceMatchers(matchers);
+
+			if(!advanceToParentElementAndAbortIfCachedVersionExists()) {
 				return;
 			}
 
-			if(retryParent) {
-				//pop descendant selector
-				matchers.pop();
-				_position--;
+			if(!handleMatcher(matchers)) {
+				return;
 			}
 
-			if(storeStep) {
-				var key:String = _currentSelector + "??" + _position;
-				//trace("Should store step for " + _currentSubject + " " + key);
-				//enterDebugger();
-				_objectSubMetaData.addOrReplace(_currentSubject, key, _currentData);
+			cacheStep();
+			buildMatcherList(matchers);
+
+		}
+
+
+		private function handleMatcher(matchers:Vector.<IMatcher>):Boolean {
+			var currentMatcher:IMatcher = matchers[matchers.length-1];
+
+			addMatcherStep(currentMatcher);
+
+			if(!currentMatcher.isMatching(_currentSubject)) {
+				return false;
 			}
 
+			advanceMatchers(matchers);
+			return true;
+		}
+
+
+
+
+		private function advanceMatchers(matchers:Vector.<IMatcher>):void {
 			matchers.pop();
 			_position--;
+		}
 
-			buildMatcherList(matchers);
+		private function cacheStep():void {
+			var key:String = _currentSelector + "??" + _position;
+			_objectSubMetaData.addOrReplace(_currentSubject, key, _currentData);
 		}
 
 
@@ -160,17 +183,20 @@ package net.wooga.uiengine.displaylistselector.matching.metadata {
 				return false;
 			}
 
-
-
+			return true;
+		}
+		
+		
+		private function advanceToParentElementAndAbortIfCachedVersionExists():Boolean {
+			
+			if(!advanceToParentElement()) {
+				return false;
+			}
+			
 			var key:String = _currentSelector + "??" + (_position - 1);
 
-			//trace("retrieving " + _currentSubject + " " + key);
 			var metaData:MatcherMetaData = _objectSubMetaData.itemFor(_currentSubject, key);
-			//enterDebugger();
 			if(metaData) {
-
-				//trace("Has meta data");
-
 				_currentData.parentMatcher = metaData;
 				return false;
 			}
@@ -181,28 +207,16 @@ package net.wooga.uiengine.displaylistselector.matching.metadata {
 		
 		private function addMatcherStep(currentMatcher:IMatcher):void {
 
-
-
-
 			var metaData:MatcherMetaData;
 
 			metaData = new MatcherMetaData(currentMatcher);
 			metaData.subject = _currentSubject;
-
-			var storedMatchers:Set =_objectToMatcherMetaDataMap.itemFor(_currentSubject);
-			if(!storedMatchers) {
-				storedMatchers = new Set();
-				_objectToMatcherMetaDataMap.add(_currentSubject, storedMatchers);
-			}
-
-			storedMatchers.add(metaData);
 
 			if (_currentData) {
 				_currentData.parentMatcher = metaData;
 			}
 
 			_currentData = metaData;
-
 		}
 
 
@@ -210,8 +224,5 @@ package net.wooga.uiengine.displaylistselector.matching.metadata {
 		public function set rootObject(value:DisplayObject):void {
 			_rootObject = value;
 		}
-
-
-
 	}
 }

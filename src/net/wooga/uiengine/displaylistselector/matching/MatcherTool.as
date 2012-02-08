@@ -10,6 +10,7 @@ package net.wooga.uiengine.displaylistselector.matching {
 	import net.wooga.uiengine.displaylistselector.parser.ParsedSelector;
 
 	import org.as3commons.collections.Set;
+	import org.as3commons.collections.framework.IIterator;
 
 	public class MatcherTool {
 
@@ -47,15 +48,15 @@ package net.wooga.uiengine.displaylistselector.matching {
 
 
 		private function match(currentObject:DisplayObject):void {
-
+			
 			//trace("Matching " + currentObject);
 			if(isMatching(currentObject)) {
 				_matchedObjects.add(currentObject);
 			}
 
 			matchChildren(currentObject as DisplayObjectContainer);
-
 		}
+
 
 		private function matchChildren(container:DisplayObjectContainer):void {
 
@@ -67,10 +68,9 @@ package net.wooga.uiengine.displaylistselector.matching {
 				match(container.getChildAt(i));
 			}
 		}
-		
-		/*
-		
 
+
+	/*
 		private function match(currentObject:DisplayObject, runningMatcherPointers:Vector.<MatcherPointer>):void {
 
 
@@ -223,8 +223,9 @@ package net.wooga.uiengine.displaylistselector.matching {
 		private function isMatching(object:DisplayObject):Boolean {
 
 			return _metaDataPool.isMatching(object, _currentlyMatchedSelector, _currentlyMatchedMatchers);
-
 		}
+
+
 
 
 
@@ -336,6 +337,7 @@ package net.wooga.uiengine.displaylistselector.matching {
 			//selectorMetaData.needsRematch = false;
 			return result;
 		}*/
+
 	}
 }
 

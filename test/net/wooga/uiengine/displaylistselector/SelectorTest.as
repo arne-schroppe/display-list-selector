@@ -56,7 +56,14 @@ package net.wooga.uiengine.displaylistselector {
 
 			_selector = new Selector("TestSpriteB", _selectorContext);
 			var matchedObjects:Set = _selector.getMatchedObjects();
+			assert_should_match_element_selector(matchedObjects);
 
+			//Second call tests cached version
+			matchedObjects = _selector.getMatchedObjects();
+			assert_should_match_element_selector(matchedObjects);
+		}
+
+		private function assert_should_match_element_selector(matchedObjects:Set):void {
 			assertContainsObjectOfClass(matchedObjects, TestSpriteB);
 			assertDoesNotContainObjectOfClass(matchedObjects, TestSpriteA);
 			assertDoesNotContainObjectOfClass(matchedObjects, TestSpriteC);
@@ -75,7 +82,13 @@ package net.wooga.uiengine.displaylistselector {
 
 			_selector = new Selector("*", _selectorContext);
 			var matchedObjects:Set = _selector.getMatchedObjects();
+			assert_should_match_any_selector(matchedObjects);
 
+			matchedObjects = _selector.getMatchedObjects();
+			assert_should_match_any_selector(matchedObjects);
+		}
+
+		private function assert_should_match_any_selector(matchedObjects:Set):void {
 			assertContainsObjectOfClass(matchedObjects, TestSpriteA);
 			assertContainsObjectOfClass(matchedObjects, TestSpriteB);
 			assertContainsObjectOfClass(matchedObjects, TestSpriteC);
@@ -95,7 +108,13 @@ package net.wooga.uiengine.displaylistselector {
 
 			_selector = new Selector("TestSpriteB > TestSpriteC", _selectorContext);
 			var matchedObjects:Set = _selector.getMatchedObjects();
+			assert_should_match_nested_class(matchedObjects);
 
+			matchedObjects = _selector.getMatchedObjects();
+			assert_should_match_nested_class(matchedObjects);
+		}
+
+		private function assert_should_match_nested_class(matchedObjects:Set):void {
 			assertContainsObjectOfClass(matchedObjects, TestSpriteC);
 			assertDoesNotContainObjectOfClass(matchedObjects, TestSpriteA);
 			assertDoesNotContainObjectOfClass(matchedObjects, TestSpriteB);
@@ -118,7 +137,14 @@ package net.wooga.uiengine.displaylistselector {
 
 			_selector = new Selector("TestSpriteC[name='" + expectedName + "']", _selectorContext);
 			var matchedObjects:Set = _selector.getMatchedObjects();
+			assert_should_match_class_with_name(matchedObjects, expectedName);
 
+			matchedObjects = _selector.getMatchedObjects();
+			assert_should_match_class_with_name(matchedObjects, expectedName);
+
+		}
+
+		private function assert_should_match_class_with_name(matchedObjects:Set, expectedName:String):void {
 			assertThat(matchedObjects, hasItemInCollection(allOf(isA(TestSpriteC), hasPropertyWithValue("name", expectedName))));
 			assertDoesNotContainObjectOfClass(matchedObjects, TestSpriteA);
 			assertDoesNotContainObjectOfClass(matchedObjects, TestSpriteB);
@@ -139,7 +165,14 @@ package net.wooga.uiengine.displaylistselector {
 			_propertyDictionary.addItem(propertyName, value);
 			_selector = new Selector("TestSpriteA[" + propertyName + "='" + value + "']", _selectorContext);
 			var matchedObjects:Set = _selector.getMatchedObjects();
+			assert_should_match_class_with_external_property(matchedObjects);
 
+			matchedObjects = _selector.getMatchedObjects();
+			assert_should_match_class_with_external_property(matchedObjects);
+
+		}
+
+		private function assert_should_match_class_with_external_property(matchedObjects:Set):void {
 			assertThat(matchedObjects, containsExactly(1, isA(TestSpriteA)));
 			assertEquals(1, matchedObjects.size);
 		}
@@ -159,7 +192,14 @@ package net.wooga.uiengine.displaylistselector {
 
 			_selector = new Selector("TestSpriteA#test", _selectorContext);
 			var matchedObjects:Set = _selector.getMatchedObjects();
+			assert_should_match_css_id_selector(matchedObjects);
 
+			matchedObjects = _selector.getMatchedObjects();
+			assert_should_match_css_id_selector(matchedObjects);
+
+		}
+
+		private function assert_should_match_css_id_selector(matchedObjects:Set):void {
 			assertThat(matchedObjects, containsExactly(1, isA(TestSpriteA)));
 			assertEquals(1, matchedObjects.size);
 		}
@@ -183,10 +223,15 @@ package net.wooga.uiengine.displaylistselector {
 
 			_selector = new Selector("TestSpriteA[state~='expectedValue']", _selectorContext);
 			var matchedObjects:Set = _selector.getMatchedObjects();
+			assert_should_match_oneof_selector(matchedObjects);
 
+			matchedObjects = _selector.getMatchedObjects();
+			assert_should_match_oneof_selector(matchedObjects);
 
+		}
+
+		private function assert_should_match_oneof_selector(matchedObjects:Set):void {
 			assertThat(matchedObjects, containsExactly(1, isA(TestSpriteA)));
-
 			assertEquals(1, matchedObjects.size);
 		}
 
@@ -209,7 +254,14 @@ package net.wooga.uiengine.displaylistselector {
 
 			_selector = new Selector("TestSpriteA.testClass", _selectorContext);
 			var matchedObjects:Set = _selector.getMatchedObjects();
+			assert_should_match_cssclass_selector(matchedObjects);
 
+			matchedObjects = _selector.getMatchedObjects();
+			assert_should_match_cssclass_selector(matchedObjects);
+
+		}
+
+		private function assert_should_match_cssclass_selector(matchedObjects:Set):void {
 			assertThat(matchedObjects, containsExactly(1, isA(TestSpriteA)));
 			assertEquals(1, matchedObjects.size);
 		}
@@ -230,7 +282,14 @@ package net.wooga.uiengine.displaylistselector {
 
 			_selector = new Selector("* > TestSpriteC", _selectorContext);
 			var matchedObjects:Set = _selector.getMatchedObjects();
+			assert_should_match_different_branches(matchedObjects);
 
+			matchedObjects = _selector.getMatchedObjects();
+			assert_should_match_different_branches(matchedObjects);
+
+		}
+
+		private function assert_should_match_different_branches(matchedObjects:Set):void {
 			assertThat(matchedObjects, containsExactly(2, isA(TestSpriteC)));
 			assertDoesNotContainObjectOfClass(matchedObjects, TestSpriteA);
 			assertDoesNotContainObjectOfClass(matchedObjects, TestSpriteB);
@@ -259,7 +318,14 @@ package net.wooga.uiengine.displaylistselector {
 
 			_selector = new Selector("TestSpriteA TestSpriteC", _selectorContext);
 			var matchedObjects:Set = _selector.getMatchedObjects();
+			assert_should_match_descendant_objects(matchedObjects);
 
+			matchedObjects = _selector.getMatchedObjects();
+			assert_should_match_descendant_objects(matchedObjects);
+
+		}
+
+		private function assert_should_match_descendant_objects(matchedObjects:Set):void {
 			assertThat(matchedObjects, containsExactly(3, isA(TestSpriteC)));
 			assertEquals(3, matchedObjects.size);
 		}
@@ -293,7 +359,14 @@ package net.wooga.uiengine.displaylistselector {
 
 			_selector = new Selector("TestSpriteA TestSpriteC", _selectorContext);
 			var matchedObjects:Set = _selector.getMatchedObjects();
+			assert_should_match_contrived_descendant_objects(matchedObjects);
 
+			matchedObjects = _selector.getMatchedObjects();
+			assert_should_match_contrived_descendant_objects(matchedObjects);
+
+		}
+
+		private function assert_should_match_contrived_descendant_objects(matchedObjects:Set):void {
 			assertThat(matchedObjects, containsExactly(4, isA(TestSpriteC)));
 			assertEquals(4, matchedObjects.size);
 		}
@@ -321,7 +394,14 @@ package net.wooga.uiengine.displaylistselector {
 
 			_selector = new Selector("*:root", _selectorContext);
 			var matchedObjects:Set = _selector.getMatchedObjects();
+			assert_should_match_root_pseudo_class(matchedObjects);
 
+			matchedObjects = _selector.getMatchedObjects();
+			assert_should_match_root_pseudo_class(matchedObjects);
+
+		}
+
+		private function assert_should_match_root_pseudo_class(matchedObjects:Set):void {
 			assertThat(matchedObjects, containsExactly(1, equalTo(contextView)));
 			assertEquals(1, matchedObjects.size);
 		}
@@ -338,7 +418,14 @@ package net.wooga.uiengine.displaylistselector {
 
 			_selector = new Selector("*:root > *:first-child", _selectorContext);
 			var matchedObjects:Set = _selector.getMatchedObjects();
+			assert_should_match_firstchild_pseudo_class(matchedObjects);
 
+			matchedObjects = _selector.getMatchedObjects();
+			assert_should_match_firstchild_pseudo_class(matchedObjects);
+
+		}
+
+		private function assert_should_match_firstchild_pseudo_class(matchedObjects:Set):void {
 			assertThat(matchedObjects, containsExactly(1, isA(TestSpriteA)));
 			assertEquals(1, matchedObjects.size);
 		}
@@ -355,7 +442,14 @@ package net.wooga.uiengine.displaylistselector {
 
 			_selector = new Selector("*:root > *:last-child", _selectorContext);
 			var matchedObjects:Set = _selector.getMatchedObjects();
+			assert_should_match_lastchild_pseudo_class(matchedObjects);
 
+			matchedObjects = _selector.getMatchedObjects();
+			assert_should_match_lastchild_pseudo_class(matchedObjects);
+
+		}
+
+		private function assert_should_match_lastchild_pseudo_class(matchedObjects:Set):void {
 			assertThat(matchedObjects, containsExactly(1, isA(TestSpriteC)));
 			assertEquals(1, matchedObjects.size);
 		}
@@ -377,7 +471,14 @@ package net.wooga.uiengine.displaylistselector {
 
 			_selector = new Selector("*:root > *:nth-child(6)", _selectorContext);
 			var matchedObjects:Set = _selector.getMatchedObjects();
+			assert_should_match_nthchild_pseudo_class(matchedObjects);
 
+			matchedObjects = _selector.getMatchedObjects();
+			assert_should_match_nthchild_pseudo_class(matchedObjects);
+
+		}
+
+		private function assert_should_match_nthchild_pseudo_class(matchedObjects:Set):void {
 			assertThat(matchedObjects, containsExactly(1, isA(TestSpriteB)));
 			assertThat(matchedObjects.size, equalTo(1));
 		}
@@ -399,7 +500,14 @@ package net.wooga.uiengine.displaylistselector {
 
 			_selector = new Selector("*:root > *:nth-child(-2n + 5)", _selectorContext);
 			var matchedObjects:Set = _selector.getMatchedObjects();
+			assert_should_match_nthchild_pseudo_class_with_complex_argument(matchedObjects);
 
+			matchedObjects = _selector.getMatchedObjects();
+			assert_should_match_nthchild_pseudo_class_with_complex_argument(matchedObjects);
+
+		}
+
+		private function assert_should_match_nthchild_pseudo_class_with_complex_argument(matchedObjects:Set):void {
 			assertThat(matchedObjects, containsExactly(3, isA(TestSpriteB)));
 			assertEquals(3, matchedObjects.size);
 		}
@@ -421,7 +529,14 @@ package net.wooga.uiengine.displaylistselector {
 
 			_selector = new Selector("*:root > *:nth-last-child(3)", _selectorContext);
 			var matchedObjects:Set = _selector.getMatchedObjects();
+			assert_should_match_nthlastchild_pseudo_class(matchedObjects);
 
+			matchedObjects = _selector.getMatchedObjects();
+			assert_should_match_nthlastchild_pseudo_class(matchedObjects);
+
+		}
+
+		private function assert_should_match_nthlastchild_pseudo_class(matchedObjects:Set):void {
 			assertThat(matchedObjects, containsExactly(1, isA(TestSpriteB)));
 			assertThat(matchedObjects.size, equalTo(1));
 		}
@@ -448,10 +563,16 @@ package net.wooga.uiengine.displaylistselector {
 
 			_selector = new Selector("*:root > *#testName[testattrib~='1234']", _selectorContext);
 			var matchedObjects:Set = _selector.getMatchedObjects();
+			assert_should_match_id_and_attribute_selector(matchedObjects);
+
+			matchedObjects = _selector.getMatchedObjects();
+			assert_should_match_id_and_attribute_selector(matchedObjects);
+
+		}
+
+		private function assert_should_match_id_and_attribute_selector(matchedObjects:Set):void {
 			assertThat(matchedObjects.size, equalTo(1));
-
 			assertThat(matchedObjects, containsExactly(1, isA(TestSpriteC)));
-
 		}
 
 
@@ -469,8 +590,14 @@ package net.wooga.uiengine.displaylistselector {
 			 */
 			_selector = new Selector(":root > :nth-child(2)", _selectorContext);
 			var matchedObjects:Set = _selector.getMatchedObjects();
+			assert_should_match_selectors_without_element_selector(matchedObjects);
 
+			matchedObjects = _selector.getMatchedObjects();
+			assert_should_match_selectors_without_element_selector(matchedObjects);
 
+		}
+
+		private function assert_should_match_selectors_without_element_selector(matchedObjects:Set):void {
 			assertThat(matchedObjects.size, equalTo(1));
 			assertThat(matchedObjects, containsExactly(1, isA(TestSpriteB)));
 		}
@@ -487,13 +614,18 @@ package net.wooga.uiengine.displaylistselector {
 
 			_selector = new Selector(":root > ^Sprite", _selectorContext);
 			var matchedObjects:Set = _selector.getMatchedObjects();
+			assert_should_match_isA_selector(matchedObjects);
 
+			matchedObjects = _selector.getMatchedObjects();
+			assert_should_match_isA_selector(matchedObjects);
 
+		}
+
+		private function assert_should_match_isA_selector(matchedObjects:Set):void {
 			assertThat(matchedObjects.size, equalTo(4));
 			assertThat(matchedObjects, containsExactly(1, isA(TestSpriteA)));
 			assertThat(matchedObjects, containsExactly(2, isA(MovieClip)));
 			assertThat(matchedObjects, containsExactly(1, isA(TestSpriteB)));
-
 		}
 
 
@@ -509,8 +641,14 @@ package net.wooga.uiengine.displaylistselector {
 
 			_selector = new Selector("(fixtures.*.TestSpritePack)", _selectorContext);
 			var matchedObjects:Set = _selector.getMatchedObjects();
+			assert_should_match_qualified_class_name(matchedObjects);
 
+			matchedObjects = _selector.getMatchedObjects();
+			assert_should_match_qualified_class_name(matchedObjects);
 
+		}
+
+		private function assert_should_match_qualified_class_name(matchedObjects:Set):void {
 			assertThat(matchedObjects.size, equalTo(2));
 			assertThat(matchedObjects, containsExactly(1, isA(net.wooga.fixtures.package1.TestSpritePack)));
 			assertThat(matchedObjects, containsExactly(1, isA(net.wooga.fixtures.package2.TestSpritePack)));
@@ -528,10 +666,21 @@ package net.wooga.uiengine.displaylistselector {
 
 			_selector = new Selector(":root > ^TestInterface", _selectorContext);
 			var matchedObjects:Set = _selector.getMatchedObjects();
+			assert_should_match_interface(matchedObjects);
 
+			matchedObjects = _selector.getMatchedObjects();
+			assert_should_match_interface(matchedObjects);
+
+		}
+
+		private function assert_should_match_interface(matchedObjects:Set):void {
 			assertThat(matchedObjects.size, equalTo(2));
 			assertThat(matchedObjects, containsExactly(2, isA(TestSpriteWithInterface)));
 		}
+
+
+
+
 
 		[Test]
 		public function isA_selector_should_have_lower_specificity_than_element_selector():void {
@@ -561,7 +710,14 @@ package net.wooga.uiengine.displaylistselector {
 
 			_selector = new Selector("TestSpriteA, TestSpriteB", _selectorContext);
 			var matchedObjects:Set = _selector.getMatchedObjects();
+			assert_should_have_a_comma_separator_to_select_the_union_of_several_selectors(matchedObjects);
 
+			matchedObjects = _selector.getMatchedObjects();
+			assert_should_have_a_comma_separator_to_select_the_union_of_several_selectors(matchedObjects);
+
+		}
+
+		private function assert_should_have_a_comma_separator_to_select_the_union_of_several_selectors(matchedObjects:Set):void {
 			assertThat(matchedObjects.size, equalTo(6));
 			assertThat(matchedObjects, containsExactly(2, isA(TestSpriteA)));
 			assertThat(matchedObjects, containsExactly(4, isA(TestSpriteB)));
@@ -569,7 +725,7 @@ package net.wooga.uiengine.displaylistselector {
 
 
 		[Test]
-		public function should_cache_results():void {
+		public function should_build_match_tree_properly():void {
 			_displayList.hasA(contextView).containing
 					.a(TestSpriteA).containing
 						.a(TestSpriteB).containing
@@ -578,12 +734,40 @@ package net.wooga.uiengine.displaylistselector {
 					.end
 				.end.finish();
 
-			_selector = new Selector("TestSpriteA > TestSpriteB > TestSpriteC", _selectorContext);
+			_selector = new Selector("TestSpriteB TestSpriteC:first-child, TestSpriteB > TestSpriteC", _selectorContext);
 			var matchedObjects:Set = _selector.getMatchedObjects();
 
-			matchedObjects = _selector.getMatchedObjects();
 
+			assertThat(matchedObjects.size, equalTo(3));
+			assertThat(matchedObjects, containsExactly(3, isA(TestSpriteC)));
 		}
+
+
+		//[Test]
+		//public function should_ignore_ignored_types():void {
+		//	_displayList.hasA(contextView).containing
+		//			.a(TestSpriteA)
+		//			.a(TestSpriteA)
+		//			.a(TestSpriteC)
+		//			.a(TestSpriteC)
+		//			.a(TestSpriteC)
+		//			.a(TestSpriteB)
+		//			.a(TestSpriteB)
+		//			.a(TestSpriteB)
+		//			.a(TestSpriteB)
+		//			.end.finish();
+		//
+		//	_selectorContext.ignoreType(TestSpriteC);
+		//	_selector = new Selector(":root > ^Sprite", _selectorContext);
+		//
+		//	var matchedObjects:Set = _selector.getMatchedObjects();
+		//	assertThat(matchedObjects.size, equalTo(6));
+		//	assertThat(matchedObjects, containsExactly(2, isA(TestSpriteA)));
+		//	assertThat(matchedObjects, containsExactly(4, isA(TestSpriteB)));
+		//
+		//}
+
+
 
 		private function assertContainsObjectOfClass(objects:IIterable, Type:Class):void {
 			assertThat(objects, hasItemInCollection(isA(Type)));

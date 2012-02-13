@@ -19,7 +19,7 @@ package net.wooga.uiengine.displaylistselector {
 
 	import org.as3commons.collections.Set;
 
-	public class SelectorContext extends EventDispatcher {
+	public class Selectors extends EventDispatcher {
 
 		private var _rootObject:DisplayObjectContainer;
 		private var _objectsBeingAdded:Set;
@@ -48,15 +48,6 @@ package net.wooga.uiengine.displaylistselector {
 		}
 
 
-
-		selector_internal function get parser():Parser {
-			return _parser;
-		}
-
-
-		selector_internal function get matcherTool():MatcherTool {
-			return _matcher;
-		}
 
 
 		private function onAddedToStage(event:Event):void {
@@ -89,6 +80,7 @@ package net.wooga.uiengine.displaylistselector {
 		}
 
 
+		////TODO (arneschroppe 13/2/12) this should become obsolete once we have I10N
 		private function resetAddedObjects(event:Event):void {
 			_rootObject.removeEventListener(Event.ENTER_FRAME, resetAddedObjects);
 			_objectsBeingAdded = null;
@@ -122,7 +114,7 @@ package net.wooga.uiengine.displaylistselector {
 		}
 
 
-		public function addPseudoClass(className:String, pseudoClass:IPseudoClass):void {
+		private function addPseudoClass(className:String, pseudoClass:IPseudoClass):void {
 			if (_pseudoClassProvider.hasPseudoClass(className)) {
 				throw new ArgumentError("Pseudo class " + className + " already exists");
 			}
@@ -130,10 +122,17 @@ package net.wooga.uiengine.displaylistselector {
 			_pseudoClassProvider.addPseudoClass(className, pseudoClass);
 		}
 
+
 		public function objectWasChanged(object:DisplayObject):void {
 			_matcher.invalidateObject(object);
 			dispatchEvent(new DisplayListSelectorEvent(DisplayListSelectorEvent.OBJECT_WAS_CHANGED, object));
 
+		}
+
+
+
+		public function getSelectorsMatchingObject(object:DisplayObject):Set {
+			
 		}
 	}
 }

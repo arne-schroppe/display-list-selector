@@ -134,22 +134,22 @@ package net.wooga.uiengine.displaylistselector.parser {
 		public function testToNumber():void {
 
 			var spec1:Specificity = new Specificity();
-			spec1.a = 12;
+			spec1.manualStyleRule = 12;
 
 			var spec2:Specificity = new Specificity();
-			spec2.a = 12;
+			spec2.manualStyleRule = 12;
 
 			assertThat(spec1.toNumber(), equalTo(spec2.toNumber()));
 
 
 
 			spec1 = new Specificity();
-			spec1.a = 12;
-			spec1.b = 1;
+			spec1.manualStyleRule = 12;
+			spec1.idSelector = 1;
 
 			spec2 = new Specificity();
-			spec2.a = 12;
-			spec2.b = 0;
+			spec2.manualStyleRule = 12;
+			spec2.idSelector = 0;
 
 			assertThat(spec1.toNumber(), greaterThan(spec2.toNumber()));
 
@@ -157,12 +157,12 @@ package net.wooga.uiengine.displaylistselector.parser {
 
 
 			spec1 = new Specificity();
-			spec1.a = 0;
-			spec1.b = 1;
+			spec1.manualStyleRule = 0;
+			spec1.idSelector = 1;
 
 			spec2 = new Specificity();
-			spec2.a = 12;
-			spec2.b = 0;
+			spec2.manualStyleRule = 12;
+			spec2.idSelector = 0;
 
 			assertThat(spec1.toNumber(), lessThan(spec2.toNumber()));
 
@@ -171,11 +171,11 @@ package net.wooga.uiengine.displaylistselector.parser {
 		
 		private function specWith(a:int,  b:int,  c:int, d:int,  e:int):Specificity {
 			var spec:Specificity = new Specificity();
-			spec.a = a;
-			spec.b = b;
-			spec.c = c;
-			spec.d = d;
-			spec.e = e;
+			spec.manualStyleRule = a;
+			spec.idSelector = b;
+			spec.classAndAttributeAndPseudoSelectors = c;
+			spec.elementSelectorsAndPseudoElements = d;
+			spec.isAElementSelectors = e;
 
 			return spec;
 		}

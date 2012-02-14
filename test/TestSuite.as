@@ -2,11 +2,11 @@ package {
 
 	import net.wooga.uiengine.displaylistselector.SelectorTest;
 	import net.wooga.uiengine.displaylistselector.input.ParserInputTest;
-	import net.wooga.uiengine.displaylistselector.matchers.implementations.ChildSelectorMatcherTest;
-	import net.wooga.uiengine.displaylistselector.matchers.implementations.TypeMatcherTest;
-	import net.wooga.uiengine.displaylistselector.matchers.implementations.PropertyFilterContainsMatcherTest;
-	import net.wooga.uiengine.displaylistselector.matchers.implementations.PropertyFilterEqualsMatcherTest;
-	import net.wooga.uiengine.displaylistselector.matchers.implementations.PseudoClassMatcherTest;
+	import net.wooga.uiengine.displaylistselector.matching.matchers.ChildSelectorMatcherTest;
+	import net.wooga.uiengine.displaylistselector.matching.matchers.PropertyFilterContainsMatcherTest;
+	import net.wooga.uiengine.displaylistselector.matching.matchers.PropertyFilterEqualsMatcherTest;
+	import net.wooga.uiengine.displaylistselector.matching.matchers.PseudoClassMatcherTest;
+	import net.wooga.uiengine.displaylistselector.matching.matchers.TypeNameMatcherTest;
 	import net.wooga.uiengine.displaylistselector.parser.SpecificityTest;
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.FirstChildTest;
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.IsEmptyTest;
@@ -26,7 +26,7 @@ package {
 
 		public var parserInputTest:ParserInputTest;
 		public var childSelectorMatcherTest:ChildSelectorMatcherTest;
-		public var classNameMatcherTest:TypeMatcherTest;
+		public var classNameMatcherTest:TypeNameMatcherTest;
 		public var propertyFilterContainsMatcherTest:PropertyFilterContainsMatcherTest;
 		public var propertyFilterEqualsMatcherTest:PropertyFilterEqualsMatcherTest;
 		public var pseudoClassMatcherTest:PseudoClassMatcherTest;

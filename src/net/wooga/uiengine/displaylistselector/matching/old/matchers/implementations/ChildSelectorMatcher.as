@@ -1,7 +1,11 @@
-package net.wooga.uiengine.displaylistselector.matchers.implementations {
-	import net.wooga.uiengine.displaylistselector.matchers.*;
+package net.wooga.uiengine.displaylistselector.matching.old.matchers.implementations {
+	import net.wooga.uiengine.displaylistselector.matching.*;
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
+
+	import net.wooga.uiengine.displaylistselector.matching.old.matchers.ICombinator;
+
+	import net.wooga.uiengine.displaylistselector.matching.old.matchers.IMatcher;
 
 	public class ChildSelectorMatcher implements IMatcher, ICombinator {
 

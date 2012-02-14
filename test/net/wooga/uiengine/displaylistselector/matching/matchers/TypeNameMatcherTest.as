@@ -1,4 +1,4 @@
-package net.wooga.uiengine.displaylistselector.matchers.implementations {
+package net.wooga.uiengine.displaylistselector.matching.matchers {
 	import net.arneschroppe.displaytreebuilder.DisplayTree;
 	import net.wooga.fixtures.ContextViewBasedTest;
 	import net.wooga.fixtures.TestSpriteA;
@@ -7,6 +7,7 @@ package net.wooga.uiengine.displaylistselector.matchers.implementations {
 	import net.wooga.fixtures.containsInArrayExactly;
 	import net.wooga.fixtures.package1.TestSpritePack;
 	import net.wooga.fixtures.package2.TestSpritePack;
+	import net.wooga.uiengine.displaylistselector.matching.old.matchers.implementations.TypeNameMatcher;
 
 	import org.hamcrest.assertThat;
 	import org.hamcrest.core.allOf;
@@ -14,10 +15,10 @@ package net.wooga.uiengine.displaylistselector.matchers.implementations {
 	import org.hamcrest.core.throws;
 	import org.hamcrest.object.equalTo;
 
-	public class TypeMatcherTest extends ContextViewBasedTest {
+	public class TypeNameMatcherTest extends ContextViewBasedTest {
 
 
-		private var _matcher:TypeMatcher;
+		private var _matcher:TypeNameMatcher;
 
 
 		[Before]
@@ -49,7 +50,7 @@ package net.wooga.uiengine.displaylistselector.matchers.implementations {
 				.a(TestSpriteA)
 			.end.finish();
 
-			_matcher = new TypeMatcher("TestSpriteB", true);
+			_matcher = new TypeNameMatcher("TestSpriteB", true);
 
 			var matchedObjects:Array = [];
 
@@ -81,7 +82,7 @@ package net.wooga.uiengine.displaylistselector.matchers.implementations {
 					.a(InheritedTestSprite)
 					.end.finish();
 
-			_matcher = new TypeMatcher("TestSpriteB", false);
+			_matcher = new TypeNameMatcher("TestSpriteB", false);
 
 			var matchedObjects:Array = [];
 
@@ -92,40 +93,6 @@ package net.wooga.uiengine.displaylistselector.matchers.implementations {
 			}
 
 			assertThat(matchedObjects, containsInArrayExactly(4, allOf(isA(InheritedTestSprite), isA(TestSpriteB))));
-			assertThat(matchedObjects.length, equalTo(4));
-		}
-
-
-
-
-
-		[Test]
-		public function should_select_elements_that_subclass_a_far_away_super_type():void {
-			var tree:DisplayTree = new DisplayTree();
-
-			tree.hasA(contextView).containing
-					.a(TestSpriteA)
-					.a(TestSpriteA)
-					.a(SubSubSubSubTestSprite)
-					.a(TestSpriteA)
-					.a(TestSpriteA)
-					.a(SubSubSubSubTestSprite)
-					.a(SubSubSubSubTestSprite)
-					.a(TestSpriteA)
-					.a(SubSubSubSubTestSprite)
-					.end.finish();
-
-			_matcher = new TypeMatcher("SubSubTestSprite", false);
-
-			var matchedObjects:Array = [];
-
-			for(var i:int = 0; i < contextView.numChildren; ++i) {
-				if(_matcher.isMatching(contextView.getChildAt(i))) {
-					matchedObjects.push(contextView.getChildAt(i));
-				}
-			}
-
-			assertThat(matchedObjects, containsInArrayExactly(4, allOf(isA(SubSubSubSubTestSprite), isA(TestSpriteC), isA(SubSubTestSprite))));
 			assertThat(matchedObjects.length, equalTo(4));
 		}
 
@@ -146,7 +113,7 @@ package net.wooga.uiengine.displaylistselector.matchers.implementations {
 					.a(TestSpriteA)
 				.end.finish();
 
-			_matcher = new TypeMatcher("TestInterface", false);
+			_matcher = new TypeNameMatcher("TestInterface", false);
 
 			var matchedObjects:Array = [];
 
@@ -180,7 +147,7 @@ package net.wooga.uiengine.displaylistselector.matchers.implementations {
 					.a(net.wooga.fixtures.package2.TestSpritePack).whichWillBeStoredIn(items)
 					.end.finish();
 
-			_matcher = new TypeMatcher("fixtures.package2.TestSpritePack", true);
+			_matcher = new TypeNameMatcher("fixtures.package2.TestSpritePack", true);
 
 			var matchedObjects:Array = [];
 
@@ -216,7 +183,7 @@ package net.wooga.uiengine.displaylistselector.matchers.implementations {
 					.a(net.wooga.fixtures.package2.TestSpritePack).whichWillBeStoredIn(items)
 					.end.finish();
 
-			_matcher = new TypeMatcher("fixtures.*.TestSpritePack", true);
+			_matcher = new TypeNameMatcher("fixtures.*.TestSpritePack", true);
 
 			var matchedObjects:Array = [];
 
@@ -236,7 +203,7 @@ package net.wooga.uiengine.displaylistselector.matchers.implementations {
 		public function should_throw_exception_for_illegal_class_name():void {
 
 			assertThat(function ():void {
-						new TypeMatcher("fixtures.[\w]*.TestSpritePack", true);
+						new TypeNameMatcher("fixtures.[\w]*.TestSpritePack", true);
 					}, throws(isA(ArgumentError))
 			);
 		}
@@ -245,7 +212,7 @@ package net.wooga.uiengine.displaylistselector.matchers.implementations {
 		public function should_throw_exception_for_trailing_dots():void {
 
 			assertThat(function ():void {
-						new TypeMatcher("fixtures.somepackage.TestSpritePack.", true);
+						new TypeNameMatcher("fixtures.somepackage.TestSpritePack.", true);
 					}, throws(isA(ArgumentError))
 			);
 		}
@@ -255,7 +222,7 @@ package net.wooga.uiengine.displaylistselector.matchers.implementations {
 		public function should_throw_exception_for_trailing_dots_at_start():void {
 
 			assertThat(function ():void {
-						new TypeMatcher(".fixtures.somepackage.TestSpritePack", true);
+						new TypeNameMatcher(".fixtures.somepackage.TestSpritePack", true);
 					}, throws(isA(ArgumentError))
 			);
 		}
@@ -265,7 +232,7 @@ package net.wooga.uiengine.displaylistselector.matchers.implementations {
 		public function should_throw_exception_for_multiple_dots_in_body():void {
 
 			assertThat(function ():void {
-						new TypeMatcher("fixtures.somepackage..TestSpritePack", true);
+						new TypeNameMatcher("fixtures.somepackage..TestSpritePack", true);
 					}, throws(isA(ArgumentError))
 			);
 		}
@@ -276,7 +243,7 @@ package net.wooga.uiengine.displaylistselector.matchers.implementations {
 		public function should_throw_exception_for_multiple_wildcards_in_body():void {
 
 			assertThat(function ():void {
-						new TypeMatcher("fixtures.**.TestSpritePack", true);
+						new TypeNameMatcher("fixtures.**.TestSpritePack", true);
 					}, throws(isA(ArgumentError))
 			);
 		}
@@ -336,7 +303,6 @@ package net.wooga.uiengine.displaylistselector.matchers.implementations {
 	}
 }
 
-import net.wooga.fixtures.TestSpriteA;
 import net.wooga.fixtures.TestSpriteB;
 import net.wooga.fixtures.TestSpriteC;
 
@@ -351,22 +317,3 @@ class ImplementingTestSprite extends TestSpriteC implements TestInterface {
 class InheritedTestSprite extends TestSpriteB {
 
 }
-
-
-class SubTestSprite extends TestSpriteC {
-
-}
-
-
-class SubSubTestSprite extends SubTestSprite {
-
-}
-
-class SubSubSubTestSprite extends SubSubTestSprite {
-
-}
-
-class SubSubSubSubTestSprite extends SubSubSubTestSprite {
-
-}
-

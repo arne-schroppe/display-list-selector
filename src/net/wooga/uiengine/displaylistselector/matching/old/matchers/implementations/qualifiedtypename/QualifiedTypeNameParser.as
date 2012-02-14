@@ -1,4 +1,4 @@
-package net.wooga.uiengine.displaylistselector.matchers.implementations.qualifiedtypename {
+package net.wooga.uiengine.displaylistselector.matching.old.matchers.implementations.qualifiedtypename {
 	public class QualifiedTypeNameParser {
 
 		private var _originalTypeName:String;

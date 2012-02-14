@@ -4,8 +4,12 @@ package net.wooga.uiengine.displaylistselector {
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 
-	import net.wooga.uiengine.displaylistselector.matchers.MatcherTool;
+	import net.wooga.uiengine.displaylistselector.matching.MatchingTree;
+
+	import net.wooga.uiengine.displaylistselector.matching.old.MatcherTool;
+	import net.wooga.uiengine.displaylistselector.matching.old.matchers.IMatcher;
 	import net.wooga.uiengine.displaylistselector.parser.Parser;
+	import net.wooga.uiengine.displaylistselector.parser.ParserResult;
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.FirstChild;
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.IPseudoClass;
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.IsEmpty;
@@ -17,17 +21,23 @@ package net.wooga.uiengine.displaylistselector {
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.Root;
 	import net.wooga.uiengine.displaylistselector.IExternalPropertySource;
 
-	import org.as3commons.collections.Set;
+	import org.as3commons.collections.Map;
 
-	public class SelectorContext extends EventDispatcher {
+	import org.as3commons.collections.Set;
+	import org.as3commons.collections.framework.IIterator;
+
+	public class Selectors extends EventDispatcher {
 
 		private var _rootObject:DisplayObjectContainer;
 		private var _objectsBeingAdded:Set;
 
 		private var _parser:Parser;
+		//private var _matchingTree:MatchingTree;
 		private var _pseudoClassProvider:PseudoClassProvider;
 
 		private var _matcher:MatcherTool;
+
+		private var _knownSelectors:Map = new Map();
 
 		public function initializeWith(rootObject:DisplayObjectContainer, externalPropertySource:IExternalPropertySource = null, idAttribute:String = "name", classAttribute:String = "group"):void {
 			_rootObject = rootObject;
@@ -44,17 +54,31 @@ package net.wooga.uiengine.displaylistselector {
 			addDefaultPseudoClasses();
 
 			_parser = new Parser(externalPropertySource, _pseudoClassProvider, idAttribute, classAttribute);
-
 			_matcher = new MatcherTool(_rootObject);
-		}
-
-		selector_internal function get parser():Parser {
-			return _parser;
+			//_matchingTree = new MatchingTree();
 		}
 
 
-		selector_internal function get matcherTool():MatcherTool {
-			return _matcher;
+		public function addSelector(selectorString:String):void {
+			var parsed:ParserResult = _parser.parse(selectorString);
+			_knownSelectors.add(selectorString, parsed);
+		}
+
+		//TODO (arneschroppe 14/2/12) use selector tree here, for optimization
+		public function getSelectorsMatchingObject(object:DisplayObject):Set {
+			var result:Set = new Set();
+			
+			var keyIterator:IIterator = _knownSelectors.keyIterator();
+			while(keyIterator.hasNext()) {
+				var selector:String = keyIterator.next();
+				var parsed:ParserResult = _knownSelectors.itemFor(selector);
+
+				if(_matcher.isObjectMatching(object, parsed.matchers)) {
+					result.add(selector);
+				}
+			}
+
+			return result;
 		}
 
 
@@ -74,6 +98,7 @@ package net.wooga.uiengine.displaylistselector {
 		private function addObjectAndChildren(object:DisplayObject):void {
 			if(!_objectsBeingAdded.has(object)) {
 				_objectsBeingAdded.add(object);
+				//_matcher.invalidateObject(object);
 				dispatchEvent(new DisplayListSelectorEvent(DisplayListSelectorEvent.OBJECT_WAS_ADDED, object));
 			}
 
@@ -87,6 +112,7 @@ package net.wooga.uiengine.displaylistselector {
 		}
 
 
+		////TODO (arneschroppe 13/2/12) this should become obsolete once we have I10N
 		private function resetAddedObjects(event:Event):void {
 			_rootObject.removeEventListener(Event.ENTER_FRAME, resetAddedObjects);
 			_objectsBeingAdded = null;
@@ -100,6 +126,7 @@ package net.wooga.uiengine.displaylistselector {
 				_objectsBeingAdded.remove(object);
 			}
 
+			_matcher.invalidateObject(object);
 			//objectHasChanged(object);
 			//TODO (arneschroppe 11/1/12) use objectWasRemoved here
 		}
@@ -119,7 +146,7 @@ package net.wooga.uiengine.displaylistselector {
 		}
 
 
-		public function addPseudoClass(className:String, pseudoClass:IPseudoClass):void {
+		private function addPseudoClass(className:String, pseudoClass:IPseudoClass):void {
 			if (_pseudoClassProvider.hasPseudoClass(className)) {
 				throw new ArgumentError("Pseudo class " + className + " already exists");
 			}
@@ -127,9 +154,13 @@ package net.wooga.uiengine.displaylistselector {
 			_pseudoClassProvider.addPseudoClass(className, pseudoClass);
 		}
 
+
 		public function objectWasChanged(object:DisplayObject):void {
+			_matcher.invalidateObject(object);
 			dispatchEvent(new DisplayListSelectorEvent(DisplayListSelectorEvent.OBJECT_WAS_CHANGED, object));
+
 		}
+
 
 
 	}

@@ -1,4 +1,4 @@
-package net.wooga.uiengine.displaylistselector.matchers.implementations {
+package net.wooga.uiengine.displaylistselector.matching.old.matchers.implementations {
 
 	import flash.display.DisplayObject;
 	import flash.utils.describeType;
@@ -10,7 +10,7 @@ package net.wooga.uiengine.displaylistselector.matchers.implementations {
 	import org.as3commons.collections.Map;
 	import org.as3commons.collections.framework.IMap;
 
-	public class TypeMatcher implements IMatcher {
+	public class TypeNameMatcher implements IMatcher {
 
 		private var _matchAny:Boolean = false;
 		private var _simpleMatch:Boolean = false;
@@ -19,14 +19,12 @@ package net.wooga.uiengine.displaylistselector.matchers.implementations {
 		private var _typeMatcherRegEx:RegExp;
 		private var _typeName:String;
 
-		private var _typeMatchCache:Map = new Map();
-
 
 		private static const _typeMatchCache:IMap = new Map();
 		private static const _directMatchTypeMatchCache:IMap = new Map();
 		private static const _typeNameParser:QualifiedTypeNameParser = new QualifiedTypeNameParser();
 
-		public function TypeMatcher(typeName:String, onlyMatchImmediateClassType:Boolean = true) {
+		public function TypeNameMatcher(typeName:String, onlyMatchImmediateClassType:Boolean = true) {
 			_onlyMatchImmediateClassType = onlyMatchImmediateClassType;
 
 			_typeName = typeName;
@@ -54,24 +52,13 @@ package net.wooga.uiengine.displaylistselector.matchers.implementations {
 		}
 
 		private function matchesType(subject:DisplayObject):Boolean {
-			var className:String = getQualifiedClassName(subject);
-
-			if(_typeMatchCache.hasKey(className)) {
-				return _typeMatchCache.itemFor(className);
-			}
-			
-			var doesMatch:Boolean;
 			if(_onlyMatchImmediateClassType) {
-				doesMatch = isMatchingType(className);
+				var className:String = getQualifiedClassName(subject);
+				return isMatchingType(className);
+
 			}
-			else {
-				doesMatch = isAnySuperClassMatchingTypeName(subject);
-			}
 
-
-			_typeMatchCache.add(className, doesMatch);
-
-			return doesMatch;
+			return isAnySuperClassMatchingTypeName(subject);
 		}
 
 

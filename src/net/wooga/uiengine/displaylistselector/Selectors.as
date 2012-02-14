@@ -4,8 +4,12 @@ package net.wooga.uiengine.displaylistselector {
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 
-	import net.wooga.uiengine.displaylistselector.matching.MatcherTool;
+	import net.wooga.uiengine.displaylistselector.matching.MatchingTree;
+
+	import net.wooga.uiengine.displaylistselector.matching.old.MatcherTool;
+	import net.wooga.uiengine.displaylistselector.matching.old.matchers.IMatcher;
 	import net.wooga.uiengine.displaylistselector.parser.Parser;
+	import net.wooga.uiengine.displaylistselector.parser.ParserResult;
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.FirstChild;
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.IPseudoClass;
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.IsEmpty;
@@ -17,7 +21,10 @@ package net.wooga.uiengine.displaylistselector {
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.Root;
 	import net.wooga.uiengine.displaylistselector.IExternalPropertySource;
 
+	import org.as3commons.collections.Map;
+
 	import org.as3commons.collections.Set;
+	import org.as3commons.collections.framework.IIterator;
 
 	public class Selectors extends EventDispatcher {
 
@@ -25,9 +32,12 @@ package net.wooga.uiengine.displaylistselector {
 		private var _objectsBeingAdded:Set;
 
 		private var _parser:Parser;
+		//private var _matchingTree:MatchingTree;
 		private var _pseudoClassProvider:PseudoClassProvider;
 
 		private var _matcher:MatcherTool;
+
+		private var _knownSelectors:Map = new Map();
 
 		public function initializeWith(rootObject:DisplayObjectContainer, externalPropertySource:IExternalPropertySource = null, idAttribute:String = "name", classAttribute:String = "group"):void {
 			_rootObject = rootObject;
@@ -45,9 +55,31 @@ package net.wooga.uiengine.displaylistselector {
 
 			_parser = new Parser(externalPropertySource, _pseudoClassProvider, idAttribute, classAttribute);
 			_matcher = new MatcherTool(_rootObject);
+			//_matchingTree = new MatchingTree();
 		}
 
 
+		public function addSelector(selectorString:String):void {
+			var parsed:ParserResult = _parser.parse(selectorString);
+			_knownSelectors.add(selectorString, parsed);
+		}
+
+		//TODO (arneschroppe 14/2/12) use selector tree here, for optimization
+		public function getSelectorsMatchingObject(object:DisplayObject):Set {
+			var result:Set = new Set();
+			
+			var keyIterator:IIterator = _knownSelectors.keyIterator();
+			while(keyIterator.hasNext()) {
+				var selector:String = keyIterator.next();
+				var parsed:ParserResult = _knownSelectors.itemFor(selector);
+
+				if(_matcher.isObjectMatching(object, parsed.matchers)) {
+					result.add(selector);
+				}
+			}
+
+			return result;
+		}
 
 
 		private function onAddedToStage(event:Event):void {
@@ -131,8 +163,5 @@ package net.wooga.uiengine.displaylistselector {
 
 
 
-		public function getSelectorsMatchingObject(object:DisplayObject):Set {
-			
-		}
 	}
 }

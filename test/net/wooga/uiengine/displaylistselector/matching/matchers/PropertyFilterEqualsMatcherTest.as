@@ -5,7 +5,7 @@ package net.wooga.uiengine.displaylistselector.matching.matchers {
 	import net.wooga.fixtures.TestSpriteB;
 	import net.wooga.fixtures.TestSpriteC;
 	import net.wooga.fixtures.containsInArrayExactly;
-	import net.wooga.uiengine.displaylistselector.matching.matchers.implementations.PropertyFilterEqualsMatcher;
+	import net.wooga.uiengine.displaylistselector.matching.old.matchers.implementations.PropertyFilterEqualsMatcher;
 
 	import org.hamcrest.assertThat;
 	import org.hamcrest.collection.everyItem;

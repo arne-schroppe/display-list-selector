@@ -1,7 +1,7 @@
-package net.wooga.uiengine.displaylistselector.matching.metadata {
+package net.wooga.uiengine.displaylistselector.matching.old.metadata {
 	import flash.display.DisplayObject;
 
-	import net.wooga.uiengine.displaylistselector.matching.matchers.IMatcher;
+	import net.wooga.uiengine.displaylistselector.matching.old.matchers.IMatcher;
 
 	import org.as3commons.collections.Set;
 	import org.as3commons.collections.framework.IIterator;

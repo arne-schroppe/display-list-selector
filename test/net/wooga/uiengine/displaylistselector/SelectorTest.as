@@ -1,5 +1,7 @@
 package net.wooga.uiengine.displaylistselector {
 
+	import flash.display.DisplayObject;
+	import flash.display.DisplayObjectContainer;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 
@@ -53,14 +55,16 @@ package net.wooga.uiengine.displaylistselector {
 				.a(TestSpriteC)
 			.end.finish();
 
-			_selector = new SelectorImpl("TestSpriteB", _selectors);
-			var matchedObjects:Set = _selector.getMatchedObjects();
+
+			var matchedObjects:Set = getMatchedObjectsFor("TestSpriteB");
 			assert_should_match_element_selector(matchedObjects);
 
 			//Second call tests cached version
-			matchedObjects = _selector.getMatchedObjects();
-			assert_should_match_element_selector(matchedObjects);
+			//matchedObjects = getMatchedObjectsFor("TestSpriteB");
+			//assert_should_match_element_selector(matchedObjects);
 		}
+
+
 
 		private function assert_should_match_element_selector(matchedObjects:Set):void {
 			assertContainsObjectOfClass(matchedObjects, TestSpriteB);
@@ -79,12 +83,11 @@ package net.wooga.uiengine.displaylistselector {
 				.end.finish();
 
 
-			_selector = new SelectorImpl("*", _selectors);
-			var matchedObjects:Set = _selector.getMatchedObjects();
+			var matchedObjects:Set = getMatchedObjectsFor("*");
 			assert_should_match_any_selector(matchedObjects);
 
-			matchedObjects = _selector.getMatchedObjects();
-			assert_should_match_any_selector(matchedObjects);
+			//matchedObjects = _selector.getMatchedObjects();
+			//assert_should_match_any_selector(matchedObjects);
 		}
 
 		private function assert_should_match_any_selector(matchedObjects:Set):void {
@@ -105,12 +108,11 @@ package net.wooga.uiengine.displaylistselector {
 					.a(TestSpriteC)
 				.end.finish();
 
-			_selector = new SelectorImpl("TestSpriteB > TestSpriteC", _selectors);
-			var matchedObjects:Set = _selector.getMatchedObjects();
+			var matchedObjects:Set = getMatchedObjectsFor("TestSpriteB > TestSpriteC");
 			assert_should_match_nested_class(matchedObjects);
 
-			matchedObjects = _selector.getMatchedObjects();
-			assert_should_match_nested_class(matchedObjects);
+			//matchedObjects = _selector.getMatchedObjects();
+			//assert_should_match_nested_class(matchedObjects);
 		}
 
 		private function assert_should_match_nested_class(matchedObjects:Set):void {
@@ -134,12 +136,11 @@ package net.wooga.uiengine.displaylistselector {
 					.a(TestSpriteC).withTheName(expectedName)
 				.end.finish();
 
-			_selector = new SelectorImpl("TestSpriteC[name='" + expectedName + "']", _selectors);
-			var matchedObjects:Set = _selector.getMatchedObjects();
+			var matchedObjects:Set = getMatchedObjectsFor("TestSpriteC[name='" + expectedName + "']");
 			assert_should_match_class_with_name(matchedObjects, expectedName);
 
-			matchedObjects = _selector.getMatchedObjects();
-			assert_should_match_class_with_name(matchedObjects, expectedName);
+			//matchedObjects = _selector.getMatchedObjects();
+			//assert_should_match_class_with_name(matchedObjects, expectedName);
 
 		}
 
@@ -162,12 +163,11 @@ package net.wooga.uiengine.displaylistselector {
 			var value:String = "success";
 
 			_propertyDictionary.addItem(propertyName, value);
-			_selector = new SelectorImpl("TestSpriteA[" + propertyName + "='" + value + "']", _selectors);
-			var matchedObjects:Set = _selector.getMatchedObjects();
+			var matchedObjects:Set = getMatchedObjectsFor("TestSpriteA[" + propertyName + "='" + value + "']");
 			assert_should_match_class_with_external_property(matchedObjects);
 
-			matchedObjects = _selector.getMatchedObjects();
-			assert_should_match_class_with_external_property(matchedObjects);
+			//matchedObjects = _selector.getMatchedObjects();
+			//assert_should_match_class_with_external_property(matchedObjects);
 
 		}
 
@@ -189,12 +189,11 @@ package net.wooga.uiengine.displaylistselector {
 
 			_propertyDictionary.addItem(propertyName, value);
 
-			_selector = new SelectorImpl("TestSpriteA#test", _selectors);
-			var matchedObjects:Set = _selector.getMatchedObjects();
+			var matchedObjects:Set =getMatchedObjectsFor("TestSpriteA#test");
 			assert_should_match_css_id_selector(matchedObjects);
 
-			matchedObjects = _selector.getMatchedObjects();
-			assert_should_match_css_id_selector(matchedObjects);
+			//matchedObjects = _selector.getMatchedObjects();
+			//assert_should_match_css_id_selector(matchedObjects);
 
 		}
 
@@ -220,12 +219,11 @@ package net.wooga.uiengine.displaylistselector {
 			values.add("C");
 			_propertyDictionary.addItem("state", values);
 
-			_selector = new SelectorImpl("TestSpriteA[state~='expectedValue']", _selectors);
-			var matchedObjects:Set = _selector.getMatchedObjects();
+			var matchedObjects:Set = getMatchedObjectsFor("TestSpriteA[state~='expectedValue']");
 			assert_should_match_oneof_selector(matchedObjects);
 
-			matchedObjects = _selector.getMatchedObjects();
-			assert_should_match_oneof_selector(matchedObjects);
+			//matchedObjects = _selector.getMatchedObjects();
+			//assert_should_match_oneof_selector(matchedObjects);
 
 		}
 
@@ -251,12 +249,11 @@ package net.wooga.uiengine.displaylistselector {
 			values.add("C");
 			_propertyDictionary.addItem("class", values);
 
-			_selector = new SelectorImpl("TestSpriteA.testClass", _selectors);
-			var matchedObjects:Set = _selector.getMatchedObjects();
+			var matchedObjects:Set = getMatchedObjectsFor("TestSpriteA.testClass");
 			assert_should_match_cssclass_selector(matchedObjects);
 
-			matchedObjects = _selector.getMatchedObjects();
-			assert_should_match_cssclass_selector(matchedObjects);
+			//matchedObjects = _selector.getMatchedObjects();
+			//assert_should_match_cssclass_selector(matchedObjects);
 
 		}
 
@@ -279,12 +276,11 @@ package net.wooga.uiengine.displaylistselector {
 					.end
 				.end.finish();
 
-			_selector = new SelectorImpl("* > TestSpriteC", _selectors);
-			var matchedObjects:Set = _selector.getMatchedObjects();
+			var matchedObjects:Set = getMatchedObjectsFor("* > TestSpriteC");
 			assert_should_match_different_branches(matchedObjects);
 
-			matchedObjects = _selector.getMatchedObjects();
-			assert_should_match_different_branches(matchedObjects);
+			//matchedObjects = _selector.getMatchedObjects();
+			//assert_should_match_different_branches(matchedObjects);
 
 		}
 
@@ -315,12 +311,11 @@ package net.wooga.uiengine.displaylistselector {
 					.a(TestSpriteC)
 				.end.finish();
 
-			_selector = new SelectorImpl("TestSpriteA TestSpriteC", _selectors);
-			var matchedObjects:Set = _selector.getMatchedObjects();
+			var matchedObjects:Set = getMatchedObjectsFor("TestSpriteA TestSpriteC");
 			assert_should_match_descendant_objects(matchedObjects);
 
-			matchedObjects = _selector.getMatchedObjects();
-			assert_should_match_descendant_objects(matchedObjects);
+			//matchedObjects = _selector.getMatchedObjects();
+			//assert_should_match_descendant_objects(matchedObjects);
 
 		}
 
@@ -356,12 +351,11 @@ package net.wooga.uiengine.displaylistselector {
 					.a(TestSpriteC)
 				.end.finish();
 
-			_selector = new SelectorImpl("TestSpriteA TestSpriteC", _selectors);
-			var matchedObjects:Set = _selector.getMatchedObjects();
+			var matchedObjects:Set = getMatchedObjectsFor("TestSpriteA TestSpriteC");
 			assert_should_match_contrived_descendant_objects(matchedObjects);
 
-			matchedObjects = _selector.getMatchedObjects();
-			assert_should_match_contrived_descendant_objects(matchedObjects);
+			//matchedObjects = _selector.getMatchedObjects();
+			//assert_should_match_contrived_descendant_objects(matchedObjects);
 
 		}
 
@@ -391,12 +385,11 @@ package net.wooga.uiengine.displaylistselector {
 					.a(TestSpriteC)
 				.end.finish();
 
-			_selector = new SelectorImpl("*:root", _selectors);
-			var matchedObjects:Set = _selector.getMatchedObjects();
+			var matchedObjects:Set =  getMatchedObjectsFor("*:root");
 			assert_should_match_root_pseudo_class(matchedObjects);
 
-			matchedObjects = _selector.getMatchedObjects();
-			assert_should_match_root_pseudo_class(matchedObjects);
+			//matchedObjects = _selector.getMatchedObjects();
+			//assert_should_match_root_pseudo_class(matchedObjects);
 
 		}
 
@@ -415,12 +408,11 @@ package net.wooga.uiengine.displaylistselector {
 					.a(TestSpriteC)
 				.end.finish();
 
-			_selector = new SelectorImpl("*:root > *:first-child", _selectors);
-			var matchedObjects:Set = _selector.getMatchedObjects();
+			var matchedObjects:Set = getMatchedObjectsFor("*:root > *:first-child");
 			assert_should_match_firstchild_pseudo_class(matchedObjects);
 
-			matchedObjects = _selector.getMatchedObjects();
-			assert_should_match_firstchild_pseudo_class(matchedObjects);
+			//matchedObjects = _selector.getMatchedObjects();
+			//assert_should_match_firstchild_pseudo_class(matchedObjects);
 
 		}
 
@@ -439,12 +431,11 @@ package net.wooga.uiengine.displaylistselector {
 					.a(TestSpriteC)
 				.end.finish();
 
-			_selector = new SelectorImpl("*:root > *:last-child", _selectors);
-			var matchedObjects:Set = _selector.getMatchedObjects();
+			var matchedObjects:Set = getMatchedObjectsFor("*:root > *:last-child");
 			assert_should_match_lastchild_pseudo_class(matchedObjects);
 
-			matchedObjects = _selector.getMatchedObjects();
-			assert_should_match_lastchild_pseudo_class(matchedObjects);
+			//matchedObjects = _selector.getMatchedObjects();
+			//assert_should_match_lastchild_pseudo_class(matchedObjects);
 
 		}
 
@@ -468,12 +459,12 @@ package net.wooga.uiengine.displaylistselector {
 					.a(TestSpriteA)
 				.end.finish();
 
-			_selector = new SelectorImpl("*:root > *:nth-child(6)", _selectors);
-			var matchedObjects:Set = _selector.getMatchedObjects();
+
+			var matchedObjects:Set = getMatchedObjectsFor("*:root > *:nth-child(6)");
 			assert_should_match_nthchild_pseudo_class(matchedObjects);
 
-			matchedObjects = _selector.getMatchedObjects();
-			assert_should_match_nthchild_pseudo_class(matchedObjects);
+			//matchedObjects = _selector.getMatchedObjects();
+			//assert_should_match_nthchild_pseudo_class(matchedObjects);
 
 		}
 
@@ -497,12 +488,11 @@ package net.wooga.uiengine.displaylistselector {
 					.a(TestSpriteA)
 					.end.finish();
 
-			_selector = new SelectorImpl("*:root > *:nth-child(-2n + 5)", _selectors);
-			var matchedObjects:Set = _selector.getMatchedObjects();
+			var matchedObjects:Set = getMatchedObjectsFor("*:root > *:nth-child(-2n + 5)");
 			assert_should_match_nthchild_pseudo_class_with_complex_argument(matchedObjects);
 
-			matchedObjects = _selector.getMatchedObjects();
-			assert_should_match_nthchild_pseudo_class_with_complex_argument(matchedObjects);
+			//matchedObjects = _selector.getMatchedObjects();
+			//assert_should_match_nthchild_pseudo_class_with_complex_argument(matchedObjects);
 
 		}
 
@@ -526,12 +516,12 @@ package net.wooga.uiengine.displaylistselector {
 					.a(TestSpriteA)
 				.end.finish();
 
-			_selector = new SelectorImpl("*:root > *:nth-last-child(3)", _selectors);
-			var matchedObjects:Set = _selector.getMatchedObjects();
+
+			var matchedObjects:Set = getMatchedObjectsFor("*:root > *:nth-last-child(3)");
 			assert_should_match_nthlastchild_pseudo_class(matchedObjects);
 
-			matchedObjects = _selector.getMatchedObjects();
-			assert_should_match_nthlastchild_pseudo_class(matchedObjects);
+			//matchedObjects = _selector.getMatchedObjects();
+			//assert_should_match_nthlastchild_pseudo_class(matchedObjects);
 
 		}
 
@@ -560,12 +550,11 @@ package net.wooga.uiengine.displaylistselector {
 			var value:String = "testName";
 			_propertyDictionary.addItem(propertyName, value);
 
-			_selector = new SelectorImpl("*:root > *#testName[testattrib~='1234']", _selectors);
-			var matchedObjects:Set = _selector.getMatchedObjects();
+			var matchedObjects:Set = getMatchedObjectsFor("*:root > *#testName[testattrib~='1234']");
 			assert_should_match_id_and_attribute_selector(matchedObjects);
 
-			matchedObjects = _selector.getMatchedObjects();
-			assert_should_match_id_and_attribute_selector(matchedObjects);
+			//matchedObjects = _selector.getMatchedObjects();
+			//assert_should_match_id_and_attribute_selector(matchedObjects);
 
 		}
 
@@ -587,12 +576,12 @@ package net.wooga.uiengine.displaylistselector {
 			 the contextView (which is :root in this case) is ALSO matched, which might lead to erratic
 			 behaviour (since we don't know how many siblings contextView has on the stage) (arneschroppe 23/12/11)
 			 */
-			_selector = new SelectorImpl(":root > :nth-child(2)", _selectors);
-			var matchedObjects:Set = _selector.getMatchedObjects();
+			getMatchedObjectsFor(":root > :nth-child(2)");
+			var matchedObjects:Set = getMatchedObjectsFor(":root > :nth-child(2)");
 			assert_should_match_selectors_without_element_selector(matchedObjects);
 
-			matchedObjects = _selector.getMatchedObjects();
-			assert_should_match_selectors_without_element_selector(matchedObjects);
+			//matchedObjects = _selector.getMatchedObjects();
+			//assert_should_match_selectors_without_element_selector(matchedObjects);
 
 		}
 
@@ -611,12 +600,12 @@ package net.wooga.uiengine.displaylistselector {
 					.a(TestSpriteB)
 					.end.finish();
 
-			_selector = new SelectorImpl(":root > ^Sprite", _selectors);
-			var matchedObjects:Set = _selector.getMatchedObjects();
+
+			var matchedObjects:Set = getMatchedObjectsFor(":root > ^Sprite");
 			assert_should_match_isA_selector(matchedObjects);
 
-			matchedObjects = _selector.getMatchedObjects();
-			assert_should_match_isA_selector(matchedObjects);
+			//matchedObjects = _selector.getMatchedObjects();
+			//assert_should_match_isA_selector(matchedObjects);
 
 		}
 
@@ -638,12 +627,12 @@ package net.wooga.uiengine.displaylistselector {
 					.a(TestSpriteB)
 					.end.finish();
 
-			_selector = new SelectorImpl("(fixtures.*.TestSpritePack)", _selectors);
-			var matchedObjects:Set = _selector.getMatchedObjects();
+			getMatchedObjectsFor("(fixtures.*.TestSpritePack)");
+			var matchedObjects:Set = getMatchedObjectsFor("(fixtures.*.TestSpritePack)");
 			assert_should_match_qualified_class_name(matchedObjects);
 
-			matchedObjects = _selector.getMatchedObjects();
-			assert_should_match_qualified_class_name(matchedObjects);
+			//matchedObjects = _selector.getMatchedObjects();
+			//assert_should_match_qualified_class_name(matchedObjects);
 
 		}
 
@@ -663,12 +652,11 @@ package net.wooga.uiengine.displaylistselector {
 					.a(TestSpriteWithInterface)
 					.end.finish();
 
-			_selector = new SelectorImpl(":root > ^TestInterface", _selectors);
-			var matchedObjects:Set = _selector.getMatchedObjects();
+			var matchedObjects:Set = getMatchedObjectsFor(":root > ^TestInterface");
 			assert_should_match_interface(matchedObjects);
 
-			matchedObjects = _selector.getMatchedObjects();
-			assert_should_match_interface(matchedObjects);
+			//matchedObjects = _selector.getMatchedObjects();
+			//assert_should_match_interface(matchedObjects);
 
 		}
 
@@ -681,13 +669,14 @@ package net.wooga.uiengine.displaylistselector {
 
 
 
+		[Ignore("Test not possible because of API changes")]
 		[Test]
 		public function isA_selector_should_have_lower_specificity_than_element_selector():void {
 
-			var isASelector:SelectorImpl = new SelectorImpl("^TestSpriteA", _selectors);
-			var elementSelector:SelectorImpl = new SelectorImpl("TestSpriteA", _selectors);
+			//var isASelector:SelectorImpl = new SelectorImpl("^TestSpriteA", _selectors);
+			//var elementSelector:SelectorImpl = new SelectorImpl("TestSpriteA", _selectors);
 
-			assertThat(isASelector.specificity.isLessThan(elementSelector.specificity), isTrue());
+			//assertThat(isASelector.specificity.isLessThan(elementSelector.specificity), isTrue());
 
 		}
 
@@ -707,12 +696,12 @@ package net.wooga.uiengine.displaylistselector {
 					.a(TestSpriteB)
 				.end.finish();
 
-			_selector = new SelectorImpl("TestSpriteA, TestSpriteB", _selectors);
-			var matchedObjects:Set = _selector.getMatchedObjects();
+
+			var matchedObjects:Set = getMatchedObjectsFor("TestSpriteA, TestSpriteB");
 			assert_should_have_a_comma_separator_to_select_the_union_of_several_selectors(matchedObjects);
 
-			matchedObjects = _selector.getMatchedObjects();
-			assert_should_have_a_comma_separator_to_select_the_union_of_several_selectors(matchedObjects);
+			//matchedObjects = _selector.getMatchedObjects();
+			//assert_should_have_a_comma_separator_to_select_the_union_of_several_selectors(matchedObjects);
 		}
 
 
@@ -733,9 +722,8 @@ package net.wooga.uiengine.displaylistselector {
 					.end
 				.end.finish();
 
-			_selector = new SelectorImpl("TestSpriteB TestSpriteC:first-child, TestSpriteB > TestSpriteC", _selectors);
-			var matchedObjects:Set = _selector.getMatchedObjects();
 
+			var matchedObjects:Set = getMatchedObjectsFor("TestSpriteB TestSpriteC:first-child, TestSpriteB > TestSpriteC");
 
 			assertThat(matchedObjects.size, equalTo(3));
 			assertThat(matchedObjects, containsExactly(3, isA(TestSpriteC)));
@@ -777,6 +765,31 @@ package net.wooga.uiengine.displaylistselector {
 			assertThat(objects, everyItemInCollection(not(isA(Type))));
 		}
 
+
+
+		private function getMatchedObjectsFor(selectorString:String):Set {
+			_selectors.addSelector(selectorString);
+			var result:Set = new Set();
+
+			scanForMatches(contextView, selectorString, result);
+
+			return result;
+
+		}
+
+		private function scanForMatches(object:DisplayObject, selectorString:String, result:Set):void {
+
+			if(_selectors.getSelectorsMatchingObject(object).has(selectorString)) {
+				result.add(object);
+			}
+
+			var container:DisplayObjectContainer = object as DisplayObjectContainer;
+			if(container) {
+				for(var i:int = 0; i< container.numChildren; ++i) {
+					scanForMatches(container.getChildAt(i), selectorString, result);
+				}
+			}
+		}
 
 	}
 }

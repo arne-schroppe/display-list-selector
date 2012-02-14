@@ -1,13 +1,13 @@
 package net.wooga.uiengine.displaylistselector.parser {
 	import net.wooga.uiengine.displaylistselector.IExternalPropertySource;
 	import net.wooga.uiengine.displaylistselector.input.ParserInput;
-	import net.wooga.uiengine.displaylistselector.matching.matchers.IMatcher;
-	import net.wooga.uiengine.displaylistselector.matching.matchers.implementations.ChildSelectorMatcher;
-	import net.wooga.uiengine.displaylistselector.matching.matchers.implementations.TypeNameMatcher;
-	import net.wooga.uiengine.displaylistselector.matching.matchers.implementations.DescendantSelectorMatcher;
-	import net.wooga.uiengine.displaylistselector.matching.matchers.implementations.PropertyFilterContainsMatcher;
-	import net.wooga.uiengine.displaylistselector.matching.matchers.implementations.PropertyFilterEqualsMatcher;
-	import net.wooga.uiengine.displaylistselector.matching.matchers.implementations.PseudoClassMatcher;
+	import net.wooga.uiengine.displaylistselector.matching.old.matchers.IMatcher;
+	import net.wooga.uiengine.displaylistselector.matching.old.matchers.implementations.ChildSelectorMatcher;
+	import net.wooga.uiengine.displaylistselector.matching.old.matchers.implementations.TypeNameMatcher;
+	import net.wooga.uiengine.displaylistselector.matching.old.matchers.implementations.DescendantSelectorMatcher;
+	import net.wooga.uiengine.displaylistselector.matching.old.matchers.implementations.PropertyFilterContainsMatcher;
+	import net.wooga.uiengine.displaylistselector.matching.old.matchers.implementations.PropertyFilterEqualsMatcher;
+	import net.wooga.uiengine.displaylistselector.matching.old.matchers.implementations.PseudoClassMatcher;
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.IPseudoClass;
 
 	public class Parser {

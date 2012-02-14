@@ -1,11 +1,11 @@
-package net.wooga.uiengine.displaylistselector.matching.matchers.implementations {
+package net.wooga.uiengine.displaylistselector.matching.old.matchers.implementations {
 
 	import flash.display.DisplayObject;
 	import flash.utils.describeType;
 	import flash.utils.getQualifiedClassName;
 
-	import net.wooga.uiengine.displaylistselector.matching.matchers.IMatcher;
-	import net.wooga.uiengine.displaylistselector.matching.matchers.implementations.qualifiedtypename.QualifiedTypeNameParser;
+	import net.wooga.uiengine.displaylistselector.matching.old.matchers.IMatcher;
+	import net.wooga.uiengine.displaylistselector.matching.old.matchers.implementations.qualifiedtypename.QualifiedTypeNameParser;
 
 	import org.as3commons.collections.Map;
 	import org.as3commons.collections.framework.IMap;

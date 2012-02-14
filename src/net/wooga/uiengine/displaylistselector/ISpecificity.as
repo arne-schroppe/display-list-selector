@@ -7,6 +7,8 @@ package net.wooga.uiengine.displaylistselector {
 		function isGreaterThan(other:ISpecificity):Boolean;
 		function isEqualTo(other:ISpecificity):Boolean;
 
+		function compare(other:ISpecificity):int;
+
 		function toString():String;
 
 	}

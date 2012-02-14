@@ -20,11 +20,14 @@ package net.wooga.uiengine.displaylistselector {
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.NthOfType;
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.Root;
 	import net.wooga.uiengine.displaylistselector.IExternalPropertySource;
+	import net.wooga.uiengine.displaylistselector.tools.SpecificityComparator;
 
 	import org.as3commons.collections.Map;
 
 	import org.as3commons.collections.Set;
+	import org.as3commons.collections.SortedSet;
 	import org.as3commons.collections.framework.IIterator;
+	import org.as3commons.collections.framework.ISet;
 
 	public class Selectors extends EventDispatcher {
 
@@ -65,8 +68,8 @@ package net.wooga.uiengine.displaylistselector {
 		}
 
 		//TODO (arneschroppe 14/2/12) use selector tree here, for optimization
-		public function getSelectorsMatchingObject(object:DisplayObject):Set {
-			var result:Set = new Set();
+		public function getSelectorsMatchingObject(object:DisplayObject):ISet {
+			var result:ISet = new SortedSet(new SpecificityComparator(_knownSelectors));
 			
 			var keyIterator:IIterator = _knownSelectors.keyIterator();
 			while(keyIterator.hasNext()) {

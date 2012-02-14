@@ -1,4 +1,6 @@
-package net.wooga.uiengine.displaylistselector {
+package net.wooga.uiengine.displaylistselector.selector {
+	import net.wooga.uiengine.displaylistselector.*;
+	import net.wooga.uiengine.displaylistselector.selector.Selector;
 
 	public class SelectorImpl implements Selector {
 

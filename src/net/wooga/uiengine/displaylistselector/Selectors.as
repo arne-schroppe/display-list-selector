@@ -102,7 +102,6 @@ package net.wooga.uiengine.displaylistselector {
 				dispatchEvent(new DisplayListSelectorEvent(DisplayListSelectorEvent.OBJECT_WAS_ADDED, object));
 			}
 
-
 			if(object is DisplayObjectContainer) {
 				var container:DisplayObjectContainer = object as DisplayObjectContainer;
 				for(var i:int = 0; i < container.numChildren; ++i) {

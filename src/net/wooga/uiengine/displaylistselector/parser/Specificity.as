@@ -29,9 +29,9 @@ package net.wooga.uiengine.displaylistselector.parser {
 			return other is Specificity ? compare(other as Specificity) == 0: this.toNumber() == other.toNumber();
 		}
 
-
-		private function compare(other:Specificity):int {
-			return compareFromPosition(other, _digits.length-1);
+//TODO (arneschroppe 14/2/12) this is slighlty hacked, get the type right
+		public function compare(other:ISpecificity):int {
+			return compareFromPosition(other as Specificity, _digits.length-1);
 		}
 
 

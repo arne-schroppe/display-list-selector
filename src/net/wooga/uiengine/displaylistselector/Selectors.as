@@ -32,7 +32,6 @@ package net.wooga.uiengine.displaylistselector {
 	public class Selectors extends EventDispatcher {
 
 		private var _rootObject:DisplayObjectContainer;
-		private var _objectsBeingAdded:Set;
 
 		private var _parser:Parser;
 		//private var _matchingTree:MatchingTree;
@@ -69,6 +68,9 @@ package net.wooga.uiengine.displaylistselector {
 
 		//TODO (arneschroppe 14/2/12) use selector tree here, for optimization
 		public function getSelectorsMatchingObject(object:DisplayObject):ISet {
+
+			//trace("Getting selectors for " + object);
+			
 			var result:ISet = new SortedSet(new SpecificityComparator(_knownSelectors));
 			
 			var keyIterator:IIterator = _knownSelectors.keyIterator();
@@ -77,6 +79,7 @@ package net.wooga.uiengine.displaylistselector {
 				var parsed:ParserResult = _knownSelectors.itemFor(selector);
 
 				if(_matcher.isObjectMatching(object, parsed.matchers)) {
+					trace(" -- Found: " + selector)
 					result.add(selector);
 				}
 			}
@@ -87,10 +90,6 @@ package net.wooga.uiengine.displaylistselector {
 
 		private function onAddedToStage(event:Event):void {
 
-			if(_objectsBeingAdded == null) {
-				_objectsBeingAdded = new Set();
-				_rootObject.addEventListener(Event.ENTER_FRAME, resetAddedObjects);
-			}
 
 			var object:DisplayObject = event.target as DisplayObject;
 			addObjectAndChildren(object);
@@ -99,11 +98,7 @@ package net.wooga.uiengine.displaylistselector {
 
 
 		private function addObjectAndChildren(object:DisplayObject):void {
-			if(!_objectsBeingAdded.has(object)) {
-				_objectsBeingAdded.add(object);
-				//_matcher.invalidateObject(object);
-				dispatchEvent(new DisplayListSelectorEvent(DisplayListSelectorEvent.OBJECT_WAS_ADDED, object));
-			}
+			dispatchEvent(new DisplayListSelectorEvent(DisplayListSelectorEvent.OBJECT_WAS_ADDED, object));
 
 			if(object is DisplayObjectContainer) {
 				var container:DisplayObjectContainer = object as DisplayObjectContainer;
@@ -114,21 +109,12 @@ package net.wooga.uiengine.displaylistselector {
 		}
 
 
-		////TODO (arneschroppe 13/2/12) this should become obsolete once we have I10N
-		private function resetAddedObjects(event:Event):void {
-			_rootObject.removeEventListener(Event.ENTER_FRAME, resetAddedObjects);
-			_objectsBeingAdded = null;
-		}
-
 
 		private function onRemoved(event:Event):void {
 			var object:DisplayObject = event.target as DisplayObject;
 
-			if(_objectsBeingAdded && _objectsBeingAdded.has(object)) {
-				_objectsBeingAdded.remove(object);
-			}
-
 			_matcher.invalidateObject(object);
+
 			//objectHasChanged(object);
 			//TODO (arneschroppe 11/1/12) use objectWasRemoved here
 		}

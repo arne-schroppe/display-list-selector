@@ -62,6 +62,7 @@ package net.wooga.uiengine.displaylistselector {
 
 
 		public function addSelector(selectorString:String):void {
+			trace("Adding: " + selectorString);
 			var parsed:ParserResult = _parser.parse(selectorString);
 			_knownSelectors.add(selectorString, parsed);
 		}

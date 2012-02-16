@@ -408,7 +408,7 @@ package net.wooga.uiengine.displaylistselector {
 					.a(TestSpriteC)
 				.end.finish();
 
-			var matchedObjects:Set = getMatchedObjectsFor("*:root > *:first-child");
+			var matchedObjects:Set = getMatchedObjectsFor("*:first-child");
 			assert_should_match_firstchild_pseudo_class(matchedObjects);
 
 			//matchedObjects = _selector.getMatchedObjects();
@@ -460,7 +460,7 @@ package net.wooga.uiengine.displaylistselector {
 				.end.finish();
 
 
-			var matchedObjects:Set = getMatchedObjectsFor("*:root > *:nth-child(6)");
+			var matchedObjects:Set = getMatchedObjectsFor("*:nth-child(6)");
 			assert_should_match_nthchild_pseudo_class(matchedObjects);
 
 			//matchedObjects = _selector.getMatchedObjects();
@@ -488,7 +488,7 @@ package net.wooga.uiengine.displaylistselector {
 					.a(TestSpriteA)
 					.end.finish();
 
-			var matchedObjects:Set = getMatchedObjectsFor("*:root > *:nth-child(-2n + 5)");
+			var matchedObjects:Set = getMatchedObjectsFor("*:nth-child(-2n + 5)");
 			assert_should_match_nthchild_pseudo_class_with_complex_argument(matchedObjects);
 
 			//matchedObjects = _selector.getMatchedObjects();
@@ -517,7 +517,7 @@ package net.wooga.uiengine.displaylistselector {
 				.end.finish();
 
 
-			var matchedObjects:Set = getMatchedObjectsFor("*:root > *:nth-last-child(3)");
+			var matchedObjects:Set = getMatchedObjectsFor("*:nth-last-child(3)");
 			assert_should_match_nthlastchild_pseudo_class(matchedObjects);
 
 			//matchedObjects = _selector.getMatchedObjects();
@@ -550,7 +550,7 @@ package net.wooga.uiengine.displaylistselector {
 			var value:String = "testName";
 			_propertyDictionary.addItem(propertyName, value);
 
-			var matchedObjects:Set = getMatchedObjectsFor("*:root > *#testName[testattrib~='1234']");
+			var matchedObjects:Set = getMatchedObjectsFor("*#testName[testattrib~='1234']");
 			assert_should_match_id_and_attribute_selector(matchedObjects);
 
 			//matchedObjects = _selector.getMatchedObjects();
@@ -572,12 +572,8 @@ package net.wooga.uiengine.displaylistselector {
 					.a(TestSpriteC)
 				.end.finish();
 
-			/*IMPORTANT: We need to a ":root >" in front of the selector under test. Otherwise
-			 the contextView (which is :root in this case) is ALSO matched, which might lead to erratic
-			 behaviour (since we don't know how many siblings contextView has on the stage) (arneschroppe 23/12/11)
-			 */
-			getMatchedObjectsFor(":root > :nth-child(2)");
-			var matchedObjects:Set = getMatchedObjectsFor(":root > :nth-child(2)");
+			getMatchedObjectsFor(":nth-child(2)");
+			var matchedObjects:Set = getMatchedObjectsFor(":nth-child(2)");
 			assert_should_match_selectors_without_element_selector(matchedObjects);
 
 			//matchedObjects = _selector.getMatchedObjects();
@@ -601,7 +597,7 @@ package net.wooga.uiengine.displaylistselector {
 					.end.finish();
 
 
-			var matchedObjects:Set = getMatchedObjectsFor(":root > ^Sprite");
+			var matchedObjects:Set = getMatchedObjectsFor("^Sprite");
 			assert_should_match_isA_selector(matchedObjects);
 
 			//matchedObjects = _selector.getMatchedObjects();

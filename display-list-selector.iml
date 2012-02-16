@@ -8,7 +8,7 @@
     <option name="VERSION" value="3" />
   </component>
   <component name="NewModuleRootManager" inherit-compiler-output="false">
-    <output url="file://$MODULE_DIR$/../as3-wooga-uiengine/libs" />
+    <output url="file://$MODULE_DIR$/bin" />
     <output-test url="file://$MODULE_DIR$/bin/test" />
     <exclude-output />
     <content url="file://$MODULE_DIR$">

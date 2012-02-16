@@ -31,7 +31,7 @@ package net.wooga.uiengine.displaylistselector.matching.old {
 
 
 
-
+/*
 		public function findMatchingObjects(matchers:Vector.<ParsedSelector>):Set {
 
 			_matchedObjects = new Set();
@@ -68,7 +68,7 @@ package net.wooga.uiengine.displaylistselector.matching.old {
 				match(container.getChildAt(i));
 			}
 		}
-
+*/
 
 	/*
 		private function match(currentObject:DisplayObject, runningMatcherPointers:Vector.<MatcherPointer>):void {
@@ -150,13 +150,6 @@ package net.wooga.uiengine.displaylistselector.matching.old {
 		}
 
 
-		private function currentMatcherIsChildMatcher(currentIndex:int):Boolean {
-			return _currentlyMatchedMatchers[currentIndex] is ChildSelectorMatcher;
-		}
-
-		private function currentMatcherIsDescendantMatcher(currentIndex:int):Boolean {
-			return _currentlyMatchedMatchers[currentIndex] is DescendantSelectorMatcher;
-		}
 
 
 		private function matchChildren(container:DisplayObjectContainer, runningMatcherPointers:Vector.<MatcherPointer>):void {
@@ -190,7 +183,7 @@ package net.wooga.uiengine.displaylistselector.matching.old {
 
 			//TODO (arneschroppe 7/2/12) adapt this
 
-			_metaDataPool.invalidate(object);
+			//_metaDataPool.invalidate(object);
 		}
 
 
@@ -208,8 +201,8 @@ package net.wooga.uiengine.displaylistselector.matching.old {
 					continue;
 				}
 				else {
-					//var isMatching:Boolean = reverseMatch(object, _currentlyMatchedMatchers.length - 1);
-					var isMatching:Boolean = isMatching(object);
+					var isMatching:Boolean = reverseMatch(object, _currentlyMatchedMatchers.length - 1);
+					//var isMatching:Boolean = reverseMatch(object, )
 					if(isMatching) {
 						return true;
 					}
@@ -217,13 +210,14 @@ package net.wooga.uiengine.displaylistselector.matching.old {
 			}
 
 			return false;
+
 		}
 
 
-		private function isMatching(object:DisplayObject):Boolean {
-
-			return _metaDataPool.isMatching(object, _currentlyMatchedSelector, _currentlyMatchedMatchers);
-		}
+		//private function isMatching(object:DisplayObject):Boolean {
+		//
+		//	return _metaDataPool.isMatching(object, _currentlyMatchedSelector, _currentlyMatchedMatchers);
+		//}
 
 
 
@@ -266,7 +260,7 @@ package net.wooga.uiengine.displaylistselector.matching.old {
 
 		*/
 
-		/*
+
 		private function reverseMatch(subject:DisplayObject, nextMatcher:int):Boolean {
 
 
@@ -336,7 +330,17 @@ package net.wooga.uiengine.displaylistselector.matching.old {
 			//selectorMetaData.isMatching = result;
 			//selectorMetaData.needsRematch = false;
 			return result;
-		}*/
+		}
+
+
+		private function currentMatcherIsChildMatcher(currentIndex:int):Boolean {
+			return _currentlyMatchedMatchers[currentIndex] is ChildSelectorMatcher;
+		}
+
+		private function currentMatcherIsDescendantMatcher(currentIndex:int):Boolean {
+			return _currentlyMatchedMatchers[currentIndex] is DescendantSelectorMatcher;
+		}
+
 
 	}
 }

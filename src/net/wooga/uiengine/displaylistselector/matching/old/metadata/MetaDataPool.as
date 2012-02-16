@@ -43,7 +43,7 @@ package net.wooga.uiengine.displaylistselector.matching.old.metadata {
 			if(!metaData) {
 
 
-				trace("===== Building matcher list for " + object);
+				//trace("===== Building matcher list for " + object);
 				
 				_currentSubject = object;
 				_position = matchers.length;

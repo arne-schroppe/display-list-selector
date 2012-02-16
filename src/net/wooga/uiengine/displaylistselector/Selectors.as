@@ -62,7 +62,7 @@ package net.wooga.uiengine.displaylistselector {
 
 
 		public function addSelector(selectorString:String):void {
-			trace("Adding: " + selectorString);
+			//trace("Adding: " + selectorString);
 			var parsed:ParserResult = _parser.parse(selectorString);
 			_knownSelectors.add(selectorString, parsed);
 		}
@@ -70,8 +70,7 @@ package net.wooga.uiengine.displaylistselector {
 		//TODO (arneschroppe 14/2/12) use selector tree here, for optimization
 		public function getSelectorsMatchingObject(object:DisplayObject):ISet {
 
-			//trace("Getting selectors for " + object);
-			
+
 			var result:ISet = new SortedSet(new SpecificityComparator(_knownSelectors));
 			
 			var keyIterator:IIterator = _knownSelectors.keyIterator();
@@ -80,7 +79,6 @@ package net.wooga.uiengine.displaylistselector {
 				var parsed:ParserResult = _knownSelectors.itemFor(selector);
 
 				if(_matcher.isObjectMatching(object, parsed.matchers)) {
-					trace(" -- Found: " + selector)
 					result.add(selector);
 				}
 			}

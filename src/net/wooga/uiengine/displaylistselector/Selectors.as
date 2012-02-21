@@ -34,18 +34,17 @@ package net.wooga.uiengine.displaylistselector {
 		private var _rootObject:DisplayObjectContainer;
 
 		private var _parser:Parser;
-		//private var _matchingTree:MatchingTree;
 		private var _pseudoClassProvider:PseudoClassProvider;
 
 		private var _matcher:MatcherTool;
 
 		private var _knownSelectors:Map = new Map();
 
+		//TODO (arneschroppe 21/2/12) for F10 displayobjects we could provide automatic adding and removing of adapters by listening to added_to_stage and stuff
+		//TODO (arneschroppe 21/2/12) id and class attributes are of course also reflected through adapters
 		public function initializeWith(rootObject:DisplayObjectContainer, externalPropertySource:IExternalPropertySource = null, idAttribute:String = "name", classAttribute:String = "group"):void {
 			_rootObject = rootObject;
-
-			_rootObject.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage, true);
-			_rootObject.addEventListener(Event.REMOVED_FROM_STAGE, onRemoved, true);
+			//TODO (arneschroppe 21/2/12) we don't need to know the root object, we only need to check for the root property on the adapter! (but will everyone implement this properly?)
 
 			var externalPropertySource:IExternalPropertySource = externalPropertySource;
 			if (externalPropertySource == null) {
@@ -57,19 +56,16 @@ package net.wooga.uiengine.displaylistselector {
 
 			_parser = new Parser(externalPropertySource, _pseudoClassProvider, idAttribute, classAttribute);
 			_matcher = new MatcherTool(_rootObject);
-			//_matchingTree = new MatchingTree();
 		}
 
 
 		public function addSelector(selectorString:String):void {
-			//trace("Adding: " + selectorString);
 			var parsed:ParserResult = _parser.parse(selectorString);
 			_knownSelectors.add(selectorString, parsed);
 		}
 
 		//TODO (arneschroppe 14/2/12) use selector tree here, for optimization
 		public function getSelectorsMatchingObject(object:DisplayObject):ISet {
-
 
 			var result:ISet = new SortedSet(new SpecificityComparator(_knownSelectors));
 			
@@ -85,39 +81,6 @@ package net.wooga.uiengine.displaylistselector {
 
 			return result;
 		}
-
-
-		private function onAddedToStage(event:Event):void {
-
-
-			var object:DisplayObject = event.target as DisplayObject;
-			addObjectAndChildren(object);
-		}
-
-
-
-		private function addObjectAndChildren(object:DisplayObject):void {
-			dispatchEvent(new DisplayListSelectorEvent(DisplayListSelectorEvent.OBJECT_WAS_ADDED, object));
-
-			if(object is DisplayObjectContainer) {
-				var container:DisplayObjectContainer = object as DisplayObjectContainer;
-				for(var i:int = 0; i < container.numChildren; ++i) {
-					addObjectAndChildren(container.getChildAt(i));
-				}
-			}
-		}
-
-
-
-		private function onRemoved(event:Event):void {
-			var object:DisplayObject = event.target as DisplayObject;
-
-			_matcher.invalidateObject(object);
-
-			//objectHasChanged(object);
-			//TODO (arneschroppe 11/1/12) use objectWasRemoved here
-		}
-
 
 
 		//TODO (arneschroppe 11/1/12) we need a well-defined way to determine when a pseudo-class needs to be rematched. many of these only work with a very static display tree
@@ -144,11 +107,7 @@ package net.wooga.uiengine.displaylistselector {
 
 		public function objectWasChanged(object:DisplayObject):void {
 			_matcher.invalidateObject(object);
-			dispatchEvent(new DisplayListSelectorEvent(DisplayListSelectorEvent.OBJECT_WAS_CHANGED, object));
-
 		}
-
-
 
 	}
 }

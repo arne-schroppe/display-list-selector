@@ -5,10 +5,10 @@ package net.wooga.uiengine.displaylistselector.pseudoclasses {
 
 	public class Root implements IPseudoClass {
 
-		private var _rootView:DisplayObjectContainer;
+		private var _rootView:Object;
 
 
-		public function Root(rootView:DisplayObjectContainer) {
+		public function Root(rootView:Object) {
 			_rootView = rootView;
 		}
 

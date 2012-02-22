@@ -1,13 +1,7 @@
 package net.wooga.uiengine.displaylistselector {
 	import flash.display.DisplayObject;
-	import flash.display.DisplayObjectContainer;
-	import flash.events.Event;
-	import flash.events.EventDispatcher;
-
-	import net.wooga.uiengine.displaylistselector.matching.MatchingTree;
 
 	import net.wooga.uiengine.displaylistselector.matching.old.MatcherTool;
-	import net.wooga.uiengine.displaylistselector.matching.old.matchers.IMatcher;
 	import net.wooga.uiengine.displaylistselector.parser.Parser;
 	import net.wooga.uiengine.displaylistselector.parser.ParserResult;
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.FirstChild;
@@ -19,19 +13,16 @@ package net.wooga.uiengine.displaylistselector {
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.NthLastOfType;
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.NthOfType;
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.Root;
-	import net.wooga.uiengine.displaylistselector.IExternalPropertySource;
 	import net.wooga.uiengine.displaylistselector.tools.SpecificityComparator;
 
 	import org.as3commons.collections.Map;
-
-	import org.as3commons.collections.Set;
 	import org.as3commons.collections.SortedSet;
 	import org.as3commons.collections.framework.IIterator;
 	import org.as3commons.collections.framework.ISet;
 
-	public class Selectors extends EventDispatcher {
+	public class AbstractSelectors implements ISelectorTool {
 
-		private var _rootObject:DisplayObjectContainer;
+		private var _rootObject:Object;
 
 		private var _parser:Parser;
 		private var _pseudoClassProvider:PseudoClassProvider;
@@ -40,9 +31,9 @@ package net.wooga.uiengine.displaylistselector {
 
 		private var _knownSelectors:Map = new Map();
 
-		//TODO (arneschroppe 21/2/12) for F10 displayobjects we could provide automatic adding and removing of adapters by listening to added_to_stage and stuff
+
 		//TODO (arneschroppe 21/2/12) id and class attributes are of course also reflected through adapters
-		public function initializeWith(rootObject:DisplayObjectContainer, externalPropertySource:IExternalPropertySource = null, idAttribute:String = "name", classAttribute:String = "group"):void {
+		public function initializeWith(rootObject:Object, externalPropertySource:IExternalPropertySource = null, idAttribute:String = "name", classAttribute:String = "group"):void {
 			_rootObject = rootObject;
 			//TODO (arneschroppe 21/2/12) we don't need to know the root object, we only need to check for the root property on the adapter! (but will everyone implement this properly?)
 
@@ -65,16 +56,16 @@ package net.wooga.uiengine.displaylistselector {
 		}
 
 		//TODO (arneschroppe 14/2/12) use selector tree here, for optimization
-		public function getSelectorsMatchingObject(object:DisplayObject):ISet {
+		public function getSelectorsMatchingObject(object:Object):ISet {
 
 			var result:ISet = new SortedSet(new SpecificityComparator(_knownSelectors));
-			
+
 			var keyIterator:IIterator = _knownSelectors.keyIterator();
-			while(keyIterator.hasNext()) {
+			while (keyIterator.hasNext()) {
 				var selector:String = keyIterator.next();
 				var parsed:ParserResult = _knownSelectors.itemFor(selector);
 
-				if(_matcher.isObjectMatching(object, parsed.matchers)) {
+				if (_matcher.isObjectMatching(object as DisplayObject, parsed.matchers)) {
 					result.add(selector);
 				}
 			}
@@ -96,7 +87,7 @@ package net.wooga.uiengine.displaylistselector {
 		}
 
 
-		private function addPseudoClass(className:String, pseudoClass:IPseudoClass):void {
+		public function addPseudoClass(className:String, pseudoClass:IPseudoClass):void {
 			if (_pseudoClassProvider.hasPseudoClass(className)) {
 				throw new ArgumentError("Pseudo class " + className + " already exists");
 			}
@@ -105,7 +96,7 @@ package net.wooga.uiengine.displaylistselector {
 		}
 
 
-		public function objectWasChanged(object:DisplayObject):void {
+		public function objectWasChanged(object:Object):void {
 			_matcher.invalidateObject(object);
 		}
 

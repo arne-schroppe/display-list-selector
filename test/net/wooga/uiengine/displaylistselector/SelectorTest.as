@@ -32,7 +32,7 @@ package net.wooga.uiengine.displaylistselector {
 	public class SelectorTest extends ContextViewBasedTest {
 
 
-		private var _selectors:Selectors;
+		private var _selectors:AbstractSelectors;
 		private var _displayList:DisplayTree;
 		private var _propertyDictionary:PropertyDictionary;
 
@@ -41,7 +41,7 @@ package net.wooga.uiengine.displaylistselector {
 			_propertyDictionary = new PropertyDictionary();
 			_displayList = new DisplayTree();
 
-			_selectors = new Selectors();
+			_selectors = new AbstractSelectors();
 			_selectors.initializeWith(contextView, _propertyDictionary, "id", "class");
 		}
 

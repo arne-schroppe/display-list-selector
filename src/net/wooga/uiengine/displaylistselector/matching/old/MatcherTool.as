@@ -9,19 +9,19 @@ package net.wooga.uiengine.displaylistselector.matching.old {
 
 	public class MatcherTool {
 
-		private var _rootObject:DisplayObject;
+		private var _rootObject:Object;
 
 		private var _currentlyMatchedMatchers:Vector.<IMatcher>;
 		private var _currentlyMatchedSelector:String;
 
 
-		public function MatcherTool(rootObject:DisplayObject) {
+		public function MatcherTool(rootObject:Object) {
 			_rootObject = rootObject;
 		}
 
 
 
-		public function invalidateObject(object:DisplayObject):void {
+		public function invalidateObject(object:Object):void {
 
 		}
 

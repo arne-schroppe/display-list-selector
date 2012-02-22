@@ -23,6 +23,7 @@ package net.wooga.uiengine.displaylistselector.matching.old.matchers.implementat
 		}
 
 		private function getObjectProperty(subject:IStyleAdapter):Boolean {
+			//TODO (arneschroppe 22/2/12) don't use adaptedElement directly here
 			if (subject.getAdaptedElement()[_property] == _value) {
 				return true;
 			}

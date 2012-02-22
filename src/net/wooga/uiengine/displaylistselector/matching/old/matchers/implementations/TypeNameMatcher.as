@@ -55,6 +55,7 @@ package net.wooga.uiengine.displaylistselector.matching.old.matchers.implementat
 
 		private function matchesType(adapter:IStyleAdapter):Boolean {
 
+			//TODO (arneschroppe 22/2/12) maybe we can find a way to avoid using the adapted element directly
 			var subject:Object = adapter.getAdaptedElement();
 
 			if(_onlyMatchImmediateClassType) {

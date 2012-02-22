@@ -5,8 +5,6 @@ package net.wooga.uiengine.displaylistselector.pseudoclasses {
 	import net.wooga.fixtures.TestSpriteB;
 	import net.wooga.fixtures.TestSpriteC;
 	import net.wooga.fixtures.getAdapterForObject;
-	import net.wooga.uiengine.displaylistselector.styleadapter.DisplayObjectStyleAdapter;
-	import net.wooga.uiengine.displaylistselector.styleadapter.IStyleAdapter;
 
 	import org.hamcrest.assertThat;
 	import org.hamcrest.object.equalTo;

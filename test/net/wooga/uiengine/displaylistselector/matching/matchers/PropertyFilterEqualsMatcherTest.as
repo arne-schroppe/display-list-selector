@@ -9,7 +9,6 @@ package net.wooga.uiengine.displaylistselector.matching.matchers {
 	import net.wooga.fixtures.containsInArrayExactly;
 	import net.wooga.fixtures.getAdapterForObject;
 	import net.wooga.uiengine.displaylistselector.matching.old.matchers.implementations.PropertyFilterEqualsMatcher;
-	import net.wooga.uiengine.displaylistselector.styleadapter.DisplayObjectStyleAdapter;
 	import net.wooga.uiengine.displaylistselector.styleadapter.IStyleAdapter;
 
 	import org.hamcrest.assertThat;
@@ -102,7 +101,6 @@ package net.wooga.uiengine.displaylistselector.matching.matchers {
 	}
 }
 
-import flash.display.DisplayObject;
 import flash.utils.getQualifiedClassName;
 
 import net.wooga.uiengine.displaylistselector.IExternalPropertySource;

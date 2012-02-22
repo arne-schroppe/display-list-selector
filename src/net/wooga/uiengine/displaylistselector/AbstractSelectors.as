@@ -1,5 +1,4 @@
 package net.wooga.uiengine.displaylistselector {
-	import flash.display.DisplayObject;
 	import flash.utils.getQualifiedClassName;
 
 	import net.wooga.uiengine.displaylistselector.matching.old.MatcherTool;

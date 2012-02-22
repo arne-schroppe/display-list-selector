@@ -1,8 +1,5 @@
 package net.wooga.uiengine.displaylistselector.pseudoclasses {
 
-	import flash.display.DisplayObject;
-	import flash.display.DisplayObjectContainer;
-
 	import net.wooga.uiengine.displaylistselector.styleadapter.IStyleAdapter;
 
 	public class Root implements IPseudoClass {

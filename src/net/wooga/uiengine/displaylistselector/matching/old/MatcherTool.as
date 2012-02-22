@@ -1,6 +1,4 @@
 package net.wooga.uiengine.displaylistselector.matching.old {
-	import flash.display.DisplayObject;
-
 	import net.wooga.uiengine.displaylistselector.matching.old.matchers.ICombinator;
 	import net.wooga.uiengine.displaylistselector.matching.old.matchers.IMatcher;
 	import net.wooga.uiengine.displaylistselector.matching.old.matchers.implementations.ChildSelectorMatcher;

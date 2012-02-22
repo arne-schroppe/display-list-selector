@@ -11,7 +11,6 @@ package net.wooga.uiengine.displaylistselector.matching.matchers {
 	import net.wooga.fixtures.package1.TestSpritePack;
 	import net.wooga.fixtures.package2.TestSpritePack;
 	import net.wooga.uiengine.displaylistselector.matching.old.matchers.implementations.TypeNameMatcher;
-	import net.wooga.uiengine.displaylistselector.styleadapter.DisplayObjectStyleAdapter;
 	import net.wooga.uiengine.displaylistselector.styleadapter.IStyleAdapter;
 
 	import org.hamcrest.assertThat;

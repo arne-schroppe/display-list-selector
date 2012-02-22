@@ -11,7 +11,6 @@ package net.wooga.uiengine.displaylistselector {
 
 		private var _selectors:AbstractSelectors;
 
-
 		private var _rootObject:DisplayObjectContainer;
 
 		public function DisplayListSelectors() {

@@ -1,6 +1,4 @@
 package net.wooga.uiengine.displaylistselector {
-	import flash.display.DisplayObject;
-
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.IPseudoClass;
 
 	import org.as3commons.collections.framework.ISet;

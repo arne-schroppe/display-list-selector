@@ -1,7 +1,4 @@
 package net.wooga.uiengine.displaylistselector.matching.old.matchers.implementations {
-	import net.wooga.uiengine.displaylistselector.matching.*;
-	import flash.display.DisplayObject;
-
 	import net.wooga.uiengine.displaylistselector.IExternalPropertySource;
 	import net.wooga.uiengine.displaylistselector.matching.old.matchers.IMatcher;
 	import net.wooga.uiengine.displaylistselector.styleadapter.IStyleAdapter;

@@ -1,7 +1,5 @@
 package net.wooga.uiengine.displaylistselector {
 
-	import flash.display.DisplayObject;
-
 	import net.wooga.uiengine.displaylistselector.styleadapter.IStyleAdapter;
 
 	import org.as3commons.collections.Set;

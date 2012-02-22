@@ -7,9 +7,9 @@ package net.wooga.uiengine.displaylistselector.matching {
 	import org.as3commons.collections.framework.ISet;
 
 	public class MatchingTree {
-		private var _rootView:DisplayObjectContainer;
+		private var _rootView:Object;
 
-		public function MatchingTree(rootView:DisplayObjectContainer) {
+		public function MatchingTree(rootView:Object) {
 			_rootView = rootView;
 		}
 

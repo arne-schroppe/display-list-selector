@@ -1,11 +1,15 @@
 package net.wooga.uiengine.displaylistselector.matching.matchers {
+	import flash.display.DisplayObject;
+
 	import net.arneschroppe.displaytreebuilder.DisplayTree;
 	import net.wooga.fixtures.ContextViewBasedTest;
 	import net.wooga.fixtures.TestSpriteA;
 	import net.wooga.fixtures.TestSpriteB;
 	import net.wooga.fixtures.TestSpriteC;
 	import net.wooga.fixtures.containsInArrayExactly;
+	import net.wooga.fixtures.getAdapterForObject;
 	import net.wooga.uiengine.displaylistselector.matching.old.matchers.implementations.PropertyFilterContainsMatcher;
+	import net.wooga.uiengine.displaylistselector.styleadapter.IStyleAdapter;
 
 	import org.hamcrest.assertThat;
 	import org.hamcrest.core.isA;
@@ -49,7 +53,8 @@ package net.wooga.uiengine.displaylistselector.matching.matchers {
 			var matchedObjects:Array = [];
 
 			for(var i:int = 0; i < contextView.numChildren; ++i) {
-				if(_matcher.isMatching(contextView.getChildAt(i))) {
+
+				if(_matcher.isMatching(getAdapterForObjectAtIndex(i))) {
 					matchedObjects = matchedObjects.concat(contextView.getChildAt(i));
 				}
 			}
@@ -57,27 +62,33 @@ package net.wooga.uiengine.displaylistselector.matching.matchers {
 			assertThat(matchedObjects, containsInArrayExactly(3, isA(TestSpriteC)));
 			assertThat(matchedObjects.length, equalTo(3));
 		}
+
+
+		private function getAdapterForObjectAtIndex(index:int):IStyleAdapter {
+			var object:DisplayObject = contextView.getChildAt(index);
+			return getAdapterForObject(object);
+		}
 	}
 }
 
-import flash.display.DisplayObject;
 import flash.utils.getQualifiedClassName;
 
 import net.wooga.uiengine.displaylistselector.IExternalPropertySource;
+import net.wooga.uiengine.displaylistselector.styleadapter.IStyleAdapter;
 
 import org.as3commons.collections.Set;
 
 class TestPropertySource implements IExternalPropertySource {
 
-	public function stringValueForProperty(subject:DisplayObject, name:String):String {
+	public function stringValueForProperty(subject:IStyleAdapter, name:String):String {
 		throw new Error("Unexpected method called");
 	}
 
-	public function collectionValueForProperty(subject:DisplayObject, name:String):Set {
+	public function collectionValueForProperty(subject:IStyleAdapter, name:String):Set {
 
 		if(name == "testProperty") {
 			var result:Set = new Set();
-			result.add(getQualifiedClassName(subject).split("::").pop());
+			result.add(getQualifiedClassName(subject.getAdaptedElement()).split("::").pop());
 			result.add("dummy1");
 			result.add("dummy2");
 			result.add("dummy3");

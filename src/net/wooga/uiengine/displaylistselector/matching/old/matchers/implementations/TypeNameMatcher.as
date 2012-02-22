@@ -1,11 +1,11 @@
 package net.wooga.uiengine.displaylistselector.matching.old.matchers.implementations {
 
-	import flash.display.DisplayObject;
 	import flash.utils.describeType;
 	import flash.utils.getQualifiedClassName;
 
 	import net.wooga.uiengine.displaylistselector.matching.old.matchers.IMatcher;
 	import net.wooga.uiengine.displaylistselector.matching.old.matchers.implementations.qualifiedtypename.QualifiedTypeNameParser;
+	import net.wooga.uiengine.displaylistselector.styleadapter.IStyleAdapter;
 
 	import org.as3commons.collections.Map;
 	import org.as3commons.collections.framework.IMap;
@@ -39,6 +39,7 @@ package net.wooga.uiengine.displaylistselector.matching.old.matchers.implementat
 			}
 		}
 
+
 		private function createTypeNameMatcherRegEx(typeName:String):void {
 			var normalizedName:String = typeName.replace("::", ".");
 			var regExString:String = _typeNameParser.createTypeMatcherRegEx(normalizedName);
@@ -46,23 +47,26 @@ package net.wooga.uiengine.displaylistselector.matching.old.matchers.implementat
 		}
 
 
-		public function isMatching(subject:DisplayObject):Boolean {
+		public function isMatching(subject:IStyleAdapter):Boolean {
 			return _matchAny || matchesType(subject);
 
 		}
 
-		private function matchesType(subject:DisplayObject):Boolean {
+
+		private function matchesType(adapter:IStyleAdapter):Boolean {
+
+			var subject:Object = adapter.getAdaptedElement();
+
 			if(_onlyMatchImmediateClassType) {
 				var className:String = getQualifiedClassName(subject);
 				return isMatchingType(className);
-
 			}
 
 			return isAnySuperClassMatchingTypeName(subject);
 		}
 
 
-		private function isAnySuperClassMatchingTypeName(subject:DisplayObject):Boolean {
+		private function isAnySuperClassMatchingTypeName(subject:Object):Boolean {
 
 			var className:String = getQualifiedClassName(subject);
 			var key:String = createDictKeyFor(className);
@@ -78,7 +82,7 @@ package net.wooga.uiengine.displaylistselector.matching.old.matchers.implementat
 		}
 
 
-		public function hasSuperClassMatch(subject:DisplayObject):Boolean {
+		public function hasSuperClassMatch(subject:Object):Boolean {
 			var types:XMLList = describeType(subject).*.@type;
 
 			for each(var type:XML in types) {
@@ -89,6 +93,7 @@ package net.wooga.uiengine.displaylistselector.matching.old.matchers.implementat
 
 			return false;
 		}
+
 
 		private function isMatchingType(className:String):Boolean {
 
@@ -119,7 +124,6 @@ package net.wooga.uiengine.displaylistselector.matching.old.matchers.implementat
 		private function createDictKeyFor(className:String):String {
 			return _typeName + "&" + className;
 		}
-
 	}
 }
 

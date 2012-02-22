@@ -3,10 +3,8 @@ package net.wooga.uiengine.displaylistselector {
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 	import flash.display.MovieClip;
-	import flash.display.Sprite;
 
 	import net.arneschroppe.displaytreebuilder.DisplayTree;
-
 	import net.wooga.fixtures.ContextViewBasedTest;
 	import net.wooga.fixtures.TestSpriteA;
 	import net.wooga.fixtures.TestSpriteB;
@@ -14,6 +12,7 @@ package net.wooga.uiengine.displaylistselector {
 	import net.wooga.fixtures.TestSpriteWithInterface;
 	import net.wooga.fixtures.package1.TestSpritePack;
 	import net.wooga.fixtures.package2.TestSpritePack;
+	import net.wooga.uiengine.displaylistselector.styleadapter.DisplayObjectStyleAdapter;
 	import net.wooga.utils.flexunit.hamcrestcollection.containsExactly;
 	import net.wooga.utils.flexunit.hamcrestcollection.everyItemInCollection;
 	import net.wooga.utils.flexunit.hamcrestcollection.hasItemInCollection;
@@ -27,7 +26,6 @@ package net.wooga.uiengine.displaylistselector {
 	import org.hamcrest.core.not;
 	import org.hamcrest.object.equalTo;
 	import org.hamcrest.object.hasPropertyWithValue;
-	import org.hamcrest.object.isTrue;
 
 	public class SelectorTest extends ContextViewBasedTest {
 
@@ -43,6 +41,7 @@ package net.wooga.uiengine.displaylistselector {
 
 			_selectors = new AbstractSelectors();
 			_selectors.initializeWith(contextView, _propertyDictionary, "id", "class");
+			_selectors.setDefaultStyleAdapter(DisplayObjectStyleAdapter);
 		}
 
 
@@ -189,7 +188,7 @@ package net.wooga.uiengine.displaylistselector {
 
 			_propertyDictionary.addItem(propertyName, value);
 
-			var matchedObjects:Set =getMatchedObjectsFor("TestSpriteA#test");
+			var matchedObjects:Set = getMatchedObjectsFor("TestSpriteA#test");
 			assert_should_match_css_id_selector(matchedObjects);
 
 			//matchedObjects = _selector.getMatchedObjects();
@@ -385,7 +384,7 @@ package net.wooga.uiengine.displaylistselector {
 					.a(TestSpriteC)
 				.end.finish();
 
-			var matchedObjects:Set =  getMatchedObjectsFor("*:root");
+			var matchedObjects:Set = getMatchedObjectsFor("*:root");
 			assert_should_match_root_pseudo_class(matchedObjects);
 
 			//matchedObjects = _selector.getMatchedObjects();
@@ -538,7 +537,6 @@ package net.wooga.uiengine.displaylistselector {
 					.a(TestSpriteC)
 				.end.finish();
 
-
 			var values:Set = new Set();
 			values.add("A");
 			values.add("B");
@@ -550,7 +548,7 @@ package net.wooga.uiengine.displaylistselector {
 			var value:String = "testName";
 			_propertyDictionary.addItem(propertyName, value);
 
-			var matchedObjects:Set = getMatchedObjectsFor("*#testName[testattrib~='1234']");
+			var matchedObjects:Set = getMatchedObjectsFor(":root > *#testName[testattrib~='1234']");
 			assert_should_match_id_and_attribute_selector(matchedObjects);
 
 			//matchedObjects = _selector.getMatchedObjects();
@@ -572,8 +570,7 @@ package net.wooga.uiengine.displaylistselector {
 					.a(TestSpriteC)
 				.end.finish();
 
-			getMatchedObjectsFor(":nth-child(2)");
-			var matchedObjects:Set = getMatchedObjectsFor(":nth-child(2)");
+			var matchedObjects:Set = getMatchedObjectsFor(":root > :nth-child(2)");
 			assert_should_match_selectors_without_element_selector(matchedObjects);
 
 			//matchedObjects = _selector.getMatchedObjects();
@@ -594,10 +591,10 @@ package net.wooga.uiengine.displaylistselector {
 					.a(MovieClip)
 					.a(MovieClip)
 					.a(TestSpriteB)
-					.end.finish();
+				.end.finish();
 
 
-			var matchedObjects:Set = getMatchedObjectsFor("^Sprite");
+			var matchedObjects:Set = getMatchedObjectsFor(":root > ^Sprite");
 			assert_should_match_isA_selector(matchedObjects);
 
 			//matchedObjects = _selector.getMatchedObjects();
@@ -775,9 +772,13 @@ package net.wooga.uiengine.displaylistselector {
 
 		private function scanForMatches(object:DisplayObject, selectorString:String, result:Set):void {
 
+			_selectors.createStyleAdapterFor(object);
+
+			trace("+++++++++");
 			if(_selectors.getSelectorsMatchingObject(object).has(selectorString)) {
 				result.add(object);
 			}
+			trace("---------");
 
 			var container:DisplayObjectContainer = object as DisplayObjectContainer;
 			if(container) {
@@ -790,10 +791,10 @@ package net.wooga.uiengine.displaylistselector {
 	}
 }
 
-import flash.display.DisplayObject;
 import flash.utils.Dictionary;
 
 import net.wooga.uiengine.displaylistselector.IExternalPropertySource;
+import net.wooga.uiengine.displaylistselector.styleadapter.IStyleAdapter;
 
 import org.as3commons.collections.Set;
 
@@ -805,11 +806,11 @@ class PropertyDictionary implements IExternalPropertySource {
 		_values[key] = value;
 	}
 
-	public function stringValueForProperty(subject:DisplayObject, name:String):String {
+	public function stringValueForProperty(subject:IStyleAdapter, name:String):String {
 		return _values[name];
 	}
 
-	public function collectionValueForProperty(subject:DisplayObject, name:String):Set {
+	public function collectionValueForProperty(subject:IStyleAdapter, name:String):Set {
 		return _values[name];
 	}
 }

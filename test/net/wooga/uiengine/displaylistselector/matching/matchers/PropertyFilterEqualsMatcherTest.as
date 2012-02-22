@@ -1,11 +1,16 @@
 package net.wooga.uiengine.displaylistselector.matching.matchers {
+	import flash.display.DisplayObject;
+
 	import net.arneschroppe.displaytreebuilder.DisplayTree;
 	import net.wooga.fixtures.ContextViewBasedTest;
 	import net.wooga.fixtures.TestSpriteA;
 	import net.wooga.fixtures.TestSpriteB;
 	import net.wooga.fixtures.TestSpriteC;
 	import net.wooga.fixtures.containsInArrayExactly;
+	import net.wooga.fixtures.getAdapterForObject;
 	import net.wooga.uiengine.displaylistselector.matching.old.matchers.implementations.PropertyFilterEqualsMatcher;
+	import net.wooga.uiengine.displaylistselector.styleadapter.DisplayObjectStyleAdapter;
+	import net.wooga.uiengine.displaylistselector.styleadapter.IStyleAdapter;
 
 	import org.hamcrest.assertThat;
 	import org.hamcrest.collection.everyItem;
@@ -14,9 +19,7 @@ package net.wooga.uiengine.displaylistselector.matching.matchers {
 
 	public class PropertyFilterEqualsMatcherTest extends ContextViewBasedTest {
 
-
 		private var _matcher:PropertyFilterEqualsMatcher;
-
 
 		[Before]
 		override public function setUp():void {
@@ -49,16 +52,21 @@ package net.wooga.uiengine.displaylistselector.matching.matchers {
 			var matchedObjects:Array = [];
 
 			for(var i:int = 0; i < contextView.numChildren; ++i) {
-				if(_matcher.isMatching(contextView.getChildAt(i))) {
+				if(_matcher.isMatching(getAdapterForObjectAtIndex(i))) {
 					matchedObjects.push(contextView.getChildAt(i));
 				}
-
 			}
 
 			assertThat(matchedObjects, containsInArrayExactly(1, isA(TestSpriteA)));
 			assertThat(matchedObjects, containsInArrayExactly(2, isA(TestSpriteB)));
 			assertThat(matchedObjects, containsInArrayExactly(1, isA(TestSpriteC)));
 			assertThat(matchedObjects.length, equalTo(4));
+		}
+
+
+		private function getAdapterForObjectAtIndex(index:int):IStyleAdapter {
+			var object:DisplayObject = contextView.getChildAt(index);
+			return getAdapterForObject(object);
 		}
 
 
@@ -83,10 +91,9 @@ package net.wooga.uiengine.displaylistselector.matching.matchers {
 			var matchedObjects:Array = [];
 
 			for(var i:int = 0; i < contextView.numChildren; ++i) {
-				if(_matcher.isMatching(contextView.getChildAt(i))) {
+				if(_matcher.isMatching(getAdapterForObjectAtIndex(i))) {
 					matchedObjects.push(contextView.getChildAt(i));
 				}
-
 			}
 
 			assertThat(matchedObjects, everyItem(isA(TestSpriteA)));
@@ -99,16 +106,17 @@ import flash.display.DisplayObject;
 import flash.utils.getQualifiedClassName;
 
 import net.wooga.uiengine.displaylistselector.IExternalPropertySource;
+import net.wooga.uiengine.displaylistselector.styleadapter.IStyleAdapter;
 
 import org.as3commons.collections.Set;
 
 class NoCallPropertySource implements IExternalPropertySource {
 
-	public function stringValueForProperty(subject:DisplayObject, name:String):String {
+	public function stringValueForProperty(subject:IStyleAdapter, name:String):String {
 		throw new Error("Unexpected method called");
 	}
 
-	public function collectionValueForProperty(subject:DisplayObject, name:String):Set {
+	public function collectionValueForProperty(subject:IStyleAdapter, name:String):Set {
 		throw new Error("Unexpected method called");
 	}
 }
@@ -116,15 +124,15 @@ class NoCallPropertySource implements IExternalPropertySource {
 
 class ClassNamePropertySource implements IExternalPropertySource {
 
-	public function stringValueForProperty(subject:DisplayObject, name:String):String {
+	public function stringValueForProperty(subject:IStyleAdapter, name:String):String {
 		if(name == "testProperty") {
-			return getQualifiedClassName(subject).split("::").pop();
+			return getQualifiedClassName(subject.getAdaptedElement()).split("::").pop();
 		}
 
 		return null;
 	}
 
-	public function collectionValueForProperty(subject:DisplayObject, name:String):Set {
+	public function collectionValueForProperty(subject:IStyleAdapter, name:String):Set {
 		throw new Error("Unexpected method called");
 	}
 }

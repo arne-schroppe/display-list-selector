@@ -1,13 +1,18 @@
 package net.wooga.uiengine.displaylistselector.matching.matchers {
+	import flash.display.DisplayObject;
+
 	import net.arneschroppe.displaytreebuilder.DisplayTree;
 	import net.wooga.fixtures.ContextViewBasedTest;
 	import net.wooga.fixtures.TestSpriteA;
 	import net.wooga.fixtures.TestSpriteB;
 	import net.wooga.fixtures.TestSpriteC;
 	import net.wooga.fixtures.containsInArrayExactly;
+	import net.wooga.fixtures.getAdapterForObject;
 	import net.wooga.fixtures.package1.TestSpritePack;
 	import net.wooga.fixtures.package2.TestSpritePack;
 	import net.wooga.uiengine.displaylistselector.matching.old.matchers.implementations.TypeNameMatcher;
+	import net.wooga.uiengine.displaylistselector.styleadapter.DisplayObjectStyleAdapter;
+	import net.wooga.uiengine.displaylistselector.styleadapter.IStyleAdapter;
 
 	import org.hamcrest.assertThat;
 	import org.hamcrest.core.allOf;
@@ -31,6 +36,10 @@ package net.wooga.uiengine.displaylistselector.matching.matchers {
 			super.tearDown();
 		}
 
+		private function getAdapterForObjectAtIndex(index:int):IStyleAdapter {
+			var object:DisplayObject = contextView.getChildAt(index);
+			return getAdapterForObject(object);
+		}
 
 
 		[Test]
@@ -55,7 +64,7 @@ package net.wooga.uiengine.displaylistselector.matching.matchers {
 			var matchedObjects:Array = [];
 
 			for(var i:int = 0; i < contextView.numChildren; ++i) {
-				if(_matcher.isMatching(contextView.getChildAt(i))) {
+				if(_matcher.isMatching(getAdapterForObjectAtIndex(i))) {
 					matchedObjects.push(contextView.getChildAt(i));
 				}
 
@@ -87,7 +96,7 @@ package net.wooga.uiengine.displaylistselector.matching.matchers {
 			var matchedObjects:Array = [];
 
 			for(var i:int = 0; i < contextView.numChildren; ++i) {
-				if(_matcher.isMatching(contextView.getChildAt(i))) {
+				if(_matcher.isMatching(getAdapterForObjectAtIndex(i))) {
 					matchedObjects.push(contextView.getChildAt(i));
 				}
 			}
@@ -118,7 +127,7 @@ package net.wooga.uiengine.displaylistselector.matching.matchers {
 			var matchedObjects:Array = [];
 
 			for(var i:int = 0; i < contextView.numChildren; ++i) {
-				if(_matcher.isMatching(contextView.getChildAt(i))) {
+				if(_matcher.isMatching(getAdapterForObjectAtIndex(i))) {
 					matchedObjects.push(contextView.getChildAt(i));
 				}
 
@@ -152,7 +161,7 @@ package net.wooga.uiengine.displaylistselector.matching.matchers {
 			var matchedObjects:Array = [];
 
 			for(var i:int = 0; i < items.length; ++i) {
-				if(_matcher.isMatching(items[i])) {
+				if(_matcher.isMatching(getAdapterForObject(items[i]))) {
 					matchedObjects.push(items[i]);
 				}
 			}
@@ -188,7 +197,7 @@ package net.wooga.uiengine.displaylistselector.matching.matchers {
 			var matchedObjects:Array = [];
 
 			for(var i:int = 0; i < items.length; ++i) {
-				if(_matcher.isMatching(items[i])) {
+				if(_matcher.isMatching(getAdapterForObject(items[i]))) {
 					matchedObjects.push(items[i]);
 				}
 			}

@@ -2,9 +2,11 @@ package net.wooga.uiengine.displaylistselector.pseudoclasses {
 
 	import flash.display.DisplayObject;
 
+	import net.wooga.uiengine.displaylistselector.styleadapter.IStyleAdapter;
+
 	public class LastChild extends NthLastChild {
 
-		override public function isMatching(subject:DisplayObject):Boolean {
+		override public function isMatching(subject:IStyleAdapter):Boolean {
 			super.setArguments([1]);
 			return super.isMatching(subject);
 		}

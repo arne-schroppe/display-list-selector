@@ -4,6 +4,9 @@ package net.wooga.uiengine.displaylistselector.pseudoclasses {
 	import net.wooga.fixtures.TestSpriteA;
 	import net.wooga.fixtures.TestSpriteB;
 	import net.wooga.fixtures.TestSpriteC;
+	import net.wooga.fixtures.getAdapterForObject;
+	import net.wooga.uiengine.displaylistselector.styleadapter.DisplayObjectStyleAdapter;
+	import net.wooga.uiengine.displaylistselector.styleadapter.IStyleAdapter;
 
 	import org.hamcrest.assertThat;
 	import org.hamcrest.object.equalTo;
@@ -37,11 +40,9 @@ package net.wooga.uiengine.displaylistselector.pseudoclasses {
 
 			_pseudoClass = new FirstChild();
 
-			assertThat(_pseudoClass.isMatching(instances[0]), equalTo(true));
-			assertThat(_pseudoClass.isMatching(instances[1]), equalTo(false));
-			assertThat(_pseudoClass.isMatching(instances[2]), equalTo(false));
-
-
+			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[0])), equalTo(true));
+			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[1])), equalTo(false));
+			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[2])), equalTo(false));
 		}
 	}
 }

@@ -1,0 +1,89 @@
+package net.wooga.uiengine.displaylistselector.styleadapter {
+	import flash.display.DisplayObject;
+	import flash.display.DisplayObjectContainer;
+
+	public class DisplayObjectStyleAdapter implements IStyleAdapter {
+
+
+		private var _parent:IStyleAdapter;
+		private var _adaptedElement:DisplayObject;
+
+		public function DisplayObjectStyleAdapter() {
+		}
+
+
+		public function register(adaptedElement:Object):void {
+			if(!(adaptedElement is DisplayObject)) {
+				throw new ArgumentError("This adapter can only be used with DisplayObjects");
+			}
+
+			_adaptedElement = DisplayObject(adaptedElement);
+		}
+
+		public function unregister(adaptedElement:Object):void {
+			_adaptedElement = null;
+		}
+
+
+		public function getParent():IStyleAdapter {
+			return _parent;
+		}
+
+		public function setParent(value:IStyleAdapter):void {
+			_parent = value;
+		}
+
+
+		public function getAdaptedElement():Object {
+			return _adaptedElement;
+		}
+
+
+		public function getId():String {
+			return _adaptedElement.name;
+		}
+
+		public function getClasses():Array {
+			return null; //TODO (arneschroppe 22/2/12) return "group" parameter for now?
+		}
+
+
+		public function getElementIndex():int {
+			return _adaptedElement.parent ? _adaptedElement.parent.getChildIndex(_adaptedElement) : -1;
+		}
+
+		public function getNumberOfElementsInContainer():int {
+			return _adaptedElement.parent ? _adaptedElement.parent.numChildren : 0;
+		}
+
+		public function getSiblingElementAtIndex(index:int):Object {
+			return _adaptedElement.parent ? _adaptedElement.parent.getChildAt(index) : 0;
+		}
+
+
+
+		protected function get parent():IStyleAdapter {
+			return _parent;
+		}
+
+		protected function set parent(value:IStyleAdapter):void {
+			_parent = value;
+		}
+
+		protected function get adaptedElement():DisplayObject {
+			return _adaptedElement;
+		}
+
+		protected function set adaptedElement(value:DisplayObject):void {
+			_adaptedElement = value;
+		}
+
+		public function getParentElement():Object {
+			return _adaptedElement.parent;
+		}
+
+		public function isEmpty():Boolean {
+			return !(_adaptedElement is DisplayObjectContainer) || DisplayObjectContainer(_adaptedElement).numChildren == 0;
+		}
+	}
+}

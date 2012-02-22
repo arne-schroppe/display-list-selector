@@ -4,6 +4,7 @@ package net.wooga.uiengine.displaylistselector.pseudoclasses {
 	import net.wooga.fixtures.TestSpriteA;
 	import net.wooga.fixtures.TestSpriteB;
 	import net.wooga.fixtures.TestSpriteC;
+	import net.wooga.fixtures.getAdapterForObject;
 
 	import org.hamcrest.assertThat;
 	import org.hamcrest.object.equalTo;
@@ -44,15 +45,15 @@ package net.wooga.uiengine.displaylistselector.pseudoclasses {
 			_pseudoClass = new NthLastOfType();
 			_pseudoClass.setArguments([2]);
 
-			assertThat(_pseudoClass.isMatching(instances[0]), equalTo(false));
-			assertThat(_pseudoClass.isMatching(instances[1]), equalTo(false));
-			assertThat(_pseudoClass.isMatching(instances[2]), equalTo(true));
-			assertThat(_pseudoClass.isMatching(instances[3]), equalTo(false));
+			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[0])), equalTo(false));
+			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[1])), equalTo(false));
+			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[2])), equalTo(true));
+			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[3])), equalTo(false));
 
-			assertThat(_pseudoClass.isMatching(instances[4]), equalTo(false));
-			assertThat(_pseudoClass.isMatching(instances[5]), equalTo(false));
-			assertThat(_pseudoClass.isMatching(instances[6]), equalTo(true));
-			assertThat(_pseudoClass.isMatching(instances[7]), equalTo(false));
+			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[4])), equalTo(false));
+			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[5])), equalTo(false));
+			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[6])), equalTo(true));
+			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[7])), equalTo(false));
 
 		}
 
@@ -82,17 +83,17 @@ package net.wooga.uiengine.displaylistselector.pseudoclasses {
 			_pseudoClass = new NthLastOfType();
 			_pseudoClass.setArguments(["2n + 1"]);
 
-			assertThat(_pseudoClass.isMatching(instances[0]), equalTo(false));
-			assertThat(_pseudoClass.isMatching(instances[1]), equalTo(true));
-			assertThat(_pseudoClass.isMatching(instances[2]), equalTo(false));
-			assertThat(_pseudoClass.isMatching(instances[3]), equalTo(true));
+			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[0])), equalTo(false));
+			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[1])), equalTo(true));
+			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[2])), equalTo(false));
+			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[3])), equalTo(true));
 
-			assertThat(_pseudoClass.isMatching(instances[4]), equalTo(true));
+			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[4])), equalTo(true));
 
-			assertThat(_pseudoClass.isMatching(instances[5]), equalTo(false));
-			assertThat(_pseudoClass.isMatching(instances[6]), equalTo(true));
-			assertThat(_pseudoClass.isMatching(instances[7]), equalTo(false));
-			assertThat(_pseudoClass.isMatching(instances[8]), equalTo(true));
+			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[5])), equalTo(false));
+			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[6])), equalTo(true));
+			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[7])), equalTo(false));
+			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[8])), equalTo(true));
 		}
 
 
@@ -121,17 +122,17 @@ package net.wooga.uiengine.displaylistselector.pseudoclasses {
 			_pseudoClass = new NthLastOfType();
 			_pseudoClass.setArguments(["even"]);
 
-			assertThat(_pseudoClass.isMatching(instances[0]), equalTo(false));
-			assertThat(_pseudoClass.isMatching(instances[1]), equalTo(true));
-			assertThat(_pseudoClass.isMatching(instances[2]), equalTo(false));
-			assertThat(_pseudoClass.isMatching(instances[3]), equalTo(true));
-			assertThat(_pseudoClass.isMatching(instances[4]), equalTo(false));
+			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[0])), equalTo(false));
+			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[1])), equalTo(true));
+			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[2])), equalTo(false));
+			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[3])), equalTo(true));
+			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[4])), equalTo(false));
 
-			assertThat(_pseudoClass.isMatching(instances[5]), equalTo(false));
-			assertThat(_pseudoClass.isMatching(instances[6]), equalTo(true));
-			assertThat(_pseudoClass.isMatching(instances[7]), equalTo(false));
-			assertThat(_pseudoClass.isMatching(instances[8]), equalTo(true));
-			assertThat(_pseudoClass.isMatching(instances[9]), equalTo(false));
+			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[5])), equalTo(false));
+			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[6])), equalTo(true));
+			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[7])), equalTo(false));
+			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[8])), equalTo(true));
+			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[9])), equalTo(false));
 		}
 
 
@@ -160,18 +161,17 @@ package net.wooga.uiengine.displaylistselector.pseudoclasses {
 			_pseudoClass = new NthLastOfType();
 			_pseudoClass.setArguments(["odd"]);
 
-			assertThat(_pseudoClass.isMatching(instances[0]), equalTo(true));
-			assertThat(_pseudoClass.isMatching(instances[1]), equalTo(false));
-			assertThat(_pseudoClass.isMatching(instances[2]), equalTo(true));
-			assertThat(_pseudoClass.isMatching(instances[3]), equalTo(false));
-			assertThat(_pseudoClass.isMatching(instances[4]), equalTo(true));
+			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[0])), equalTo(true));
+			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[1])), equalTo(false));
+			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[2])), equalTo(true));
+			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[3])), equalTo(false));
+			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[4])), equalTo(true));
 
-			assertThat(_pseudoClass.isMatching(instances[5]), equalTo(true));
-			assertThat(_pseudoClass.isMatching(instances[6]), equalTo(false));
-			assertThat(_pseudoClass.isMatching(instances[7]), equalTo(true));
-			assertThat(_pseudoClass.isMatching(instances[8]), equalTo(false));
-			assertThat(_pseudoClass.isMatching(instances[9]), equalTo(true));
-
+			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[5])), equalTo(true));
+			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[6])), equalTo(false));
+			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[7])), equalTo(true));
+			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[8])), equalTo(false));
+			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[9])), equalTo(true));
 		}
 
 
@@ -201,20 +201,20 @@ package net.wooga.uiengine.displaylistselector.pseudoclasses {
 			_pseudoClass = new NthLastOfType();
 			_pseudoClass.setArguments(["-n+3"]);
 
-			assertThat(_pseudoClass.isMatching(instances[0]), equalTo(false));
-			assertThat(_pseudoClass.isMatching(instances[1]), equalTo(false));
-			assertThat(_pseudoClass.isMatching(instances[2]), equalTo(false));
-			assertThat(_pseudoClass.isMatching(instances[3]), equalTo(true));
-			assertThat(_pseudoClass.isMatching(instances[4]), equalTo(true));
-			assertThat(_pseudoClass.isMatching(instances[5]), equalTo(true));
+			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[0])), equalTo(false));
+			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[1])), equalTo(false));
+			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[2])), equalTo(false));
+			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[3])), equalTo(true));
+			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[4])), equalTo(true));
+			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[5])), equalTo(true));
 
 
-			assertThat(_pseudoClass.isMatching(instances[6]), equalTo(false));
-			assertThat(_pseudoClass.isMatching(instances[7]), equalTo(false));
-			assertThat(_pseudoClass.isMatching(instances[8]), equalTo(false));
-			assertThat(_pseudoClass.isMatching(instances[9]), equalTo(true));
-			assertThat(_pseudoClass.isMatching(instances[10]), equalTo(true));
-			assertThat(_pseudoClass.isMatching(instances[11]), equalTo(true));
+			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[6])), equalTo(false));
+			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[7])), equalTo(false));
+			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[8])), equalTo(false));
+			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[9])), equalTo(true));
+			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[10])), equalTo(true));
+			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[11])), equalTo(true));
 
 		}
 

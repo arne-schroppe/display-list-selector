@@ -1,16 +1,12 @@
 package net.wooga.uiengine.displaylistselector.pseudoclasses {
 
-	import flash.display.DisplayObject;
-
-	import net.wooga.uiengine.displaylistselector.pseudoclasses.nthchildren.NthChildArgumentParser;
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.nthchildren.NthOfX;
-
-	import net.wooga.uiengine.displaylistselector.pseudoclasses.nthchildren.NthParserResult;
+	import net.wooga.uiengine.displaylistselector.styleadapter.IStyleAdapter;
 
 	public class NthLastChild extends NthOfX {
 
-		override protected function indexOfObject(subject:DisplayObject):int {
-			return subject.parent.numChildren - subject.parent.getChildIndex(subject) - 1;
+		override protected function indexOfObject(subject:IStyleAdapter):int {
+			return subject.getNumberOfElementsInContainer() - subject.getElementIndex() - 1;
 		}
 	}
 }

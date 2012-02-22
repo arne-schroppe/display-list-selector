@@ -1,10 +1,15 @@
 package net.wooga.uiengine.displaylistselector.matching.matchers {
+	import flash.display.DisplayObject;
+
 	import net.arneschroppe.displaytreebuilder.DisplayTree;
 	import net.wooga.fixtures.ContextViewBasedTest;
 	import net.wooga.fixtures.TestSpriteA;
 	import net.wooga.fixtures.TestSpriteB;
 	import net.wooga.fixtures.TestSpriteC;
+	import net.wooga.fixtures.getAdapterForObject;
 	import net.wooga.uiengine.displaylistselector.matching.old.matchers.implementations.PseudoClassMatcher;
+	import net.wooga.uiengine.displaylistselector.styleadapter.DisplayObjectStyleAdapter;
+	import net.wooga.uiengine.displaylistselector.styleadapter.IStyleAdapter;
 
 	import org.hamcrest.assertThat;
 	import org.hamcrest.collection.everyItem;
@@ -47,7 +52,7 @@ package net.wooga.uiengine.displaylistselector.matching.matchers {
 			var matchedObjects:Array = [];
 
 			for(var i:int = 0; i < contextView.numChildren; ++i) {
-				if(_matcher.isMatching(contextView.getChildAt(i))) {
+				if(_matcher.isMatching(getAdapterForObjectAtIndex(i))) {
 					matchedObjects.push(contextView.getChildAt(i));
 				}
 
@@ -58,20 +63,24 @@ package net.wooga.uiengine.displaylistselector.matching.matchers {
 
 		}
 
+		private function getAdapterForObjectAtIndex(index:int):IStyleAdapter {
+			var object:DisplayObject = contextView.getChildAt(index);
+			return getAdapterForObject(object);
+		}
+
 	}
 }
 
-import flash.display.DisplayObject;
-
 import net.wooga.fixtures.TestSpriteC;
 import net.wooga.uiengine.displaylistselector.pseudoclasses.IPseudoClass;
+import net.wooga.uiengine.displaylistselector.styleadapter.IStyleAdapter;
 
 class TestPseudoClass implements IPseudoClass {
 
 	public function setArguments(arguments:Array):void {
 	}
 
-	public function isMatching(subject:DisplayObject):Boolean {
-		return subject is TestSpriteC;
+	public function isMatching(subject:IStyleAdapter):Boolean {
+		return subject.getAdaptedElement() is TestSpriteC;
 	}
 }

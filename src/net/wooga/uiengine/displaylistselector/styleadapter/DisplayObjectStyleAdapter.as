@@ -8,6 +8,8 @@ package net.wooga.uiengine.displaylistselector.styleadapter {
 		private var _parent:IStyleAdapter;
 		private var _adaptedElement:DisplayObject;
 
+		private static const CSS_CLASS_PARAMETER_NAME:String = "groups";
+
 		public function DisplayObjectStyleAdapter() {
 		}
 
@@ -44,7 +46,7 @@ package net.wooga.uiengine.displaylistselector.styleadapter {
 		}
 
 		public function getClasses():Array {
-			return null; //TODO (arneschroppe 22/2/12) return "group" parameter for now?
+			return (CSS_CLASS_PARAMETER_NAME in _adaptedElement) ? _adaptedElement[CSS_CLASS_PARAMETER_NAME] : [];
 		}
 
 

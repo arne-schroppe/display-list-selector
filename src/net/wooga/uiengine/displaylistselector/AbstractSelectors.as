@@ -41,7 +41,7 @@ package net.wooga.uiengine.displaylistselector {
 
 
 		//TODO (arneschroppe 21/2/12) id and class attributes are of course also reflected through adapters
-		public function initializeWith(rootObject:Object, externalPropertySource:IExternalPropertySource = null, idAttribute:String = "name", classAttribute:String = "group"):void {
+		public function initializeWith(rootObject:Object, externalPropertySource:IExternalPropertySource = null):void {
 			_rootObject = rootObject;
 			//TODO (arneschroppe 21/2/12) we don't need to know the root object, we only need to check for the root property on the adapter! (but will everyone implement this properly?)
 
@@ -53,7 +53,7 @@ package net.wooga.uiengine.displaylistselector {
 			_pseudoClassProvider = new PseudoClassProvider();
 			addDefaultPseudoClasses();
 
-			_parser = new Parser(externalPropertySource, _pseudoClassProvider, idAttribute, classAttribute);
+			_parser = new Parser(externalPropertySource, _pseudoClassProvider);
 			_matcher = new MatcherTool(_rootObject);
 		}
 

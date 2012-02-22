@@ -52,11 +52,7 @@ package net.wooga.uiengine.displaylistselector.matching.old {
 
 
 		private function reverseMatch(subject:IStyleAdapter, nextMatcher:int):Boolean {
-
-			trace("Matching " + subject.getAdaptedElement());
-
 			if (!subject) {
-				trace("no subject!");
 				return false;
 			}
 
@@ -67,7 +63,6 @@ package net.wooga.uiengine.displaylistselector.matching.old {
 			}
 
 			if (currentMatcherIsDescendantMatcher(nextMatcher)) {
-				trace("Found descendantmatcher")
 				nextMatcher--;
 				retryParent = true;
 			}
@@ -76,9 +71,7 @@ package net.wooga.uiengine.displaylistselector.matching.old {
 			for (var i:int = nextMatcher; i >= 0; --i) {
 				var matcher:IMatcher = _currentlyMatchedMatchers[i];
 
-				trace("matcher: " + matcher);
 				if (!matcher.isMatching(subject)) {
-					trace("did not match!");
 					if(retryParent) {
 						break
 					}
@@ -98,20 +91,15 @@ package net.wooga.uiengine.displaylistselector.matching.old {
 			if (i >= 0 && retryParent) { //TODO (arneschroppe 6/2/12) specifically test this line!
 
 				result = reverseMatchParentIfPossible(subject, nextMatcher);
-
-				trace("parent result: " + result);
 				return result;
 			}
 
 
 			if (i < 0) {
-				trace("SUCCESS!");
 				return true;
 			}
 
-
 			result = reverseMatchParentIfPossible(subject, i);
-			trace("this result: " + result);
 			return result;
 		}
 

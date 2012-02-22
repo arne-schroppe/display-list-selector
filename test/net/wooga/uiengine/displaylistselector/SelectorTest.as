@@ -27,6 +27,8 @@ package net.wooga.uiengine.displaylistselector {
 	import org.hamcrest.object.equalTo;
 	import org.hamcrest.object.hasPropertyWithValue;
 
+
+	//TODO (arneschroppe 22/2/12) maybe we should rewrite these tests with mocked adapters instead of using the DisplayObjectStyleAdapter
 	public class SelectorTest extends ContextViewBasedTest {
 
 
@@ -40,7 +42,7 @@ package net.wooga.uiengine.displaylistselector {
 			_displayList = new DisplayTree();
 
 			_selectors = new AbstractSelectors();
-			_selectors.initializeWith(contextView, _propertyDictionary, "id", "class");
+			_selectors.initializeWith(contextView, _propertyDictionary);
 			_selectors.setDefaultStyleAdapter(DisplayObjectStyleAdapter);
 		}
 
@@ -176,17 +178,14 @@ package net.wooga.uiengine.displaylistselector {
 		}
 
 
+		//TODO (arneschroppe 22/2/12) we are relying on a specific implementation of IStyleAdapter here, which is unfortunate
 		[Test]
 		public function should_match_css_id_selector():void {
 
 			_displayList.hasA(contextView).containing
-					.a(TestSpriteA)
+					.a(TestSpriteA).withTheName("test")
 				.end.finish();
 
-			var propertyName:String = "id";
-			var value:String = "test";
-
-			_propertyDictionary.addItem(propertyName, value);
 
 			var matchedObjects:Set = getMatchedObjectsFor("TestSpriteA#test");
 			assert_should_match_css_id_selector(matchedObjects);
@@ -238,17 +237,10 @@ package net.wooga.uiengine.displaylistselector {
 			_displayList.hasA(contextView).containing
 					.a(TestSpriteA)
 					.a(TestSpriteB)
-					.a(TestSpriteC)
+					.a(TestSpriteC).withTheProperty("groups").setTo(["A", "B", "testClass", "C"])
 				.end.finish();
 
-			var values:Set = new Set();
-			values.add("A");
-			values.add("B");
-			values.add("testClass");
-			values.add("C");
-			_propertyDictionary.addItem("class", values);
-
-			var matchedObjects:Set = getMatchedObjectsFor("TestSpriteA.testClass");
+			var matchedObjects:Set = getMatchedObjectsFor("TestSpriteC.testClass");
 			assert_should_match_cssclass_selector(matchedObjects);
 
 			//matchedObjects = _selector.getMatchedObjects();
@@ -257,7 +249,7 @@ package net.wooga.uiengine.displaylistselector {
 		}
 
 		private function assert_should_match_cssclass_selector(matchedObjects:Set):void {
-			assertThat(matchedObjects, containsExactly(1, isA(TestSpriteA)));
+			assertThat(matchedObjects, containsExactly(1, isA(TestSpriteC)));
 			assertEquals(1, matchedObjects.size);
 		}
 
@@ -534,7 +526,7 @@ package net.wooga.uiengine.displaylistselector {
 		public function should_match_id_and_attribute_selector():void {
 
 			_displayList.hasA(contextView).containing
-					.a(TestSpriteC)
+					.a(TestSpriteC).withTheName("testName")
 				.end.finish();
 
 			var values:Set = new Set();
@@ -543,10 +535,6 @@ package net.wooga.uiengine.displaylistselector {
 			values.add("1234");
 			values.add("C");
 			_propertyDictionary.addItem("testattrib", values);
-
-			var propertyName:String = "id";
-			var value:String = "testName";
-			_propertyDictionary.addItem(propertyName, value);
 
 			var matchedObjects:Set = getMatchedObjectsFor(":root > *#testName[testattrib~='1234']");
 			assert_should_match_id_and_attribute_selector(matchedObjects);
@@ -774,11 +762,9 @@ package net.wooga.uiengine.displaylistselector {
 
 			_selectors.createStyleAdapterFor(object);
 
-			trace("+++++++++");
 			if(_selectors.getSelectorsMatchingObject(object).has(selectorString)) {
 				result.add(object);
 			}
-			trace("---------");
 
 			var container:DisplayObjectContainer = object as DisplayObjectContainer;
 			if(container) {

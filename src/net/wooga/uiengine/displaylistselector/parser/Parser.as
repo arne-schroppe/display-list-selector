@@ -4,6 +4,8 @@ package net.wooga.uiengine.displaylistselector.parser {
 	import net.wooga.uiengine.displaylistselector.matching.old.matchers.IMatcher;
 	import net.wooga.uiengine.displaylistselector.matching.old.matchers.implementations.ChildSelectorMatcher;
 	import net.wooga.uiengine.displaylistselector.matching.old.matchers.implementations.DescendantSelectorMatcher;
+	import net.wooga.uiengine.displaylistselector.matching.old.matchers.implementations.HasClassMatcher;
+	import net.wooga.uiengine.displaylistselector.matching.old.matchers.implementations.HasIdMatcher;
 	import net.wooga.uiengine.displaylistselector.matching.old.matchers.implementations.PropertyFilterContainsMatcher;
 	import net.wooga.uiengine.displaylistselector.matching.old.matchers.implementations.PropertyFilterEqualsMatcher;
 	import net.wooga.uiengine.displaylistselector.matching.old.matchers.implementations.PseudoClassMatcher;
@@ -17,8 +19,6 @@ package net.wooga.uiengine.displaylistselector.parser {
 
 		private var _externalPropertySource:IExternalPropertySource;
 		private var _pseudoClassProvider:IPseudoClassProvider;
-		private var _idAttribute:String;
-		private var _classAttribute:String;
 
 
 		private var _matcherMap:DynamicMultiMap = new DynamicMultiMap();
@@ -35,11 +35,9 @@ package net.wooga.uiengine.displaylistselector.parser {
 
 
 
-		public function Parser(externalPropertySource:IExternalPropertySource, pseudoClassProvider:IPseudoClassProvider, idAttribute:String, classAttribute:String) {
+		public function Parser(externalPropertySource:IExternalPropertySource, pseudoClassProvider:IPseudoClassProvider) {
 			_externalPropertySource = externalPropertySource;
 			_pseudoClassProvider = pseudoClassProvider;
-			_idAttribute = idAttribute;
-			_classAttribute = classAttribute;
 		}
 
 
@@ -207,8 +205,8 @@ package net.wooga.uiengine.displaylistselector.parser {
 		private function cssClass():void {
 			_input.consume(1);
 			var className:String = _input.consumeRegex(/[a-zA-Z]+/);
-			var matcher:IMatcher = new PropertyFilterContainsMatcher(_externalPropertySource, _classAttribute, className);
-			_currentMatchers.matchers.push(getSingletonMatcher(PropertyFilterContainsMatcher, _externalPropertySource, _classAttribute, className, matcher));
+			var matcher:IMatcher = new HasClassMatcher(className);
+			_currentMatchers.matchers.push(getSingletonMatcher(HasClassMatcher, className, matcher));
 			_subSelector += "." + className;
 			_specificity.classAndAttributeAndPseudoSelectors++;
 		}
@@ -217,8 +215,8 @@ package net.wooga.uiengine.displaylistselector.parser {
 		private function cssId():void {
 			_input.consume(1);
 			var id:String = _input.consumeRegex(/[a-zA-Z]+/);
-			var matcher:IMatcher = new PropertyFilterEqualsMatcher(_externalPropertySource, _idAttribute, id);
-			_currentMatchers.matchers.push(getSingletonMatcher(PropertyFilterEqualsMatcher, _externalPropertySource, _idAttribute, id, matcher));
+			var matcher:IMatcher = new HasIdMatcher(id);
+			_currentMatchers.matchers.push(getSingletonMatcher(HasIdMatcher, id, matcher));
 
 			_subSelector += "#" + id;
 			_specificity.idSelector++;

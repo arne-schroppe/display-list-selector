@@ -18,8 +18,8 @@ package net.wooga.uiengine.displaylistselector {
 		}
 
 
-		public function initializeWith(rootObject:DisplayObjectContainer, externalPropertySource:IExternalPropertySource = null, idAttribute:String = "name", classAttribute:String = "group", autoCreateAdapters:Boolean=true):void {
-			_selectors.initializeWith(rootObject, externalPropertySource, idAttribute, classAttribute);
+		public function initializeWith(rootObject:DisplayObjectContainer, externalPropertySource:IExternalPropertySource = null, autoCreateAdapters:Boolean=true):void {
+			_selectors.initializeWith(rootObject, externalPropertySource);
 
 			_rootObject = rootObject;
 			if(autoCreateAdapters) {

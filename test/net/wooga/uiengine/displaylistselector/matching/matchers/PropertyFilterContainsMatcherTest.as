@@ -8,7 +8,7 @@ package net.wooga.uiengine.displaylistselector.matching.matchers {
 	import net.wooga.fixtures.TestSpriteC;
 	import net.wooga.fixtures.containsInArrayExactly;
 	import net.wooga.fixtures.getAdapterForObject;
-	import net.wooga.uiengine.displaylistselector.matching.old.matchers.implementations.PropertyFilterContainsMatcher;
+	import net.wooga.uiengine.displaylistselector.matching.matchers.implementations.PropertyFilterContainsMatcher;
 	import net.wooga.uiengine.displaylistselector.styleadapter.IStyleAdapter;
 
 	import org.hamcrest.assertThat;

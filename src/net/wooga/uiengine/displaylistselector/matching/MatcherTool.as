@@ -1,8 +1,8 @@
-package net.wooga.uiengine.displaylistselector.matching.old {
-	import net.wooga.uiengine.displaylistselector.matching.old.matchers.ICombinator;
-	import net.wooga.uiengine.displaylistselector.matching.old.matchers.IMatcher;
-	import net.wooga.uiengine.displaylistselector.matching.old.matchers.implementations.ChildSelectorMatcher;
-	import net.wooga.uiengine.displaylistselector.matching.old.matchers.implementations.DescendantSelectorMatcher;
+package net.wooga.uiengine.displaylistselector.matching {
+	import net.wooga.uiengine.displaylistselector.matching.matchers.ICombinator;
+	import net.wooga.uiengine.displaylistselector.matching.matchers.IMatcher;
+	import net.wooga.uiengine.displaylistselector.matching.matchers.implementations.ChildSelectorMatcher;
+	import net.wooga.uiengine.displaylistselector.matching.matchers.implementations.DescendantSelectorMatcher;
 	import net.wooga.uiengine.displaylistselector.parser.ParsedSelector;
 	import net.wooga.uiengine.displaylistselector.styleadapter.IStyleAdapter;
 

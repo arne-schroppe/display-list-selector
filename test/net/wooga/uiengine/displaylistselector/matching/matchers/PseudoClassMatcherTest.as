@@ -7,7 +7,7 @@ package net.wooga.uiengine.displaylistselector.matching.matchers {
 	import net.wooga.fixtures.TestSpriteB;
 	import net.wooga.fixtures.TestSpriteC;
 	import net.wooga.fixtures.getAdapterForObject;
-	import net.wooga.uiengine.displaylistselector.matching.old.matchers.implementations.PseudoClassMatcher;
+	import net.wooga.uiengine.displaylistselector.matching.matchers.implementations.PseudoClassMatcher;
 	import net.wooga.uiengine.displaylistselector.styleadapter.IStyleAdapter;
 
 	import org.hamcrest.assertThat;

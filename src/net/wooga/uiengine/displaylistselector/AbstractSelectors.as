@@ -1,7 +1,7 @@
 package net.wooga.uiengine.displaylistselector {
 	import flash.utils.getQualifiedClassName;
 
-	import net.wooga.uiengine.displaylistselector.matching.old.MatcherTool;
+	import net.wooga.uiengine.displaylistselector.matching.MatcherTool;
 	import net.wooga.uiengine.displaylistselector.parser.Parser;
 	import net.wooga.uiengine.displaylistselector.parser.ParserResult;
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.FirstChild;
@@ -13,12 +13,14 @@ package net.wooga.uiengine.displaylistselector {
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.NthLastOfType;
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.NthOfType;
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.Root;
+	import net.wooga.uiengine.displaylistselector.selectorstorage.SelectorStorage;
 	import net.wooga.uiengine.displaylistselector.styleadapter.IStyleAdapter;
 	import net.wooga.uiengine.displaylistselector.tools.SpecificityComparator;
 	import net.wooga.uiengine.displaylistselector.tools.Types;
 
 	import org.as3commons.collections.Map;
 	import org.as3commons.collections.SortedSet;
+	import org.as3commons.collections.framework.IIterable;
 	import org.as3commons.collections.framework.IIterator;
 	import org.as3commons.collections.framework.IMap;
 	import org.as3commons.collections.framework.ISet;
@@ -32,7 +34,7 @@ package net.wooga.uiengine.displaylistselector {
 
 		private var _matcher:MatcherTool;
 
-		private var _knownSelectors:Map = new Map();
+		private var _knownSelectors:SelectorStorage = new SelectorStorage();
 
 		private var _objectToStyleAdapterMap:IMap = new Map();
 		private var _objectTypeToStyleAdapterTypeMap:IMap = new Map();
@@ -74,7 +76,9 @@ package net.wooga.uiengine.displaylistselector {
 
 			var result:ISet = new SortedSet(new SpecificityComparator(_knownSelectors));
 
-			var keyIterator:IIterator = _knownSelectors.keyIterator();
+			var possibleMatches:IIterable = _knownSelectors.getPossibleMatchesFor(adapter);
+
+			var keyIterator:IIterator = possibleMatches.iterator();
 			while (keyIterator.hasNext()) {
 				var selector:String = keyIterator.next();
 				var parsed:ParserResult = _knownSelectors.itemFor(selector);
@@ -115,7 +119,6 @@ package net.wooga.uiengine.displaylistselector {
 			checkAdapterType(adapterType);
 			_defaultStyleAdapterType = adapterType;
 		}
-
 
 
 

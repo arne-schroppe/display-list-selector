@@ -1,6 +1,6 @@
-package net.wooga.uiengine.displaylistselector.matching.old.matchers.implementations {
+package net.wooga.uiengine.displaylistselector.matching.matchers.implementations {
 	import net.wooga.uiengine.displaylistselector.IExternalPropertySource;
-	import net.wooga.uiengine.displaylistselector.matching.old.matchers.IMatcher;
+	import net.wooga.uiengine.displaylistselector.matching.matchers.IMatcher;
 	import net.wooga.uiengine.displaylistselector.styleadapter.IStyleAdapter;
 
 	public class PropertyFilterEqualsMatcher implements IMatcher {

@@ -1,5 +1,5 @@
-package net.wooga.uiengine.displaylistselector.matching.old.matchers.implementations {
-	import net.wooga.uiengine.displaylistselector.matching.old.matchers.IMatcher;
+package net.wooga.uiengine.displaylistselector.matching.matchers.implementations {
+	import net.wooga.uiengine.displaylistselector.matching.matchers.IMatcher;
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.IPseudoClass;
 	import net.wooga.uiengine.displaylistselector.styleadapter.IStyleAdapter;
 

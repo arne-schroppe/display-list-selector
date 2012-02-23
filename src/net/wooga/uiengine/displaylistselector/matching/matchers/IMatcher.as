@@ -1,4 +1,4 @@
-package net.wooga.uiengine.displaylistselector.matching.old.matchers {
+package net.wooga.uiengine.displaylistselector.matching.matchers {
 	import net.wooga.uiengine.displaylistselector.styleadapter.IStyleAdapter;
 
 	public interface IMatcher {

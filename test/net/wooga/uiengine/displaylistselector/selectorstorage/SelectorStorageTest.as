@@ -19,7 +19,7 @@ package net.wooga.uiengine.displaylistselector.selectorstorage {
 		public var mockitoRule:IMethodRule = new MockitoRule();
 
 
-		
+
 		private var _selectorStorage:SelectorStorage;
 		
 		private var _parser:Parser;

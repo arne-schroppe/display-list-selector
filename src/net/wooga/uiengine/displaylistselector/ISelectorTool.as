@@ -8,6 +8,8 @@ package net.wooga.uiengine.displaylistselector {
 
 		function getSelectorsMatchingObject(object:Object):ISet;
 
+		function setClassNameAlias(alias:String, fullyQualifiedClassName:String):void;
+
 		function addPseudoClass(className:String, pseudoClass:IPseudoClass):void;
 
 		function objectWasChanged(object:Object):void;

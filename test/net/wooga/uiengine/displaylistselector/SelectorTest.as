@@ -3,15 +3,17 @@ package net.wooga.uiengine.displaylistselector {
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 	import flash.display.MovieClip;
+	import flash.display.Sprite;
+	import flash.utils.getQualifiedClassName;
 
 	import net.arneschroppe.displaytreebuilder.DisplayTree;
 	import net.wooga.fixtures.ContextViewBasedTest;
+	import net.wooga.fixtures.TestInterface;
 	import net.wooga.fixtures.TestSpriteA;
 	import net.wooga.fixtures.TestSpriteB;
 	import net.wooga.fixtures.TestSpriteC;
+	import net.wooga.fixtures.TestSpriteD;
 	import net.wooga.fixtures.TestSpriteWithInterface;
-	import net.wooga.fixtures.package1.TestSpritePack;
-	import net.wooga.fixtures.package2.TestSpritePack;
 	import net.wooga.uiengine.displaylistselector.styleadapter.DisplayObjectStyleAdapter;
 	import net.wooga.utils.flexunit.hamcrestcollection.containsExactly;
 	import net.wooga.utils.flexunit.hamcrestcollection.everyItemInCollection;
@@ -26,7 +28,6 @@ package net.wooga.uiengine.displaylistselector {
 	import org.hamcrest.core.not;
 	import org.hamcrest.object.equalTo;
 	import org.hamcrest.object.hasPropertyWithValue;
-
 
 	//TODO (arneschroppe 22/2/12) maybe we should rewrite these tests with mocked adapters instead of using the DisplayObjectStyleAdapter
 	public class SelectorTest extends ContextViewBasedTest {
@@ -44,6 +45,13 @@ package net.wooga.uiengine.displaylistselector {
 			_selectors = new AbstractSelectors();
 			_selectors.initializeWith(contextView, _propertyDictionary);
 			_selectors.setDefaultStyleAdapter(DisplayObjectStyleAdapter);
+			_selectors.setClassNameAlias("TestSpriteA", getQualifiedClassName(TestSpriteA).replace("::", "."));
+			_selectors.setClassNameAlias("TestSpriteB", getQualifiedClassName(TestSpriteB).replace("::", "."));
+			_selectors.setClassNameAlias("TestSpriteC", getQualifiedClassName(TestSpriteC).replace("::", "."));
+			_selectors.setClassNameAlias("TestSpriteD", getQualifiedClassName(TestSpriteD).replace("::", "."));
+			_selectors.setClassNameAlias("Sprite", getQualifiedClassName(Sprite).replace("::", "."));
+			_selectors.setClassNameAlias("MovieClip", getQualifiedClassName(MovieClip).replace("::", "."));
+			_selectors.setClassNameAlias("TestInterface", getQualifiedClassName(TestInterface).replace("::", "."));
 		}
 
 
@@ -599,29 +607,28 @@ package net.wooga.uiengine.displaylistselector {
 
 
 
-		[Test]
-		public function should_match_qualified_class_name():void {
-			_displayList.hasA(contextView).containing
-					.a(net.wooga.fixtures.package1.TestSpritePack)
-					.a(net.wooga.fixtures.package2.TestSpritePack)
-					.a(TestSpriteA)
-					.a(TestSpriteB)
-					.end.finish();
-
-			getMatchedObjectsFor("(fixtures.*.TestSpritePack)");
-			var matchedObjects:Set = getMatchedObjectsFor("(fixtures.*.TestSpritePack)");
-			assert_should_match_qualified_class_name(matchedObjects);
-
-			//matchedObjects = _selector.getMatchedObjects();
-			//assert_should_match_qualified_class_name(matchedObjects);
-
-		}
-
-		private function assert_should_match_qualified_class_name(matchedObjects:Set):void {
-			assertThat(matchedObjects.size, equalTo(2));
-			assertThat(matchedObjects, containsExactly(1, isA(net.wooga.fixtures.package1.TestSpritePack)));
-			assertThat(matchedObjects, containsExactly(1, isA(net.wooga.fixtures.package2.TestSpritePack)));
-		}
+		//[Test]
+		//public function should_match_qualified_class_name():void {
+		//	_displayList.hasA(contextView).containing
+		//			.a(net.wooga.fixtures.package1.TestSpritePack)
+		//			.a(net.wooga.fixtures.package2.TestSpritePack)
+		//			.a(TestSpriteA)
+		//			.a(TestSpriteB)
+		//			.end.finish();
+		//
+		//	var matchedObjects:Set = getMatchedObjectsFor("(fixtures.*.TestSpritePack)");
+		//	assert_should_match_qualified_class_name(matchedObjects);
+		//
+		//	//matchedObjects = _selector.getMatchedObjects();
+		//	//assert_should_match_qualified_class_name(matchedObjects);
+		//
+		//}
+		//
+		//private function assert_should_match_qualified_class_name(matchedObjects:Set):void {
+		//	assertThat(matchedObjects.size, equalTo(2));
+		//	assertThat(matchedObjects, containsExactly(1, isA(net.wooga.fixtures.package1.TestSpritePack)));
+		//	assertThat(matchedObjects, containsExactly(1, isA(net.wooga.fixtures.package2.TestSpritePack)));
+		//}
 
 		[Test]
 		public function should_match_interface():void {

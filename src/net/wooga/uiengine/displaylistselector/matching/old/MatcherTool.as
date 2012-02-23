@@ -6,16 +6,19 @@ package net.wooga.uiengine.displaylistselector.matching.old {
 	import net.wooga.uiengine.displaylistselector.parser.ParsedSelector;
 	import net.wooga.uiengine.displaylistselector.styleadapter.IStyleAdapter;
 
+	import org.as3commons.collections.framework.IMap;
+
 	public class MatcherTool {
 
 		private var _rootObject:Object;
 
 		private var _currentlyMatchedMatchers:Vector.<IMatcher>;
 		private var _currentlyMatchedSelector:String;
+		private var _objectToAdapterMap:IMap;
 
-
-		public function MatcherTool(rootObject:Object) {
+		public function MatcherTool(rootObject:Object, objectToAdapterMap:IMap) {
 			_rootObject = rootObject;
+			_objectToAdapterMap = objectToAdapterMap;
 		}
 
 
@@ -110,7 +113,7 @@ package net.wooga.uiengine.displaylistselector.matching.old {
 				return false;
 			}
 
-			return reverseMatch(subject.getParent(), nextMatcher);
+			return reverseMatch(_objectToAdapterMap.itemFor(subject.getParentElement()), nextMatcher);
 		}
 
 

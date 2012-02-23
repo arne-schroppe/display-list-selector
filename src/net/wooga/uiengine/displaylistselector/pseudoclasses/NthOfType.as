@@ -13,7 +13,8 @@ package net.wooga.uiengine.displaylistselector.pseudoclasses {
 			var SubjectType:Class = getDefinitionByName(getQualifiedClassName(subject.getAdaptedElement())) as Class;
 			var current:Object;
 
-			for (var i:int = 0; i < subject.getNumberOfElementsInContainer(); ++i) {
+			var length:int = subject.getNumberOfElementsInContainer();
+			for (var i:int = 0; i < length; ++i) {
 				current = subject.getSiblingElementAtIndex(i);
 
 				if (current == subject.getAdaptedElement()) {

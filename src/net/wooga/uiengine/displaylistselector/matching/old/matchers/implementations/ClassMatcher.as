@@ -2,10 +2,10 @@ package net.wooga.uiengine.displaylistselector.matching.old.matchers.implementat
 	import net.wooga.uiengine.displaylistselector.matching.old.matchers.IMatcher;
 	import net.wooga.uiengine.displaylistselector.styleadapter.IStyleAdapter;
 
-	public class HasClassMatcher implements IMatcher {
+	public class ClassMatcher implements IMatcher {
 		private var _className:String;
 
-		public function HasClassMatcher(className:String) {
+		public function ClassMatcher(className:String) {
 			_className = className;
 		}
 

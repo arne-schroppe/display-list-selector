@@ -4,13 +4,15 @@ package net.wooga.uiengine.displaylistselector.parser {
 	import net.wooga.uiengine.displaylistselector.matching.old.matchers.IMatcher;
 	import net.wooga.uiengine.displaylistselector.matching.old.matchers.implementations.ChildSelectorMatcher;
 	import net.wooga.uiengine.displaylistselector.matching.old.matchers.implementations.DescendantSelectorMatcher;
-	import net.wooga.uiengine.displaylistselector.matching.old.matchers.implementations.HasClassMatcher;
-	import net.wooga.uiengine.displaylistselector.matching.old.matchers.implementations.HasIdMatcher;
+	import net.wooga.uiengine.displaylistselector.matching.old.matchers.implementations.ClassMatcher;
+	import net.wooga.uiengine.displaylistselector.matching.old.matchers.implementations.IdMatcher;
 	import net.wooga.uiengine.displaylistselector.matching.old.matchers.implementations.PropertyFilterContainsMatcher;
 	import net.wooga.uiengine.displaylistselector.matching.old.matchers.implementations.PropertyFilterEqualsMatcher;
 	import net.wooga.uiengine.displaylistselector.matching.old.matchers.implementations.PseudoClassMatcher;
 	import net.wooga.uiengine.displaylistselector.matching.old.matchers.implementations.TypeNameMatcher;
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.IPseudoClass;
+
+	import org.as3commons.collections.framework.IMap;
 
 	public class Parser {
 
@@ -33,11 +35,13 @@ package net.wooga.uiengine.displaylistselector.parser {
 
 		private var _subSelector:String;
 
+		private var _classNameAliasMap:IMap;
 
 
-		public function Parser(externalPropertySource:IExternalPropertySource, pseudoClassProvider:IPseudoClassProvider) {
+		public function Parser(externalPropertySource:IExternalPropertySource, pseudoClassProvider:IPseudoClassProvider, classNameAliasMap:IMap) {
 			_externalPropertySource = externalPropertySource;
 			_pseudoClassProvider = pseudoClassProvider;
+			_classNameAliasMap = classNameAliasMap;
 		}
 
 
@@ -172,6 +176,11 @@ package net.wooga.uiengine.displaylistselector.parser {
 			}
 			else {
 				className = _input.consumeRegex(/\w+/);
+				var qualifiedClassName:String = _classNameAliasMap.itemFor(className);
+				if(!qualifiedClassName) {
+					throw new ParserError("Unknown element alias '" + className + "'");
+				}
+				className = qualifiedClassName;
 				_currentMatchers.matchers.push(getSingletonMatcher(TypeNameMatcher, className, _isExactTypeMatcher, new TypeNameMatcher(className, _isExactTypeMatcher)));
 				_subSelector += className;
 			}
@@ -205,8 +214,8 @@ package net.wooga.uiengine.displaylistselector.parser {
 		private function cssClass():void {
 			_input.consume(1);
 			var className:String = _input.consumeRegex(/[a-zA-Z]+/);
-			var matcher:IMatcher = new HasClassMatcher(className);
-			_currentMatchers.matchers.push(getSingletonMatcher(HasClassMatcher, className, matcher));
+			var matcher:IMatcher = new ClassMatcher(className);
+			_currentMatchers.matchers.push(getSingletonMatcher(ClassMatcher, className, matcher));
 			_subSelector += "." + className;
 			_specificity.classAndAttributeAndPseudoSelectors++;
 		}
@@ -215,8 +224,8 @@ package net.wooga.uiengine.displaylistselector.parser {
 		private function cssId():void {
 			_input.consume(1);
 			var id:String = _input.consumeRegex(/[a-zA-Z]+/);
-			var matcher:IMatcher = new HasIdMatcher(id);
-			_currentMatchers.matchers.push(getSingletonMatcher(HasIdMatcher, id, matcher));
+			var matcher:IMatcher = new IdMatcher(id);
+			_currentMatchers.matchers.push(getSingletonMatcher(IdMatcher, id, matcher));
 
 			_subSelector += "#" + id;
 			_specificity.idSelector++;

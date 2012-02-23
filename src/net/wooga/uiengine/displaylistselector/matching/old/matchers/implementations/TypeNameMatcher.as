@@ -1,6 +1,7 @@
 package net.wooga.uiengine.displaylistselector.matching.old.matchers.implementations {
 
 	import flash.utils.describeType;
+	import flash.utils.getDefinitionByName;
 	import flash.utils.getQualifiedClassName;
 
 	import net.wooga.uiengine.displaylistselector.matching.old.matchers.IMatcher;
@@ -13,10 +14,11 @@ package net.wooga.uiengine.displaylistselector.matching.old.matchers.implementat
 	public class TypeNameMatcher implements IMatcher {
 
 		private var _matchAny:Boolean = false;
-		private var _simpleMatch:Boolean = false;
+		//private var _simpleMatch:Boolean = false;
+
 		private var _onlyMatchImmediateClassType:Boolean = true;
 
-		private var _typeMatcherRegEx:RegExp;
+		//private var _typeMatcherRegEx:RegExp;
 		private var _typeName:String;
 
 
@@ -24,27 +26,35 @@ package net.wooga.uiengine.displaylistselector.matching.old.matchers.implementat
 		private static const _directMatchTypeMatchCache:IMap = new Map();
 		private static const _typeNameParser:QualifiedTypeNameParser = new QualifiedTypeNameParser();
 
+		//TODO (arneschroppe 23/2/12) always use the :: notation internally
 		public function TypeNameMatcher(typeName:String, onlyMatchImmediateClassType:Boolean = true) {
 			_onlyMatchImmediateClassType = onlyMatchImmediateClassType;
 
-			_typeName = typeName;
-			if (_typeName == "*") {
+			if (typeName == "*") {
 				_matchAny = true;
+				return;
 			}
-			else if(/^(\w|\$)+$/i.test(_typeName)) {
-				_simpleMatch = true;
+
+			if(!/^\s*((\w|\$)+\.)*(\w|\$)+\s*$/i.test(typeName)) {
+				throw new ArgumentError("Invalid type name: " + typeName);
 			}
-			else {
-				createTypeNameMatcherRegEx(typeName);
-			}
+
+			_typeName = typeName.replace("::", ".");
+
+			//else if(/^(\w|\$)+$/i.test(_typeName)) {
+			//	_simpleMatch = true;
+			//}
+			//else {
+			//	createTypeNameMatcherRegEx(typeName);
+			//}
 		}
 
-
-		private function createTypeNameMatcherRegEx(typeName:String):void {
-			var normalizedName:String = typeName.replace("::", ".");
-			var regExString:String = _typeNameParser.createTypeMatcherRegEx(normalizedName);
-			_typeMatcherRegEx = new RegExp(regExString, "i")
-		}
+		//
+		//private function createTypeNameMatcherRegEx(typeName:String):void {
+		//	var normalizedName:String = typeName.replace("::", ".");
+		//	var regExString:String = _typeNameParser.createTypeMatcherRegEx(normalizedName);
+		//	_typeMatcherRegEx = new RegExp(regExString, "i")
+		//}
 
 
 		public function isMatching(subject:IStyleAdapter):Boolean {
@@ -55,6 +65,13 @@ package net.wooga.uiengine.displaylistselector.matching.old.matchers.implementat
 
 		private function matchesType(adapter:IStyleAdapter):Boolean {
 
+			try {
+				getDefinitionByName(_typeName)
+			}
+			catch(e:Error) {
+				trace("Warning: " + _typeName + " doesn't seem to exist");
+			}
+			
 			//TODO (arneschroppe 22/2/12) maybe we can find a way to avoid using the adapted element directly
 			var subject:Object = adapter.getAdaptedElement();
 
@@ -80,6 +97,7 @@ package net.wooga.uiengine.displaylistselector.matching.old.matchers.implementat
 			_typeMatchCache.add(key, new MatchCacheEntry(isMatching));
 
 			return isMatching;
+			//return isMatchingType(className) || hasSuperClassMatch(subject);
 		}
 
 
@@ -98,27 +116,28 @@ package net.wooga.uiengine.displaylistselector.matching.old.matchers.implementat
 
 		private function isMatchingType(className:String):Boolean {
 
+			return className.replace("::", ".") == _typeName;
 
-			if(_simpleMatch) {
-				return className.split("::").pop() == _typeName;
-			}
-
-			var key:String = createDictKeyFor(className);
-			var cacheEntry:MatchCacheEntry = _directMatchTypeMatchCache.itemFor(key);
-			if(cacheEntry !== null) {
-				return cacheEntry.isMatching;
-			}
-
-			var isMatching:Boolean = isTypeRegExMatching(className);
-			_directMatchTypeMatchCache.add(key, new MatchCacheEntry(isMatching));
-			return isMatching;
+			//if(_simpleMatch) {
+			//	return className.split("::").pop() == _typeName;
+			//}
+			//
+			//var key:String = createDictKeyFor(className);
+			//var cacheEntry:MatchCacheEntry = _directMatchTypeMatchCache.itemFor(key);
+			//if(cacheEntry !== null) {
+			//	return cacheEntry.isMatching;
+			//}
+			//
+			//var isMatching:Boolean = isTypeRegExMatching(className);
+			//_directMatchTypeMatchCache.add(key, new MatchCacheEntry(isMatching));
+			//return isMatching;
 		}
 
 
-		private function isTypeRegExMatching(typeName:String):Boolean {
-			typeName = typeName.replace("::", ".");
-			return _typeMatcherRegEx.test(typeName);
-		}
+		//private function isTypeRegExMatching(typeName:String):Boolean {
+		//	typeName = typeName.replace("::", ".");
+		//	return _typeMatcherRegEx.test(typeName);
+		//}
 
 
 

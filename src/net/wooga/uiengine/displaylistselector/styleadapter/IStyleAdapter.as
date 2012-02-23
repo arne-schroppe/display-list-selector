@@ -3,8 +3,8 @@ package net.wooga.uiengine.displaylistselector.styleadapter {
 		function register(adaptedElement:Object):void;
 		function unregister(adaptedElement:Object):void;
 
-		function getParent():IStyleAdapter;
-		function setParent(value:IStyleAdapter):void;
+		//function getParent():IStyleAdapter;
+		//function setParent(value:IStyleAdapter):void;
 
 		//TODO (arneschroppe 22/2/12) should we even use this? better not, the adapter should handle everything
 		function getAdaptedElement():Object;

@@ -38,6 +38,7 @@ package net.wooga.uiengine.displaylistselector {
 		private var _objectTypeToStyleAdapterTypeMap:IMap = new Map();
 		private var _defaultStyleAdapterType:Class;
 
+		private var _classNameAliasMap:IMap = new Map();
 
 
 		//TODO (arneschroppe 21/2/12) id and class attributes are of course also reflected through adapters
@@ -53,8 +54,8 @@ package net.wooga.uiengine.displaylistselector {
 			_pseudoClassProvider = new PseudoClassProvider();
 			addDefaultPseudoClasses();
 
-			_parser = new Parser(externalPropertySource, _pseudoClassProvider);
-			_matcher = new MatcherTool(_rootObject);
+			_parser = new Parser(externalPropertySource, _pseudoClassProvider, _classNameAliasMap);
+			_matcher = new MatcherTool(_rootObject, _objectToStyleAdapterMap);
 		}
 
 
@@ -141,16 +142,15 @@ package net.wooga.uiengine.displaylistselector {
 			_objectToStyleAdapterMap.add(object, selectorClient);
 			selectorClient.register(object);
 
-			var parentElement:Object = selectorClient.getParentElement();
-			var parentAdapter:IStyleAdapter = _objectToStyleAdapterMap.itemFor(parentElement);
+			//var parentElement:Object = selectorClient.getParentElement();
+			//var parentAdapter:IStyleAdapter = _objectToStyleAdapterMap.itemFor(parentElement);
 			
-			if(!parentAdapter) {
-				return;
-			}
+			//if(!parentAdapter) {
+			//	return;
+			//}
 
-			selectorClient.setParent(parentAdapter);
+			//selectorClient.setParent(parentAdapter);
 		}
-
 
 
 		private function getStyleAdapterClass(object:Object):Class {
@@ -173,7 +173,6 @@ package net.wooga.uiengine.displaylistselector {
 		}
 
 
-
 		//TODO (arneschroppe 11/1/12) we need a well-defined way to determine when a pseudo-class needs to be rematched. many of these only work with a very static display tree
 		private function addDefaultPseudoClasses():void {
 			addPseudoClass("root", new Root(_rootObject));
@@ -187,5 +186,14 @@ package net.wooga.uiengine.displaylistselector {
 		}
 
 
+		public function setClassNameAlias(alias:String, fullyQualifiedClassName:String):void {
+			if(_classNameAliasMap.hasKey(alias) && fullyQualifiedClassName != _classNameAliasMap.itemFor(alias)) {
+				trace("Warning! Alias '" + alias + "' with value '" + _classNameAliasMap.itemFor(alias) + "' is being overridden with value '" + fullyQualifiedClassName + "'");
+				_classNameAliasMap.replaceFor(alias, fullyQualifiedClassName);
+			}
+			else {
+				_classNameAliasMap.add(alias, fullyQualifiedClassName);
+			}
+		}
 	}
 }

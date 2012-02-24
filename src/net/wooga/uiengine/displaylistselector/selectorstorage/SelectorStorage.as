@@ -69,7 +69,8 @@ package net.wooga.uiengine.displaylistselector.selectorstorage {
 				return false;
 			}
 			else if(hasKey || keyIndex == 0) {
-				node.selectors.add(selector);
+				var targetNode:SelectorFilterTreeNode = node.childNodes.itemFor(key);
+				targetNode.selectors.add(selector);
 				return true;
 			}
 

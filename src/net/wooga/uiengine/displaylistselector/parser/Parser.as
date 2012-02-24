@@ -287,7 +287,8 @@ package net.wooga.uiengine.displaylistselector.parser {
 			_pseudoClassArguments.push(argument);
 
 			whitespace();
-			if (_input.isNext(",")) {
+			if (_input.isNext(","))
+			{
 				_input.consume(1);
 				whitespace();
 				pseudoClassArgument();

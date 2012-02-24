@@ -7,6 +7,7 @@ package net.wooga.uiengine.displaylistselector.selectorstorage {
 
 	import org.as3commons.collections.framework.ICollection;
 	import org.as3commons.collections.framework.IIterable;
+	import org.flexunit.asserts.fail;
 	import org.flexunit.rules.IMethodRule;
 	import org.hamcrest.assertThat;
 	import org.hamcrest.object.equalTo;
@@ -41,9 +42,9 @@ package net.wooga.uiengine.displaylistselector.selectorstorage {
 			var sel2:String = "(net.wooga.fixtures.TestSpriteB) > (net.wooga.fixtures.TestSpriteA)";
 			var sel3:String = "(net.wooga.fixtures.TestSpriteA) > (net.wooga.fixtures.TestSpriteB)";
 			var sel4:String = "* > (net.wooga.fixtures.TestSpriteC)";
+			var sel5:String = "*";
 
-			addSelectors([sel1, sel2, sel3, sel4]);
-
+			addSelectors([sel1, sel2, sel3, sel4, sel5]);
 
 			given(styleAdapter.getAdaptedElement()).willReturn(new TestSpriteA());
 
@@ -51,7 +52,8 @@ package net.wooga.uiengine.displaylistselector.selectorstorage {
 
 			assertThat(possibleMatches, containsExactly(1, equalTo(sel1)));
 			assertThat(possibleMatches, containsExactly(1, equalTo(sel2)));
-			assertThat((possibleMatches as ICollection).size, equalTo(2));
+			assertThat(possibleMatches, containsExactly(1, equalTo(sel5)));
+			assertThat((possibleMatches as ICollection).size, equalTo(3));
 
 		}
 
@@ -65,8 +67,9 @@ package net.wooga.uiengine.displaylistselector.selectorstorage {
 			var sel2:String = "(net.wooga.fixtures.TestSpriteB) > #otherId";
 			var sel3:String = "(net.wooga.fixtures.TestSpriteA) > #testId";
 			var sel4:String = "* > #otherId";
+			var sel5:String = "(net.wooga.fixtures.TestSpriteA)";
 
-			addSelectors([sel1, sel2, sel3, sel4]);
+			addSelectors([sel1, sel2, sel3, sel4, sel5]);
 
 			given(styleAdapter.getAdaptedElement()).willReturn(new TestSpriteA());
 			given(styleAdapter.getId()).willReturn(id);
@@ -74,10 +77,18 @@ package net.wooga.uiengine.displaylistselector.selectorstorage {
 
 			assertThat(possibleMatches, containsExactly(1, equalTo(sel1)));
 			assertThat(possibleMatches, containsExactly(1, equalTo(sel3)));
-			assertThat((possibleMatches as ICollection).size, equalTo(2));
+			assertThat(possibleMatches, containsExactly(1, equalTo(sel5)));
+			assertThat((possibleMatches as ICollection).size, equalTo(3));
 
 		}
 
+		
+		
+		[Test]
+		public function should_properly_handle_isA_selectors():void {
+			fail("Implement me");
+		}
+		
 
 		private function addSelectors(selectorsStrings:Array):void {
 

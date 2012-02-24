@@ -1,0 +1,14 @@
+package net.wooga.uiengine.displaylistselector.selectorstorage.keys {
+	import net.wooga.uiengine.displaylistselector.parser.ParserResult;
+	import net.wooga.uiengine.displaylistselector.styleadapter.IStyleAdapter;
+
+	public interface ISelectorTreeNodeKey {
+		function keyForSelector(parsedSelector:ParserResult):*;
+
+		function keyForAdapter(adapter:IStyleAdapter):*;
+
+
+
+		//function isKeyMatching(parsedSelector:ParsedSelector, key:*):Boolean;
+	}
+}

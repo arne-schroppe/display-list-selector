@@ -21,6 +21,7 @@ package net.wooga.uiengine.displaylistselector {
 
 	import org.as3commons.collections.Set;
 	import org.as3commons.collections.framework.IIterable;
+	import org.as3commons.collections.framework.ISet;
 	import org.flexunit.asserts.assertEquals;
 	import org.hamcrest.assertThat;
 	import org.hamcrest.core.allOf;
@@ -769,7 +770,8 @@ package net.wooga.uiengine.displaylistselector {
 
 			_selectors.createStyleAdapterFor(object);
 
-			if(_selectors.getSelectorsMatchingObject(object).has(selectorString)) {
+			var matchingSelectors:ISet = _selectors.getSelectorsMatchingObject(object);
+			if(matchingSelectors.has(selectorString)) {
 				result.add(object);
 			}
 

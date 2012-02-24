@@ -2,8 +2,8 @@ package net.wooga.uiengine.displaylistselector {
 	import flash.utils.getQualifiedClassName;
 
 	import net.wooga.uiengine.displaylistselector.matching.MatcherTool;
+	import net.wooga.uiengine.displaylistselector.parser.ParsedSelector;
 	import net.wooga.uiengine.displaylistselector.parser.Parser;
-	import net.wooga.uiengine.displaylistselector.parser.ParserResult;
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.FirstChild;
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.IPseudoClass;
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.IsEmpty;
@@ -17,6 +17,8 @@ package net.wooga.uiengine.displaylistselector {
 	import net.wooga.uiengine.displaylistselector.styleadapter.IStyleAdapter;
 	import net.wooga.uiengine.displaylistselector.tools.SpecificityComparator;
 	import net.wooga.uiengine.displaylistselector.tools.Types;
+
+	import org.as3commons.collections.LinkedSet;
 
 	import org.as3commons.collections.Map;
 	import org.as3commons.collections.SortedSet;
@@ -62,8 +64,13 @@ package net.wooga.uiengine.displaylistselector {
 
 
 		public function addSelector(selectorString:String):void {
-			var parsed:ParserResult = _parser.parse(selectorString);
-			_knownSelectors.add(selectorString, parsed);
+			var parsed:Vector.<ParsedSelector> = _parser.parse(selectorString);
+
+			//TODO (arneschroppe 24/2/12) we need to map a string key to several parsed selectors here ?!
+			for each(var selector:ParsedSelector in parsed) {
+				_knownSelectors.add(selector);
+			}
+			
 		}
 
 		//TODO (arneschroppe 14/2/12) use selector tree here, for optimization
@@ -74,23 +81,32 @@ package net.wooga.uiengine.displaylistselector {
 				throw new ArgumentError("No style adapter registered for object " + object);
 			}
 
-			var result:ISet = new SortedSet(new SpecificityComparator(_knownSelectors));
+			//TODO (arneschroppe 24/2/12) does using a sorted set here cause too much overhead?
+			var matches:ISet = new SortedSet(new SpecificityComparator());
+
 
 			var possibleMatches:IIterable = _knownSelectors.getPossibleMatchesFor(adapter);
 
 			var keyIterator:IIterator = possibleMatches.iterator();
 			while (keyIterator.hasNext()) {
-				var selector:String = keyIterator.next();
-				var parsed:ParserResult = _knownSelectors.itemFor(selector);
+				var selector:ParsedSelector = keyIterator.next();
 
-				if (_matcher.isObjectMatching(adapter, parsed.matchers)) {
-					result.add(selector);
+				if (_matcher.isObjectMatching(adapter, selector)) {
+					matches.add(selector);
 				}
+			}
+
+
+			//TODO (arneschroppe 24/2/12) unique and sort result;
+
+			var result:ISet = new LinkedSet();
+			var resultIterator:IIterator = matches.iterator();
+			while(resultIterator.hasNext()) {
+				result.add((resultIterator.next() as ParsedSelector).originalSelector);
 			}
 
 			return result;
 		}
-
 
 
 

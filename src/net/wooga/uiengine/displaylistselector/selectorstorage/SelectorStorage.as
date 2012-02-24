@@ -1,5 +1,5 @@
 package net.wooga.uiengine.displaylistselector.selectorstorage {
-	import net.wooga.uiengine.displaylistselector.parser.ParserResult;
+	import net.wooga.uiengine.displaylistselector.parser.ParsedSelector;
 	import net.wooga.uiengine.displaylistselector.selectorstorage.keys.ISelectorTreeNodeKey;
 	import net.wooga.uiengine.displaylistselector.styleadapter.IStyleAdapter;
 
@@ -19,19 +19,19 @@ package net.wooga.uiengine.displaylistselector.selectorstorage {
 
 		];
 
-		public function add(selectorString:String, parsedSelector:ParserResult):void {
-			_allSelectors.add(selectorString, parsedSelector);
+		public function add(parsedSelector:ParsedSelector):void {
+			_allSelectors.add(parsedSelector.selector, parsedSelector);
 
 			//_keys = new ArrayList();
 			//Lists.addFromArray(_keys, _allSelectors.keysToArray());
 		}
 
-		public function itemFor(selectorString:String):ParserResult {
-			return _allSelectors.itemFor(selectorString);
-		}
+		//public function itemFor(selectorString:String):ParsedSelector {
+		//	return _allSelectors.itemFor(selectorString);
+		//}
 
 		public function getPossibleMatchesFor(object:IStyleAdapter):IIterable {
-			return null;//_keys;
+			return _allSelectors;//_keys;
 		}
 	}
 }

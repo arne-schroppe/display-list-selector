@@ -6,6 +6,7 @@ package net.wooga.uiengine.displaylistselector {
 	public interface ISelectorTool {
 		function addSelector(selectorString:String):void;
 
+		//TODO (arneschroppe 24/2/12) we should change the return type here to Vector.<String>
 		function getSelectorsMatchingObject(object:Object):ISet;
 
 		function setClassNameAlias(alias:String, fullyQualifiedClassName:String):void;

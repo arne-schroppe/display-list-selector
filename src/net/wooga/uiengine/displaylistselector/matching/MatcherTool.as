@@ -13,7 +13,6 @@ package net.wooga.uiengine.displaylistselector.matching {
 		private var _rootObject:Object;
 
 		private var _currentlyMatchedMatchers:Vector.<IMatcher>;
-		private var _currentlyMatchedSelector:String;
 		private var _objectToAdapterMap:IMap;
 
 		public function MatcherTool(rootObject:Object, objectToAdapterMap:IMap) {
@@ -31,34 +30,24 @@ package net.wooga.uiengine.displaylistselector.matching {
 
 
 		//TODO (arneschroppe 9/1/12) write a test for this!!!!!!
-		public function isObjectMatching(adapter:IStyleAdapter, matchers:Vector.<ParsedSelector>):Boolean {
+		public function isObjectMatching(adapter:IStyleAdapter, selector:ParsedSelector):Boolean {
 
+			_currentlyMatchedMatchers = selector.matchers;
 
-			for each(var currentMatchers:ParsedSelector in matchers) {
-				_currentlyMatchedMatchers = currentMatchers.matchers;
-				_currentlyMatchedSelector = currentMatchers.selector;
-
-				if (_currentlyMatchedMatchers.length == 0) {
-					continue;
-				}
-				else {
-					var isMatching:Boolean = reverseMatch(adapter, _currentlyMatchedMatchers.length - 1);
-					//var isMatching:Boolean = reverseMatch(adapter, )
-					if(isMatching) {
-						return true;
-					}
-				}
+			if (_currentlyMatchedMatchers.length == 0) {
+				return true;
 			}
 
-			return false;
+			return reverseMatch(adapter, _currentlyMatchedMatchers.length - 1);
 		}
 
 
+
 		private function reverseMatch(subject:IStyleAdapter, nextMatcher:int):Boolean {
+
 			if (!subject) {
 				return false;
 			}
-
 
 			var retryParent:Boolean = false;
 			if (currentMatcherIsChildMatcher(nextMatcher)) {
@@ -81,7 +70,6 @@ package net.wooga.uiengine.displaylistselector.matching {
 					else {
 						return false;
 					}
-
 				}
 
 				if (matcher is ICombinator) {

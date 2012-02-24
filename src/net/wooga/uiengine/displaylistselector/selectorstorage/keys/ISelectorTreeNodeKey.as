@@ -1,9 +1,9 @@
 package net.wooga.uiengine.displaylistselector.selectorstorage.keys {
-	import net.wooga.uiengine.displaylistselector.parser.ParserResult;
+	import net.wooga.uiengine.displaylistselector.parser.ParsedSelector;
 	import net.wooga.uiengine.displaylistselector.styleadapter.IStyleAdapter;
 
 	public interface ISelectorTreeNodeKey {
-		function keyForSelector(parsedSelector:ParserResult):*;
+		function keyForSelector(parsedSelector:ParsedSelector):*;
 
 		function keyForAdapter(adapter:IStyleAdapter):*;
 

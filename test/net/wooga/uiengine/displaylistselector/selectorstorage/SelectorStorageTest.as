@@ -1,7 +1,7 @@
 package net.wooga.uiengine.displaylistselector.selectorstorage {
 	import net.wooga.fixtures.TestSpriteA;
+	import net.wooga.uiengine.displaylistselector.parser.ParsedSelector;
 	import net.wooga.uiengine.displaylistselector.parser.Parser;
-	import net.wooga.uiengine.displaylistselector.parser.ParserResult;
 	import net.wooga.uiengine.displaylistselector.styleadapter.IStyleAdapter;
 	import net.wooga.utils.flexunit.hamcrestcollection.containsExactly;
 
@@ -93,8 +93,12 @@ package net.wooga.uiengine.displaylistselector.selectorstorage {
 		private function addSelectors(selectorsStrings:Array):void {
 
 			for each(var selectorString:String in selectorsStrings) {
-				var parsed:ParserResult = _parser.parse(selectorString);
-				_selectorStorage.add(selectorString, parsed);
+				var parsed:Vector.<ParsedSelector> = _parser.parse(selectorString);
+
+				for each(var selector:ParsedSelector in parsed) {
+					_selectorStorage.add(selector);
+				}
+
 			}
 
 		}

@@ -16,7 +16,7 @@ package net.wooga.uiengine.displaylistselector.parser {
 
 	public class Parser {
 
-		private var _allMatchers:Vector.<ParsedSelector>;
+		private var _individualSelectors:Vector.<ParsedSelector>;
 		private var _currentMatchers:ParsedSelector;
 
 		private var _externalPropertySource:IExternalPropertySource;
@@ -36,6 +36,7 @@ package net.wooga.uiengine.displaylistselector.parser {
 		private var _subSelector:String;
 
 		private var _classNameAliasMap:IMap;
+		private var _originalSelector:String;
 
 
 		public function Parser(externalPropertySource:IExternalPropertySource, pseudoClassProvider:IPseudoClassProvider, classNameAliasMap:IMap) {
@@ -46,21 +47,18 @@ package net.wooga.uiengine.displaylistselector.parser {
 
 
 
-		public function parse(inputString:String):ParserResult {
+		public function parse(inputString:String):Vector.<ParsedSelector> {
 
+			_originalSelector = inputString;
 			_input = new ParserInput(inputString);
 
-			_allMatchers = new <ParsedSelector>[];
+			_individualSelectors = new <ParsedSelector>[];
+
 			startNewMatcherSequence();
-
-
-			_specificity = new Specificity();
-
 			selectorsGroup();
-
 			endMatcherSequence();
 
-			return new ParserResult(_allMatchers, _specificity);
+			return _individualSelectors;
 		}
 
 		private function startNewMatcherSequence():void {
@@ -68,20 +66,23 @@ package net.wooga.uiengine.displaylistselector.parser {
 			endMatcherSequence();
 
 			_currentMatchers = new ParsedSelector();
-			_allMatchers.push(_currentMatchers);
+			_individualSelectors.push(_currentMatchers);
 
 			_pseudoClassArguments = [];
 			_isExactTypeMatcher = false;
 			_subSelector = "";
+			_specificity = new Specificity();
 		}
 
 		private function endMatcherSequence():void {
 			
-			if(_allMatchers.length < 1) {
+			if(_individualSelectors.length < 1) {
 				return;
 			}
 
+			_currentMatchers.originalSelector = _originalSelector;
 			_currentMatchers.selector = _subSelector;
+			_currentMatchers.specificity = _specificity;
 		}
 
 

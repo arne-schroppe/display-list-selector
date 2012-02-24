@@ -7,8 +7,10 @@ package net.wooga.uiengine.displaylistselector.selectorstorage.keys {
 
 		function keyForAdapter(adapter:IStyleAdapter):*;
 
-
-
 		//function isKeyMatching(parsedSelector:ParsedSelector, key:*):Boolean;
+
+		function selectorHasKey(parsedSelector:ParsedSelector):Boolean;
+
+		function get nullKey():*;
 	}
 }

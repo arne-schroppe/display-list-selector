@@ -1,6 +1,7 @@
 package net.wooga.uiengine.displaylistselector.parser {
 	import net.wooga.uiengine.displaylistselector.IExternalPropertySource;
 	import net.wooga.uiengine.displaylistselector.input.ParserInput;
+	import net.wooga.uiengine.displaylistselector.matching.matchers.ICombinator;
 	import net.wooga.uiengine.displaylistselector.matching.matchers.IMatcher;
 	import net.wooga.uiengine.displaylistselector.matching.matchers.implementations.ChildSelectorMatcher;
 	import net.wooga.uiengine.displaylistselector.matching.matchers.implementations.DescendantSelectorMatcher;
@@ -13,11 +14,12 @@ package net.wooga.uiengine.displaylistselector.parser {
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.IPseudoClass;
 
 	import org.as3commons.collections.framework.IMap;
+	import org.hamcrest.object.nullOr;
 
 	public class Parser {
 
 		private var _individualSelectors:Vector.<ParsedSelector>;
-		private var _currentMatchers:ParsedSelector;
+		private var _currentSelector:ParsedSelector;
 
 		private var _externalPropertySource:IExternalPropertySource;
 		private var _pseudoClassProvider:IPseudoClassProvider;
@@ -65,8 +67,8 @@ package net.wooga.uiengine.displaylistselector.parser {
 
 			endMatcherSequence();
 
-			_currentMatchers = new ParsedSelector();
-			_individualSelectors.push(_currentMatchers);
+			_currentSelector = new ParsedSelector();
+			_individualSelectors.push(_currentSelector);
 
 			_pseudoClassArguments = [];
 			_isExactTypeMatcher = false;
@@ -80,10 +82,34 @@ package net.wooga.uiengine.displaylistselector.parser {
 				return;
 			}
 
-			_currentMatchers.originalSelector = _originalSelector;
-			_currentMatchers.selector = _subSelector;
-			_currentMatchers.specificity = _specificity;
+			_currentSelector.originalSelector = _originalSelector;
+			_currentSelector.selector = _subSelector;
+			_currentSelector.specificity = _specificity;
+
+			setupFilterData();
 		}
+
+		private function setupFilterData():void {
+			var lastIdMatcher:IdMatcher = findMatcherInLastSimpleSelector(IdMatcher) as IdMatcher;
+			if (lastIdMatcher) {
+				_currentSelector.filterData.id = lastIdMatcher.id;
+			}
+		}
+
+		private function findMatcherInLastSimpleSelector(MatcherType:Class):IMatcher {
+
+			var matchers:Vector.<IMatcher> = _currentSelector.matchers;
+			for(var i:int = matchers.length-1; i >= 0 && !(matchers[i] is ICombinator); --i) {
+				var matcher:IMatcher = matchers[i];
+				if(matcher is MatcherType) {
+					return matcher;
+				}
+			}
+
+			return null;
+		}
+
+
 
 
 		private function selectorsGroup():void {
@@ -109,14 +135,14 @@ package net.wooga.uiengine.displaylistselector.parser {
 			var combinator:String = _input.consumeRegex(/(\s*>\s*)|(\s*,\s*)|(\s+)/);
 
 			if (combinator.replace(/\s*/g, "") == ">") {
-				_currentMatchers.matchers.push(getSingletonMatcher(ChildSelectorMatcher, new ChildSelectorMatcher()));
+				_currentSelector.matchers.push(getSingletonMatcher(ChildSelectorMatcher, new ChildSelectorMatcher()));
 				_subSelector += ">";
 			}
 			else if(combinator.replace(/\s*/g, "") == ",") {
 				startNewMatcherSequence();
 			}
 			else if (/\s+/.test(combinator)) {
-				_currentMatchers.matchers.push(getSingletonMatcher(DescendantSelectorMatcher, new DescendantSelectorMatcher()));
+				_currentSelector.matchers.push(getSingletonMatcher(DescendantSelectorMatcher, new DescendantSelectorMatcher()));
 				_subSelector += " ";
 			}
 		}
@@ -160,7 +186,7 @@ package net.wooga.uiengine.displaylistselector.parser {
 				className = "*";
 				//The *-selector does not limit the result set, so we wouldn't need to add it. We get exceptions though,
 				//if *-selector is the last selector, so we add it anyway.
-				_currentMatchers.matchers.push(getSingletonMatcher(TypeNameMatcher, className, new TypeNameMatcher(className)));
+				_currentSelector.matchers.push(getSingletonMatcher(TypeNameMatcher, className, new TypeNameMatcher(className)));
 				_subSelector += "*";
 				return;
 			}
@@ -172,8 +198,9 @@ package net.wooga.uiengine.displaylistselector.parser {
 				className = _input.consumeRegex(/(\w|\.|\*)+/);
 				_input.consumeString(")");
 
-				_currentMatchers.matchers.push(getSingletonMatcher(TypeNameMatcher, className, _isExactTypeMatcher, new TypeNameMatcher(className, _isExactTypeMatcher)));
+				_currentSelector.matchers.push(getSingletonMatcher(TypeNameMatcher, className, _isExactTypeMatcher, new TypeNameMatcher(className, _isExactTypeMatcher)));
 
+				_subSelector += "(" + className + ")";
 			}
 			else {
 				className = _input.consumeRegex(/\w+/);
@@ -182,7 +209,7 @@ package net.wooga.uiengine.displaylistselector.parser {
 					throw new ParserError("Unknown element alias '" + className + "'");
 				}
 				className = qualifiedClassName;
-				_currentMatchers.matchers.push(getSingletonMatcher(TypeNameMatcher, className, _isExactTypeMatcher, new TypeNameMatcher(className, _isExactTypeMatcher)));
+				_currentSelector.matchers.push(getSingletonMatcher(TypeNameMatcher, className, _isExactTypeMatcher, new TypeNameMatcher(className, _isExactTypeMatcher)));
 				_subSelector += className;
 			}
 
@@ -216,7 +243,7 @@ package net.wooga.uiengine.displaylistselector.parser {
 			_input.consume(1);
 			var className:String = _input.consumeRegex(/[a-zA-Z]+/);
 			var matcher:IMatcher = new ClassMatcher(className);
-			_currentMatchers.matchers.push(getSingletonMatcher(ClassMatcher, className, matcher));
+			_currentSelector.matchers.push(getSingletonMatcher(ClassMatcher, className, matcher));
 			_subSelector += "." + className;
 			_specificity.classAndAttributeAndPseudoSelectors++;
 		}
@@ -226,7 +253,7 @@ package net.wooga.uiengine.displaylistselector.parser {
 			_input.consume(1);
 			var id:String = _input.consumeRegex(/[a-zA-Z]+/);
 			var matcher:IMatcher = new IdMatcher(id);
-			_currentMatchers.matchers.push(getSingletonMatcher(IdMatcher, id, matcher));
+			_currentSelector.matchers.push(getSingletonMatcher(IdMatcher, id, matcher));
 
 			_subSelector += "#" + id;
 			_specificity.idSelector++;
@@ -253,7 +280,7 @@ package net.wooga.uiengine.displaylistselector.parser {
 			singletonAttributes = singletonAttributes.concat(_pseudoClassArguments);
 			singletonAttributes.push(matcher);
 
-			_currentMatchers.matchers.push(getSingletonMatcher.apply(this, singletonAttributes));
+			_currentSelector.matchers.push(getSingletonMatcher.apply(this, singletonAttributes));
 			_specificity.classAndAttributeAndPseudoSelectors++;
 		}
 
@@ -325,7 +352,7 @@ package net.wooga.uiengine.displaylistselector.parser {
 
 			var matcher:IMatcher = matcherForCompareFunction(compareFunction, property, value);
 
-			_currentMatchers.matchers.push(matcher);
+			_currentSelector.matchers.push(matcher);
 			_specificity.classAndAttributeAndPseudoSelectors++;
 		}
 

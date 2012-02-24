@@ -12,5 +12,9 @@ package net.wooga.uiengine.displaylistselector.matching.matchers.implementations
 		public function isMatching(subject:IStyleAdapter):Boolean {
 			return subject.getId() == _id;
 		}
+
+		public function get id():String {
+			return _id;
+		}
 	}
 }

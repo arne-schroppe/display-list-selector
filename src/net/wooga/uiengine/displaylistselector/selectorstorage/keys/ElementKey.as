@@ -13,5 +13,17 @@ package net.wooga.uiengine.displaylistselector.selectorstorage.keys {
 		public function keyForAdapter(adapter:IStyleAdapter):* {
 			return null;
 		}
+
+		public function isKeyMatching(parsedSelector:ParsedSelector, key:*):Boolean {
+			return false;
+		}
+
+		public function selectorHasKey(parsedSelector:ParsedSelector):Boolean {
+			return false;
+		}
+
+		public function get nullKey():* {
+			return "*";
+		}
 	}
 }

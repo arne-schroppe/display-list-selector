@@ -1,15 +1,20 @@
 package net.wooga.uiengine.displaylistselector.selectorstorage {
-	import net.wooga.uiengine.displaylistselector.selectorstorage.keys.ISelectorTreeNodeKey;
-
 	import org.as3commons.collections.Map;
+	import org.as3commons.collections.Set;
 	import org.as3commons.collections.framework.IMap;
+	import org.as3commons.collections.framework.ISet;
 
 	public class SelectorFilterTreeNode {
 
-		private var _selectors:Vector.<String> = new <String>[];
+		private var _selectors:ISet = new Set();
 		private var _childNodes:IMap = new Map();
 
+		public function get selectors():ISet {
+			return _selectors;
+		}
 
-		private var _childNodeKey:ISelectorTreeNodeKey;
+		public function get childNodes():IMap {
+			return _childNodes;
+		}
 	}
 }

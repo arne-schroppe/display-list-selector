@@ -2,6 +2,7 @@ package net.wooga.uiengine.displaylistselector.selectorstorage {
 	import net.wooga.uiengine.displaylistselector.parser.ParsedSelector;
 	import net.wooga.uiengine.displaylistselector.selectorstorage.keys.ISelectorTreeNodeKey;
 	import net.wooga.uiengine.displaylistselector.selectorstorage.keys.IdKey;
+	import net.wooga.uiengine.displaylistselector.selectorstorage.keys.TypeNameKey;
 	import net.wooga.uiengine.displaylistselector.styleadapter.IStyleAdapter;
 
 	import org.as3commons.collections.Set;
@@ -15,6 +16,7 @@ package net.wooga.uiengine.displaylistselector.selectorstorage {
 
 		private var _filterRoot:SelectorFilterTreeNode;
 		private var _filterKeys:Vector.<ISelectorTreeNodeKey> = new <ISelectorTreeNodeKey>[
+			new TypeNameKey(),
 			new IdKey()
 		];
 
@@ -23,28 +25,27 @@ package net.wooga.uiengine.displaylistselector.selectorstorage {
 		public function SelectorStorage() {
 
 			_filterRoot = new SelectorFilterTreeNode();
-			createNullKey(_filterRoot, 0);
+			//createNullKey(_filterRoot, 0);
 		}
 
-		private function createNullKey(node:SelectorFilterTreeNode, keyIndex:int):void {
-
-			if(keyIndex >= _filterKeys.length) {
-				return;
-			}
-
-			var key:ISelectorTreeNodeKey = _filterKeys[keyIndex];
-			var newNode:SelectorFilterTreeNode = new SelectorFilterTreeNode();
-			node.childNodes.add(key.nullKey, newNode);
-
-			createNullKey(newNode, keyIndex + 1);
-		}
+//		private function createNullKey(node:SelectorFilterTreeNode, keyIndex:int):void {
+//
+//			if(keyIndex >= _filterKeys.length) {
+//				return;
+//			}
+//
+//			var key:ISelectorTreeNodeKey = _filterKeys[keyIndex];
+//			var newNode:SelectorFilterTreeNode = new SelectorFilterTreeNode();
+//			node.childNodes.add(key.nullKey, newNode);
+//
+//			createNullKey(newNode, keyIndex + 1);
+//		}
 
 
 		public function add(parsedSelector:ParsedSelector):void {
-
 			addToNode(_filterRoot, 0, parsedSelector);
-
 		}
+
 
 		private function addToNode(node:SelectorFilterTreeNode, keyIndex:int, selector:ParsedSelector):Boolean {
 			
@@ -58,20 +59,24 @@ package net.wooga.uiengine.displaylistselector.selectorstorage {
 			var key:*;
 			if(hasKey) {
 				key = nodeKey.keyForSelector(selector);
-				createKeyIfNeeded(node, key);
 			}
 			else {
 				key = nodeKey.nullKey;
 			}
 
+			createKeyIfNeeded(node, key);
+
 			var canPlaceSelector:Boolean = addToNode(node.childNodes.itemFor(key), keyIndex + 1, selector);
 			if(canPlaceSelector) {
 				return false;
 			}
-			else if(hasKey || keyIndex == 0) {
+			else if(hasKey) {
 				var targetNode:SelectorFilterTreeNode = node.childNodes.itemFor(key);
 				targetNode.selectors.add(selector);
 				return true;
+			}
+			else if(keyIndex == 0) {
+				node.selectors.add(selector);
 			}
 
 			return false;
@@ -96,20 +101,23 @@ package net.wooga.uiengine.displaylistselector.selectorstorage {
 		}
 
 		private function searchForMatches(node:SelectorFilterTreeNode, keyIndex:int, adapter:IStyleAdapter):void {
+
+			if(!node) {
+				return;
+			}
+			
+			Sets.addFromCollection(_foundSelectors, node.selectors);
+
 			if(keyIndex >= _filterKeys.length) {
 				return;
 			}
-
-			Sets.addFromCollection(_foundSelectors, node.selectors);
 
 			var nodeKey:ISelectorTreeNodeKey = _filterKeys[keyIndex];
 			var key:* = nodeKey.keyForAdapter(adapter);
 
 			searchForMatches(node.childNodes.itemFor(nodeKey.nullKey), keyIndex + 1, adapter);
+			searchForMatches(node.childNodes.itemFor(key), keyIndex + 1, adapter);
 			
-			if(node.childNodes.hasKey(key)) {
-				searchForMatches(node.childNodes.itemFor(key), keyIndex + 1, adapter);
-			}
 		}
 	}
 }

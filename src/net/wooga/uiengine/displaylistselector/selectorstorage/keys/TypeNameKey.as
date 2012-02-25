@@ -1,25 +1,24 @@
 package net.wooga.uiengine.displaylistselector.selectorstorage.keys {
+
+	import flash.utils.getQualifiedClassName;
+
 	import net.wooga.uiengine.displaylistselector.parser.ParsedSelector;
 	import net.wooga.uiengine.displaylistselector.styleadapter.IStyleAdapter;
 
-	public class ElementKey implements ISelectorTreeNodeKey {
-		public function ElementKey() {
-		}
+	public class TypeNameKey implements ISelectorTreeNodeKey {
+
 
 		public function keyForSelector(parsedSelector:ParsedSelector):* {
-			return null;
+			return parsedSelector.filterData.typeName;
 		}
 
 		public function keyForAdapter(adapter:IStyleAdapter):* {
-			return null;
+			return getQualifiedClassName(adapter.getAdaptedElement()).replace("::", ".");
 		}
 
-		public function isKeyMatching(parsedSelector:ParsedSelector, key:*):Boolean {
-			return false;
-		}
 
 		public function selectorHasKey(parsedSelector:ParsedSelector):Boolean {
-			return false;
+			return parsedSelector.filterData.typeName && parsedSelector.filterData.typeName != "*";
 		}
 
 		public function get nullKey():* {

@@ -4,7 +4,7 @@ package net.wooga.uiengine.displaylistselector.selectorstorage.keys {
 
 	public class IdKey implements ISelectorTreeNodeKey {
 
-		private static const NULL_KEY:String = "*";
+		private static const NULL_KEY:String = "$$";
 
 		public function keyForSelector(parsedSelector:ParsedSelector):* {
 			return parsedSelector.filterData.id;

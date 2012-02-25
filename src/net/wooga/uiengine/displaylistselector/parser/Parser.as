@@ -94,6 +94,13 @@ package net.wooga.uiengine.displaylistselector.parser {
 			if (lastIdMatcher) {
 				_currentSelector.filterData.id = lastIdMatcher.id;
 			}
+
+
+
+			var lastTypeMatcher:TypeNameMatcher = findMatcherInLastSimpleSelector(TypeNameMatcher) as TypeNameMatcher;
+			if (lastTypeMatcher && lastTypeMatcher.onlyMatchesImmediateClassType) {
+				_currentSelector.filterData.typeName = lastTypeMatcher.typeName;
+			}
 		}
 
 		private function findMatcherInLastSimpleSelector(MatcherType:Class):IMatcher {

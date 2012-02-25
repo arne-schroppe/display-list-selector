@@ -16,7 +16,7 @@ package net.wooga.uiengine.displaylistselector.matching.matchers.implementations
 		private var _matchAny:Boolean = false;
 		//private var _simpleMatch:Boolean = false;
 
-		private var _onlyMatchImmediateClassType:Boolean = true;
+		private var _onlyMatchesImmediateClassType:Boolean = true;
 
 		//private var _typeMatcherRegEx:RegExp;
 		private var _typeName:String;
@@ -28,7 +28,7 @@ package net.wooga.uiengine.displaylistselector.matching.matchers.implementations
 
 		//TODO (arneschroppe 23/2/12) always use the :: notation internally
 		public function TypeNameMatcher(typeName:String, onlyMatchImmediateClassType:Boolean = true) {
-			_onlyMatchImmediateClassType = onlyMatchImmediateClassType;
+			_onlyMatchesImmediateClassType = onlyMatchImmediateClassType;
 
 			if (typeName == "*") {
 				_matchAny = true;
@@ -75,7 +75,7 @@ package net.wooga.uiengine.displaylistselector.matching.matchers.implementations
 			//TODO (arneschroppe 22/2/12) maybe we can find a way to avoid using the adapted element directly
 			var subject:Object = adapter.getAdaptedElement();
 
-			if(_onlyMatchImmediateClassType) {
+			if(_onlyMatchesImmediateClassType) {
 				var className:String = getQualifiedClassName(subject);
 				return isMatchingType(className);
 			}
@@ -101,7 +101,7 @@ package net.wooga.uiengine.displaylistselector.matching.matchers.implementations
 		}
 
 
-		public function hasSuperClassMatch(subject:Object):Boolean {
+		private function hasSuperClassMatch(subject:Object):Boolean {
 			var types:XMLList = describeType(subject).*.@type;
 
 			for each(var type:XML in types) {
@@ -143,6 +143,14 @@ package net.wooga.uiengine.displaylistselector.matching.matchers.implementations
 
 		private function createDictKeyFor(className:String):String {
 			return _typeName + "&" + className;
+		}
+
+		public function get typeName():String {
+			return _typeName;
+		}
+
+		public function get onlyMatchesImmediateClassType():Boolean {
+			return _onlyMatchesImmediateClassType;
 		}
 	}
 }

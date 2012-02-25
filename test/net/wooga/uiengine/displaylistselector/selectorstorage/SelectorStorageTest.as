@@ -52,9 +52,9 @@ package net.wooga.uiengine.displaylistselector.selectorstorage {
 
 			var possibleMatches:IIterable = _selectorStorage.getPossibleMatchesFor(styleAdapter);
 
-			assertThat(possibleMatches, containsExactly(1, equalTo(sel1)));
-			assertThat(possibleMatches, containsExactly(1, equalTo(sel2)));
-			assertThat(possibleMatches, containsExactly(1, equalTo(sel5)));
+			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue("originalSelector", sel1)));
+			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue("originalSelector", sel2)));
+			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue("originalSelector", sel5)));
 			assertThat((possibleMatches as ICollection).size, equalTo(3));
 
 		}
@@ -70,9 +70,9 @@ package net.wooga.uiengine.displaylistselector.selectorstorage {
 			var sel2:String = "(net.wooga.fixtures.TestSpriteB) > #otherId";
 			var sel3:String = "(net.wooga.fixtures.TestSpriteA) > #testId";
 			var sel4:String = "* > #otherId";
-			//var sel5:String = "(net.wooga.fixtures.TestSpriteA)";
+			var sel5:String = "(net.wooga.fixtures.TestSpriteA)";
 
-			addSelectors([sel1, sel2, sel3, sel4]);
+			addSelectors([sel1, sel2, sel3, sel4, sel5]);
 
 			given(styleAdapter.getAdaptedElement()).willReturn(new TestSpriteA());
 			given(styleAdapter.getId()).willReturn(id);
@@ -80,8 +80,8 @@ package net.wooga.uiengine.displaylistselector.selectorstorage {
 
 			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue("originalSelector", sel1)));
 			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue("originalSelector", sel3)));
-			//assertThat(possibleMatches, containsExactly(1, equalTo(sel5)));
-			assertThat((possibleMatches as ICollection).size, equalTo(2));
+			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue("originalSelector", sel5)));
+			assertThat((possibleMatches as ICollection).size, equalTo(3));
 
 		}
 

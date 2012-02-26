@@ -8,7 +8,10 @@ package net.wooga.uiengine.displaylistselector.styleadapter {
 		private var _parent:IStyleAdapter;
 		private var _adaptedElement:DisplayObject;
 
+		//TODO (arneschroppe 2/26/12) rename groups to classes
 		private static const CSS_CLASS_PARAMETER_NAME:String = "groups";
+		private static const CSS_HOVER_PARAMETER_NAME:String = "isMouseOver";
+		private static const CSS_ACTIVE_PARAMETER_NAME:String = "isMouseDown";
 
 		public function DisplayObjectStyleAdapter() {
 		}
@@ -54,11 +57,11 @@ package net.wooga.uiengine.displaylistselector.styleadapter {
 			return _adaptedElement.parent ? _adaptedElement.parent.getChildIndex(_adaptedElement) : -1;
 		}
 
-		public function getNumberOfElementsInContainer():int {
+		public function getNumberOfElements():int {
 			return _adaptedElement.parent ? _adaptedElement.parent.numChildren : 0;
 		}
 
-		public function getSiblingElementAtIndex(index:int):Object {
+		public function getElementAtIndex(index:int):Object {
 			return _adaptedElement.parent ? _adaptedElement.parent.getChildAt(index) : 0;
 		}
 
@@ -86,6 +89,14 @@ package net.wooga.uiengine.displaylistselector.styleadapter {
 
 		public function isEmpty():Boolean {
 			return !(_adaptedElement is DisplayObjectContainer) || DisplayObjectContainer(_adaptedElement).numChildren == 0;
+		}
+
+		public function isHovered():Boolean {
+			return (CSS_HOVER_PARAMETER_NAME in _adaptedElement) ? _adaptedElement[CSS_CLASS_PARAMETER_NAME] : false;
+		}
+
+		public function isActive():Boolean {
+			return (CSS_ACTIVE_PARAMETER_NAME in _adaptedElement) ? _adaptedElement[CSS_CLASS_PARAMETER_NAME] : false;
 		}
 	}
 }

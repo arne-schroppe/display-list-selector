@@ -1,5 +1,6 @@
 package net.wooga.uiengine.displaylistselector.selectorstorage {
 	import net.wooga.uiengine.displaylistselector.parser.ParsedSelector;
+	import net.wooga.uiengine.displaylistselector.selectorstorage.keys.HoverKey;
 	import net.wooga.uiengine.displaylistselector.selectorstorage.keys.ISelectorTreeNodeKey;
 	import net.wooga.uiengine.displaylistselector.selectorstorage.keys.IdKey;
 	import net.wooga.uiengine.displaylistselector.selectorstorage.keys.TypeNameKey;
@@ -17,7 +18,8 @@ package net.wooga.uiengine.displaylistselector.selectorstorage {
 		private var _filterRoot:SelectorFilterTreeNode;
 		private var _filterKeys:Vector.<ISelectorTreeNodeKey> = new <ISelectorTreeNodeKey>[
 			new TypeNameKey(),
-			new IdKey()
+			new IdKey(),
+			new HoverKey()
 		];
 
 		private var _foundSelectors:ISet;
@@ -68,7 +70,7 @@ package net.wooga.uiengine.displaylistselector.selectorstorage {
 
 			var canPlaceSelector:Boolean = addToNode(node.childNodes.itemFor(key), keyIndex + 1, selector);
 			if(canPlaceSelector) {
-				return false;
+				return true;
 			}
 			else if(hasKey) {
 				var targetNode:SelectorFilterTreeNode = node.childNodes.itemFor(key);

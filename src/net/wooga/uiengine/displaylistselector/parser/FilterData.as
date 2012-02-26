@@ -3,7 +3,7 @@ package net.wooga.uiengine.displaylistselector.parser {
 
 		public var id:String;
 		public var typeName:String;
-		public var hoverState:String;
+		public var hasHover:Boolean;
 
 
 	}

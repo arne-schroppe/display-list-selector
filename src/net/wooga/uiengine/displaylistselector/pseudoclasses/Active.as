@@ -2,10 +2,10 @@ package net.wooga.uiengine.displaylistselector.pseudoclasses {
 
 	import net.wooga.uiengine.displaylistselector.styleadapter.IStyleAdapter;
 
-	public class Hover implements IPseudoClass {
+	public class Active implements IPseudoClass {
 
 		public function isMatching(subject:IStyleAdapter):Boolean {
-			return subject.isHovered();
+			return subject.isActive();
 		}
 
 		public function setArguments(arguments:Array):void {

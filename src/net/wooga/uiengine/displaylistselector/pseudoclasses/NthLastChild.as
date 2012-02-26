@@ -6,7 +6,7 @@ package net.wooga.uiengine.displaylistselector.pseudoclasses {
 	public class NthLastChild extends NthOfX {
 
 		override protected function indexOfObject(subject:IStyleAdapter):int {
-			return subject.getNumberOfElementsInContainer() - subject.getElementIndex() - 1;
+			return subject.getNumberOfElements() - subject.getElementIndex() - 1;
 		}
 	}
 }

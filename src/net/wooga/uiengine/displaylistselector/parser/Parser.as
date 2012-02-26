@@ -11,6 +11,7 @@ package net.wooga.uiengine.displaylistselector.parser {
 	import net.wooga.uiengine.displaylistselector.matching.matchers.implementations.PropertyFilterEqualsMatcher;
 	import net.wooga.uiengine.displaylistselector.matching.matchers.implementations.PseudoClassMatcher;
 	import net.wooga.uiengine.displaylistselector.matching.matchers.implementations.TypeNameMatcher;
+	import net.wooga.uiengine.displaylistselector.pseudoclasses.Hover;
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.IPseudoClass;
 
 	import org.as3commons.collections.framework.IMap;
@@ -89,18 +90,31 @@ package net.wooga.uiengine.displaylistselector.parser {
 			setupFilterData();
 		}
 
+		//TODO (arneschroppe 2/26/12) do this outside the parser
 		private function setupFilterData():void {
 			var lastIdMatcher:IdMatcher = findMatcherInLastSimpleSelector(IdMatcher) as IdMatcher;
 			if (lastIdMatcher) {
 				_currentSelector.filterData.id = lastIdMatcher.id;
 			}
 
-
-
 			var lastTypeMatcher:TypeNameMatcher = findMatcherInLastSimpleSelector(TypeNameMatcher) as TypeNameMatcher;
 			if (lastTypeMatcher && lastTypeMatcher.onlyMatchesImmediateClassType) {
 				_currentSelector.filterData.typeName = lastTypeMatcher.typeName;
 			}
+
+			_currentSelector.filterData.hasHover = hasPseudoClassInLastSimpleSelector(Hover);
+		}
+
+		private function hasPseudoClassInLastSimpleSelector(PseudoClassType:Class):Boolean {
+			var matchers:Vector.<IMatcher> = _currentSelector.matchers;
+			for(var i:int = matchers.length-1; i >= 0 && !(matchers[i] is ICombinator); --i) {
+				var matcher:IMatcher = matchers[i];
+				if(matcher is PseudoClassMatcher && (matcher as PseudoClassMatcher).pseudoClass is PseudoClassType) {
+					return true;
+				}
+			}
+
+			return false;
 		}
 
 		private function findMatcherInLastSimpleSelector(MatcherType:Class):IMatcher {

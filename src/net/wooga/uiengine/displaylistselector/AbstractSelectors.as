@@ -6,7 +6,9 @@ package net.wooga.uiengine.displaylistselector {
 	import net.wooga.uiengine.displaylistselector.parser.Parser;
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.FirstChild;
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.IPseudoClass;
+	import net.wooga.uiengine.displaylistselector.pseudoclasses.Active;
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.IsEmpty;
+	import net.wooga.uiengine.displaylistselector.pseudoclasses.Hover;
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.LastChild;
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.NthChild;
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.NthLastChild;
@@ -201,7 +203,9 @@ package net.wooga.uiengine.displaylistselector {
 			addPseudoClass("nth-last-child", new NthLastChild());
 			addPseudoClass("nth-of-type", new NthOfType());
 			addPseudoClass("nth-last-of-type", new NthLastOfType());
-			addPseudoClass("empty", new IsEmpty());
+			addPseudoClass("empty", new net.wooga.uiengine.displaylistselector.pseudoclasses.IsEmpty());
+			addPseudoClass("hover", new Hover());
+			addPseudoClass("active", new Active());
 		}
 
 

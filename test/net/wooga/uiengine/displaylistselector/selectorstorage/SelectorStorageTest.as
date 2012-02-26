@@ -144,7 +144,7 @@ package net.wooga.uiengine.displaylistselector.selectorstorage {
 		
 		[Test]
 		public function should_properly_handle_isA_selectors():void {
-			//fail("Implement me");
+			fail("Implement me");
 		}
 		
 

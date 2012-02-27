@@ -9,8 +9,6 @@ package net.wooga.uiengine.displaylistselector {
 		//TODO (arneschroppe 24/2/12) we should change the return type here to Vector.<String>
 		function getSelectorsMatchingObject(object:Object):ISet;
 
-		function setClassNameAlias(alias:String, fullyQualifiedClassName:String):void;
-
 		function addPseudoClass(className:String, pseudoClass:IPseudoClass):void;
 
 		function objectWasChanged(object:Object):void;

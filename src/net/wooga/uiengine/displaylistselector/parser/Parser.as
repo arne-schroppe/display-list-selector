@@ -1,12 +1,11 @@
 package net.wooga.uiengine.displaylistselector.parser {
 	import net.wooga.uiengine.displaylistselector.IExternalPropertySource;
-	import net.wooga.uiengine.displaylistselector.classnamealias.ClassNameAliasMap;
 	import net.wooga.uiengine.displaylistselector.input.ParserInput;
 	import net.wooga.uiengine.displaylistselector.matching.matchers.ICombinator;
 	import net.wooga.uiengine.displaylistselector.matching.matchers.IMatcher;
 	import net.wooga.uiengine.displaylistselector.matching.matchers.implementations.ChildSelectorMatcher;
-	import net.wooga.uiengine.displaylistselector.matching.matchers.implementations.DescendantSelectorMatcher;
 	import net.wooga.uiengine.displaylistselector.matching.matchers.implementations.ClassMatcher;
+	import net.wooga.uiengine.displaylistselector.matching.matchers.implementations.DescendantSelectorMatcher;
 	import net.wooga.uiengine.displaylistselector.matching.matchers.implementations.IdMatcher;
 	import net.wooga.uiengine.displaylistselector.matching.matchers.implementations.PropertyFilterContainsMatcher;
 	import net.wooga.uiengine.displaylistselector.matching.matchers.implementations.PropertyFilterEqualsMatcher;
@@ -14,9 +13,6 @@ package net.wooga.uiengine.displaylistselector.parser {
 	import net.wooga.uiengine.displaylistselector.matching.matchers.implementations.TypeNameMatcher;
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.Hover;
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.IPseudoClass;
-
-	import org.as3commons.collections.framework.IMap;
-	import org.hamcrest.object.nullOr;
 
 	public class Parser {
 
@@ -102,8 +98,8 @@ package net.wooga.uiengine.displaylistselector.parser {
 			}
 
 			var lastTypeMatcher:TypeNameMatcher = findMatcherInLastSimpleSelector(selector, TypeNameMatcher) as TypeNameMatcher;
-			if (lastTypeMatcher && lastTypeMatcher.onlyMatchesImmediateClassType) {
-				selector.filterData.typeName = lastTypeMatcher.typeName ? lastTypeMatcher.typeName.split(".").pop() : null;
+			if (lastTypeMatcher && lastTypeMatcher.onlyMatchesImmediateType) {
+				selector.filterData.typeName = lastTypeMatcher.typeName ? lastTypeMatcher.typeName.split("::").pop() : null;
 			}
 
 			selector.filterData.hasHover = hasPseudoClassInLastSimpleSelector(selector, Hover);

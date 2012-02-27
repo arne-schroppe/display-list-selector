@@ -1,7 +1,6 @@
 package {
 
 	import net.wooga.uiengine.displaylistselector.SelectorTest;
-	import net.wooga.uiengine.displaylistselector.classnamealias.ClassNameAliasMapTest;
 	import net.wooga.uiengine.displaylistselector.input.ParserInputTest;
 	import net.wooga.uiengine.displaylistselector.matching.matchers.ChildSelectorMatcherTest;
 	import net.wooga.uiengine.displaylistselector.matching.matchers.PropertyFilterContainsMatcherTest;
@@ -42,7 +41,6 @@ package {
 		public var rootTest:RootTest;
 		public var nthParserTest:NthParserTest;
 		public var specificityTest:SpecificityTest;
-		public var classNameAliasMapTest:ClassNameAliasMapTest;
 
 		public var selectorStorageTest:SelectorStorageTest;
 		//public var parserTest:ParserTest;

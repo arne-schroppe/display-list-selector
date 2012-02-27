@@ -25,23 +25,10 @@ package net.wooga.uiengine.displaylistselector.selectorstorage {
 		private var _foundSelectors:ISet;
 
 		public function SelectorStorage() {
-
 			_filterRoot = new SelectorFilterTreeNode();
-			//createNullKey(_filterRoot, 0);
 		}
 
-//		private function createNullKey(node:SelectorFilterTreeNode, keyIndex:int):void {
-//
-//			if(keyIndex >= _filterKeys.length) {
-//				return;
-//			}
-//
-//			var key:ISelectorTreeNodeKey = _filterKeys[keyIndex];
-//			var newNode:SelectorFilterTreeNode = new SelectorFilterTreeNode();
-//			node.childNodes.add(key.nullKey, newNode);
-//
-//			createNullKey(newNode, keyIndex + 1);
-//		}
+
 
 
 		public function add(parsedSelector:ParsedSelector):void {

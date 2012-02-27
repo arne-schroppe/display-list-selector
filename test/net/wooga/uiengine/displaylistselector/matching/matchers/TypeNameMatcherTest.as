@@ -59,6 +59,40 @@ package net.wooga.uiengine.displaylistselector.matching.matchers {
 				.a(TestSpriteA)
 			.end.finish();
 
+			_matcher = new TypeNameMatcher(getQualifiedClassName(TestSpriteB), true);
+
+			var matchedObjects:Array = [];
+
+			for(var i:int = 0; i < contextView.numChildren; ++i) {
+				if(_matcher.isMatching(getAdapterForObjectAtIndex(i))) {
+					matchedObjects.push(contextView.getChildAt(i));
+				}
+
+			}
+
+			assertThat(matchedObjects, containsInArrayExactly(2, isA(TestSpriteB)));
+			assertThat(matchedObjects.length, equalTo(2));
+		}
+
+
+
+		[Test]
+		public function should_select_elements_with_class_name_in_dot_only_form():void {
+
+			var tree:DisplayTree = new DisplayTree();
+
+			tree.hasA(contextView).containing
+					.a(TestSpriteA)
+					.a(TestSpriteB)
+					.a(TestSpriteC)
+					.a(TestSpriteB)
+					.a(TestSpriteA)
+					.a(TestSpriteA)
+					.a(TestSpriteC)
+					.a(TestSpriteC)
+					.a(TestSpriteA)
+					.end.finish();
+
 			_matcher = new TypeNameMatcher(getQualifiedClassName(TestSpriteB).replace("::", "."), true);
 
 			var matchedObjects:Array = [];
@@ -91,7 +125,7 @@ package net.wooga.uiengine.displaylistselector.matching.matchers {
 					.a(InheritedTestSprite)
 					.end.finish();
 
-			_matcher = new TypeNameMatcher(getQualifiedClassName(TestSpriteB).replace("::", "."), false);
+			_matcher = new TypeNameMatcher(getQualifiedClassName(TestSpriteB), false);
 
 			var matchedObjects:Array = [];
 
@@ -122,7 +156,7 @@ package net.wooga.uiengine.displaylistselector.matching.matchers {
 					.a(TestSpriteA)
 				.end.finish();
 
-			_matcher = new TypeNameMatcher(getQualifiedClassName(TestInterface).replace("::", "."), false);
+			_matcher = new TypeNameMatcher(getQualifiedClassName(TestInterface), false);
 
 			var matchedObjects:Array = [];
 

@@ -73,9 +73,5 @@ package net.wooga.uiengine.displaylistselector {
 		public function objectWasChanged(object:Object):void {
 			_selectors.objectWasChanged(object);
 		}
-
-		public function setClassNameAlias(alias:String, fullyQualifiedClassName:String):void {
-			_selectors.setClassNameAlias(alias, fullyQualifiedClassName);
-		}
 	}
 }

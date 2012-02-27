@@ -1,24 +1,14 @@
 package net.wooga.uiengine.displaylistselector {
 	import flash.utils.getQualifiedClassName;
 
-	import net.wooga.uiengine.displaylistselector.classnamealias.AliasIsUnqualifiedClassNameInferenceStrategy;
-
-	import net.wooga.uiengine.displaylistselector.classnamealias.ClassNameAliasMap;
-	import net.wooga.uiengine.displaylistselector.classnamealias.IClassNameInferenceStrategy;
-
 	import net.wooga.uiengine.displaylistselector.matching.MatcherTool;
-	import net.wooga.uiengine.displaylistselector.matching.matchers.ICombinator;
-	import net.wooga.uiengine.displaylistselector.matching.matchers.IMatcher;
-	import net.wooga.uiengine.displaylistselector.matching.matchers.implementations.IdMatcher;
-	import net.wooga.uiengine.displaylistselector.matching.matchers.implementations.PseudoClassMatcher;
-	import net.wooga.uiengine.displaylistselector.matching.matchers.implementations.TypeNameMatcher;
 	import net.wooga.uiengine.displaylistselector.parser.ParsedSelector;
 	import net.wooga.uiengine.displaylistselector.parser.Parser;
-	import net.wooga.uiengine.displaylistselector.pseudoclasses.FirstChild;
-	import net.wooga.uiengine.displaylistselector.pseudoclasses.IPseudoClass;
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.Active;
-	import net.wooga.uiengine.displaylistselector.pseudoclasses.IsEmpty;
+	import net.wooga.uiengine.displaylistselector.pseudoclasses.FirstChild;
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.Hover;
+	import net.wooga.uiengine.displaylistselector.pseudoclasses.IPseudoClass;
+	import net.wooga.uiengine.displaylistselector.pseudoclasses.IsEmpty;
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.LastChild;
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.NthChild;
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.NthLastChild;
@@ -31,7 +21,6 @@ package net.wooga.uiengine.displaylistselector {
 	import net.wooga.uiengine.displaylistselector.tools.Types;
 
 	import org.as3commons.collections.LinkedSet;
-
 	import org.as3commons.collections.Map;
 	import org.as3commons.collections.SortedSet;
 	import org.as3commons.collections.framework.IIterable;
@@ -226,9 +215,6 @@ package net.wooga.uiengine.displaylistselector {
 		}
 
 
-		//TODO (arneschroppe 27/2/12) delete
-		public function setClassNameAlias(alias:String, fullyQualifiedClassName:String):void {
-			//_classNameAliasMap.setAlias(alias, fullyQualifiedClassName);
-		}
+
 	}
 }

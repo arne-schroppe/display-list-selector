@@ -46,13 +46,6 @@ package net.wooga.uiengine.displaylistselector {
 			_selectors = new AbstractSelectors();
 			_selectors.initializeWith(contextView, _propertyDictionary);
 			_selectors.setDefaultStyleAdapter(DisplayObjectStyleAdapter);
-			_selectors.setClassNameAlias("TestSpriteA", getQualifiedClassName(TestSpriteA).replace("::", "."));
-			_selectors.setClassNameAlias("TestSpriteB", getQualifiedClassName(TestSpriteB).replace("::", "."));
-			_selectors.setClassNameAlias("TestSpriteC", getQualifiedClassName(TestSpriteC).replace("::", "."));
-			_selectors.setClassNameAlias("TestSpriteD", getQualifiedClassName(TestSpriteD).replace("::", "."));
-			_selectors.setClassNameAlias("Sprite", getQualifiedClassName(Sprite).replace("::", "."));
-			_selectors.setClassNameAlias("MovieClip", getQualifiedClassName(MovieClip).replace("::", "."));
-			_selectors.setClassNameAlias("TestInterface", getQualifiedClassName(TestInterface).replace("::", "."));
 		}
 
 

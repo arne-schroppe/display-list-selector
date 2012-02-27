@@ -14,17 +14,11 @@ package net.wooga.uiengine.displaylistselector.matching.matchers.implementations
 	public class TypeNameMatcher implements IMatcher {
 
 		private var _matchAny:Boolean = false;
-		//private var _simpleMatch:Boolean = false;
-
 		private var _onlyMatchesImmediateClassType:Boolean = true;
-
-		//private var _typeMatcherRegEx:RegExp;
 		private var _typeName:String;
-
-
 		private static const _typeMatchCache:IMap = new Map();
-		private static const _directMatchTypeMatchCache:IMap = new Map();
-		private static const _typeNameParser:QualifiedTypeNameParser = new QualifiedTypeNameParser();
+		
+		private var _classNameOnly:Boolean;
 
 		//TODO (arneschroppe 23/2/12) always use the :: notation internally
 		public function TypeNameMatcher(typeName:String, onlyMatchImmediateClassType:Boolean = true) {
@@ -35,11 +29,17 @@ package net.wooga.uiengine.displaylistselector.matching.matchers.implementations
 				return;
 			}
 
-			if(!/^\s*((\w|\$)+\.)*(\w|\$)+\s*$/i.test(typeName)) {
+			if(/^(\w|\$)+$/i.test(typeName)) {
+				_classNameOnly = true;
+				_typeName = typeName;
+			}
+			else if(!/^\s*((\w|\$)+\.)*(\w|\$)+\s*$/i.test(typeName)) {
 				throw new ArgumentError("Invalid type name: " + typeName);
 			}
+			else {
+				_typeName = typeName.replace("::", ".");
+			}
 
-			_typeName = typeName.replace("::", ".");
 
 			//else if(/^(\w|\$)+$/i.test(_typeName)) {
 			//	_simpleMatch = true;
@@ -65,13 +65,17 @@ package net.wooga.uiengine.displaylistselector.matching.matchers.implementations
 
 		private function matchesType(adapter:IStyleAdapter):Boolean {
 
-			try {
-				getDefinitionByName(_typeName)
+
+			if(!_classNameOnly) {
+				try {
+					//TODO (arneschroppe 27/2/12) remove this later, or rewrite it in a faster way
+					getDefinitionByName(_typeName)
+				}
+				catch(e:Error) {
+					trace("Warning: " + _typeName + " doesn't seem to exist");
+				}
 			}
-			catch(e:Error) {
-				trace("Warning: " + _typeName + " doesn't seem to exist");
-			}
-			
+
 			//TODO (arneschroppe 22/2/12) maybe we can find a way to avoid using the adapted element directly
 			var subject:Object = adapter.getAdaptedElement();
 
@@ -85,6 +89,8 @@ package net.wooga.uiengine.displaylistselector.matching.matchers.implementations
 
 
 		private function isAnySuperClassMatchingTypeName(subject:Object):Boolean {
+
+			//TODO (arneschroppe 27/2/12) for performance reasons, convert to fully qualified type and match using is-operator
 
 			var className:String = getQualifiedClassName(subject);
 			var key:String = createDictKeyFor(className);
@@ -116,7 +122,13 @@ package net.wooga.uiengine.displaylistselector.matching.matchers.implementations
 
 		private function isMatchingType(className:String):Boolean {
 
-			return className.replace("::", ".") == _typeName;
+			if(_classNameOnly) {
+				return className.split("::").pop() == _typeName;
+			}
+			else {
+				return className.replace("::", ".") == _typeName;
+			}
+
 
 			//if(_simpleMatch) {
 			//	return className.split("::").pop() == _typeName;

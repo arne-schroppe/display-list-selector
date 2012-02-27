@@ -36,7 +36,7 @@ package net.wooga.uiengine.displaylistselector.selectorstorage {
 		[Before]
 		public function setUp():void {
 			_selectorStorage = new SelectorStorage();
-			_parser = new Parser(null, this, null);
+			_parser = new Parser(null, this);
 		}
 
 

@@ -7,6 +7,11 @@ package net.wooga.uiengine.displaylistselector {
 	import net.wooga.uiengine.displaylistselector.classnamealias.IClassNameInferenceStrategy;
 
 	import net.wooga.uiengine.displaylistselector.matching.MatcherTool;
+	import net.wooga.uiengine.displaylistselector.matching.matchers.ICombinator;
+	import net.wooga.uiengine.displaylistselector.matching.matchers.IMatcher;
+	import net.wooga.uiengine.displaylistselector.matching.matchers.implementations.IdMatcher;
+	import net.wooga.uiengine.displaylistselector.matching.matchers.implementations.PseudoClassMatcher;
+	import net.wooga.uiengine.displaylistselector.matching.matchers.implementations.TypeNameMatcher;
 	import net.wooga.uiengine.displaylistselector.parser.ParsedSelector;
 	import net.wooga.uiengine.displaylistselector.parser.Parser;
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.FirstChild;
@@ -49,8 +54,8 @@ package net.wooga.uiengine.displaylistselector {
 		private var _objectTypeToStyleAdapterTypeMap:IMap = new Map();
 		private var _defaultStyleAdapterType:Class;
 
-		private var _classNameAliasMap:ClassNameAliasMap;
-		private var _classNameInferenceStrategy:IClassNameInferenceStrategy;
+		//private var _classNameAliasMap:ClassNameAliasMap;
+		//private var _classNameInferenceStrategy:IClassNameInferenceStrategy;
 
 
 		//TODO (arneschroppe 21/2/12) id and class attributes are of course also reflected through adapters
@@ -67,9 +72,9 @@ package net.wooga.uiengine.displaylistselector {
 			addDefaultPseudoClasses();
 
 			//TODO (arneschroppe 27/2/12) this should be settable from outside
-			_classNameInferenceStrategy = new AliasIsUnqualifiedClassNameInferenceStrategy();
-			_classNameAliasMap = new ClassNameAliasMap(_rootObject, _classNameInferenceStrategy);
-			_parser = new Parser(externalPropertySource, _pseudoClassProvider, _classNameAliasMap);
+			//_classNameInferenceStrategy = new AliasIsUnqualifiedClassNameInferenceStrategy();
+			//_classNameAliasMap = new ClassNameAliasMap(_rootObject, _classNameInferenceStrategy);
+			_parser = new Parser(externalPropertySource, _pseudoClassProvider);
 			_matcher = new MatcherTool(_rootObject, _objectToStyleAdapterMap);
 		}
 
@@ -79,11 +84,14 @@ package net.wooga.uiengine.displaylistselector {
 
 			//TODO (arneschroppe 24/2/12) we need to map a string key to several parsed selectors here ?!
 			for each(var selector:ParsedSelector in parsed) {
+				//setupFilterData(selector);
 				_knownSelectors.add(selector);
+				
 			}
 			
 		}
 
+		
 		//TODO (arneschroppe 14/2/12) use selector tree here, for optimization
 		public function getSelectorsMatchingObject(object:Object):ISet {
 
@@ -218,8 +226,9 @@ package net.wooga.uiengine.displaylistselector {
 		}
 
 
+		//TODO (arneschroppe 27/2/12) delete
 		public function setClassNameAlias(alias:String, fullyQualifiedClassName:String):void {
-			_classNameAliasMap.setAlias(alias, fullyQualifiedClassName);
+			//_classNameAliasMap.setAlias(alias, fullyQualifiedClassName);
 		}
 	}
 }

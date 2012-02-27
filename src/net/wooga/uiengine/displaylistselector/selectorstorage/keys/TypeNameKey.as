@@ -13,7 +13,7 @@ package net.wooga.uiengine.displaylistselector.selectorstorage.keys {
 		}
 
 		public function keyForAdapter(adapter:IStyleAdapter):* {
-			return getQualifiedClassName(adapter.getAdaptedElement()).replace("::", ".");
+			return getQualifiedClassName(adapter.getAdaptedElement()).split("::").pop();
 		}
 
 

@@ -39,14 +39,14 @@ package net.wooga.uiengine.displaylistselector.parser {
 
 		private var _subSelector:String;
 
-		private var _classNameAliasMap:ClassNameAliasMap;
+		//private var _classNameAliasMap:ClassNameAliasMap;
 		private var _originalSelector:String;
 
 
-		public function Parser(externalPropertySource:IExternalPropertySource, pseudoClassProvider:IPseudoClassProvider, classNameAliasMap:ClassNameAliasMap) {
+		public function Parser(externalPropertySource:IExternalPropertySource, pseudoClassProvider:IPseudoClassProvider) {
 			_externalPropertySource = externalPropertySource;
 			_pseudoClassProvider = pseudoClassProvider;
-			_classNameAliasMap = classNameAliasMap;
+			//_classNameAliasMap = classNameAliasMap;
 		}
 
 
@@ -88,26 +88,30 @@ package net.wooga.uiengine.displaylistselector.parser {
 			_currentSelector.selector = _subSelector;
 			_currentSelector.specificity = _specificity;
 
-			setupFilterData();
+			setupFilterData(_currentSelector);
 		}
 
-		//TODO (arneschroppe 2/26/12) do this outside the parser
-		private function setupFilterData():void {
-			var lastIdMatcher:IdMatcher = findMatcherInLastSimpleSelector(IdMatcher) as IdMatcher;
+
+
+
+		//TODO (arneschroppe 2/26/12) do this in a separate class?
+		private function setupFilterData(selector:ParsedSelector):void {
+			var lastIdMatcher:IdMatcher = findMatcherInLastSimpleSelector(selector, IdMatcher) as IdMatcher;
 			if (lastIdMatcher) {
-				_currentSelector.filterData.id = lastIdMatcher.id;
+				selector.filterData.id = lastIdMatcher.id;
 			}
 
-			var lastTypeMatcher:TypeNameMatcher = findMatcherInLastSimpleSelector(TypeNameMatcher) as TypeNameMatcher;
+			var lastTypeMatcher:TypeNameMatcher = findMatcherInLastSimpleSelector(selector, TypeNameMatcher) as TypeNameMatcher;
 			if (lastTypeMatcher && lastTypeMatcher.onlyMatchesImmediateClassType) {
-				_currentSelector.filterData.typeName = lastTypeMatcher.typeName;
+				selector.filterData.typeName = lastTypeMatcher.typeName ? lastTypeMatcher.typeName.split(".").pop() : null;
 			}
 
-			_currentSelector.filterData.hasHover = hasPseudoClassInLastSimpleSelector(Hover);
+			selector.filterData.hasHover = hasPseudoClassInLastSimpleSelector(selector, Hover);
 		}
 
-		private function hasPseudoClassInLastSimpleSelector(PseudoClassType:Class):Boolean {
-			var matchers:Vector.<IMatcher> = _currentSelector.matchers;
+
+		private function hasPseudoClassInLastSimpleSelector(selector:ParsedSelector, PseudoClassType:Class):Boolean {
+			var matchers:Vector.<IMatcher> = selector.matchers;
 			for(var i:int = matchers.length-1; i >= 0 && !(matchers[i] is ICombinator); --i) {
 				var matcher:IMatcher = matchers[i];
 				if(matcher is PseudoClassMatcher && (matcher as PseudoClassMatcher).pseudoClass is PseudoClassType) {
@@ -118,9 +122,9 @@ package net.wooga.uiengine.displaylistselector.parser {
 			return false;
 		}
 
-		private function findMatcherInLastSimpleSelector(MatcherType:Class):IMatcher {
+		private function findMatcherInLastSimpleSelector(selector:ParsedSelector, MatcherType:Class):IMatcher {
 
-			var matchers:Vector.<IMatcher> = _currentSelector.matchers;
+			var matchers:Vector.<IMatcher> = selector.matchers;
 			for(var i:int = matchers.length-1; i >= 0 && !(matchers[i] is ICombinator); --i) {
 				var matcher:IMatcher = matchers[i];
 				if(matcher is MatcherType) {
@@ -130,6 +134,7 @@ package net.wooga.uiengine.displaylistselector.parser {
 
 			return null;
 		}
+
 
 
 
@@ -225,13 +230,13 @@ package net.wooga.uiengine.displaylistselector.parser {
 				_subSelector += "(" + className + ")";
 			}
 			else {
-				var classNameAlias:String = _input.consumeRegex(/\w+/);
-				var qualifiedClassName:String = _classNameAliasMap.classNameFor(classNameAlias);
+				className = _input.consumeRegex(/\w+/);
+				//var qualifiedClassName:String = _classNameAliasMap.classNameFor(classNameAlias);
 				//if(!qualifiedClassName) {
 				//	throw new ParserError("Unknown element alias '" + className + "'");
 				//}
-				_currentSelector.matchers.push(getSingletonMatcher(TypeNameMatcher, qualifiedClassName, _isExactTypeMatcher, new TypeNameMatcher(qualifiedClassName, _isExactTypeMatcher)));
-				_subSelector += classNameAlias;
+				_currentSelector.matchers.push(getSingletonMatcher(TypeNameMatcher, className, _isExactTypeMatcher, new TypeNameMatcher(className, _isExactTypeMatcher)));
+				_subSelector += className;
 			}
 
 			if(_isExactTypeMatcher) {

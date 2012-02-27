@@ -1,21 +1,15 @@
 package net.wooga.uiengine.displaylistselector.tools {
 	import net.wooga.uiengine.displaylistselector.ISpecificity;
-	import net.wooga.uiengine.displaylistselector.parser.ParserResult;
+	import net.wooga.uiengine.displaylistselector.parser.ParsedSelector;
 
 	import org.as3commons.collections.framework.IComparator;
-	import org.as3commons.collections.framework.IMap;
 
 	public class SpecificityComparator implements IComparator {
 
-		private var _stringToParsedSelectorMap:IMap;
-
-		public function SpecificityComparator(stringToParsedSelectorMap:IMap) {
-			_stringToParsedSelectorMap = stringToParsedSelectorMap;
-		}
 
 		public function compare(item1:*, item2:*):int {
-			var specificity1:ISpecificity = (_stringToParsedSelectorMap.itemFor(item1) as ParserResult).specificity;
-			var specificity2:ISpecificity = (_stringToParsedSelectorMap.itemFor(item2) as ParserResult).specificity;
+			var specificity1:ISpecificity = (item1 as ParsedSelector).specificity;
+			var specificity2:ISpecificity = (item2 as ParsedSelector).specificity;
 
 			return specificity1.compare(specificity2);
 		}

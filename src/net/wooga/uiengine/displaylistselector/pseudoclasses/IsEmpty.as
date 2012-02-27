@@ -1,12 +1,11 @@
 package net.wooga.uiengine.displaylistselector.pseudoclasses {
 
-	import flash.display.DisplayObject;
-	import flash.display.DisplayObjectContainer;
+	import net.wooga.uiengine.displaylistselector.styleadapter.IStyleAdapter;
 
 	public class IsEmpty implements IPseudoClass {
 
-		public function isMatching(subject:DisplayObject):Boolean {
-			return (subject as DisplayObjectContainer).numChildren == 0;
+		public function isMatching(subject:IStyleAdapter):Boolean {
+			return subject.isEmpty();
 		}
 
 		public function setArguments(arguments:Array):void {

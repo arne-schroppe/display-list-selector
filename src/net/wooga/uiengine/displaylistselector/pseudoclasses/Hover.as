@@ -1,22 +1,17 @@
 package net.wooga.uiengine.displaylistselector.pseudoclasses {
-	import flash.display.DisplayObject;
-	import flash.display.Stage;
-	import flash.geom.Point;
 
-	public class Hover implements IPseudoClass{
+	import net.wooga.uiengine.displaylistselector.styleadapter.IStyleAdapter;
 
-		private var _stage:Stage;
-		public function Hover(stage:Stage) {
-			_stage = stage;
+	public class Hover implements IPseudoClass {
+
+		public function isMatching(subject:IStyleAdapter):Boolean {
+			return subject.isHovered();
 		}
 
 		public function setArguments(arguments:Array):void {
-		}
-
-		public function isMatching(subject:DisplayObject):Boolean {
-			
-			var objects:Array = _stage.getObjectsUnderPoint(new Point(_stage.mouseX, _stage.mouseY))
-			return objects[objects.length - 1] == subject;
+			if (arguments.length != 0) {
+				throw new ArgumentError("Wrong argument count");
+			}
 		}
 	}
 }

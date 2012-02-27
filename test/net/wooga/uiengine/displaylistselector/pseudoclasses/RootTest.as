@@ -4,6 +4,7 @@ package net.wooga.uiengine.displaylistselector.pseudoclasses {
 	import net.wooga.fixtures.TestSpriteA;
 	import net.wooga.fixtures.TestSpriteB;
 	import net.wooga.fixtures.TestSpriteC;
+	import net.wooga.fixtures.getAdapterForObject;
 
 	import org.hamcrest.assertThat;
 	import org.hamcrest.object.equalTo;
@@ -38,10 +39,10 @@ package net.wooga.uiengine.displaylistselector.pseudoclasses {
 
 			_pseudoClass = new Root(contextView);
 
-			assertThat(_pseudoClass.isMatching(contextView), equalTo(true));
-			assertThat(_pseudoClass.isMatching(instances[0]), equalTo(false));
-			assertThat(_pseudoClass.isMatching(instances[1]), equalTo(false));
-			assertThat(_pseudoClass.isMatching(instances[2]), equalTo(false));
+			assertThat(_pseudoClass.isMatching(getAdapterForObject(contextView)), equalTo(true));
+			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[0])), equalTo(false));
+			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[1])), equalTo(false));
+			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[2])), equalTo(false));
 		}
 	}
 }

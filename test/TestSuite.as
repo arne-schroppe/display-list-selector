@@ -17,6 +17,7 @@ package {
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.NthOfTypeTest;
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.RootTest;
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.nthchildren.NthParserTest;
+	import net.wooga.uiengine.displaylistselector.selectorstorage.SelectorStorageTest;
 
 	[Suite]
 	[RunWith("org.flexunit.runners.Suite")]
@@ -40,6 +41,8 @@ package {
 		public var rootTest:RootTest;
 		public var nthParserTest:NthParserTest;
 		public var specificityTest:SpecificityTest;
+
+		public var selectorStorageTest:SelectorStorageTest;
 		//public var parserTest:ParserTest;
 
 	}

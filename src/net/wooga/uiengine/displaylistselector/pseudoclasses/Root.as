@@ -1,19 +1,18 @@
 package net.wooga.uiengine.displaylistselector.pseudoclasses {
 
-	import flash.display.DisplayObject;
-	import flash.display.DisplayObjectContainer;
+	import net.wooga.uiengine.displaylistselector.styleadapter.IStyleAdapter;
 
 	public class Root implements IPseudoClass {
 
-		private var _rootView:DisplayObjectContainer;
+		private var _rootView:Object;
 
 
-		public function Root(rootView:DisplayObjectContainer) {
+		public function Root(rootView:Object) {
 			_rootView = rootView;
 		}
 
-		public function isMatching(subject:DisplayObject):Boolean {
-			return subject === _rootView;
+		public function isMatching(subject:IStyleAdapter):Boolean {
+			return subject.getAdaptedElement() === _rootView;
 		}
 
 		public function setArguments(arguments:Array):void {

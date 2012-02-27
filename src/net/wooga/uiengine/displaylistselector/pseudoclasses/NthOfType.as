@@ -1,24 +1,23 @@
 package net.wooga.uiengine.displaylistselector.pseudoclasses {
 
-	import flash.display.DisplayObject;
-	import flash.display.DisplayObjectContainer;
 	import flash.utils.getDefinitionByName;
 	import flash.utils.getQualifiedClassName;
 
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.nthchildren.NthOfX;
+	import net.wooga.uiengine.displaylistselector.styleadapter.IStyleAdapter;
 
 	public class NthOfType extends NthOfX {
 
-		override protected function indexOfObject(subject:DisplayObject):int {
-			var parent:DisplayObjectContainer = subject.parent;
+		override protected function indexOfObject(subject:IStyleAdapter):int {
 			var index:int = 0;
-			var SubjectType:Class = getDefinitionByName(getQualifiedClassName(subject)) as Class;
-			var current:DisplayObject;
+			var SubjectType:Class = getDefinitionByName(getQualifiedClassName(subject.getAdaptedElement())) as Class;
+			var current:Object;
 
-			for (var i:int = 0; i < parent.numChildren; ++i) {
-				current = parent.getChildAt(i);
+			var length:int = subject.getNumberOfElements();
+			for (var i:int = 0; i < length; ++i) {
+				current = subject.getElementAtIndex(i);
 
-				if (current == subject) {
+				if (current == subject.getAdaptedElement()) {
 					return index;
 				}
 

@@ -1,6 +1,11 @@
 package net.wooga.uiengine.displaylistselector {
 	import flash.utils.getQualifiedClassName;
 
+	import net.wooga.uiengine.displaylistselector.classnamealias.AliasIsUnqualifiedClassNameInferenceStrategy;
+
+	import net.wooga.uiengine.displaylistselector.classnamealias.ClassNameAliasMap;
+	import net.wooga.uiengine.displaylistselector.classnamealias.IClassNameInferenceStrategy;
+
 	import net.wooga.uiengine.displaylistselector.matching.MatcherTool;
 	import net.wooga.uiengine.displaylistselector.parser.ParsedSelector;
 	import net.wooga.uiengine.displaylistselector.parser.Parser;
@@ -44,7 +49,8 @@ package net.wooga.uiengine.displaylistselector {
 		private var _objectTypeToStyleAdapterTypeMap:IMap = new Map();
 		private var _defaultStyleAdapterType:Class;
 
-		private var _classNameAliasMap:IMap = new Map();
+		private var _classNameAliasMap:ClassNameAliasMap;
+		private var _classNameInferenceStrategy:IClassNameInferenceStrategy;
 
 
 		//TODO (arneschroppe 21/2/12) id and class attributes are of course also reflected through adapters
@@ -60,6 +66,9 @@ package net.wooga.uiengine.displaylistselector {
 			_pseudoClassProvider = new PseudoClassProvider();
 			addDefaultPseudoClasses();
 
+			//TODO (arneschroppe 27/2/12) this should be settable from outside
+			_classNameInferenceStrategy = new AliasIsUnqualifiedClassNameInferenceStrategy();
+			_classNameAliasMap = new ClassNameAliasMap(_rootObject, _classNameInferenceStrategy);
 			_parser = new Parser(externalPropertySource, _pseudoClassProvider, _classNameAliasMap);
 			_matcher = new MatcherTool(_rootObject, _objectToStyleAdapterMap);
 		}
@@ -203,20 +212,14 @@ package net.wooga.uiengine.displaylistselector {
 			addPseudoClass("nth-last-child", new NthLastChild());
 			addPseudoClass("nth-of-type", new NthOfType());
 			addPseudoClass("nth-last-of-type", new NthLastOfType());
-			addPseudoClass("empty", new net.wooga.uiengine.displaylistselector.pseudoclasses.IsEmpty());
+			addPseudoClass("empty", new IsEmpty());
 			addPseudoClass("hover", new Hover());
 			addPseudoClass("active", new Active());
 		}
 
 
 		public function setClassNameAlias(alias:String, fullyQualifiedClassName:String):void {
-			if(_classNameAliasMap.hasKey(alias) && fullyQualifiedClassName != _classNameAliasMap.itemFor(alias)) {
-				trace("Warning! Alias '" + alias + "' with value '" + _classNameAliasMap.itemFor(alias) + "' is being overridden with value '" + fullyQualifiedClassName + "'");
-				_classNameAliasMap.replaceFor(alias, fullyQualifiedClassName);
-			}
-			else {
-				_classNameAliasMap.add(alias, fullyQualifiedClassName);
-			}
+			_classNameAliasMap.setAlias(alias, fullyQualifiedClassName);
 		}
 	}
 }

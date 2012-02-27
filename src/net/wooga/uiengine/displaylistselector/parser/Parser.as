@@ -1,5 +1,6 @@
 package net.wooga.uiengine.displaylistselector.parser {
 	import net.wooga.uiengine.displaylistselector.IExternalPropertySource;
+	import net.wooga.uiengine.displaylistselector.classnamealias.ClassNameAliasMap;
 	import net.wooga.uiengine.displaylistselector.input.ParserInput;
 	import net.wooga.uiengine.displaylistselector.matching.matchers.ICombinator;
 	import net.wooga.uiengine.displaylistselector.matching.matchers.IMatcher;
@@ -38,11 +39,11 @@ package net.wooga.uiengine.displaylistselector.parser {
 
 		private var _subSelector:String;
 
-		private var _classNameAliasMap:IMap;
+		private var _classNameAliasMap:ClassNameAliasMap;
 		private var _originalSelector:String;
 
 
-		public function Parser(externalPropertySource:IExternalPropertySource, pseudoClassProvider:IPseudoClassProvider, classNameAliasMap:IMap) {
+		public function Parser(externalPropertySource:IExternalPropertySource, pseudoClassProvider:IPseudoClassProvider, classNameAliasMap:ClassNameAliasMap) {
 			_externalPropertySource = externalPropertySource;
 			_pseudoClassProvider = pseudoClassProvider;
 			_classNameAliasMap = classNameAliasMap;
@@ -224,14 +225,13 @@ package net.wooga.uiengine.displaylistselector.parser {
 				_subSelector += "(" + className + ")";
 			}
 			else {
-				className = _input.consumeRegex(/\w+/);
-				var qualifiedClassName:String = _classNameAliasMap.itemFor(className);
-				if(!qualifiedClassName) {
-					throw new ParserError("Unknown element alias '" + className + "'");
-				}
-				className = qualifiedClassName;
-				_currentSelector.matchers.push(getSingletonMatcher(TypeNameMatcher, className, _isExactTypeMatcher, new TypeNameMatcher(className, _isExactTypeMatcher)));
-				_subSelector += className;
+				var classNameAlias:String = _input.consumeRegex(/\w+/);
+				var qualifiedClassName:String = _classNameAliasMap.classNameFor(classNameAlias);
+				//if(!qualifiedClassName) {
+				//	throw new ParserError("Unknown element alias '" + className + "'");
+				//}
+				_currentSelector.matchers.push(getSingletonMatcher(TypeNameMatcher, qualifiedClassName, _isExactTypeMatcher, new TypeNameMatcher(qualifiedClassName, _isExactTypeMatcher)));
+				_subSelector += classNameAlias;
 			}
 
 			if(_isExactTypeMatcher) {

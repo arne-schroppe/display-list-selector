@@ -1,7 +1,6 @@
 package net.wooga.uiengine.displaylistselector.matching.matchers.implementations {
 
 	import flash.utils.describeType;
-	import flash.utils.getDefinitionByName;
 	import flash.utils.getQualifiedClassName;
 
 	import net.wooga.uiengine.displaylistselector.matching.matchers.IMatcher;

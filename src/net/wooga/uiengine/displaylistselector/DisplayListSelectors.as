@@ -70,8 +70,6 @@ package net.wooga.uiengine.displaylistselector {
 			_selectors.addPseudoClass(className, pseudoClass);
 		}
 
-		public function objectWasChanged(object:Object):void {
-			_selectors.objectWasChanged(object);
-		}
+
 	}
 }

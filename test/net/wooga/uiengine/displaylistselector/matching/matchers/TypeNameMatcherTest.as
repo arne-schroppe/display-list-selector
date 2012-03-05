@@ -12,7 +12,7 @@ package net.wooga.uiengine.displaylistselector.matching.matchers {
 	import net.wooga.fixtures.package1.TestSpritePack;
 	import net.wooga.fixtures.package2.TestSpritePack;
 	import net.wooga.uiengine.displaylistselector.matching.matchers.implementations.TypeNameMatcher;
-	import net.wooga.uiengine.displaylistselector.styleadapter.IStyleAdapter;
+	import net.wooga.uiengine.displaylistselector.selectoradapter.ISelectorAdapter;
 
 	import org.hamcrest.assertThat;
 	import org.hamcrest.core.allOf;
@@ -36,7 +36,7 @@ package net.wooga.uiengine.displaylistselector.matching.matchers {
 			super.tearDown();
 		}
 
-		private function getAdapterForObjectAtIndex(index:int):IStyleAdapter {
+		private function getAdapterForObjectAtIndex(index:int):ISelectorAdapter {
 			var object:DisplayObject = contextView.getChildAt(index);
 			return getAdapterForObject(object);
 		}

@@ -1,6 +1,6 @@
 package net.wooga.uiengine.displaylistselector.pseudoclasses.nthchildren {
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.*;
-	import net.wooga.uiengine.displaylistselector.styleadapter.IStyleAdapter;
+	import net.wooga.uiengine.displaylistselector.selectoradapter.ISelectorAdapter;
 
 	public class NthOfX implements IPseudoClass {
 
@@ -8,7 +8,7 @@ package net.wooga.uiengine.displaylistselector.pseudoclasses.nthchildren {
 		private var _b:int;
 		private var _argumentParser:NthChildArgumentParser = new NthChildArgumentParser();
 
-		public function isMatching(subject:IStyleAdapter):Boolean {
+		public function isMatching(subject:ISelectorAdapter):Boolean {
 
 			var targetIndex:int = indexOfObject(subject) + 1;
 
@@ -21,7 +21,7 @@ package net.wooga.uiengine.displaylistselector.pseudoclasses.nthchildren {
 			}
 		}
 
-		protected function indexOfObject(subject:IStyleAdapter):int {
+		protected function indexOfObject(subject:ISelectorAdapter):int {
 			throw new Error("Must be implemented by subclass");
 		}
 

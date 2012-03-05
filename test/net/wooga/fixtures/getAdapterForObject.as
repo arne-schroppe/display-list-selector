@@ -1,10 +1,11 @@
 package net.wooga.fixtures {
-	import net.wooga.uiengine.displaylistselector.styleadapter.DisplayObjectStyleAdapter;
-	import net.wooga.uiengine.displaylistselector.styleadapter.IStyleAdapter;
+	import net.wooga.uiengine.displaylistselector.selectoradapter.DisplayObjectSelectorAdapter;
+	import net.wooga.uiengine.displaylistselector.selectoradapter.ISelectorAdapter;
+	import net.wooga.uiengine.displaylistselector.selectoradapter.ISelectorAdapterDelegate;
 
-	public function getAdapterForObject(object:Object):IStyleAdapter {
-		var adapter:DisplayObjectStyleAdapter = new DisplayObjectStyleAdapter();
-		adapter.register(object);
+	public function getAdapterForObject(object:Object, delegate:ISelectorAdapterDelegate = null):ISelectorAdapter {
+		var adapter:DisplayObjectSelectorAdapter = new DisplayObjectSelectorAdapter();
+		adapter.register(object, delegate);
 
 		return adapter;
 	}

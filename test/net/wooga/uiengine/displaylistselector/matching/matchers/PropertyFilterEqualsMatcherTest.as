@@ -9,7 +9,7 @@ package net.wooga.uiengine.displaylistselector.matching.matchers {
 	import net.wooga.fixtures.containsInArrayExactly;
 	import net.wooga.fixtures.getAdapterForObject;
 	import net.wooga.uiengine.displaylistselector.matching.matchers.implementations.PropertyFilterEqualsMatcher;
-	import net.wooga.uiengine.displaylistselector.styleadapter.IStyleAdapter;
+	import net.wooga.uiengine.displaylistselector.selectoradapter.ISelectorAdapter;
 
 	import org.hamcrest.assertThat;
 	import org.hamcrest.collection.everyItem;
@@ -63,7 +63,7 @@ package net.wooga.uiengine.displaylistselector.matching.matchers {
 		}
 
 
-		private function getAdapterForObjectAtIndex(index:int):IStyleAdapter {
+		private function getAdapterForObjectAtIndex(index:int):ISelectorAdapter {
 			var object:DisplayObject = contextView.getChildAt(index);
 			return getAdapterForObject(object);
 		}
@@ -104,17 +104,17 @@ package net.wooga.uiengine.displaylistselector.matching.matchers {
 import flash.utils.getQualifiedClassName;
 
 import net.wooga.uiengine.displaylistselector.IExternalPropertySource;
-import net.wooga.uiengine.displaylistselector.styleadapter.IStyleAdapter;
+import net.wooga.uiengine.displaylistselector.selectoradapter.ISelectorAdapter;
 
 import org.as3commons.collections.Set;
 
 class NoCallPropertySource implements IExternalPropertySource {
 
-	public function stringValueForProperty(subject:IStyleAdapter, name:String):String {
+	public function stringValueForProperty(subject:ISelectorAdapter, name:String):String {
 		throw new Error("Unexpected method called");
 	}
 
-	public function collectionValueForProperty(subject:IStyleAdapter, name:String):Set {
+	public function collectionValueForProperty(subject:ISelectorAdapter, name:String):Set {
 		throw new Error("Unexpected method called");
 	}
 }
@@ -122,7 +122,7 @@ class NoCallPropertySource implements IExternalPropertySource {
 
 class ClassNamePropertySource implements IExternalPropertySource {
 
-	public function stringValueForProperty(subject:IStyleAdapter, name:String):String {
+	public function stringValueForProperty(subject:ISelectorAdapter, name:String):String {
 		if(name == "testProperty") {
 			return getQualifiedClassName(subject.getAdaptedElement()).split("::").pop();
 		}
@@ -130,7 +130,7 @@ class ClassNamePropertySource implements IExternalPropertySource {
 		return null;
 	}
 
-	public function collectionValueForProperty(subject:IStyleAdapter, name:String):Set {
+	public function collectionValueForProperty(subject:ISelectorAdapter, name:String):Set {
 		throw new Error("Unexpected method called");
 	}
 }

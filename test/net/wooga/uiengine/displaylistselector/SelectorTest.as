@@ -14,7 +14,7 @@ package net.wooga.uiengine.displaylistselector {
 	import net.wooga.fixtures.TestSpriteC;
 	import net.wooga.fixtures.TestSpriteD;
 	import net.wooga.fixtures.TestSpriteWithInterface;
-	import net.wooga.uiengine.displaylistselector.styleadapter.DisplayObjectStyleAdapter;
+	import net.wooga.uiengine.displaylistselector.selectoradapter.DisplayObjectSelectorAdapter;
 	import net.wooga.utils.flexunit.hamcrestcollection.containsExactly;
 	import net.wooga.utils.flexunit.hamcrestcollection.everyItemInCollection;
 	import net.wooga.utils.flexunit.hamcrestcollection.hasItemInCollection;
@@ -45,7 +45,7 @@ package net.wooga.uiengine.displaylistselector {
 
 			_selectors = new AbstractSelectors();
 			_selectors.initializeWith(contextView, _propertyDictionary);
-			_selectors.setDefaultStyleAdapter(DisplayObjectStyleAdapter);
+			_selectors.setDefaultStyleAdapter(DisplayObjectSelectorAdapter);
 		}
 
 
@@ -782,7 +782,7 @@ package net.wooga.uiengine.displaylistselector {
 import flash.utils.Dictionary;
 
 import net.wooga.uiengine.displaylistselector.IExternalPropertySource;
-import net.wooga.uiengine.displaylistselector.styleadapter.IStyleAdapter;
+import net.wooga.uiengine.displaylistselector.selectoradapter.ISelectorAdapter;
 
 import org.as3commons.collections.Set;
 
@@ -794,11 +794,11 @@ class PropertyDictionary implements IExternalPropertySource {
 		_values[key] = value;
 	}
 
-	public function stringValueForProperty(subject:IStyleAdapter, name:String):String {
+	public function stringValueForProperty(subject:ISelectorAdapter, name:String):String {
 		return _values[name];
 	}
 
-	public function collectionValueForProperty(subject:IStyleAdapter, name:String):Set {
+	public function collectionValueForProperty(subject:ISelectorAdapter, name:String):Set {
 		return _values[name];
 	}
 }

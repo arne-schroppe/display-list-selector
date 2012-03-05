@@ -1,6 +1,6 @@
 package net.wooga.uiengine.displaylistselector.matching.matchers.implementations {
 	import net.wooga.uiengine.displaylistselector.matching.matchers.IMatcher;
-	import net.wooga.uiengine.displaylistselector.styleadapter.IStyleAdapter;
+	import net.wooga.uiengine.displaylistselector.selectoradapter.ISelectorAdapter;
 
 	public class IdMatcher implements IMatcher {
 		private var _id:String;
@@ -9,7 +9,7 @@ package net.wooga.uiengine.displaylistselector.matching.matchers.implementations
 			_id = id;
 		}
 
-		public function isMatching(subject:IStyleAdapter):Boolean {
+		public function isMatching(subject:ISelectorAdapter):Boolean {
 			return subject.getId() == _id;
 		}
 

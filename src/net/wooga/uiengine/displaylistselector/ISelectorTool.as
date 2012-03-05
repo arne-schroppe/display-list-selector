@@ -11,6 +11,8 @@ package net.wooga.uiengine.displaylistselector {
 
 		function addPseudoClass(className:String, pseudoClass:IPseudoClass):void;
 
-		function objectWasChanged(object:Object):void;
+		//TODO (arneschroppe 5/3/12) maybe also add:
+		//function getSpecificityForSelector(selector:String):ISpecificity //selector must have been registered previously
+
 	}
 }

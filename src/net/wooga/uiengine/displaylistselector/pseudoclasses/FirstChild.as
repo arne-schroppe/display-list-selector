@@ -1,11 +1,11 @@
 package net.wooga.uiengine.displaylistselector.pseudoclasses {
 
-	import net.wooga.uiengine.displaylistselector.styleadapter.IStyleAdapter;
+	import net.wooga.uiengine.displaylistselector.selectoradapter.ISelectorAdapter;
 
 	public class FirstChild extends NthChild {
 
 
-		override public function isMatching(subject:IStyleAdapter):Boolean {
+		override public function isMatching(subject:ISelectorAdapter):Boolean {
 			super.setArguments(["1"]);
 			return super.isMatching(subject);
 		}

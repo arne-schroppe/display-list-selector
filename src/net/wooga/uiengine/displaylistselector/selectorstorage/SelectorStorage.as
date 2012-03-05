@@ -4,7 +4,7 @@ package net.wooga.uiengine.displaylistselector.selectorstorage {
 	import net.wooga.uiengine.displaylistselector.selectorstorage.keys.ISelectorTreeNodeKey;
 	import net.wooga.uiengine.displaylistselector.selectorstorage.keys.IdKey;
 	import net.wooga.uiengine.displaylistselector.selectorstorage.keys.TypeNameKey;
-	import net.wooga.uiengine.displaylistselector.styleadapter.IStyleAdapter;
+	import net.wooga.uiengine.displaylistselector.selectoradapter.ISelectorAdapter;
 
 	import org.as3commons.collections.Set;
 
@@ -79,7 +79,7 @@ package net.wooga.uiengine.displaylistselector.selectorstorage {
 		}
 
 
-		public function getPossibleMatchesFor(object:IStyleAdapter):IIterable {
+		public function getPossibleMatchesFor(object:ISelectorAdapter):IIterable {
 
 			_foundSelectors = new Set();
 
@@ -89,7 +89,7 @@ package net.wooga.uiengine.displaylistselector.selectorstorage {
 
 		}
 
-		private function searchForMatches(node:SelectorFilterTreeNode, keyIndex:int, adapter:IStyleAdapter):void {
+		private function searchForMatches(node:SelectorFilterTreeNode, keyIndex:int, adapter:ISelectorAdapter):void {
 
 			if(!node) {
 				return;

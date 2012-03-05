@@ -1,7 +1,9 @@
-package net.wooga.uiengine.displaylistselector.styleadapter {
-	public interface IStyleAdapter {
-		function register(adaptedElement:Object):void;
-		function unregister(adaptedElement:Object):void;
+package net.wooga.uiengine.displaylistselector.selectoradapter {
+	public interface ISelectorAdapter {
+		function register(adaptedElement:Object, delegate:ISelectorAdapterDelegate):void;
+		function unregister():void;
+
+
 
 		//TODO (arneschroppe 22/2/12) should we even use this? better not, the adapter should handle everything
 		function getAdaptedElement():Object;

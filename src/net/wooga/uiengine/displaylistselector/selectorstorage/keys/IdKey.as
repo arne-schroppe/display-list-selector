@@ -1,6 +1,6 @@
 package net.wooga.uiengine.displaylistselector.selectorstorage.keys {
 	import net.wooga.uiengine.displaylistselector.parser.ParsedSelector;
-	import net.wooga.uiengine.displaylistselector.styleadapter.IStyleAdapter;
+	import net.wooga.uiengine.displaylistselector.selectoradapter.ISelectorAdapter;
 
 	public class IdKey implements ISelectorTreeNodeKey {
 
@@ -10,7 +10,7 @@ package net.wooga.uiengine.displaylistselector.selectorstorage.keys {
 			return parsedSelector.filterData.id;
 		}
 
-		public function keyForAdapter(adapter:IStyleAdapter):* {
+		public function keyForAdapter(adapter:ISelectorAdapter):* {
 			return adapter.getId();
 		}
 

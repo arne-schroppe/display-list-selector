@@ -1,7 +1,7 @@
 package net.wooga.uiengine.displaylistselector.matching.matchers.implementations {
 	import net.wooga.uiengine.displaylistselector.IExternalPropertySource;
 	import net.wooga.uiengine.displaylistselector.matching.matchers.IMatcher;
-	import net.wooga.uiengine.displaylistselector.styleadapter.IStyleAdapter;
+	import net.wooga.uiengine.displaylistselector.selectoradapter.ISelectorAdapter;
 
 	public class PropertyFilterEqualsMatcher implements IMatcher {
 		private var _property:String;
@@ -14,7 +14,7 @@ package net.wooga.uiengine.displaylistselector.matching.matchers.implementations
 			_value = value;
 		}
 
-		public function isMatching(subject:IStyleAdapter):Boolean {
+		public function isMatching(subject:ISelectorAdapter):Boolean {
 			if (!(_property in subject.getAdaptedElement())) {
 				return getExternalProperty(subject);
 			} else {
@@ -22,7 +22,7 @@ package net.wooga.uiengine.displaylistselector.matching.matchers.implementations
 			}
 		}
 
-		private function getObjectProperty(subject:IStyleAdapter):Boolean {
+		private function getObjectProperty(subject:ISelectorAdapter):Boolean {
 			//TODO (arneschroppe 22/2/12) don't use adaptedElement directly here
 			if (subject.getAdaptedElement()[_property] == _value) {
 				return true;
@@ -31,7 +31,7 @@ package net.wooga.uiengine.displaylistselector.matching.matchers.implementations
 			return false;
 		}
 
-		private function getExternalProperty(subject:IStyleAdapter):Boolean {
+		private function getExternalProperty(subject:ISelectorAdapter):Boolean {
 			var currentValue:String = _externalPropertySource.stringValueForProperty(subject, _property);
 			if (currentValue == _value) {
 				return true;

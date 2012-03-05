@@ -1,6 +1,6 @@
 package net.wooga.uiengine.displaylistselector.pseudoclasses {
 
-	import net.wooga.uiengine.displaylistselector.styleadapter.IStyleAdapter;
+	import net.wooga.uiengine.displaylistselector.selectoradapter.ISelectorAdapter;
 
 	public class Root implements IPseudoClass {
 
@@ -11,7 +11,7 @@ package net.wooga.uiengine.displaylistselector.pseudoclasses {
 			_rootView = rootView;
 		}
 
-		public function isMatching(subject:IStyleAdapter):Boolean {
+		public function isMatching(subject:ISelectorAdapter):Boolean {
 			return subject.getAdaptedElement() === _rootView;
 		}
 

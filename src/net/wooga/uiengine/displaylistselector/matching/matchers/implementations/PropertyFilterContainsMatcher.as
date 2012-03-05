@@ -1,7 +1,7 @@
 package net.wooga.uiengine.displaylistselector.matching.matchers.implementations {
 	import net.wooga.uiengine.displaylistselector.IExternalPropertySource;
 	import net.wooga.uiengine.displaylistselector.matching.matchers.IMatcher;
-	import net.wooga.uiengine.displaylistselector.styleadapter.IStyleAdapter;
+	import net.wooga.uiengine.displaylistselector.selectoradapter.ISelectorAdapter;
 
 	import org.as3commons.collections.Set;
 
@@ -16,7 +16,7 @@ package net.wooga.uiengine.displaylistselector.matching.matchers.implementations
 			_value = value;
 		}
 
-		public function isMatching(subject:IStyleAdapter):Boolean {
+		public function isMatching(subject:ISelectorAdapter):Boolean {
 			if (!(_property in subject)) {
 				return getExternalProperty(subject);
 			} else {
@@ -24,7 +24,7 @@ package net.wooga.uiengine.displaylistselector.matching.matchers.implementations
 			}
 		}
 
-		private function getObjectProperty(subject:IStyleAdapter):Boolean {
+		private function getObjectProperty(subject:ISelectorAdapter):Boolean {
 			var collection:Set = subject[_property] as Set;
 			if (collection && collection.has(_value)) {
 				return true;
@@ -33,7 +33,7 @@ package net.wooga.uiengine.displaylistselector.matching.matchers.implementations
 			return false;
 		}
 
-		private function getExternalProperty(subject:IStyleAdapter):Boolean {
+		private function getExternalProperty(subject:ISelectorAdapter):Boolean {
 			var collection:Set = _externalPropertySource.collectionValueForProperty(subject, _property);
 
 			if (collection && collection.has(_value)) {

@@ -4,7 +4,7 @@ package net.wooga.uiengine.displaylistselector.matching {
 	import net.wooga.uiengine.displaylistselector.matching.matchers.implementations.ChildSelectorMatcher;
 	import net.wooga.uiengine.displaylistselector.matching.matchers.implementations.DescendantSelectorMatcher;
 	import net.wooga.uiengine.displaylistselector.parser.ParsedSelector;
-	import net.wooga.uiengine.displaylistselector.styleadapter.IStyleAdapter;
+	import net.wooga.uiengine.displaylistselector.selectoradapter.ISelectorAdapter;
 
 	import org.as3commons.collections.framework.IMap;
 
@@ -22,15 +22,8 @@ package net.wooga.uiengine.displaylistselector.matching {
 
 
 
-		public function invalidateObject(object:Object):void {
-
-		}
-
-
-
-
 		//TODO (arneschroppe 9/1/12) write a test for this!!!!!!
-		public function isObjectMatching(adapter:IStyleAdapter, selector:ParsedSelector):Boolean {
+		public function isObjectMatching(adapter:ISelectorAdapter, selector:ParsedSelector):Boolean {
 
 			_currentlyMatchedMatchers = selector.matchers;
 
@@ -43,7 +36,7 @@ package net.wooga.uiengine.displaylistselector.matching {
 
 
 
-		private function reverseMatch(subject:IStyleAdapter, nextMatcher:int):Boolean {
+		private function reverseMatch(subject:ISelectorAdapter, nextMatcher:int):Boolean {
 
 			if (!subject) {
 				return false;
@@ -94,7 +87,7 @@ package net.wooga.uiengine.displaylistselector.matching {
 			return result;
 		}
 
-		private function reverseMatchParentIfPossible(subject:IStyleAdapter, nextMatcher:int):Boolean {
+		private function reverseMatchParentIfPossible(subject:ISelectorAdapter, nextMatcher:int):Boolean {
 
 			//TODO (arneschroppe 22/2/12) we should use a isObjectEqualTo-method here
 			if (subject.getAdaptedElement() == _rootObject) {

@@ -1,7 +1,7 @@
 package net.wooga.uiengine.displaylistselector.matching.matchers.implementations {
 	import net.wooga.uiengine.displaylistselector.matching.matchers.IMatcher;
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.IPseudoClass;
-	import net.wooga.uiengine.displaylistselector.styleadapter.IStyleAdapter;
+	import net.wooga.uiengine.displaylistselector.selectoradapter.ISelectorAdapter;
 
 	public class PseudoClassMatcher implements IMatcher {
 
@@ -20,7 +20,7 @@ package net.wooga.uiengine.displaylistselector.matching.matchers.implementations
 			_pseudoClass.setArguments(arguments);
 		}
 
-		public function isMatching(subject:IStyleAdapter):Boolean {
+		public function isMatching(subject:ISelectorAdapter):Boolean {
 			return _pseudoClass.isMatching(subject);
 		}
 	}

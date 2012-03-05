@@ -1,7 +1,7 @@
 package net.wooga.uiengine.displaylistselector.selectorstorage.keys {
 
 	import net.wooga.uiengine.displaylistselector.parser.ParsedSelector;
-	import net.wooga.uiengine.displaylistselector.styleadapter.IStyleAdapter;
+	import net.wooga.uiengine.displaylistselector.selectoradapter.ISelectorAdapter;
 
 	public class HoverKey implements ISelectorTreeNodeKey {
 
@@ -17,7 +17,7 @@ package net.wooga.uiengine.displaylistselector.selectorstorage.keys {
 		}
 
 
-		public function keyForAdapter(adapter:IStyleAdapter):* {
+		public function keyForAdapter(adapter:ISelectorAdapter):* {
 			return adapter.isHovered() ? HOVER_KEY : NULL_KEY;
 		}
 

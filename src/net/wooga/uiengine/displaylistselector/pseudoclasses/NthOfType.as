@@ -4,11 +4,11 @@ package net.wooga.uiengine.displaylistselector.pseudoclasses {
 	import flash.utils.getQualifiedClassName;
 
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.nthchildren.NthOfX;
-	import net.wooga.uiengine.displaylistselector.styleadapter.IStyleAdapter;
+	import net.wooga.uiengine.displaylistselector.selectoradapter.ISelectorAdapter;
 
 	public class NthOfType extends NthOfX {
 
-		override protected function indexOfObject(subject:IStyleAdapter):int {
+		override protected function indexOfObject(subject:ISelectorAdapter):int {
 			var index:int = 0;
 			var SubjectType:Class = getDefinitionByName(getQualifiedClassName(subject.getAdaptedElement())) as Class;
 			var current:Object;

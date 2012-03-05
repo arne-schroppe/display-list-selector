@@ -6,7 +6,7 @@ package net.wooga.uiengine.displaylistselector.selectorstorage {
 	import net.wooga.uiengine.displaylistselector.parser.Parser;
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.IPseudoClass;
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.Hover;
-	import net.wooga.uiengine.displaylistselector.styleadapter.IStyleAdapter;
+	import net.wooga.uiengine.displaylistselector.selectoradapter.ISelectorAdapter;
 	import net.wooga.utils.flexunit.hamcrestcollection.containsExactly;
 
 	import org.as3commons.collections.framework.ICollection;
@@ -31,7 +31,7 @@ package net.wooga.uiengine.displaylistselector.selectorstorage {
 		private var _parser:Parser;
 
 		[Mock]
-		public var styleAdapter:IStyleAdapter;
+		public var styleAdapter:ISelectorAdapter;
 
 		[Before]
 		public function setUp():void {

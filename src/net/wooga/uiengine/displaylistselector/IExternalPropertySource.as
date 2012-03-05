@@ -1,12 +1,12 @@
 package net.wooga.uiengine.displaylistselector {
-	import net.wooga.uiengine.displaylistselector.styleadapter.IStyleAdapter;
+	import net.wooga.uiengine.displaylistselector.selectoradapter.ISelectorAdapter;
 
 	import org.as3commons.collections.Set;
 
 	public interface IExternalPropertySource {
-		function stringValueForProperty(subject:IStyleAdapter, name:String):String;
+		function stringValueForProperty(subject:ISelectorAdapter, name:String):String;
 
 		//TODO (arneschroppe 12/1/12) change return type to Array?
-		function collectionValueForProperty(subject:IStyleAdapter, name:String):Set;
+		function collectionValueForProperty(subject:ISelectorAdapter, name:String):Set;
 	}
 }

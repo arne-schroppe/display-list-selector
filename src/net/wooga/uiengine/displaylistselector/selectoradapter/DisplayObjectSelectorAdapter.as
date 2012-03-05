@@ -1,41 +1,43 @@
-package net.wooga.uiengine.displaylistselector.styleadapter {
+package net.wooga.uiengine.displaylistselector.selectoradapter {
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 
-	public class DisplayObjectStyleAdapter implements IStyleAdapter {
+	public class DisplayObjectSelectorAdapter implements ISelectorAdapter {
 
-
-		private var _parent:IStyleAdapter;
 		private var _adaptedElement:DisplayObject;
 
 		//TODO (arneschroppe 2/26/12) rename groups to classes
 		private static const CSS_CLASS_PARAMETER_NAME:String = "groups";
-		private static const CSS_HOVER_PARAMETER_NAME:String = "isMouseOver";
-		private static const CSS_ACTIVE_PARAMETER_NAME:String = "isMouseDown";
+		private var _isHovered:Boolean;
+		private var _isActive:Boolean;
+		private var _delegate:ISelectorAdapterDelegate;
 
-		public function DisplayObjectStyleAdapter() {
+		//private static const CSS_HOVER_PARAMETER_NAME:String = "isMouseOver";
+		//private static const CSS_ACTIVE_PARAMETER_NAME:String = "isMouseDown";
+
+		public function DisplayObjectSelectorAdapter() {
 		}
 
 
-		public function register(adaptedElement:Object):void {
+		public function register(adaptedElement:Object, delegate:ISelectorAdapterDelegate):void {
 			if(!(adaptedElement is DisplayObject)) {
 				throw new ArgumentError("This adapter can only be used with DisplayObjects");
 			}
 
+			_delegate = delegate;
 			_adaptedElement = DisplayObject(adaptedElement);
+			_adaptedElement.addEventListener(SelectorAdapterEvent.SET_HOVER_STATE, onSetHoverState)
 		}
 
-		public function unregister(adaptedElement:Object):void {
+		private function onSetHoverState(event:SelectorAdapterEvent):void {
+			_isHovered = event.isEnabled;
+			_delegate.objectStateHasChanged(this);
+		}
+
+
+
+		public function unregister():void {
 			_adaptedElement = null;
-		}
-
-
-		public function getParent():IStyleAdapter {
-			return _parent;
-		}
-
-		public function setParent(value:IStyleAdapter):void {
-			_parent = value;
 		}
 
 
@@ -47,6 +49,7 @@ package net.wooga.uiengine.displaylistselector.styleadapter {
 		public function getId():String {
 			return _adaptedElement.name;
 		}
+
 
 		public function getClasses():Array {
 			return (CSS_CLASS_PARAMETER_NAME in _adaptedElement) ? _adaptedElement[CSS_CLASS_PARAMETER_NAME] : [];
@@ -67,14 +70,6 @@ package net.wooga.uiengine.displaylistselector.styleadapter {
 
 
 
-		protected function get parent():IStyleAdapter {
-			return _parent;
-		}
-
-		protected function set parent(value:IStyleAdapter):void {
-			_parent = value;
-		}
-
 		protected function get adaptedElement():DisplayObject {
 			return _adaptedElement;
 		}
@@ -92,11 +87,13 @@ package net.wooga.uiengine.displaylistselector.styleadapter {
 		}
 
 		public function isHovered():Boolean {
-			return (CSS_HOVER_PARAMETER_NAME in _adaptedElement) ? _adaptedElement[CSS_CLASS_PARAMETER_NAME] : false;
+			//return (CSS_HOVER_PARAMETER_NAME in _adaptedElement) ? _adaptedElement[CSS_HOVER_PARAMETER_NAME] : false;;
+			return _isHovered;
 		}
 
 		public function isActive():Boolean {
-			return (CSS_ACTIVE_PARAMETER_NAME in _adaptedElement) ? _adaptedElement[CSS_CLASS_PARAMETER_NAME] : false;
+			//return (CSS_ACTIVE_PARAMETER_NAME in _adaptedElement) ? _adaptedElement[CSS_CLASS_PARAMETER_NAME] : false;;
+			return _isActive;
 		}
 	}
 }

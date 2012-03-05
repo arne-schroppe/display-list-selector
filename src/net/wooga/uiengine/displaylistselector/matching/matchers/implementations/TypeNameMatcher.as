@@ -4,7 +4,7 @@ package net.wooga.uiengine.displaylistselector.matching.matchers.implementations
 	import flash.utils.getQualifiedClassName;
 
 	import net.wooga.uiengine.displaylistselector.matching.matchers.IMatcher;
-	import net.wooga.uiengine.displaylistselector.styleadapter.IStyleAdapter;
+	import net.wooga.uiengine.displaylistselector.selectoradapter.ISelectorAdapter;
 
 	import org.as3commons.collections.Map;
 	import org.as3commons.collections.framework.IMap;
@@ -48,13 +48,13 @@ package net.wooga.uiengine.displaylistselector.matching.matchers.implementations
 		}
 
 
-		public function isMatching(subject:IStyleAdapter):Boolean {
+		public function isMatching(subject:ISelectorAdapter):Boolean {
 			return _matchAny || matchesType(subject);
 
 		}
 
 
-		private function matchesType(adapter:IStyleAdapter):Boolean {
+		private function matchesType(adapter:ISelectorAdapter):Boolean {
 
 			//TODO (arneschroppe 22/2/12) maybe we can find a way to avoid using the adapted element directly
 			var subject:Object = adapter.getAdaptedElement();

@@ -8,7 +8,7 @@ package net.wooga.uiengine.displaylistselector.matching.matchers {
 	import net.wooga.fixtures.TestSpriteC;
 	import net.wooga.fixtures.getAdapterForObject;
 	import net.wooga.uiengine.displaylistselector.matching.matchers.implementations.PseudoClassMatcher;
-	import net.wooga.uiengine.displaylistselector.styleadapter.IStyleAdapter;
+	import net.wooga.uiengine.displaylistselector.selectoradapter.ISelectorAdapter;
 
 	import org.hamcrest.assertThat;
 	import org.hamcrest.collection.everyItem;
@@ -62,7 +62,7 @@ package net.wooga.uiengine.displaylistselector.matching.matchers {
 
 		}
 
-		private function getAdapterForObjectAtIndex(index:int):IStyleAdapter {
+		private function getAdapterForObjectAtIndex(index:int):ISelectorAdapter {
 			var object:DisplayObject = contextView.getChildAt(index);
 			return getAdapterForObject(object);
 		}
@@ -72,14 +72,14 @@ package net.wooga.uiengine.displaylistselector.matching.matchers {
 
 import net.wooga.fixtures.TestSpriteC;
 import net.wooga.uiengine.displaylistselector.pseudoclasses.IPseudoClass;
-import net.wooga.uiengine.displaylistselector.styleadapter.IStyleAdapter;
+import net.wooga.uiengine.displaylistselector.selectoradapter.ISelectorAdapter;
 
 class TestPseudoClass implements IPseudoClass {
 
 	public function setArguments(arguments:Array):void {
 	}
 
-	public function isMatching(subject:IStyleAdapter):Boolean {
+	public function isMatching(subject:ISelectorAdapter):Boolean {
 		return subject.getAdaptedElement() is TestSpriteC;
 	}
 }

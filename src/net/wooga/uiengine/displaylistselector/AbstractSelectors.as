@@ -15,8 +15,9 @@ package net.wooga.uiengine.displaylistselector {
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.NthLastOfType;
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.NthOfType;
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.Root;
+	import net.wooga.uiengine.displaylistselector.selectoradapter.ISelectorAdapterDelegate;
 	import net.wooga.uiengine.displaylistselector.selectorstorage.SelectorStorage;
-	import net.wooga.uiengine.displaylistselector.styleadapter.IStyleAdapter;
+	import net.wooga.uiengine.displaylistselector.selectoradapter.ISelectorAdapter;
 	import net.wooga.uiengine.displaylistselector.tools.SpecificityComparator;
 	import net.wooga.uiengine.displaylistselector.tools.Types;
 
@@ -28,26 +29,24 @@ package net.wooga.uiengine.displaylistselector {
 	import org.as3commons.collections.framework.IMap;
 	import org.as3commons.collections.framework.ISet;
 
-	public class AbstractSelectors implements ISelectorTool {
+	public class AbstractSelectors implements ISelectorTool, ISelectorAdapterDelegate {
 
 		private var _rootObject:Object;
 
 		private var _parser:Parser;
-		private var _pseudoClassProvider:PseudoClassProvider;
-
 		private var _matcher:MatcherTool;
-
 		private var _knownSelectors:SelectorStorage = new SelectorStorage();
 
+		private var _pseudoClassProvider:PseudoClassProvider;
+
 		private var _objectToStyleAdapterMap:IMap = new Map();
+
 		private var _objectTypeToStyleAdapterTypeMap:IMap = new Map();
 		private var _defaultStyleAdapterType:Class;
 
-		//private var _classNameAliasMap:ClassNameAliasMap;
-		//private var _classNameInferenceStrategy:IClassNameInferenceStrategy;
 
 
-		//TODO (arneschroppe 21/2/12) id and class attributes are of course also reflected through adapters
+
 		public function initializeWith(rootObject:Object, externalPropertySource:IExternalPropertySource = null):void {
 			_rootObject = rootObject;
 			//TODO (arneschroppe 21/2/12) we don't need to know the root object, we only need to check for the root property on the adapter! (but will everyone implement this properly?)
@@ -60,9 +59,6 @@ package net.wooga.uiengine.displaylistselector {
 			_pseudoClassProvider = new PseudoClassProvider();
 			addDefaultPseudoClasses();
 
-			//TODO (arneschroppe 27/2/12) this should be settable from outside
-			//_classNameInferenceStrategy = new AliasIsUnqualifiedClassNameInferenceStrategy();
-			//_classNameAliasMap = new ClassNameAliasMap(_rootObject, _classNameInferenceStrategy);
 			_parser = new Parser(externalPropertySource, _pseudoClassProvider);
 			_matcher = new MatcherTool(_rootObject, _objectToStyleAdapterMap);
 		}
@@ -71,20 +67,16 @@ package net.wooga.uiengine.displaylistselector {
 		public function addSelector(selectorString:String):void {
 			var parsed:Vector.<ParsedSelector> = _parser.parse(selectorString);
 
-			//TODO (arneschroppe 24/2/12) we need to map a string key to several parsed selectors here ?!
 			for each(var selector:ParsedSelector in parsed) {
-				//setupFilterData(selector);
 				_knownSelectors.add(selector);
-				
 			}
 			
 		}
 
 		
-		//TODO (arneschroppe 14/2/12) use selector tree here, for optimization
 		public function getSelectorsMatchingObject(object:Object):ISet {
 
-			var adapter:IStyleAdapter = _objectToStyleAdapterMap.itemFor(object);
+			var adapter:ISelectorAdapter = _objectToStyleAdapterMap.itemFor(object);
 			if(!adapter) {
 				throw new ArgumentError("No style adapter registered for object " + object);
 			}
@@ -127,12 +119,6 @@ package net.wooga.uiengine.displaylistselector {
 		}
 
 
-		public function objectWasChanged(object:Object):void {
-			_matcher.invalidateObject(object);
-		}
-
-
-
 		public function setStyleAdapterForType(adapterType:Class, objectType:Class):void {
 			checkAdapterType(adapterType);
 			_objectTypeToStyleAdapterTypeMap.add(getQualifiedClassName(objectType), adapterType);
@@ -147,8 +133,8 @@ package net.wooga.uiengine.displaylistselector {
 
 
 		private function checkAdapterType(adapterType:Class):void {
-			if (!Types.doesTypeImplementInterface(adapterType, IStyleAdapter)) {
-				throw new ArgumentError(getQualifiedClassName(adapterType) + " must implement " + getQualifiedClassName(IStyleAdapter) + " to be registered as an adapter");
+			if (!Types.doesTypeImplementInterface(adapterType, ISelectorAdapter)) {
+				throw new ArgumentError(getQualifiedClassName(adapterType) + " must implement " + getQualifiedClassName(ISelectorAdapter) + " to be registered as an adapter");
 			}
 		}
 
@@ -165,18 +151,10 @@ package net.wooga.uiengine.displaylistselector {
 				return;
 			}
 
-			var selectorClient:IStyleAdapter = new SelectorClientClass();
+			var selectorClient:ISelectorAdapter = new SelectorClientClass();
 			_objectToStyleAdapterMap.add(object, selectorClient);
-			selectorClient.register(object);
+			selectorClient.register(object, this);
 
-			//var parentElement:Object = selectorClient.getParentElement();
-			//var parentAdapter:IStyleAdapter = _objectToStyleAdapterMap.itemFor(parentElement);
-			
-			//if(!parentAdapter) {
-			//	return;
-			//}
-
-			//selectorClient.setParent(parentAdapter);
 		}
 
 
@@ -193,8 +171,8 @@ package net.wooga.uiengine.displaylistselector {
 		public function removeStyleAdapterOf(object:Object):void {
 
 			if(_objectToStyleAdapterMap.hasKey(object)) {
-				var selectorClient:IStyleAdapter = _objectToStyleAdapterMap.itemFor(object);
-				selectorClient.unregister(object);
+				var selectorClient:ISelectorAdapter = _objectToStyleAdapterMap.itemFor(object);
+				selectorClient.unregister();
 				_objectToStyleAdapterMap.removeKey(object);
 			}
 		}
@@ -214,7 +192,8 @@ package net.wooga.uiengine.displaylistselector {
 			addPseudoClass("active", new Active());
 		}
 
+		public function objectStateHasChanged(object:ISelectorAdapter):void {
 
-
+		}
 	}
 }

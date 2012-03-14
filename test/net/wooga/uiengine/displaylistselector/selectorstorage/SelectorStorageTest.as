@@ -3,16 +3,14 @@ package net.wooga.uiengine.displaylistselector.selectorstorage {
 	import net.wooga.fixtures.TestSpriteA;
 	import net.wooga.uiengine.displaylistselector.parser.IPseudoClassProvider;
 	import net.wooga.uiengine.displaylistselector.parser.ParsedSelector;
-	import net.wooga.uiengine.displaylistselector.parser.ParsedSelector;
 	import net.wooga.uiengine.displaylistselector.parser.Parser;
-	import net.wooga.uiengine.displaylistselector.pseudoclasses.IPseudoClass;
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.Hover;
+	import net.wooga.uiengine.displaylistselector.pseudoclasses.IPseudoClass;
 	import net.wooga.uiengine.displaylistselector.selectoradapter.ISelectorAdapter;
 	import net.wooga.utils.flexunit.hamcrestcollection.containsExactly;
 
 	import org.as3commons.collections.framework.ICollection;
 	import org.as3commons.collections.framework.IIterable;
-	import org.flexunit.asserts.fail;
 	import org.flexunit.rules.IMethodRule;
 	import org.hamcrest.assertThat;
 	import org.hamcrest.object.equalTo;
@@ -163,8 +161,6 @@ package net.wooga.uiengine.displaylistselector.selectorstorage {
 			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue("originalSelector", sel2)));
 			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue("originalSelector", sel5)));
 			assertThat((possibleMatches as ICollection).size, equalTo(3));
-
-
 		}
 		
 

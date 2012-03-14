@@ -6,19 +6,19 @@ package net.wooga.uiengine.displaylistselector.selectorstorage.keys {
 
 		private static const NULL_KEY:String = "$$";
 
-		public function keyForSelector(parsedSelector:ParsedSelector):* {
+		public function keyForSelector(parsedSelector:ParsedSelector):String {
 			return parsedSelector.filterData.id;
 		}
 
-		public function keyForAdapter(adapter:ISelectorAdapter):* {
-			return adapter.getId();
+		public function keysForAdapter(adapter:ISelectorAdapter):Array {
+			return [adapter.getId(), NULL_KEY];
 		}
 
 		public function selectorHasKey(parsedSelector:ParsedSelector):Boolean {
 			return !!parsedSelector.filterData.id;
 		}
 
-		public function get nullKey():* {
+		public function get nullKey():String {
 			return NULL_KEY;
 		}
 	}

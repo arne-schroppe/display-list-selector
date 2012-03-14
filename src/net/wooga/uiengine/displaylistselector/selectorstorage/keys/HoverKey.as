@@ -8,7 +8,7 @@ package net.wooga.uiengine.displaylistselector.selectorstorage.keys {
 		private static const NULL_KEY:String = "noHover";
 		private static const HOVER_KEY:String = "hover";
 
-		public function keyForSelector(parsedSelector:ParsedSelector):* {
+		public function keyForSelector(parsedSelector:ParsedSelector):String {
 			return parsedSelector.filterData.hasHover ? HOVER_KEY : NULL_KEY;
 		}
 
@@ -17,12 +17,12 @@ package net.wooga.uiengine.displaylistselector.selectorstorage.keys {
 		}
 
 
-		public function keyForAdapter(adapter:ISelectorAdapter):* {
-			return adapter.isHovered() ? HOVER_KEY : NULL_KEY;
+		public function keysForAdapter(adapter:ISelectorAdapter):Array {
+			return [adapter.isHovered() ? HOVER_KEY : NULL_KEY];
 		}
 
 
-		public function get nullKey():* {
+		public function get nullKey():String {
 			return NULL_KEY;
 		}
 	}

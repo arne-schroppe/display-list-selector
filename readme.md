@@ -1,4 +1,7 @@
 
+#This readme file is OUTDATED and will be updated soon
+
+
 #CSS Selectors for the display list
 
 An implementation of CSS3–selectors for the flash display list. Selectors are
@@ -8,6 +11,8 @@ of the form
 
 The display list selector library processes selectors like this and returns a collection
 of matched objects.
+
+
 
 
 ##Usage

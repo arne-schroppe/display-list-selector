@@ -48,9 +48,7 @@ package net.wooga.uiengine.displaylistselector.pseudoclasses {
 			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[1])), equalTo(true));
 			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[2])), equalTo(false));
 
-
+			//TODO (arneschroppe 14/3/12) use mocked adapters instead of using getAdapterForObject
 		}
-
-
 	}
 }

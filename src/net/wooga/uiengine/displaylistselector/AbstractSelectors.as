@@ -49,7 +49,6 @@ package net.wooga.uiengine.displaylistselector {
 
 		public function initializeWith(rootObject:Object, externalPropertySource:IExternalPropertySource = null):void {
 			_rootObject = rootObject;
-			//TODO (arneschroppe 21/2/12) we don't need to know the root object, we only need to check for the root property on the adapter! (but will everyone implement this properly?)
 
 			var externalPropertySource:IExternalPropertySource = externalPropertySource;
 			if (externalPropertySource == null) {

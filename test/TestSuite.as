@@ -8,7 +8,9 @@ package {
 	import net.wooga.uiengine.displaylistselector.matching.matchers.PseudoClassMatcherTest;
 	import net.wooga.uiengine.displaylistselector.matching.matchers.TypeNameMatcherTest;
 	import net.wooga.uiengine.displaylistselector.parser.SpecificityTest;
+	import net.wooga.uiengine.displaylistselector.pseudoclasses.ActiveTest;
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.FirstChildTest;
+	import net.wooga.uiengine.displaylistselector.pseudoclasses.HoverTest;
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.IsEmptyTest;
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.LastChildTest;
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.NthChildTest;
@@ -43,6 +45,8 @@ package {
 		public var specificityTest:SpecificityTest;
 
 		public var selectorStorageTest:SelectorStorageTest;
+		public var hoverTest:HoverTest;
+		public var activeTest:ActiveTest;
 		//public var parserTest:ParserTest;
 
 	}

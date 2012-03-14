@@ -63,6 +63,30 @@ package net.wooga.uiengine.displaylistselector.selectorstorage {
 
 
 
+
+		[Test]
+		public function should_preselect_selectors_for_unqualified_type():void {
+
+			var sel1:String = "TestSpriteA";
+			var sel2:String = "TestSpriteB > TestSpriteA";
+			var sel3:String = "TestSpriteA > TestSpriteB";
+			var sel4:String = "* > TestSpriteC";
+			var sel5:String = "*";
+
+			addSelectors([sel1, sel2, sel3, sel4, sel5]);
+
+			given(styleAdapter.getAdaptedElement()).willReturn(new TestSpriteA());
+
+			var possibleMatches:IIterable = _selectorStorage.getPossibleMatchesFor(styleAdapter);
+
+			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue("originalSelector", sel1)));
+			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue("originalSelector", sel2)));
+			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue("originalSelector", sel5)));
+			assertThat((possibleMatches as ICollection).size, equalTo(3));
+
+		}
+
+
 		[Test]
 		public function should_preselect_selectors_for_specific_id():void {
 
@@ -142,6 +166,7 @@ package net.wooga.uiengine.displaylistselector.selectorstorage {
 
 
 		//TODO (arneschroppe 14/3/12) test this with unqualified class name
+		//TODO (arneschroppe 14/3/12) test this with intermediate classes (SubSubClassOfTestSpriteA)
 		[Test]
 		public function should_properly_handle_isA_selectors():void {
 
@@ -150,8 +175,9 @@ package net.wooga.uiengine.displaylistselector.selectorstorage {
 			var sel3:String = "(net.wooga.fixtures.TestSpriteA) > ^(net.wooga.fixtures.TestSpriteB)";
 			var sel4:String = "* > ^(net.wooga.fixtures.TestSpriteC)";
 			var sel5:String = "^(net.wooga.fixtures.SubClassOfTestSpriteA)";
+			var sel6:String = "(net.wooga.fixtures.SubClassOfTestSpriteA)";
 
-			addSelectors([sel1, sel2, sel3, sel4, sel5]);
+			addSelectors([sel1, sel2, sel3, sel4, sel5, sel6]);
 
 			given(styleAdapter.getAdaptedElement()).willReturn(new SubClassOfTestSpriteA());
 
@@ -160,7 +186,8 @@ package net.wooga.uiengine.displaylistselector.selectorstorage {
 			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue("originalSelector", sel1)));
 			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue("originalSelector", sel2)));
 			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue("originalSelector", sel5)));
-			assertThat((possibleMatches as ICollection).size, equalTo(3));
+			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue("originalSelector", sel6)));
+			assertThat((possibleMatches as ICollection).size, equalTo(4));
 		}
 		
 
@@ -172,9 +199,7 @@ package net.wooga.uiengine.displaylistselector.selectorstorage {
 				for each(var selector:ParsedSelector in parsed) {
 					_selectorStorage.add(selector);
 				}
-
 			}
-
 		}
 
 		public function hasPseudoClass(pseudoClassName:String):Boolean {

@@ -29,8 +29,6 @@ package net.wooga.uiengine.displaylistselector.selectorstorage {
 		}
 
 
-
-
 		public function add(parsedSelector:ParsedSelector):void {
 			addToNode(_filterRoot, 0, parsedSelector);
 		}
@@ -80,13 +78,9 @@ package net.wooga.uiengine.displaylistselector.selectorstorage {
 
 
 		public function getPossibleMatchesFor(object:ISelectorAdapter):IIterable {
-
 			_foundSelectors = new Set();
-
 			searchForMatches(_filterRoot, 0, object);
-
 			return _foundSelectors;
-
 		}
 
 		private function searchForMatches(node:SelectorFilterTreeNode, keyIndex:int, adapter:ISelectorAdapter):void {
@@ -104,6 +98,7 @@ package net.wooga.uiengine.displaylistselector.selectorstorage {
 			var nodeKey:ISelectorTreeNodeKey = _filterKeys[keyIndex];
 			var key:* = nodeKey.keyForAdapter(adapter);
 
+			//TODO (arneschroppe 14/3/12) for the hover filter, the null key might be followed twice. (once when returned from keyForAdapter and a second time as a default path)
 			searchForMatches(node.childNodes.itemFor(nodeKey.nullKey), keyIndex + 1, adapter);
 			searchForMatches(node.childNodes.itemFor(key), keyIndex + 1, adapter);
 			

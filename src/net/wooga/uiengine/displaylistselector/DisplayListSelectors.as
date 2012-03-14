@@ -30,6 +30,7 @@ package net.wooga.uiengine.displaylistselector {
 		}
 
 
+		//TODO (arneschroppe 14/3/12) we don't need a decorator to automatically create style adapters, just write a small class for that
 		private function onAddedToStage(event:Event):void {
 			var object:Object = event.target;
 			_selectors.createStyleAdapterFor(object as DisplayObject);

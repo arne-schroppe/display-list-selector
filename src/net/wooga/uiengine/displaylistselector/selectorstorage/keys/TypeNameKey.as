@@ -1,7 +1,6 @@
 package net.wooga.uiengine.displaylistselector.selectorstorage.keys {
 
 	import flash.utils.describeType;
-	import flash.utils.getDefinitionByName;
 	import flash.utils.getQualifiedClassName;
 
 	import net.wooga.uiengine.displaylistselector.parser.ParsedSelector;

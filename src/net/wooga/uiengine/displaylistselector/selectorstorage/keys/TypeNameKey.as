@@ -34,6 +34,11 @@ package net.wooga.uiengine.displaylistselector.selectorstorage.keys {
 			return keys;
 		}
 
+		private function getKeysForElement(className:String):Array {
+			return _typeToKeysMap.itemFor(className);
+		}
+
+
 		private function createKeysForElement(element:Object, fqcn:String):Array {
 
 			var keys:Array = [];
@@ -55,10 +60,6 @@ package net.wooga.uiengine.displaylistselector.selectorstorage.keys {
 				var className:String = implementedType.split("::").pop();
 				keys.push(className);
 			}
-		}
-
-		private function getKeysForElement(className:String):Array {
-			return _typeToKeysMap.itemFor(className);
 		}
 
 

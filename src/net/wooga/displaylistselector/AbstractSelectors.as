@@ -159,6 +159,7 @@ package net.wooga.displaylistselector {
 			if (!SelectorClientClass) {
 				SelectorClientClass = _defaultStyleAdapterType;
 			}
+
 			return SelectorClientClass;
 		}
 

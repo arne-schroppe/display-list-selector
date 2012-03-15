@@ -1,4 +1,4 @@
-package net.wooga.uiengine.displaylistselector.matching.matchers {
+package net.wooga.displaylistselector.matching.matchers {
 	import flash.display.DisplayObject;
 
 	import net.arneschroppe.displaytreebuilder.DisplayTree;

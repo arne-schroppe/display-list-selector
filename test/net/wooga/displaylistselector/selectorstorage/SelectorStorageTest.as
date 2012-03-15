@@ -1,4 +1,5 @@
-package net.wooga.uiengine.displaylistselector.selectorstorage {
+package net.wooga.displaylistselector.selectorstorage {
+	import net.wooga.uiengine.displaylistselector.selectorstorage.*;
 	import net.wooga.fixtures.SubClassOfTestSpriteA;
 	import net.wooga.fixtures.SubSubClassOfTestSpriteA;
 	import net.wooga.fixtures.TestSpriteA;

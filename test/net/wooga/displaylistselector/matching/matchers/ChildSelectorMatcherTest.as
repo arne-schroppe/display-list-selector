@@ -1,4 +1,5 @@
-package net.wooga.uiengine.displaylistselector.matching.matchers {
+package net.wooga.displaylistselector.matching.matchers {
+	import net.wooga.uiengine.displaylistselector.matching.matchers.*;
 	import net.arneschroppe.displaytreebuilder.DisplayTree;
 	import net.wooga.fixtures.ContextViewBasedTest;
 	import net.wooga.fixtures.TestSpriteA;

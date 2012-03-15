@@ -1,4 +1,5 @@
-package net.wooga.uiengine.displaylistselector.pseudoclasses {
+package net.wooga.displaylistselector.pseudoclasses {
+	import net.wooga.uiengine.displaylistselector.pseudoclasses.*;
 	import net.arneschroppe.displaytreebuilder.DisplayTree;
 	import net.wooga.fixtures.ContextViewBasedTest;
 	import net.wooga.fixtures.TestSpriteA;

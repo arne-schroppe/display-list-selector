@@ -1,25 +1,25 @@
 package {
 
-	import net.wooga.uiengine.displaylistselector.SelectorTest;
-	import net.wooga.uiengine.displaylistselector.input.ParserInputTest;
-	import net.wooga.uiengine.displaylistselector.matching.matchers.ChildSelectorMatcherTest;
-	import net.wooga.uiengine.displaylistselector.matching.matchers.PropertyFilterContainsMatcherTest;
-	import net.wooga.uiengine.displaylistselector.matching.matchers.PropertyFilterEqualsMatcherTest;
-	import net.wooga.uiengine.displaylistselector.matching.matchers.PseudoClassMatcherTest;
-	import net.wooga.uiengine.displaylistselector.matching.matchers.TypeNameMatcherTest;
-	import net.wooga.uiengine.displaylistselector.parser.SpecificityTest;
-	import net.wooga.uiengine.displaylistselector.pseudoclasses.ActiveTest;
-	import net.wooga.uiengine.displaylistselector.pseudoclasses.FirstChildTest;
-	import net.wooga.uiengine.displaylistselector.pseudoclasses.HoverTest;
-	import net.wooga.uiengine.displaylistselector.pseudoclasses.IsEmptyTest;
-	import net.wooga.uiengine.displaylistselector.pseudoclasses.LastChildTest;
-	import net.wooga.uiengine.displaylistselector.pseudoclasses.NthChildTest;
-	import net.wooga.uiengine.displaylistselector.pseudoclasses.NthLastChildTest;
-	import net.wooga.uiengine.displaylistselector.pseudoclasses.NthLastOfTypeTest;
-	import net.wooga.uiengine.displaylistselector.pseudoclasses.NthOfTypeTest;
-	import net.wooga.uiengine.displaylistselector.pseudoclasses.RootTest;
-	import net.wooga.uiengine.displaylistselector.pseudoclasses.nthchildren.NthParserTest;
-	import net.wooga.uiengine.displaylistselector.selectorstorage.SelectorStorageTest;
+	import net.wooga.displaylistselector.SelectorTest;
+	import net.wooga.displaylistselector.input.ParserInputTest;
+	import net.wooga.displaylistselector.matching.matchers.ChildSelectorMatcherTest;
+	import net.wooga.displaylistselector.matching.matchers.PropertyFilterContainsMatcherTest;
+	import net.wooga.displaylistselector.matching.matchers.PropertyFilterEqualsMatcherTest;
+	import net.wooga.displaylistselector.matching.matchers.PseudoClassMatcherTest;
+	import net.wooga.displaylistselector.matching.matchers.TypeNameMatcherTest;
+	import net.wooga.displaylistselector.parser.SpecificityTest;
+	import net.wooga.displaylistselector.pseudoclasses.ActiveTest;
+	import net.wooga.displaylistselector.pseudoclasses.FirstChildTest;
+	import net.wooga.displaylistselector.pseudoclasses.HoverTest;
+	import net.wooga.displaylistselector.pseudoclasses.IsEmptyTest;
+	import net.wooga.displaylistselector.pseudoclasses.LastChildTest;
+	import net.wooga.displaylistselector.pseudoclasses.NthChildTest;
+	import net.wooga.displaylistselector.pseudoclasses.NthLastChildTest;
+	import net.wooga.displaylistselector.pseudoclasses.NthLastOfTypeTest;
+	import net.wooga.displaylistselector.pseudoclasses.NthOfTypeTest;
+	import net.wooga.displaylistselector.pseudoclasses.RootTest;
+	import net.wooga.displaylistselector.pseudoclasses.nthchildren.NthParserTest;
+	import net.wooga.displaylistselector.selectorstorage.SelectorStorageTest;
 
 	[Suite]
 	[RunWith("org.flexunit.runners.Suite")]

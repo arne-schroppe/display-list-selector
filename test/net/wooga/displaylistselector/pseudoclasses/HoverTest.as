@@ -1,4 +1,5 @@
-package net.wooga.uiengine.displaylistselector.pseudoclasses {
+package net.wooga.displaylistselector.pseudoclasses {
+	import net.wooga.uiengine.displaylistselector.pseudoclasses.*;
 	import net.wooga.uiengine.displaylistselector.selectoradapter.ISelectorAdapter;
 
 	import org.flexunit.rules.IMethodRule;

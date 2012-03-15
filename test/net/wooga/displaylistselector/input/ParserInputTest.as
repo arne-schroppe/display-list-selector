@@ -1,4 +1,4 @@
-package net.wooga.uiengine.displaylistselector.input {
+package net.wooga.displaylistselector.input {
 	import net.wooga.uiengine.displaylistselector.parser.ParserError;
 	import net.wooga.uiengine.displaylistselector.tools.input.ParserInput;
 

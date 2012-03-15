@@ -1,4 +1,5 @@
-package net.wooga.uiengine.displaylistselector {
+package net.wooga.displaylistselector {
+	import net.wooga.uiengine.displaylistselector.*;
 
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;

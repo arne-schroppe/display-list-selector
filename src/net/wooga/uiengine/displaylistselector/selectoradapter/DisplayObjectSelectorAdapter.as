@@ -10,7 +10,6 @@ package net.wooga.uiengine.displaylistselector.selectoradapter {
 		private static const CSS_CLASS_PARAMETER_NAME:String = "groups";
 		private var _isHovered:Boolean;
 		private var _isActive:Boolean;
-		private var _delegate:ISelectorAdapterDelegate;
 
 		//private static const CSS_HOVER_PARAMETER_NAME:String = "isMouseOver";
 		//private static const CSS_ACTIVE_PARAMETER_NAME:String = "isMouseDown";
@@ -19,19 +18,19 @@ package net.wooga.uiengine.displaylistselector.selectoradapter {
 		}
 
 
-		public function register(adaptedElement:Object, delegate:ISelectorAdapterDelegate):void {
+		public function register(adaptedElement:Object):void {
 			if(!(adaptedElement is DisplayObject)) {
 				throw new ArgumentError("This adapter can only be used with DisplayObjects");
 			}
 
-			_delegate = delegate;
+			//_delegate = delegate;
 			_adaptedElement = DisplayObject(adaptedElement);
 			_adaptedElement.addEventListener(SelectorAdapterEvent.SET_HOVER_STATE, onSetHoverState)
 		}
 
 		private function onSetHoverState(event:SelectorAdapterEvent):void {
 			_isHovered = event.isEnabled;
-			_delegate.objectStateHasChanged(this);
+			//_delegate.objectStateHasChanged(this);
 		}
 
 

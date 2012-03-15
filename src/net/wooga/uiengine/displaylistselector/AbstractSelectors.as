@@ -15,9 +15,8 @@ package net.wooga.uiengine.displaylistselector {
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.NthLastOfType;
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.NthOfType;
 	import net.wooga.uiengine.displaylistselector.pseudoclasses.Root;
-	import net.wooga.uiengine.displaylistselector.selectoradapter.ISelectorAdapterDelegate;
-	import net.wooga.uiengine.displaylistselector.selectorstorage.SelectorStorage;
 	import net.wooga.uiengine.displaylistselector.selectoradapter.ISelectorAdapter;
+	import net.wooga.uiengine.displaylistselector.selectorstorage.SelectorStorage;
 	import net.wooga.uiengine.displaylistselector.tools.SpecificityComparator;
 	import net.wooga.uiengine.displaylistselector.tools.Types;
 
@@ -29,7 +28,7 @@ package net.wooga.uiengine.displaylistselector {
 	import org.as3commons.collections.framework.IMap;
 	import org.as3commons.collections.framework.ISet;
 
-	public class AbstractSelectors implements ISelectorTool, ISelectorAdapterDelegate {
+	public class AbstractSelectors implements ISelectorTool {
 
 		private var _rootObject:Object;
 
@@ -43,8 +42,6 @@ package net.wooga.uiengine.displaylistselector {
 
 		private var _objectTypeToStyleAdapterTypeMap:IMap = new Map();
 		private var _defaultStyleAdapterType:Class;
-
-
 
 
 		public function initializeWith(rootObject:Object, externalPropertySource:IExternalPropertySource = null):void {
@@ -152,8 +149,7 @@ package net.wooga.uiengine.displaylistselector {
 
 			var selectorClient:ISelectorAdapter = new SelectorClientClass();
 			_objectToStyleAdapterMap.add(object, selectorClient);
-			selectorClient.register(object, this);
-
+			selectorClient.register(object);
 		}
 
 
@@ -187,10 +183,6 @@ package net.wooga.uiengine.displaylistselector {
 			addPseudoClass("empty", new IsEmpty());
 			addPseudoClass("hover", new Hover());
 			addPseudoClass("active", new Active());
-		}
-
-		public function objectStateHasChanged(object:ISelectorAdapter):void {
-
 		}
 	}
 }

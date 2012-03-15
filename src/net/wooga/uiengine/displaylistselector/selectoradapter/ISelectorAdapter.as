@@ -1,6 +1,6 @@
 package net.wooga.uiengine.displaylistselector.selectoradapter {
 	public interface ISelectorAdapter {
-		function register(adaptedElement:Object, delegate:ISelectorAdapterDelegate):void;
+		function register(adaptedElement:Object):void;
 		function unregister():void;
 
 

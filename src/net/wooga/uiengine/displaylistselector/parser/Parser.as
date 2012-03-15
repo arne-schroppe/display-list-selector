@@ -1,6 +1,7 @@
 package net.wooga.uiengine.displaylistselector.parser {
 	import net.wooga.uiengine.displaylistselector.IExternalPropertySource;
-	import net.wooga.uiengine.displaylistselector.input.ParserInput;
+	import net.wooga.uiengine.displaylistselector.tools.DynamicMultiMap;
+	import net.wooga.uiengine.displaylistselector.tools.input.ParserInput;
 	import net.wooga.uiengine.displaylistselector.matching.matchers.ICombinator;
 	import net.wooga.uiengine.displaylistselector.matching.matchers.IMatcher;
 	import net.wooga.uiengine.displaylistselector.matching.matchers.implementations.ChildSelectorMatcher;

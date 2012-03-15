@@ -1,4 +1,4 @@
-package net.wooga.uiengine.displaylistselector.parser {
+package net.wooga.uiengine.displaylistselector.tools {
 	import org.as3commons.collections.Map;
 
 	public class DynamicMultiMap {

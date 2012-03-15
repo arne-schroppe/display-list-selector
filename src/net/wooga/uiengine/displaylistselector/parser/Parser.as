@@ -1,6 +1,7 @@
 package net.wooga.uiengine.displaylistselector.parser {
 	import net.wooga.uiengine.displaylistselector.IExternalPropertySource;
-	import net.wooga.uiengine.displaylistselector.input.ParserInput;
+	import net.wooga.uiengine.displaylistselector.tools.DynamicMultiMap;
+	import net.wooga.uiengine.displaylistselector.tools.input.ParserInput;
 	import net.wooga.uiengine.displaylistselector.matching.matchers.ICombinator;
 	import net.wooga.uiengine.displaylistselector.matching.matchers.IMatcher;
 	import net.wooga.uiengine.displaylistselector.matching.matchers.implementations.ChildSelectorMatcher;
@@ -35,14 +36,12 @@ package net.wooga.uiengine.displaylistselector.parser {
 
 		private var _subSelector:String;
 
-		//private var _classNameAliasMap:ClassNameAliasMap;
 		private var _originalSelector:String;
 
 
 		public function Parser(externalPropertySource:IExternalPropertySource, pseudoClassProvider:IPseudoClassProvider) {
 			_externalPropertySource = externalPropertySource;
 			_pseudoClassProvider = pseudoClassProvider;
-			//_classNameAliasMap = classNameAliasMap;
 		}
 
 
@@ -98,8 +97,9 @@ package net.wooga.uiengine.displaylistselector.parser {
 			}
 
 			var lastTypeMatcher:TypeNameMatcher = findMatcherInLastSimpleSelector(selector, TypeNameMatcher) as TypeNameMatcher;
-			if (lastTypeMatcher && lastTypeMatcher.onlyMatchesImmediateType) {
+			if (lastTypeMatcher) {
 				selector.filterData.typeName = lastTypeMatcher.typeName ? lastTypeMatcher.typeName.split("::").pop() : null;
+				selector.filterData.isImmediateType = lastTypeMatcher.onlyMatchesImmediateType;
 			}
 
 			selector.filterData.hasHover = hasPseudoClassInLastSimpleSelector(selector, Hover);
@@ -131,7 +131,7 @@ package net.wooga.uiengine.displaylistselector.parser {
 			return null;
 		}
 
-
+		//TODO ^^^ do this in separate class?
 
 
 

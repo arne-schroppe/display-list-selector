@@ -39,6 +39,7 @@ package net.wooga.uiengine.displaylistselector.parser {
 			_originalSelector = value;
 		}
 
+		//TODO (arneschroppe 14/3/12) it might be good to get rid of this object
 		public function get filterData():FilterData {
 			return _filterData;
 		}

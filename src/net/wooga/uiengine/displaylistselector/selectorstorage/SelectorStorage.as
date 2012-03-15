@@ -24,14 +24,16 @@ package net.wooga.uiengine.displaylistselector.selectorstorage {
 
 		private var _foundSelectors:ISet;
 
+		private var _selectorsWereAdded:Boolean;
+
 		public function SelectorStorage() {
 			_filterRoot = new SelectorFilterTreeNode();
 		}
 
 
 
-
 		public function add(parsedSelector:ParsedSelector):void {
+			_selectorsWereAdded = true;
 			addToNode(_filterRoot, 0, parsedSelector);
 		}
 
@@ -80,19 +82,20 @@ package net.wooga.uiengine.displaylistselector.selectorstorage {
 
 
 		public function getPossibleMatchesFor(object:ISelectorAdapter):IIterable {
-
 			_foundSelectors = new Set();
-
 			searchForMatches(_filterRoot, 0, object);
-
 			return _foundSelectors;
-
 		}
 
 		private function searchForMatches(node:SelectorFilterTreeNode, keyIndex:int, adapter:ISelectorAdapter):void {
 
 			if(!node) {
 				return;
+			}
+			
+			if(_selectorsWereAdded) {
+				invalidateAllKeyCaches();
+				_selectorsWereAdded = false;
 			}
 			
 			Sets.addFromCollection(_foundSelectors, node.selectors);
@@ -102,11 +105,18 @@ package net.wooga.uiengine.displaylistselector.selectorstorage {
 			}
 
 			var nodeKey:ISelectorTreeNodeKey = _filterKeys[keyIndex];
-			var key:* = nodeKey.keyForAdapter(adapter);
+			var keys:Array = nodeKey.keysForAdapter(adapter, node.childNodes);
 
-			searchForMatches(node.childNodes.itemFor(nodeKey.nullKey), keyIndex + 1, adapter);
-			searchForMatches(node.childNodes.itemFor(key), keyIndex + 1, adapter);
-			
+			for each(var key:String in keys) {
+				searchForMatches(node.childNodes.itemFor(key), keyIndex + 1, adapter);
+			}
+		}
+
+		//This is currently only used by the TypeNameKey (asc 2012-03-15)
+		private function invalidateAllKeyCaches():void {
+			for each(var key:ISelectorTreeNodeKey in _filterKeys) {
+				key.invalidateCaches();
+			}
 		}
 	}
 }

@@ -176,8 +176,6 @@ package net.wooga.uiengine.displaylistselector {
 			}
 		}
 
-
-		//TODO (arneschroppe 11/1/12) we need a well-defined way to determine when a pseudo-class needs to be rematched. many of these only work with a very static display tree
 		private function addDefaultPseudoClasses():void {
 			addPseudoClass("root", new Root(_rootObject));
 			addPseudoClass("first-child", new FirstChild());

@@ -1,6 +1,6 @@
 package net.wooga.uiengine.displaylistselector.pseudoclasses.nthchildren {
 
-	import net.wooga.uiengine.displaylistselector.input.ParserInput;
+	import net.wooga.uiengine.displaylistselector.tools.input.ParserInput;
 	import net.wooga.uiengine.displaylistselector.parser.ParserError;
 
 	public class NthChildArgumentParser {

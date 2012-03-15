@@ -1,5 +1,6 @@
 package net.wooga.uiengine.displaylistselector.input {
 	import net.wooga.uiengine.displaylistselector.parser.ParserError;
+	import net.wooga.uiengine.displaylistselector.tools.input.ParserInput;
 
 	import org.hamcrest.assertThat;
 	import org.hamcrest.core.isA;

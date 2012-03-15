@@ -24,12 +24,16 @@ package net.wooga.uiengine.displaylistselector.selectorstorage {
 
 		private var _foundSelectors:ISet;
 
+		private var _selectorsWereAdded:Boolean;
+
 		public function SelectorStorage() {
 			_filterRoot = new SelectorFilterTreeNode();
 		}
 
 
+
 		public function add(parsedSelector:ParsedSelector):void {
+			_selectorsWereAdded = true;
 			addToNode(_filterRoot, 0, parsedSelector);
 		}
 
@@ -89,6 +93,11 @@ package net.wooga.uiengine.displaylistselector.selectorstorage {
 				return;
 			}
 			
+			if(_selectorsWereAdded) {
+				invalidateAllKeyCaches();
+				_selectorsWereAdded = false;
+			}
+			
 			Sets.addFromCollection(_foundSelectors, node.selectors);
 
 			if(keyIndex >= _filterKeys.length) {
@@ -96,12 +105,18 @@ package net.wooga.uiengine.displaylistselector.selectorstorage {
 			}
 
 			var nodeKey:ISelectorTreeNodeKey = _filterKeys[keyIndex];
-			var keys:Array = nodeKey.keysForAdapter(adapter);
+			var keys:Array = nodeKey.keysForAdapter(adapter, node.childNodes);
 
 			for each(var key:String in keys) {
 				searchForMatches(node.childNodes.itemFor(key), keyIndex + 1, adapter);
 			}
+		}
 
+		//This is currently only used by the TypeNameKey (asc 2012-03-15)
+		private function invalidateAllKeyCaches():void {
+			for each(var key:ISelectorTreeNodeKey in _filterKeys) {
+				key.invalidateCaches();
+			}
 		}
 	}
 }

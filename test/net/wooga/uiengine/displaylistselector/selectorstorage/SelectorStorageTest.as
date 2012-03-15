@@ -1,5 +1,6 @@
 package net.wooga.uiengine.displaylistselector.selectorstorage {
 	import net.wooga.fixtures.SubClassOfTestSpriteA;
+	import net.wooga.fixtures.SubSubClassOfTestSpriteA;
 	import net.wooga.fixtures.TestSpriteA;
 	import net.wooga.uiengine.displaylistselector.parser.IPseudoClassProvider;
 	import net.wooga.uiengine.displaylistselector.parser.ParsedSelector;
@@ -189,7 +190,57 @@ package net.wooga.uiengine.displaylistselector.selectorstorage {
 			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue("originalSelector", sel6)));
 			assertThat((possibleMatches as ICollection).size, equalTo(4));
 		}
-		
+
+
+
+		[Test]
+		public function should_properly_handle_isA_selectors_with_unqualified_classnames():void {
+
+			var sel1:String = "^TestSpriteA";
+			var sel2:String = "(net.wooga.fixtures.TestSpriteB) > ^TestSpriteA";
+			var sel3:String = "(net.wooga.fixtures.TestSpriteA) > ^TestSpriteB";
+			var sel4:String = "* > ^TestSpriteC";
+			var sel5:String = "^SubClassOfTestSpriteA";
+			var sel6:String = "SubClassOfTestSpriteA";
+
+			addSelectors([sel1, sel2, sel3, sel4, sel5, sel6]);
+
+			given(styleAdapter.getAdaptedElement()).willReturn(new SubClassOfTestSpriteA());
+
+			var possibleMatches:IIterable = _selectorStorage.getPossibleMatchesFor(styleAdapter);
+
+			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue("originalSelector", sel1)));
+			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue("originalSelector", sel2)));
+			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue("originalSelector", sel5)));
+			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue("originalSelector", sel6)));
+			assertThat((possibleMatches as ICollection).size, equalTo(4));
+		}
+
+
+
+		[Test]
+		public function should_properly_handle_isA_selectors_with_intermediate_subclasses():void {
+
+			var sel1:String = "^TestSpriteA";
+			var sel2:String = "(net.wooga.fixtures.TestSpriteB) > ^SubClassOfTestSpriteA";
+			var sel3:String = "(net.wooga.fixtures.TestSpriteA) > ^TestSpriteB";
+			var sel4:String = "* > ^TestSpriteC";
+			var sel5:String = "^SubClassOfTestSpriteA";
+			var sel6:String = "SubClassOfTestSpriteA";
+
+			addSelectors([sel1, sel2, sel3, sel4, sel5, sel6]);
+
+			given(styleAdapter.getAdaptedElement()).willReturn(new SubSubClassOfTestSpriteA());
+
+			var possibleMatches:IIterable = _selectorStorage.getPossibleMatchesFor(styleAdapter);
+
+			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue("originalSelector", sel1)));
+			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue("originalSelector", sel2)));
+			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue("originalSelector", sel5)));
+			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue("originalSelector", sel6)));
+			assertThat((possibleMatches as ICollection).size, equalTo(4));
+		}
+
 
 		private function addSelectors(selectorsStrings:Array):void {
 

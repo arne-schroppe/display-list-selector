@@ -1,6 +1,5 @@
 package net.wooga.displaylistselector.parser {
-	import net.wooga.uiengine.displaylistselector.parser.*;
-	import net.wooga.uiengine.displaylistselector.IExternalPropertySource;
+	import net.wooga.displaylistselector.IExternalPropertySource;
 
 	import org.flexunit.rules.IMethodRule;
 	import org.mockito.integrations.flexunit4.MockitoRule;

@@ -1,5 +1,4 @@
 package net.wooga.displaylistselector.pseudoclasses.nthchildren {
-	import net.wooga.uiengine.displaylistselector.pseudoclasses.nthchildren.*;
 	import org.flexunit.assertThat;
 	import org.hamcrest.object.equalTo;
 

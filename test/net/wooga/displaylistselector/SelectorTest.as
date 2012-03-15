@@ -1,21 +1,15 @@
 package net.wooga.displaylistselector {
-	import net.wooga.uiengine.displaylistselector.*;
-
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 	import flash.display.MovieClip;
-	import flash.display.Sprite;
-	import flash.utils.getQualifiedClassName;
 
 	import net.arneschroppe.displaytreebuilder.DisplayTree;
+	import net.wooga.displaylistselector.selectoradapter.DisplayObjectSelectorAdapter;
 	import net.wooga.fixtures.ContextViewBasedTest;
-	import net.wooga.fixtures.TestInterface;
 	import net.wooga.fixtures.TestSpriteA;
 	import net.wooga.fixtures.TestSpriteB;
 	import net.wooga.fixtures.TestSpriteC;
-	import net.wooga.fixtures.TestSpriteD;
 	import net.wooga.fixtures.TestSpriteWithInterface;
-	import net.wooga.uiengine.displaylistselector.selectoradapter.DisplayObjectSelectorAdapter;
 	import net.wooga.utils.flexunit.hamcrestcollection.containsExactly;
 	import net.wooga.utils.flexunit.hamcrestcollection.everyItemInCollection;
 	import net.wooga.utils.flexunit.hamcrestcollection.hasItemInCollection;
@@ -782,8 +776,8 @@ package net.wooga.displaylistselector {
 
 import flash.utils.Dictionary;
 
-import net.wooga.uiengine.displaylistselector.IExternalPropertySource;
-import net.wooga.uiengine.displaylistselector.selectoradapter.ISelectorAdapter;
+import net.wooga.displaylistselector.IExternalPropertySource;
+import net.wooga.displaylistselector.selectoradapter.ISelectorAdapter;
 
 import org.as3commons.collections.Set;
 

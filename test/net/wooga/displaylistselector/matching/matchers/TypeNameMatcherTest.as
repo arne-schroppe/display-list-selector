@@ -3,16 +3,14 @@ package net.wooga.displaylistselector.matching.matchers {
 	import flash.utils.getQualifiedClassName;
 
 	import net.arneschroppe.displaytreebuilder.DisplayTree;
+	import net.wooga.displaylistselector.matching.matchers.implementations.TypeNameMatcher;
+	import net.wooga.displaylistselector.selectoradapter.ISelectorAdapter;
 	import net.wooga.fixtures.ContextViewBasedTest;
 	import net.wooga.fixtures.TestSpriteA;
 	import net.wooga.fixtures.TestSpriteB;
 	import net.wooga.fixtures.TestSpriteC;
 	import net.wooga.fixtures.containsInArrayExactly;
 	import net.wooga.fixtures.getAdapterForObject;
-	import net.wooga.fixtures.package1.TestSpritePack;
-	import net.wooga.fixtures.package2.TestSpritePack;
-	import net.wooga.uiengine.displaylistselector.matching.matchers.implementations.TypeNameMatcher;
-	import net.wooga.uiengine.displaylistselector.selectoradapter.ISelectorAdapter;
 
 	import org.hamcrest.assertThat;
 	import org.hamcrest.core.allOf;

@@ -1,14 +1,13 @@
 package net.wooga.displaylistselector.selectorstorage {
-	import net.wooga.uiengine.displaylistselector.selectorstorage.*;
+	import net.wooga.displaylistselector.parser.IPseudoClassProvider;
+	import net.wooga.displaylistselector.parser.ParsedSelector;
+	import net.wooga.displaylistselector.parser.Parser;
+	import net.wooga.displaylistselector.pseudoclasses.Hover;
+	import net.wooga.displaylistselector.pseudoclasses.IPseudoClass;
+	import net.wooga.displaylistselector.selectoradapter.ISelectorAdapter;
 	import net.wooga.fixtures.SubClassOfTestSpriteA;
 	import net.wooga.fixtures.SubSubClassOfTestSpriteA;
 	import net.wooga.fixtures.TestSpriteA;
-	import net.wooga.uiengine.displaylistselector.parser.IPseudoClassProvider;
-	import net.wooga.uiengine.displaylistselector.parser.ParsedSelector;
-	import net.wooga.uiengine.displaylistselector.parser.Parser;
-	import net.wooga.uiengine.displaylistselector.pseudoclasses.Hover;
-	import net.wooga.uiengine.displaylistselector.pseudoclasses.IPseudoClass;
-	import net.wooga.uiengine.displaylistselector.selectoradapter.ISelectorAdapter;
 	import net.wooga.utils.flexunit.hamcrestcollection.containsExactly;
 
 	import org.as3commons.collections.framework.ICollection;

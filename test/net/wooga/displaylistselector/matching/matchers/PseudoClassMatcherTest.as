@@ -2,13 +2,13 @@ package net.wooga.displaylistselector.matching.matchers {
 	import flash.display.DisplayObject;
 
 	import net.arneschroppe.displaytreebuilder.DisplayTree;
+	import net.wooga.displaylistselector.matching.matchers.implementations.PseudoClassMatcher;
+	import net.wooga.displaylistselector.selectoradapter.ISelectorAdapter;
 	import net.wooga.fixtures.ContextViewBasedTest;
 	import net.wooga.fixtures.TestSpriteA;
 	import net.wooga.fixtures.TestSpriteB;
 	import net.wooga.fixtures.TestSpriteC;
 	import net.wooga.fixtures.getAdapterForObject;
-	import net.wooga.uiengine.displaylistselector.matching.matchers.implementations.PseudoClassMatcher;
-	import net.wooga.uiengine.displaylistselector.selectoradapter.ISelectorAdapter;
 
 	import org.hamcrest.assertThat;
 	import org.hamcrest.collection.everyItem;
@@ -70,9 +70,9 @@ package net.wooga.displaylistselector.matching.matchers {
 	}
 }
 
+import net.wooga.displaylistselector.pseudoclasses.IPseudoClass;
+import net.wooga.displaylistselector.selectoradapter.ISelectorAdapter;
 import net.wooga.fixtures.TestSpriteC;
-import net.wooga.uiengine.displaylistselector.pseudoclasses.IPseudoClass;
-import net.wooga.uiengine.displaylistselector.selectoradapter.ISelectorAdapter;
 
 class TestPseudoClass implements IPseudoClass {
 

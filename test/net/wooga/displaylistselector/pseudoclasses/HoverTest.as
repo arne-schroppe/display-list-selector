@@ -1,6 +1,5 @@
 package net.wooga.displaylistselector.pseudoclasses {
-	import net.wooga.uiengine.displaylistselector.pseudoclasses.*;
-	import net.wooga.uiengine.displaylistselector.selectoradapter.ISelectorAdapter;
+	import net.wooga.displaylistselector.selectoradapter.ISelectorAdapter;
 
 	import org.flexunit.rules.IMethodRule;
 	import org.hamcrest.assertThat;

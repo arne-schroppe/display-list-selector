@@ -12,6 +12,8 @@ package net.wooga.uiengine.displaylistselector.selectorstorage.keys {
 
 		private var _typeToKeysMap:IMap = new Map();
 
+		private static const IS_A_PREFIX:String = "^";
+
 		/*
 		Note (asc 2011-03-14) We only check by class name, not by package. This means
 		that we might get a few false positives (if there are elements in different packages
@@ -19,7 +21,8 @@ package net.wooga.uiengine.displaylistselector.selectorstorage.keys {
 		*/
 
 		public function keyForSelector(parsedSelector:ParsedSelector):String {
-			return parsedSelector.filterData.typeName;
+			var prefix:String = parsedSelector.filterData.isImmediateType ? "" : IS_A_PREFIX;
+			return prefix + parsedSelector.filterData.typeName;
 		}
 
 		//TODO (arneschroppe 14/3/12) only use keys that actually exist in the tree and are isA-selectors
@@ -42,8 +45,12 @@ package net.wooga.uiengine.displaylistselector.selectorstorage.keys {
 
 			var keys:Array = [];
 
-			keys.push(fqcn.split("::").pop());
-			keys.push(nullKey);
+			var className:String = fqcn.split("::").pop();
+			var isASelectorKey:String = IS_A_PREFIX + className;
+
+			addKeyIfItExistsInTree(className, keys, nodes);
+			addKeyIfItExistsInTree(isASelectorKey, keys, nodes);
+			addKeyIfItExistsInTree(nullKey, keys, nodes);
 
 			//get super-classes
 			addTypes(describeType(element).extendsClass.@type, keys, nodes);
@@ -51,18 +58,22 @@ package net.wooga.uiengine.displaylistselector.selectorstorage.keys {
 
 			_typeToKeysMap.add(fqcn, keys);
 
-			trace(keys);
-
 			return keys;
 		}
+
+
+		private function addKeyIfItExistsInTree(className:String, keys:Array, nodes:IMap):void {
+			if (nodes.hasKey(className)) {
+				keys.push(className);
+			}
+		}
+
 
 		private function addTypes(types:XMLList, keys:Array, nodes:IMap):void {
 			for each(var implementedType:String in types) {
 				var className:String = implementedType.split("::").pop();
-				
-				if(nodes.hasKey(className)) {
-					keys.push(className);
-				}
+
+				addKeyIfItExistsInTree(IS_A_PREFIX + className, keys, nodes);
 			}
 		}
 
@@ -71,9 +82,11 @@ package net.wooga.uiengine.displaylistselector.selectorstorage.keys {
 			return parsedSelector.filterData.typeName && parsedSelector.filterData.typeName != "*";
 		}
 
+
 		public function get nullKey():String {
 			return "*";
 		}
+
 
 		//Because keys are based on what keys already exist in the tree, we need to recreate them if a selector is added
 		public function invalidateCaches():void {

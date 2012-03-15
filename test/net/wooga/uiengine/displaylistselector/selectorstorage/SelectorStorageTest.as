@@ -237,8 +237,7 @@ package net.wooga.uiengine.displaylistselector.selectorstorage {
 			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue("originalSelector", sel1)));
 			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue("originalSelector", sel2)));
 			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue("originalSelector", sel5)));
-			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue("originalSelector", sel6)));
-			assertThat((possibleMatches as ICollection).size, equalTo(4));
+			assertThat((possibleMatches as ICollection).size, equalTo(3));
 		}
 
 

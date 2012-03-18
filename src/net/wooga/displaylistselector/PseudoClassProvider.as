@@ -1,4 +1,5 @@
 package net.wooga.displaylistselector {
+
 	import net.wooga.displaylistselector.parser.IPseudoClassProvider;
 	import net.wooga.displaylistselector.pseudoclasses.IPseudoClass;
 

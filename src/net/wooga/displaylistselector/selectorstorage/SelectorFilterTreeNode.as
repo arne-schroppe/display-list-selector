@@ -1,4 +1,5 @@
 package net.wooga.displaylistselector.selectorstorage {
+
 	import org.as3commons.collections.Map;
 	import org.as3commons.collections.Set;
 	import org.as3commons.collections.framework.IMap;

@@ -1,5 +1,6 @@
 package net.wooga.displaylistselector.selectorstorage {
-	import net.wooga.displaylistselector.parser.ParsedSelector;
+
+	import net.wooga.displaylistselector.newtypes.implementations.SelectorImpl;
 	import net.wooga.displaylistselector.selectoradapter.ISelectorAdapter;
 	import net.wooga.displaylistselector.selectorstorage.keys.HoverKey;
 	import net.wooga.displaylistselector.selectorstorage.keys.ISelectorTreeNodeKey;
@@ -31,13 +32,13 @@ package net.wooga.displaylistselector.selectorstorage {
 
 
 
-		public function add(parsedSelector:ParsedSelector):void {
+		public function add(parsedSelector:SelectorImpl):void {
 			_selectorsWereAdded = true;
 			addToNode(_filterRoot, 0, parsedSelector);
 		}
 
 
-		private function addToNode(node:SelectorFilterTreeNode, keyIndex:int, selector:ParsedSelector):Boolean {
+		private function addToNode(node:SelectorFilterTreeNode, keyIndex:int, selector:SelectorImpl):Boolean {
 			
 			if(keyIndex >= _filterKeys.length) {
 				return false;

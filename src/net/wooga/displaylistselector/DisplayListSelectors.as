@@ -1,11 +1,10 @@
 package net.wooga.displaylistselector {
+
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 	import flash.events.Event;
 
 	import net.wooga.displaylistselector.pseudoclasses.IPseudoClass;
-
-	import org.as3commons.collections.framework.ISet;
 
 	public class DisplayListSelectors  {
 

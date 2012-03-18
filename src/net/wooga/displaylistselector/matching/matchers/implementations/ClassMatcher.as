@@ -1,4 +1,5 @@
 package net.wooga.displaylistselector.matching.matchers.implementations {
+
 	import net.wooga.displaylistselector.matching.matchers.IMatcher;
 	import net.wooga.displaylistselector.selectoradapter.ISelectorAdapter;
 

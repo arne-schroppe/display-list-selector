@@ -1,9 +1,9 @@
 package net.wooga.displaylistselector.matching {
+
 	import net.wooga.displaylistselector.matching.matchers.ICombinator;
 	import net.wooga.displaylistselector.matching.matchers.IMatcher;
 	import net.wooga.displaylistselector.matching.matchers.implementations.ChildSelectorMatcher;
 	import net.wooga.displaylistselector.matching.matchers.implementations.DescendantSelectorMatcher;
-	import net.wooga.displaylistselector.parser.ParsedSelector;
 	import net.wooga.displaylistselector.selectoradapter.ISelectorAdapter;
 
 	import org.as3commons.collections.framework.IMap;
@@ -21,11 +21,9 @@ package net.wooga.displaylistselector.matching {
 		}
 
 
+		public function isObjectMatching(adapter:ISelectorAdapter, matchers:Vector.<IMatcher>):Boolean {
 
-		//TODO (arneschroppe 9/1/12) write a test for this!!!!!!
-		public function isObjectMatching(adapter:ISelectorAdapter, selector:ParsedSelector):Boolean {
-
-			_currentlyMatchedMatchers = selector.matchers;
+			_currentlyMatchedMatchers = matchers;
 
 			if (_currentlyMatchedMatchers.length == 0) {
 				return true;

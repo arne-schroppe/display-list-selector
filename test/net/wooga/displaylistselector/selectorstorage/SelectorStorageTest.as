@@ -1,6 +1,7 @@
 package net.wooga.displaylistselector.selectorstorage {
+
+	import net.wooga.displaylistselector.newtypes.implementations.SelectorImpl;
 	import net.wooga.displaylistselector.parser.IPseudoClassProvider;
-	import net.wooga.displaylistselector.parser.ParsedSelector;
 	import net.wooga.displaylistselector.parser.Parser;
 	import net.wooga.displaylistselector.pseudoclasses.Hover;
 	import net.wooga.displaylistselector.pseudoclasses.IPseudoClass;
@@ -246,9 +247,9 @@ package net.wooga.displaylistselector.selectorstorage {
 		private function addSelectors(selectorsStrings:Array):void {
 
 			for each(var selectorString:String in selectorsStrings) {
-				var parsed:Vector.<ParsedSelector> = _parser.parse(selectorString);
+				var parsed:Vector.<SelectorImpl> = _parser.parse(selectorString);
 
-				for each(var selector:ParsedSelector in parsed) {
+				for each(var selector:SelectorImpl in parsed) {
 					_selectorStorage.add(selector);
 				}
 			}

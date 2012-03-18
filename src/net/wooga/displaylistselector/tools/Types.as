@@ -1,4 +1,5 @@
 package net.wooga.displaylistselector.tools {
+
 	import flash.utils.describeType;
 	import flash.utils.getQualifiedClassName;
 

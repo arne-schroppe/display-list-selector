@@ -2,8 +2,8 @@ package net.wooga.displaylistselector.newtypes.implementations {
 
 	import net.wooga.displaylistselector.matching.MatcherTool;
 	import net.wooga.displaylistselector.newtypes.*;
-	import net.wooga.displaylistselector.parser.ParsedSelector;
 	import net.wooga.displaylistselector.parser.Parser;
+	import net.wooga.displaylistselector.selector_internal;
 	import net.wooga.displaylistselector.selectoradapter.ISelectorAdapter;
 	import net.wooga.displaylistselector.selectorstorage.SelectorTree;
 	import net.wooga.displaylistselector.tools.SpecificityComparator;
@@ -13,6 +13,9 @@ package net.wooga.displaylistselector.newtypes.implementations {
 	import org.as3commons.collections.framework.IMap;
 
 	public class SelectorPoolImpl implements SelectorPool {
+
+		use namespace selector_internal;
+
 		private var _matcher:MatcherTool;
 		private var _objectToStyleAdapterMap:IMap;
 		private var _parser:Parser;
@@ -29,9 +32,9 @@ package net.wooga.displaylistselector.newtypes.implementations {
 
 
 		public function addSelector(selectorString:String):void {
-			var parsed:Vector.<ParsedSelector> = _parser.parse(selectorString);
+			var parsed:Vector.<SelectorImpl> = _parser.parse(selectorString);
 
-			for each(var selector:ParsedSelector in parsed) {
+			for each(var selector:SelectorImpl in parsed) {
 				_knownSelectors.add(selector);
 			}
 		}
@@ -49,12 +52,12 @@ package net.wooga.displaylistselector.newtypes.implementations {
 
 			var keyIterator:IIterator = possibleMatches.iterator();
 			while (keyIterator.hasNext()) {
-				var parsedSelector:ParsedSelector = keyIterator.next();
+				var selector:SelectorImpl = keyIterator.next();
 
-				if (_matcher.isObjectMatching(adapter, parsedSelector)) {
+				if (_matcher.isObjectMatching(adapter, selector.matchers)) {
 
 					//TODO (arneschroppe 3/18/12) use an object pool here, so we don't have the overhead of creating objects all the time. They're flyweight's anyway
-					matches.push(new SelectorDescriptionImpl(parsedSelector.subSelectorString, parsedSelector.specificity, parsedSelector.originalSelectorString));
+					matches.push(selector);
 				}
 			}
 

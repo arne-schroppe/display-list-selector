@@ -1,4 +1,5 @@
 package net.wooga.fixtures {
+
 	import org.hamcrest.Description;
 	import org.hamcrest.Matcher;
 	import org.hamcrest.TypeSafeDiagnosingMatcher;

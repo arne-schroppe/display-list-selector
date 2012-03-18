@@ -1,4 +1,5 @@
 package net.wooga.displaylistselector.selectoradapter {
+
 	import flash.events.Event;
 	import flash.utils.getQualifiedClassName;
 

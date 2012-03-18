@@ -1,4 +1,5 @@
 package net.wooga.displaylistselector {
+
 	import net.wooga.displaylistselector.selectoradapter.ISelectorAdapter;
 
 	import org.as3commons.collections.Set;

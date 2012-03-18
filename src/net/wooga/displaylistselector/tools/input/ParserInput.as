@@ -1,4 +1,5 @@
 package net.wooga.displaylistselector.tools.input {
+
 	import net.wooga.displaylistselector.parser.ParserError;
 
 	public class ParserInput {

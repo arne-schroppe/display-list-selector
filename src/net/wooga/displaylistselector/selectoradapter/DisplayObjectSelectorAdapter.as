@@ -1,4 +1,5 @@
 package net.wooga.displaylistselector.selectoradapter {
+
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 

@@ -1,4 +1,5 @@
 package net.wooga.displaylistselector.parser {
+
 	import org.hamcrest.assertThat;
 	import org.hamcrest.number.greaterThan;
 	import org.hamcrest.number.lessThan;

@@ -1,4 +1,5 @@
 package net.wooga.displaylistselector.tools {
+
 	import org.as3commons.collections.Map;
 
 	public class DynamicMultiMap {

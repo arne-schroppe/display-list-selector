@@ -1,26 +1,23 @@
 package net.wooga.displaylistselector.newtypes.implementations {
 
-	import net.wooga.displaylistselector.ISpecificity;
 	import net.wooga.displaylistselector.matching.MatcherTool;
+	import net.wooga.displaylistselector.matching.matchers.IMatcher;
 	import net.wooga.displaylistselector.newtypes.*;
-	import net.wooga.displaylistselector.parser.ParsedSelector;
+	import net.wooga.displaylistselector.parser.FilterData;
+	import net.wooga.displaylistselector.selector_internal;
 	import net.wooga.displaylistselector.selectoradapter.ISelectorAdapter;
 
 	import org.as3commons.collections.framework.IMap;
 
+	use namespace selector_internal;
+
 	public class SelectorImpl extends SelectorDescriptionImpl implements Selector {
-		private var _parsedSelector:ParsedSelector;
+
 		private var _objectToStyleAdapterMap:IMap;
 		private var _matcher:MatcherTool;
+		private var _matchers:Vector.<IMatcher> = new <IMatcher>[];
+		private var _filterData:FilterData = new FilterData();
 
-
-
-		public function SelectorImpl(selectorString:String, specificity:ISpecificity, originalSelector:String, matcher:MatcherTool, objectToStyleAdapterMap:IMap, parsedSelector:ParsedSelector) {
-			super(selectorString, specificity, originalSelector);
-			_matcher = matcher;
-			_objectToStyleAdapterMap = objectToStyleAdapterMap;
-			_parsedSelector = parsedSelector;
-		}
 
 
 		public function isMatching(object:Object):Boolean {
@@ -29,7 +26,39 @@ package net.wooga.displaylistselector.newtypes.implementations {
 				throw new ArgumentError("No style adapter registered for object " + object);
 			}
 
-			return _matcher.isObjectMatching(adapter, _parsedSelector);
+			return _matcher.isObjectMatching(adapter, _matchers);
 		}
+
+
+
+
+		selector_internal function set objectToStyleAdapterMap(value:IMap):void {
+			_objectToStyleAdapterMap = value;
+		}
+
+		selector_internal function set matcher(value:MatcherTool):void {
+			_matcher = value;
+		}
+
+
+
+		selector_internal function set filterData(value:FilterData):void {
+			_filterData = value;
+		}
+
+		selector_internal function set matchers(value:Vector.<IMatcher>):void {
+			_matchers = value;
+		}
+
+		selector_internal function get matchers():Vector.<IMatcher> {
+			return _matchers;
+		}
+
+		//TODO (arneschroppe 14/3/12) it might be good to get rid of this object
+		selector_internal function get filterData():FilterData {
+			return _filterData;
+		}
+
+
 	}
 }

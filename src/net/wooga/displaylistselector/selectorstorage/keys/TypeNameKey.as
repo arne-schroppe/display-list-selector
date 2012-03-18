@@ -1,14 +1,18 @@
 package net.wooga.displaylistselector.selectorstorage.keys {
+
 	import flash.utils.describeType;
 	import flash.utils.getQualifiedClassName;
 
-	import net.wooga.displaylistselector.parser.ParsedSelector;
+	import net.wooga.displaylistselector.newtypes.implementations.SelectorImpl;
+	import net.wooga.displaylistselector.selector_internal;
 	import net.wooga.displaylistselector.selectoradapter.ISelectorAdapter;
 
 	import org.as3commons.collections.Map;
 	import org.as3commons.collections.framework.IMap;
 
 	public class TypeNameKey implements ISelectorTreeNodeKey {
+
+		use namespace selector_internal;
 
 		private var _typeToKeysMap:IMap = new Map();
 
@@ -20,7 +24,7 @@ package net.wooga.displaylistselector.selectorstorage.keys {
 		with the same name), but those would be filtered out in the next matching step.
 		*/
 
-		public function keyForSelector(parsedSelector:ParsedSelector):String {
+		public function keyForSelector(parsedSelector:SelectorImpl):String {
 			var prefix:String = parsedSelector.filterData.isImmediateType ? "" : IS_A_PREFIX;
 			return prefix + parsedSelector.filterData.typeName;
 		}
@@ -78,7 +82,7 @@ package net.wooga.displaylistselector.selectorstorage.keys {
 		}
 
 
-		public function selectorHasKey(parsedSelector:ParsedSelector):Boolean {
+		public function selectorHasKey(parsedSelector:SelectorImpl):Boolean {
 			return parsedSelector.filterData.typeName && parsedSelector.filterData.typeName != "*";
 		}
 

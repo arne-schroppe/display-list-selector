@@ -1,4 +1,5 @@
 package net.wooga.displaylistselector.parser {
+
 	import net.wooga.displaylistselector.IExternalPropertySource;
 	import net.wooga.displaylistselector.matching.matchers.ICombinator;
 	import net.wooga.displaylistselector.matching.matchers.IMatcher;
@@ -10,15 +11,19 @@ package net.wooga.displaylistselector.parser {
 	import net.wooga.displaylistselector.matching.matchers.implementations.PropertyFilterEqualsMatcher;
 	import net.wooga.displaylistselector.matching.matchers.implementations.PseudoClassMatcher;
 	import net.wooga.displaylistselector.matching.matchers.implementations.TypeNameMatcher;
+	import net.wooga.displaylistselector.newtypes.implementations.SelectorImpl;
 	import net.wooga.displaylistselector.pseudoclasses.Hover;
 	import net.wooga.displaylistselector.pseudoclasses.IPseudoClass;
+	import net.wooga.displaylistselector.selector_internal;
 	import net.wooga.displaylistselector.tools.DynamicMultiMap;
 	import net.wooga.displaylistselector.tools.input.ParserInput;
 
+	use namespace selector_internal;
+
 	public class Parser {
 
-		private var _individualSelectors:Vector.<ParsedSelector>;
-		private var _currentSelector:ParsedSelector;
+		private var _individualSelectors:Vector.<SelectorImpl>;
+		private var _currentSelector:SelectorImpl;
 
 		private var _externalPropertySource:IExternalPropertySource;
 		private var _pseudoClassProvider:IPseudoClassProvider;
@@ -47,12 +52,12 @@ package net.wooga.displaylistselector.parser {
 
 
 
-		public function parse(inputString:String):Vector.<ParsedSelector> {
+		public function parse(inputString:String):Vector.<SelectorImpl> {
 
 			_originalSelector = inputString;
 			_input = new ParserInput(inputString);
 
-			_individualSelectors = new <ParsedSelector>[];
+			_individualSelectors = new <SelectorImpl>[];
 
 			startNewMatcherSequence();
 			selectorsGroup();
@@ -67,7 +72,7 @@ package net.wooga.displaylistselector.parser {
 
 			endMatcherSequence();
 
-			_currentSelector = new ParsedSelector();
+			_currentSelector = new SelectorImpl();
 			_individualSelectors.push(_currentSelector);
 
 			_pseudoClassArguments = [];
@@ -85,7 +90,7 @@ package net.wooga.displaylistselector.parser {
 			_currentSelector.originalSelectorString = _originalSelector;
 
 			var subSelector:String = _input.getSubString(_subSelectorStartIndex, _subSelectorEndIndex);
-			_currentSelector.subSelectorString = subSelector;
+			_currentSelector.selectorString = subSelector;
 			_currentSelector.specificity = _specificity;
 
 			setupFilterData(_currentSelector);
@@ -95,7 +100,7 @@ package net.wooga.displaylistselector.parser {
 
 
 		//TODO (arneschroppe 2/26/12) do this in a separate class?
-		private function setupFilterData(selector:ParsedSelector):void {
+		private function setupFilterData(selector:SelectorImpl):void {
 			var lastIdMatcher:IdMatcher = findMatcherInLastSimpleSelector(selector, IdMatcher) as IdMatcher;
 			if (lastIdMatcher) {
 				selector.filterData.id = lastIdMatcher.id;
@@ -111,7 +116,7 @@ package net.wooga.displaylistselector.parser {
 		}
 
 
-		private function hasPseudoClassInLastSimpleSelector(selector:ParsedSelector, PseudoClassType:Class):Boolean {
+		private function hasPseudoClassInLastSimpleSelector(selector:SelectorImpl, PseudoClassType:Class):Boolean {
 			var matchers:Vector.<IMatcher> = selector.matchers;
 			for(var i:int = matchers.length-1; i >= 0 && !(matchers[i] is ICombinator); --i) {
 				var matcher:IMatcher = matchers[i];
@@ -123,7 +128,7 @@ package net.wooga.displaylistselector.parser {
 			return false;
 		}
 
-		private function findMatcherInLastSimpleSelector(selector:ParsedSelector, MatcherType:Class):IMatcher {
+		private function findMatcherInLastSimpleSelector(selector:SelectorImpl, MatcherType:Class):IMatcher {
 
 			var matchers:Vector.<IMatcher> = selector.matchers;
 			for(var i:int = matchers.length-1; i >= 0 && !(matchers[i] is ICombinator); --i) {
@@ -227,10 +232,6 @@ package net.wooga.displaylistselector.parser {
 			}
 			else {
 				className = _input.consumeRegex(/\w+/);
-				//var qualifiedClassName:String = _classNameAliasMap.classNameFor(classNameAlias);
-				//if(!qualifiedClassName) {
-				//	throw new ParserError("Unknown element alias '" + className + "'");
-				//}
 				_currentSelector.matchers.push(getSingletonMatcher(TypeNameMatcher, className, _isExactTypeMatcher, new TypeNameMatcher(className, _isExactTypeMatcher)));
 			}
 

@@ -1,4 +1,5 @@
 package net.wooga.displaylistselector.pseudoclasses {
+
 	import net.wooga.displaylistselector.selectoradapter.ISelectorAdapter;
 
 	public class Active implements IPseudoClass {

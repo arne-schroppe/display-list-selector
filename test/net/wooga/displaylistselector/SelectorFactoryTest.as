@@ -1,9 +1,8 @@
 package net.wooga.displaylistselector {
+
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 	import flash.display.MovieClip;
-
-	import flexunit.framework.Test;
 
 	import net.arneschroppe.displaytreebuilder.DisplayTree;
 	import net.wooga.displaylistselector.newtypes.Selector;
@@ -22,7 +21,6 @@ package net.wooga.displaylistselector {
 
 	import org.as3commons.collections.Set;
 	import org.as3commons.collections.framework.IIterable;
-	import org.as3commons.collections.framework.ISet;
 	import org.flexunit.asserts.assertEquals;
 	import org.hamcrest.assertThat;
 	import org.hamcrest.core.allOf;

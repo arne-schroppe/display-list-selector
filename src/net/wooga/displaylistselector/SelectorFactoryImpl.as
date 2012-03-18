@@ -1,4 +1,5 @@
 package net.wooga.displaylistselector {
+
 	import flash.utils.getQualifiedClassName;
 
 	import net.wooga.displaylistselector.matching.MatcherTool;
@@ -8,7 +9,6 @@ package net.wooga.displaylistselector {
 	import net.wooga.displaylistselector.newtypes.implementations.SelectorGroupImpl;
 	import net.wooga.displaylistselector.newtypes.implementations.SelectorImpl;
 	import net.wooga.displaylistselector.newtypes.implementations.SelectorPoolImpl;
-	import net.wooga.displaylistselector.parser.ParsedSelector;
 	import net.wooga.displaylistselector.parser.Parser;
 	import net.wooga.displaylistselector.pseudoclasses.Active;
 	import net.wooga.displaylistselector.pseudoclasses.FirstChild;
@@ -22,19 +22,14 @@ package net.wooga.displaylistselector {
 	import net.wooga.displaylistselector.pseudoclasses.NthOfType;
 	import net.wooga.displaylistselector.pseudoclasses.Root;
 	import net.wooga.displaylistselector.selectoradapter.ISelectorAdapter;
-	import net.wooga.displaylistselector.selectorstorage.SelectorTree;
-	import net.wooga.displaylistselector.tools.SpecificityComparator;
 	import net.wooga.displaylistselector.tools.Types;
 
-	import org.as3commons.collections.LinkedSet;
 	import org.as3commons.collections.Map;
-	import org.as3commons.collections.SortedSet;
-	import org.as3commons.collections.framework.IIterable;
-	import org.as3commons.collections.framework.IIterator;
 	import org.as3commons.collections.framework.IMap;
-	import org.as3commons.collections.framework.ISet;
 
 	public class SelectorFactoryImpl implements SelectorFactory {
+
+		use namespace selector_internal;
 
 		private var _rootObject:Object;
 
@@ -67,15 +62,19 @@ package net.wooga.displaylistselector {
 
 
 		public function createSelector(selectorString:String):SelectorGroup {
-			var partialSelectors:Vector.<ParsedSelector> = _parser.parse(selectorString);
+			var partialSelectors:Vector.<SelectorImpl> = _parser.parse(selectorString);
 
 			var selectors:Vector.<Selector> = new <Selector>[];
-			for each(var partialSelector:ParsedSelector in partialSelectors) {
-				selectors.push(new SelectorImpl(partialSelector.subSelectorString, partialSelector.specificity, partialSelector.originalSelectorString, _matcher, _objectToStyleAdapterMap, partialSelector));
+			for each(var partialSelector:SelectorImpl in partialSelectors) {
+				partialSelector.matcher = _matcher;
+				partialSelector.objectToStyleAdapterMap = _objectToStyleAdapterMap;
+
+				selectors.push(partialSelector);
 			}
 			
 			return new SelectorGroupImpl(selectors);
 		}
+
 
 		public function createSelectorPool():SelectorPool {
 			return new SelectorPoolImpl(_parser, _matcher, _objectToStyleAdapterMap);

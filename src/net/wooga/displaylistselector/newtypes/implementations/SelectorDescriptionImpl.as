@@ -6,14 +6,21 @@ package net.wooga.displaylistselector.newtypes.implementations {
 	public class SelectorDescriptionImpl implements SelectorDescription {
 		private var _selectorString:String;
 		private var _specificity:ISpecificity;
-		private var _originalSelector:String;
+		private var _originalSelectorString:String;
 
 
-		public function SelectorDescriptionImpl(selectorString:String, specificity:ISpecificity, originalSelector:String) {
-			_selectorString = selectorString;
-			_specificity = specificity;
-			_originalSelector = originalSelector;
+		public function set selectorString(value:String):void {
+			_selectorString = value;
 		}
+
+		public function set specificity(value:ISpecificity):void {
+			_specificity = value;
+		}
+
+		public function set originalSelectorString(value:String):void {
+			_originalSelectorString = value;
+		}
+
 
 		public function get specificity():ISpecificity {
 			return _specificity;
@@ -24,7 +31,7 @@ package net.wooga.displaylistselector.newtypes.implementations {
 		}
 
 		public function get originalSelectorString():String {
-			return _originalSelector;
+			return _originalSelectorString;
 		}
 	}
 }

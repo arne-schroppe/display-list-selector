@@ -1,4 +1,5 @@
 package net.wooga.fixtures {
+
 	import flash.display.Sprite;
 
 	import net.wooga.utils.flexunit.FlexUnitUtils;

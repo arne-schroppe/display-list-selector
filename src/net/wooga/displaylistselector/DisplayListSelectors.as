@@ -26,7 +26,6 @@ package net.wooga.displaylistselector {
 				_rootObject.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage, true);
 				_rootObject.addEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage, true);
 			}
-			
 		}
 
 

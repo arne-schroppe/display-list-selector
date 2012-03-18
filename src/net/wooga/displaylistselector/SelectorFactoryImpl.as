@@ -3,7 +3,10 @@ package net.wooga.displaylistselector {
 
 	import net.wooga.displaylistselector.matching.MatcherTool;
 	import net.wooga.displaylistselector.newtypes.Selector;
+	import net.wooga.displaylistselector.newtypes.SelectorGroup;
 	import net.wooga.displaylistselector.newtypes.SelectorPool;
+	import net.wooga.displaylistselector.newtypes.implementations.SelectorGroupImpl;
+	import net.wooga.displaylistselector.newtypes.implementations.SelectorImpl;
 	import net.wooga.displaylistselector.newtypes.implementations.SelectorPoolImpl;
 	import net.wooga.displaylistselector.parser.ParsedSelector;
 	import net.wooga.displaylistselector.parser.Parser;
@@ -63,8 +66,15 @@ package net.wooga.displaylistselector {
 		}
 
 
-		public function createSelector(selectorString:String):Selector {
-			return null;
+		public function createSelector(selectorString:String):SelectorGroup {
+			var partialSelectors:Vector.<ParsedSelector> = _parser.parse(selectorString);
+
+			var selectors:Vector.<Selector> = new <Selector>[];
+			for each(var partialSelector:ParsedSelector in partialSelectors) {
+				selectors.push(new SelectorImpl(partialSelector.subSelectorString, partialSelector.specificity, partialSelector.originalSelectorString, _matcher, _objectToStyleAdapterMap, partialSelector));
+			}
+			
+			return new SelectorGroupImpl(selectors);
 		}
 
 		public function createSelectorPool():SelectorPool {

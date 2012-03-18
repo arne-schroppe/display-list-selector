@@ -3,19 +3,19 @@ package net.wooga.displaylistselector.parser {
 	import net.wooga.displaylistselector.matching.matchers.IMatcher;
 
 	public class ParsedSelector {
-		private var _normalizedSelectorString:String;
+		private var _subSelectorString:String;
 		private var _originalSelectorString:String;
 		private var _matchers:Vector.<IMatcher> = new <IMatcher>[];
 		private var _specificity:ISpecificity;
 		private var _filterData:FilterData = new FilterData();
 
 
-		public function set normalizedSelectorString(value:String):void {
-			_normalizedSelectorString = value;
+		public function set subSelectorString(value:String):void {
+			_subSelectorString = value;
 		}
 
-		public function get normalizedSelectorString():String {
-			return _normalizedSelectorString;
+		public function get subSelectorString():String {
+			return _subSelectorString;
 		}
 
 		public function get specificity():ISpecificity {

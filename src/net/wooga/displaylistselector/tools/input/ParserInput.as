@@ -107,5 +107,13 @@ package net.wooga.displaylistselector.tools.input {
 		public function get originalContent():String {
 			return _originalContent;
 		}
+
+		public function get currentIndex():int {
+			return _consumedAmount;
+		}
+
+		public function getSubString(start:int, end:int):String {
+			return _originalContent.substring(start, end);
+		}
 	}
 }

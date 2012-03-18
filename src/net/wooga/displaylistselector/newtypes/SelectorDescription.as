@@ -5,5 +5,6 @@ package net.wooga.displaylistselector.newtypes {
 	public interface SelectorDescription {
 		function get specificity():ISpecificity;
 		function get selectorString():String;
+		function get originalSelectorString():String;
 	}
 }

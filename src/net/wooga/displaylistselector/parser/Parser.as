@@ -30,11 +30,12 @@ package net.wooga.displaylistselector.parser {
 		private var _input:ParserInput;
 		private var _specificity:Specificity;
 
+		private var _subSelectorStartIndex:int = 0;
+		private var _subSelectorEndIndex:int = 0;
+
 
 		private var _pseudoClassArguments:Array;
 		private var _isExactTypeMatcher:Boolean;
-
-		private var _subSelector:String;
 
 		private var _originalSelector:String;
 
@@ -55,6 +56,8 @@ package net.wooga.displaylistselector.parser {
 
 			startNewMatcherSequence();
 			selectorsGroup();
+
+			_subSelectorEndIndex = _input.currentIndex;
 			endMatcherSequence();
 
 			return _individualSelectors;
@@ -69,7 +72,7 @@ package net.wooga.displaylistselector.parser {
 
 			_pseudoClassArguments = [];
 			_isExactTypeMatcher = false;
-			_subSelector = "";
+			_subSelectorStartIndex = _input.currentIndex;
 			_specificity = new Specificity();
 		}
 
@@ -80,7 +83,9 @@ package net.wooga.displaylistselector.parser {
 			}
 
 			_currentSelector.originalSelectorString = _originalSelector;
-			_currentSelector.normalizedSelectorString = _subSelector;
+
+			var subSelector:String = _input.getSubString(_subSelectorStartIndex, _subSelectorEndIndex);
+			_currentSelector.subSelectorString = subSelector;
 			_currentSelector.specificity = _specificity;
 
 			setupFilterData(_currentSelector);
@@ -159,14 +164,13 @@ package net.wooga.displaylistselector.parser {
 
 			if (combinator.replace(/\s*/g, "") == ">") {
 				_currentSelector.matchers.push(getSingletonMatcher(ChildSelectorMatcher, new ChildSelectorMatcher()));
-				_subSelector += ">";
 			}
 			else if(combinator.replace(/\s*/g, "") == ",") {
+				_subSelectorEndIndex = _input.currentIndex - combinator.length;
 				startNewMatcherSequence();
 			}
 			else if (/\s+/.test(combinator)) {
 				_currentSelector.matchers.push(getSingletonMatcher(DescendantSelectorMatcher, new DescendantSelectorMatcher()));
-				_subSelector += " ";
 			}
 		}
 
@@ -195,7 +199,6 @@ package net.wooga.displaylistselector.parser {
 
 		private function superClassSelector():void {
 			_input.consume(1); //consuming '^'
-			_subSelector += "^";
 			_isExactTypeMatcher = false;
 			typeSelector();
 		}
@@ -210,7 +213,6 @@ package net.wooga.displaylistselector.parser {
 				//The *-selector does not limit the result set, so we wouldn't need to add it. We get exceptions though,
 				//if *-selector is the last selector, so we add it anyway.
 				_currentSelector.matchers.push(getSingletonMatcher(TypeNameMatcher, className, new TypeNameMatcher(className)));
-				_subSelector += "*";
 				return;
 			}
 
@@ -222,8 +224,6 @@ package net.wooga.displaylistselector.parser {
 				_input.consumeString(")");
 
 				_currentSelector.matchers.push(getSingletonMatcher(TypeNameMatcher, className, _isExactTypeMatcher, new TypeNameMatcher(className, _isExactTypeMatcher)));
-
-				_subSelector += "(" + className + ")";
 			}
 			else {
 				className = _input.consumeRegex(/\w+/);
@@ -232,7 +232,6 @@ package net.wooga.displaylistselector.parser {
 				//	throw new ParserError("Unknown element alias '" + className + "'");
 				//}
 				_currentSelector.matchers.push(getSingletonMatcher(TypeNameMatcher, className, _isExactTypeMatcher, new TypeNameMatcher(className, _isExactTypeMatcher)));
-				_subSelector += className;
 			}
 
 			if(_isExactTypeMatcher) {
@@ -266,7 +265,6 @@ package net.wooga.displaylistselector.parser {
 			var className:String = _input.consumeRegex(/[a-zA-Z]+/);
 			var matcher:IMatcher = new ClassMatcher(className);
 			_currentSelector.matchers.push(getSingletonMatcher(ClassMatcher, className, matcher));
-			_subSelector += "." + className;
 			_specificity.classAndAttributeAndPseudoSelectors++;
 		}
 
@@ -277,7 +275,6 @@ package net.wooga.displaylistselector.parser {
 			var matcher:IMatcher = new IdMatcher(id);
 			_currentSelector.matchers.push(getSingletonMatcher(IdMatcher, id, matcher));
 
-			_subSelector += "#" + id;
 			_specificity.idSelector++;
 		}
 
@@ -287,7 +284,6 @@ package net.wooga.displaylistselector.parser {
 
 		private function pseudo():void {
 			_input.consumeString(":");
-			_subSelector += ":";
 			var matcher:PseudoClassMatcher = functionalPseudo();
 
 			_pseudoClassArguments = [];
@@ -315,7 +311,6 @@ package net.wooga.displaylistselector.parser {
 			}
 			var pseudoClass:IPseudoClass = _pseudoClassProvider.getPseudoClass(pseudoClassName);
 			var functionMatcher:PseudoClassMatcher = new PseudoClassMatcher(pseudoClass);
-			_subSelector += pseudoClassName;
 			return functionMatcher;
 
 		}
@@ -327,7 +322,6 @@ package net.wooga.displaylistselector.parser {
 			pseudoClassArgument();
 			_input.consumeString(")");
 
-			_subSelector += "(" + _pseudoClassArguments.join(",") + ")";
 		}
 
 
@@ -349,27 +343,21 @@ package net.wooga.displaylistselector.parser {
 		private function attributeSelector():void {
 			_input.consumeString("[");
 
-			_subSelector += "[";
-
 			whitespace();
 			propertyExpression();
 			whitespace();
 			_input.consumeString("]");
 
-			_subSelector += "]";
 		}
 
 
 		private function propertyExpression():void {
 			whitespace();
 			var property:String = propertyName();
-			_subSelector += property;
 			whitespace();
 			var compareFunction:String = comparisonFunction();
-			_subSelector += compareFunction;
 			whitespace();
 			var value:String = value();
-			_subSelector += "'" + value + "'";
 			whitespace();
 
 			var matcher:IMatcher = matcherForCompareFunction(compareFunction, property, value);

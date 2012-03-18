@@ -54,11 +54,13 @@ package net.wooga.displaylistselector.newtypes.implementations {
 				if (_matcher.isObjectMatching(adapter, parsedSelector)) {
 
 					//TODO (arneschroppe 3/18/12) use an object pool here, so we don't have the overhead of creating objects all the time. They're flyweight's anyway
-					matches.push(new SelectorDescriptionImpl(parsedSelector.originalSelectorString, parsedSelector.specificity));
+					matches.push(new SelectorDescriptionImpl(parsedSelector.subSelectorString, parsedSelector.specificity, parsedSelector.originalSelectorString));
 				}
 			}
 
-			matches.sort(SpecificityComparator.staticCompare);
+			//TODO (arneschroppe 3/18/12) because of the comma-separator in strings, it might be possible that selectors get added several times. we should make the vector unique
+			matches = matches.sort(SpecificityComparator.staticCompare);
+
 
 			return matches;
 		}

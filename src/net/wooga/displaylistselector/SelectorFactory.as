@@ -1,27 +1,16 @@
 package net.wooga.displaylistselector {
 
-	import net.wooga.displaylistselector.newtypes.Selector;
+	import net.wooga.displaylistselector.newtypes.SelectorGroup;
 	import net.wooga.displaylistselector.newtypes.SelectorPool;
 	import net.wooga.displaylistselector.pseudoclasses.IPseudoClass;
 
-	import org.as3commons.collections.framework.ISet;
-
 	public interface SelectorFactory {
-		//function addSelector(selectorString:String):void;
 
-		//TODO (arneschroppe 24/2/12) we should change the return type here to Vector.<String>
-		//function getSelectorsMatchingObject(object:Object):ISet;
+		function initializeWith(rootObject:Object, externalPropertySource:IExternalPropertySource = null):void;
 
-
-		function createSelector(selectorString:String):Selector;
+		function createSelector(selectorString:String):SelectorGroup;
 		function createSelectorPool():SelectorPool;
 
-
 		function addPseudoClass(className:String, pseudoClass:IPseudoClass):void;
-
-
-		//TODO (arneschroppe 5/3/12) maybe also add:
-		//function getSpecificityForSelector(selector:String):ISpecificity //selector must have been registered previously
-
 	}
 }

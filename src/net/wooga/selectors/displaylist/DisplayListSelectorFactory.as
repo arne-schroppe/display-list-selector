@@ -1,0 +1,49 @@
+package net.wooga.selectors.displaylist {
+
+	import flash.display.DisplayObject;
+	import flash.display.DisplayObjectContainer;
+	import flash.events.Event;
+
+	import net.wooga.selectors.*;
+
+	public class DisplayListSelectorFactory extends AbstractSelectorFactory {
+
+
+		private var _rootObject:DisplayObjectContainer;
+
+		private var _autoCreateAdapters:Boolean;
+
+
+		public function DisplayListSelectorFactory(autoCreateAdapters:Boolean=true) {
+			_autoCreateAdapters = autoCreateAdapters;
+		}
+
+		override public function initializeWith(rootObject:Object, externalPropertySource:IExternalPropertySource = null):void {
+			super.initializeWith(rootObject, externalPropertySource);
+
+			setDefaultStyleAdapter(DisplayObjectSelectorAdapter);
+
+			_rootObject = DisplayObjectContainer(rootObject);
+			if(_autoCreateAdapters) {
+				_rootObject.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage, true);
+				_rootObject.addEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage, true);
+			}
+		}
+
+
+		//TODO (arneschroppe 14/3/12) we don't need a decorator to automatically create style adapters, just write a small class for that
+		private function onAddedToStage(event:Event):void {
+			var object:Object = event.target;
+			createStyleAdapterFor(object as DisplayObject);
+		}
+
+
+		private function onRemovedFromStage(event:Event):void {
+			var object:Object = event.target;
+			removeStyleAdapterOf(object as DisplayObject);
+		}
+
+
+
+	}
+}

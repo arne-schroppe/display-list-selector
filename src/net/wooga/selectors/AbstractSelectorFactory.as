@@ -27,7 +27,7 @@ package net.wooga.selectors {
 	import org.as3commons.collections.Map;
 	import org.as3commons.collections.framework.IMap;
 
-	public class SelectorFactoryImpl implements SelectorFactory {
+	public class AbstractSelectorFactory implements SelectorFactory {
 
 		use namespace selector_internal;
 

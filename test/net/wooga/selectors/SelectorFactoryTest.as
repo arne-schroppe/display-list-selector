@@ -34,7 +34,7 @@ package net.wooga.selectors {
 	public class SelectorFactoryTest extends ContextViewBasedTest {
 
 
-		private var _selectorFactory:SelectorFactoryImpl;
+		private var _selectorFactory:AbstractSelectorFactory;
 		private var _selectorPool:SelectorPool;
 
 		private var _displayList:DisplayTree;
@@ -45,7 +45,7 @@ package net.wooga.selectors {
 			_propertyDictionary = new PropertyDictionary();
 			_displayList = new DisplayTree();
 
-			_selectorFactory = new SelectorFactoryImpl();
+			_selectorFactory = new AbstractSelectorFactory();
 			_selectorFactory.initializeWith(contextView, _propertyDictionary);
 			_selectorFactory.setDefaultStyleAdapter(DisplayObjectSelectorAdapter);
 

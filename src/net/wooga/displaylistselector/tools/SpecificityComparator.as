@@ -1,7 +1,7 @@
 package net.wooga.displaylistselector.tools {
 
 	import net.wooga.displaylistselector.ISpecificity;
-	import net.wooga.displaylistselector.newtypes.SelectorDescription;
+	import net.wooga.displaylistselector.usagepatterns.SelectorDescription;
 
 	import org.as3commons.collections.framework.IComparator;
 

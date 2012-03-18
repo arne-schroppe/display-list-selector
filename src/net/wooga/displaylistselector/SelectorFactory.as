@@ -1,7 +1,7 @@
 package net.wooga.displaylistselector {
 
-	import net.wooga.displaylistselector.newtypes.SelectorGroup;
-	import net.wooga.displaylistselector.newtypes.SelectorPool;
+	import net.wooga.displaylistselector.usagepatterns.SelectorGroup;
+	import net.wooga.displaylistselector.usagepatterns.SelectorPool;
 	import net.wooga.displaylistselector.pseudoclasses.IPseudoClass;
 
 	public interface SelectorFactory {

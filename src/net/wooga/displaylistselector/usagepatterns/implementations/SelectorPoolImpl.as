@@ -1,7 +1,7 @@
-package net.wooga.displaylistselector.newtypes.implementations {
+package net.wooga.displaylistselector.usagepatterns.implementations {
 
 	import net.wooga.displaylistselector.matching.MatcherTool;
-	import net.wooga.displaylistselector.newtypes.*;
+	import net.wooga.displaylistselector.usagepatterns.*;
 	import net.wooga.displaylistselector.parser.Parser;
 	import net.wooga.displaylistselector.selector_internal;
 	import net.wooga.displaylistselector.selectoradapter.ISelectorAdapter;

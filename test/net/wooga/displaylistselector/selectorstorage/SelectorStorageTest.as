@@ -1,6 +1,6 @@
 package net.wooga.displaylistselector.selectorstorage {
 
-	import net.wooga.displaylistselector.newtypes.implementations.SelectorImpl;
+	import net.wooga.displaylistselector.usagepatterns.implementations.SelectorImpl;
 	import net.wooga.displaylistselector.parser.IPseudoClassProvider;
 	import net.wooga.displaylistselector.parser.Parser;
 	import net.wooga.displaylistselector.pseudoclasses.Hover;

@@ -3,12 +3,12 @@ package net.wooga.displaylistselector {
 	import flash.utils.getQualifiedClassName;
 
 	import net.wooga.displaylistselector.matching.MatcherTool;
-	import net.wooga.displaylistselector.newtypes.Selector;
-	import net.wooga.displaylistselector.newtypes.SelectorGroup;
-	import net.wooga.displaylistselector.newtypes.SelectorPool;
-	import net.wooga.displaylistselector.newtypes.implementations.SelectorGroupImpl;
-	import net.wooga.displaylistselector.newtypes.implementations.SelectorImpl;
-	import net.wooga.displaylistselector.newtypes.implementations.SelectorPoolImpl;
+	import net.wooga.displaylistselector.usagepatterns.Selector;
+	import net.wooga.displaylistselector.usagepatterns.SelectorGroup;
+	import net.wooga.displaylistselector.usagepatterns.SelectorPool;
+	import net.wooga.displaylistselector.usagepatterns.implementations.SelectorGroupImpl;
+	import net.wooga.displaylistselector.usagepatterns.implementations.SelectorImpl;
+	import net.wooga.displaylistselector.usagepatterns.implementations.SelectorPoolImpl;
 	import net.wooga.displaylistselector.parser.Parser;
 	import net.wooga.displaylistselector.pseudoclasses.Active;
 	import net.wooga.displaylistselector.pseudoclasses.FirstChild;

@@ -1,7 +1,7 @@
-package net.wooga.displaylistselector.newtypes.implementations {
+package net.wooga.displaylistselector.usagepatterns.implementations {
 
-	import net.wooga.displaylistselector.newtypes.Selector;
-	import net.wooga.displaylistselector.newtypes.SelectorGroup;
+	import net.wooga.displaylistselector.usagepatterns.Selector;
+	import net.wooga.displaylistselector.usagepatterns.SelectorGroup;
 
 	public class SelectorGroupImpl implements SelectorGroup {
 		private var _selectors:Vector.<Selector>;

@@ -1,7 +1,7 @@
-package net.wooga.displaylistselector.newtypes.implementations {
+package net.wooga.displaylistselector.usagepatterns.implementations {
 
 	import net.wooga.displaylistselector.ISpecificity;
-	import net.wooga.displaylistselector.newtypes.*;
+	import net.wooga.displaylistselector.usagepatterns.*;
 
 	public class SelectorDescriptionImpl implements SelectorDescription {
 		private var _selectorString:String;
@@ -32,6 +32,11 @@ package net.wooga.displaylistselector.newtypes.implementations {
 
 		public function get originalSelectorString():String {
 			return _originalSelectorString;
+		}
+
+
+		public function toString():String {
+			return "[selector '" + _selectorString + "'" + ( (_selectorString == _originalSelectorString) ? " (selector group: '" + _originalSelectorString + "')" : "") + "]";
 		}
 	}
 }

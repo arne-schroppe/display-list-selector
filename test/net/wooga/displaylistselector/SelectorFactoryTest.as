@@ -5,10 +5,10 @@ package net.wooga.displaylistselector {
 	import flash.display.MovieClip;
 
 	import net.arneschroppe.displaytreebuilder.DisplayTree;
-	import net.wooga.displaylistselector.newtypes.Selector;
-	import net.wooga.displaylistselector.newtypes.SelectorDescription;
-	import net.wooga.displaylistselector.newtypes.SelectorGroup;
-	import net.wooga.displaylistselector.newtypes.SelectorPool;
+	import net.wooga.displaylistselector.usagepatterns.Selector;
+	import net.wooga.displaylistselector.usagepatterns.SelectorDescription;
+	import net.wooga.displaylistselector.usagepatterns.SelectorGroup;
+	import net.wooga.displaylistselector.usagepatterns.SelectorPool;
 	import net.wooga.displaylistselector.selectoradapter.DisplayObjectSelectorAdapter;
 	import net.wooga.fixtures.ContextViewBasedTest;
 	import net.wooga.fixtures.TestSpriteA;

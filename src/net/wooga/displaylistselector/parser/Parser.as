@@ -11,7 +11,7 @@ package net.wooga.displaylistselector.parser {
 	import net.wooga.displaylistselector.matching.matchers.implementations.PropertyFilterEqualsMatcher;
 	import net.wooga.displaylistselector.matching.matchers.implementations.PseudoClassMatcher;
 	import net.wooga.displaylistselector.matching.matchers.implementations.TypeNameMatcher;
-	import net.wooga.displaylistselector.newtypes.implementations.SelectorImpl;
+	import net.wooga.displaylistselector.usagepatterns.implementations.SelectorImpl;
 	import net.wooga.displaylistselector.pseudoclasses.Hover;
 	import net.wooga.displaylistselector.pseudoclasses.IPseudoClass;
 	import net.wooga.displaylistselector.selector_internal;

@@ -1,4 +1,4 @@
-package net.wooga.displaylistselector.newtypes {
+package net.wooga.displaylistselector.usagepatterns {
 
 	import net.wooga.displaylistselector.ISpecificity;
 

@@ -1,4 +1,4 @@
-package net.wooga.displaylistselector.newtypes {
+package net.wooga.displaylistselector.usagepatterns {
 	public interface SelectorPool {
 
 		function addSelector(selector:String):void

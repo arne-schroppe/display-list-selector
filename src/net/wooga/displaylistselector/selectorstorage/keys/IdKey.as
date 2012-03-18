@@ -1,6 +1,6 @@
 package net.wooga.displaylistselector.selectorstorage.keys {
 
-	import net.wooga.displaylistselector.newtypes.implementations.SelectorImpl;
+	import net.wooga.displaylistselector.usagepatterns.implementations.SelectorImpl;
 	import net.wooga.displaylistselector.selector_internal;
 	import net.wooga.displaylistselector.selectoradapter.ISelectorAdapter;
 

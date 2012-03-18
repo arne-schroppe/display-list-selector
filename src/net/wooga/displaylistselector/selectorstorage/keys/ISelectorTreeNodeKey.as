@@ -1,6 +1,6 @@
 package net.wooga.displaylistselector.selectorstorage.keys {
 
-	import net.wooga.displaylistselector.newtypes.implementations.SelectorImpl;
+	import net.wooga.displaylistselector.usagepatterns.implementations.SelectorImpl;
 	import net.wooga.displaylistselector.selectoradapter.ISelectorAdapter;
 
 	import org.as3commons.collections.framework.IMap;

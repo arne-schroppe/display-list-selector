@@ -1,9 +1,9 @@
 package net.wooga.displaylistselector.newtypes {
 	import net.wooga.displaylistselector.ISpecificity;
 
-	public interface Selector {
+	public interface Selector extends SelectorDescription {
 
 		function isMatching(object:Object):Boolean;
-		function get specificity():ISpecificity;
+
 	}
 }

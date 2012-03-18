@@ -2,6 +2,9 @@ package net.wooga.displaylistselector {
 	import flash.utils.getQualifiedClassName;
 
 	import net.wooga.displaylistselector.matching.MatcherTool;
+	import net.wooga.displaylistselector.newtypes.Selector;
+	import net.wooga.displaylistselector.newtypes.SelectorPool;
+	import net.wooga.displaylistselector.newtypes.implementations.SelectorPoolImpl;
 	import net.wooga.displaylistselector.parser.ParsedSelector;
 	import net.wooga.displaylistselector.parser.Parser;
 	import net.wooga.displaylistselector.pseudoclasses.Active;
@@ -16,7 +19,7 @@ package net.wooga.displaylistselector {
 	import net.wooga.displaylistselector.pseudoclasses.NthOfType;
 	import net.wooga.displaylistselector.pseudoclasses.Root;
 	import net.wooga.displaylistselector.selectoradapter.ISelectorAdapter;
-	import net.wooga.displaylistselector.selectorstorage.SelectorStorage;
+	import net.wooga.displaylistselector.selectorstorage.SelectorTree;
 	import net.wooga.displaylistselector.tools.SpecificityComparator;
 	import net.wooga.displaylistselector.tools.Types;
 
@@ -28,13 +31,13 @@ package net.wooga.displaylistselector {
 	import org.as3commons.collections.framework.IMap;
 	import org.as3commons.collections.framework.ISet;
 
-	public class AbstractSelectors implements ISelectorTool {
+	public class SelectorFactoryImpl implements SelectorFactory {
 
 		private var _rootObject:Object;
 
 		private var _parser:Parser;
 		private var _matcher:MatcherTool;
-		private var _knownSelectors:SelectorStorage = new SelectorStorage();
+
 
 		private var _pseudoClassProvider:PseudoClassProvider;
 
@@ -60,50 +63,13 @@ package net.wooga.displaylistselector {
 		}
 
 
-		public function addSelector(selectorString:String):void {
-			var parsed:Vector.<ParsedSelector> = _parser.parse(selectorString);
-
-			for each(var selector:ParsedSelector in parsed) {
-				_knownSelectors.add(selector);
-			}
-			
+		public function createSelector(selectorString:String):Selector {
+			return null;
 		}
 
-		
-		public function getSelectorsMatchingObject(object:Object):ISet {
-
-			var adapter:ISelectorAdapter = _objectToStyleAdapterMap.itemFor(object);
-			if(!adapter) {
-				throw new ArgumentError("No style adapter registered for object " + object);
-			}
-
-			//TODO (arneschroppe 24/2/12) does using a sorted set here cause too much overhead?
-			var matches:ISet = new SortedSet(new SpecificityComparator());
-
-
-			var possibleMatches:IIterable = _knownSelectors.getPossibleMatchesFor(adapter);
-
-			var keyIterator:IIterator = possibleMatches.iterator();
-			while (keyIterator.hasNext()) {
-				var selector:ParsedSelector = keyIterator.next();
-
-				if (_matcher.isObjectMatching(adapter, selector)) {
-					matches.add(selector);
-				}
-			}
-
-
-			//TODO (arneschroppe 24/2/12) unique and sort result;
-
-			var result:ISet = new LinkedSet();
-			var resultIterator:IIterator = matches.iterator();
-			while(resultIterator.hasNext()) {
-				result.add((resultIterator.next() as ParsedSelector).originalSelector);
-			}
-
-			return result;
+		public function createSelectorPool():SelectorPool {
+			return new SelectorPoolImpl(_parser, _matcher, _objectToStyleAdapterMap);
 		}
-
 
 
 		public function addPseudoClass(className:String, pseudoClass:IPseudoClass):void {
@@ -185,5 +151,7 @@ package net.wooga.displaylistselector {
 			addPseudoClass("hover", new Hover());
 			addPseudoClass("active", new Active());
 		}
+
+
 	}
 }

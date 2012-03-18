@@ -11,7 +11,7 @@ package net.wooga.displaylistselector.selectorstorage {
 	import org.as3commons.collections.framework.ISet;
 	import org.as3commons.collections.utils.Sets;
 
-	public class SelectorStorage {
+	public class SelectorTree {
 
 
 		private var _filterRoot:SelectorFilterTreeNode;
@@ -25,7 +25,7 @@ package net.wooga.displaylistselector.selectorstorage {
 
 		private var _selectorsWereAdded:Boolean;
 
-		public function SelectorStorage() {
+		public function SelectorTree() {
 			_filterRoot = new SelectorFilterTreeNode();
 		}
 

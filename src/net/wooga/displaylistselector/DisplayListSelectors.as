@@ -7,14 +7,14 @@ package net.wooga.displaylistselector {
 
 	import org.as3commons.collections.framework.ISet;
 
-	public class DisplayListSelectors implements ISelectorTool {
+	public class DisplayListSelectors  {
 
-		private var _selectors:AbstractSelectors;
+		private var _selectors:SelectorFactoryImpl;
 
 		private var _rootObject:DisplayObjectContainer;
 
 		public function DisplayListSelectors() {
-			_selectors = new AbstractSelectors();
+			_selectors = new SelectorFactoryImpl();
 		}
 
 
@@ -59,13 +59,7 @@ package net.wooga.displaylistselector {
 			_selectors.removeStyleAdapterOf(object);
 		}
 
-		public function addSelector(selectorString:String):void {
-			_selectors.addSelector(selectorString);
-		}
 
-		public function getSelectorsMatchingObject(object:Object):ISet {
-			return _selectors.getSelectorsMatchingObject(object);
-		}
 
 		public function addPseudoClass(className:String, pseudoClass:IPseudoClass):void {
 			_selectors.addPseudoClass(className, pseudoClass);

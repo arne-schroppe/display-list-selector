@@ -1,6 +1,6 @@
 package {
 
-	import net.wooga.displaylistselector.SelectorTest;
+	import net.wooga.displaylistselector.SelectorFactoryTest;
 	import net.wooga.displaylistselector.input.ParserInputTest;
 	import net.wooga.displaylistselector.matching.matchers.ChildSelectorMatcherTest;
 	import net.wooga.displaylistselector.matching.matchers.PropertyFilterContainsMatcherTest;
@@ -25,7 +25,7 @@ package {
 	[RunWith("org.flexunit.runners.Suite")]
 	public class TestSuite {
 
-		public var displayListSelectorTest:SelectorTest;
+		public var displayListSelectorTest:SelectorFactoryTest;
 
 		public var parserInputTest:ParserInputTest;
 		public var childSelectorMatcherTest:ChildSelectorMatcherTest;

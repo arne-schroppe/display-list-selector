@@ -79,8 +79,8 @@ package net.wooga.displaylistselector.parser {
 				return;
 			}
 
-			_currentSelector.originalSelector = _originalSelector;
-			_currentSelector.selector = _subSelector;
+			_currentSelector.originalSelectorString = _originalSelector;
+			_currentSelector.normalizedSelectorString = _subSelector;
 			_currentSelector.specificity = _specificity;
 
 			setupFilterData(_currentSelector);

@@ -1,13 +1,21 @@
 package net.wooga.displaylistselector {
+
+	import net.wooga.displaylistselector.newtypes.Selector;
+	import net.wooga.displaylistselector.newtypes.SelectorPool;
 	import net.wooga.displaylistselector.pseudoclasses.IPseudoClass;
 
 	import org.as3commons.collections.framework.ISet;
 
-	public interface ISelectorTool {
-		function addSelector(selectorString:String):void;
+	public interface SelectorFactory {
+		//function addSelector(selectorString:String):void;
 
 		//TODO (arneschroppe 24/2/12) we should change the return type here to Vector.<String>
-		function getSelectorsMatchingObject(object:Object):ISet;
+		//function getSelectorsMatchingObject(object:Object):ISet;
+
+
+		function createSelector(selectorString:String):Selector;
+		function createSelectorPool():SelectorPool;
+
 
 		function addPseudoClass(className:String, pseudoClass:IPseudoClass):void;
 

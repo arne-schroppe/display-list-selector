@@ -26,16 +26,18 @@ package net.wooga.displaylistselector.selectorstorage {
 
 
 
-		private var _selectorStorage:SelectorStorage;
+		private var _selectorStorage:SelectorTree;
 		
 		private var _parser:Parser;
+
+		private static const ORIGINAL_SELECTOR_PROPERTY:String = "originalSelectorString";
 
 		[Mock]
 		public var styleAdapter:ISelectorAdapter;
 
 		[Before]
 		public function setUp():void {
-			_selectorStorage = new SelectorStorage();
+			_selectorStorage = new SelectorTree();
 			_parser = new Parser(null, this);
 		}
 
@@ -55,9 +57,9 @@ package net.wooga.displaylistselector.selectorstorage {
 
 			var possibleMatches:IIterable = _selectorStorage.getPossibleMatchesFor(styleAdapter);
 
-			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue("originalSelector", sel1)));
-			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue("originalSelector", sel2)));
-			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue("originalSelector", sel5)));
+			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel1)));
+			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel2)));
+			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel5)));
 			assertThat((possibleMatches as ICollection).size, equalTo(3));
 
 		}
@@ -80,9 +82,9 @@ package net.wooga.displaylistselector.selectorstorage {
 
 			var possibleMatches:IIterable = _selectorStorage.getPossibleMatchesFor(styleAdapter);
 
-			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue("originalSelector", sel1)));
-			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue("originalSelector", sel2)));
-			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue("originalSelector", sel5)));
+			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel1)));
+			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel2)));
+			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel5)));
 			assertThat((possibleMatches as ICollection).size, equalTo(3));
 
 		}
@@ -105,9 +107,9 @@ package net.wooga.displaylistselector.selectorstorage {
 			given(styleAdapter.getId()).willReturn(id);
 			var possibleMatches:IIterable = _selectorStorage.getPossibleMatchesFor(styleAdapter);
 
-			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue("originalSelector", sel1)));
-			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue("originalSelector", sel3)));
-			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue("originalSelector", sel5)));
+			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel1)));
+			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel3)));
+			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel5)));
 			assertThat((possibleMatches as ICollection).size, equalTo(3));
 
 		}
@@ -133,10 +135,10 @@ package net.wooga.displaylistselector.selectorstorage {
 			given(styleAdapter.isHovered()).willReturn(true);
 			var possibleMatches:IIterable = _selectorStorage.getPossibleMatchesFor(styleAdapter);
 
-			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue("originalSelector", sel1)));
-			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue("originalSelector", sel2)));
-			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue("originalSelector", sel5)));
-			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue("originalSelector", sel6)));
+			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel1)));
+			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel2)));
+			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel5)));
+			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel6)));
 			assertThat((possibleMatches as ICollection).size, equalTo(4));
 		}
 
@@ -160,7 +162,7 @@ package net.wooga.displaylistselector.selectorstorage {
 			given(styleAdapter.isHovered()).willReturn(false);
 			var possibleMatches:IIterable = _selectorStorage.getPossibleMatchesFor(styleAdapter);
 
-			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue("originalSelector", sel6)));
+			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel6)));
 			assertThat((possibleMatches as ICollection).size, equalTo(1));
 
 		}
@@ -184,10 +186,10 @@ package net.wooga.displaylistselector.selectorstorage {
 
 			var possibleMatches:IIterable = _selectorStorage.getPossibleMatchesFor(styleAdapter);
 
-			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue("originalSelector", sel1)));
-			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue("originalSelector", sel2)));
-			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue("originalSelector", sel5)));
-			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue("originalSelector", sel6)));
+			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel1)));
+			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel2)));
+			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel5)));
+			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel6)));
 			assertThat((possibleMatches as ICollection).size, equalTo(4));
 		}
 
@@ -209,10 +211,10 @@ package net.wooga.displaylistselector.selectorstorage {
 
 			var possibleMatches:IIterable = _selectorStorage.getPossibleMatchesFor(styleAdapter);
 
-			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue("originalSelector", sel1)));
-			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue("originalSelector", sel2)));
-			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue("originalSelector", sel5)));
-			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue("originalSelector", sel6)));
+			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel1)));
+			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel2)));
+			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel5)));
+			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel6)));
 			assertThat((possibleMatches as ICollection).size, equalTo(4));
 		}
 
@@ -234,9 +236,9 @@ package net.wooga.displaylistselector.selectorstorage {
 
 			var possibleMatches:IIterable = _selectorStorage.getPossibleMatchesFor(styleAdapter);
 
-			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue("originalSelector", sel1)));
-			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue("originalSelector", sel2)));
-			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue("originalSelector", sel5)));
+			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel1)));
+			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel2)));
+			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel5)));
 			assertThat((possibleMatches as ICollection).size, equalTo(3));
 		}
 

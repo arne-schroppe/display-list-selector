@@ -1,6 +1,7 @@
 package net.wooga.displaylistselector.tools {
+
 	import net.wooga.displaylistselector.ISpecificity;
-	import net.wooga.displaylistselector.parser.ParsedSelector;
+	import net.wooga.displaylistselector.newtypes.SelectorDescription;
 
 	import org.as3commons.collections.framework.IComparator;
 
@@ -8,8 +9,12 @@ package net.wooga.displaylistselector.tools {
 
 
 		public function compare(item1:*, item2:*):int {
-			var specificity1:ISpecificity = (item1 as ParsedSelector).specificity;
-			var specificity2:ISpecificity = (item2 as ParsedSelector).specificity;
+			return staticCompare(item1, item2);
+		}
+		
+		public static function staticCompare(item1:*,  item2:*):int {
+			var specificity1:ISpecificity = (item1 as SelectorDescription).specificity;
+			var specificity2:ISpecificity = (item2 as SelectorDescription).specificity;
 
 			return specificity1.compare(specificity2);
 		}

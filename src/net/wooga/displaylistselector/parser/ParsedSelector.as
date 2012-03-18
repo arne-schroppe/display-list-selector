@@ -3,19 +3,19 @@ package net.wooga.displaylistselector.parser {
 	import net.wooga.displaylistselector.matching.matchers.IMatcher;
 
 	public class ParsedSelector {
-		private var _selector:String;
-		private var _originalSelector:String;
+		private var _normalizedSelectorString:String;
+		private var _originalSelectorString:String;
 		private var _matchers:Vector.<IMatcher> = new <IMatcher>[];
 		private var _specificity:ISpecificity;
 		private var _filterData:FilterData = new FilterData();
 
 
-		public function set selector(value:String):void {
-			_selector = value;
+		public function set normalizedSelectorString(value:String):void {
+			_normalizedSelectorString = value;
 		}
 
-		public function get selector():String {
-			return _selector;
+		public function get normalizedSelectorString():String {
+			return _normalizedSelectorString;
 		}
 
 		public function get specificity():ISpecificity {
@@ -31,12 +31,12 @@ package net.wooga.displaylistselector.parser {
 			return _matchers;
 		}
 
-		public function get originalSelector():String {
-			return _originalSelector;
+		public function get originalSelectorString():String {
+			return _originalSelectorString;
 		}
 
-		public function set originalSelector(value:String):void {
-			_originalSelector = value;
+		public function set originalSelectorString(value:String):void {
+			_originalSelectorString = value;
 		}
 
 		//TODO (arneschroppe 14/3/12) it might be good to get rid of this object

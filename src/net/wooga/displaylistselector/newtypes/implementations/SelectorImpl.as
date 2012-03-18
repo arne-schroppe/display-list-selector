@@ -14,7 +14,7 @@ package net.wooga.displaylistselector.newtypes.implementations {
 	public class SelectorImpl extends SelectorDescriptionImpl implements Selector {
 
 		private var _objectToStyleAdapterMap:IMap;
-		private var _matcher:MatcherTool;
+		private var _matcherTool:MatcherTool;
 		private var _matchers:Vector.<IMatcher> = new <IMatcher>[];
 		private var _filterData:FilterData = new FilterData();
 
@@ -26,25 +26,18 @@ package net.wooga.displaylistselector.newtypes.implementations {
 				throw new ArgumentError("No style adapter registered for object " + object);
 			}
 
-			return _matcher.isObjectMatching(adapter, _matchers);
+			return _matcherTool.isObjectMatching(adapter, _matchers);
 		}
-
-
 
 
 		selector_internal function set objectToStyleAdapterMap(value:IMap):void {
 			_objectToStyleAdapterMap = value;
 		}
 
-		selector_internal function set matcher(value:MatcherTool):void {
-			_matcher = value;
+		selector_internal function set matcherTool(value:MatcherTool):void {
+			_matcherTool = value;
 		}
 
-
-
-		selector_internal function set filterData(value:FilterData):void {
-			_filterData = value;
-		}
 
 		selector_internal function set matchers(value:Vector.<IMatcher>):void {
 			_matchers = value;

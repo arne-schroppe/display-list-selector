@@ -66,7 +66,7 @@ package net.wooga.displaylistselector {
 
 			var selectors:Vector.<Selector> = new <Selector>[];
 			for each(var partialSelector:SelectorImpl in partialSelectors) {
-				partialSelector.matcher = _matcher;
+				partialSelector.matcherTool = _matcher;
 				partialSelector.objectToStyleAdapterMap = _objectToStyleAdapterMap;
 
 				selectors.push(partialSelector);

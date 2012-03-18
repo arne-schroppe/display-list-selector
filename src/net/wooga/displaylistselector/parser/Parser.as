@@ -18,6 +18,9 @@ package net.wooga.displaylistselector.parser {
 	import net.wooga.displaylistselector.tools.DynamicMultiMap;
 	import net.wooga.displaylistselector.tools.input.ParserInput;
 
+	import org.as3commons.collections.Map;
+	import org.as3commons.collections.framework.IMap;
+
 	use namespace selector_internal;
 
 	public class Parser {
@@ -28,7 +31,6 @@ package net.wooga.displaylistselector.parser {
 		private var _externalPropertySource:IExternalPropertySource;
 		private var _pseudoClassProvider:IPseudoClassProvider;
 
-
 		private var _matcherMap:DynamicMultiMap = new DynamicMultiMap();
 		private var _isSyntaxExtensionAllowed:Boolean = true;
 
@@ -38,11 +40,13 @@ package net.wooga.displaylistselector.parser {
 		private var _subSelectorStartIndex:int = 0;
 		private var _subSelectorEndIndex:int = 0;
 
-
 		private var _pseudoClassArguments:Array;
 		private var _isExactTypeMatcher:Boolean;
 
 		private var _originalSelector:String;
+
+
+		private var _alreadyParsedSelectors:IMap = new Map();
 
 
 		public function Parser(externalPropertySource:IExternalPropertySource, pseudoClassProvider:IPseudoClassProvider) {
@@ -51,9 +55,13 @@ package net.wooga.displaylistselector.parser {
 		}
 
 
-
 		public function parse(inputString:String):Vector.<SelectorImpl> {
 
+			//TODO (arneschroppe 3/19/12) this class should only parse, not cache
+			if(_alreadyParsedSelectors.hasKey(inputString)) {
+				return _alreadyParsedSelectors.itemFor(inputString) as Vector.<SelectorImpl>;
+			}
+			
 			_originalSelector = inputString;
 			_input = new ParserInput(inputString);
 
@@ -64,6 +72,8 @@ package net.wooga.displaylistselector.parser {
 
 			_subSelectorEndIndex = _input.currentIndex;
 			endMatcherSequence();
+
+			_alreadyParsedSelectors.add(inputString, _individualSelectors);
 
 			return _individualSelectors;
 		}

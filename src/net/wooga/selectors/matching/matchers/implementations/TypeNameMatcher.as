@@ -4,7 +4,7 @@ package net.wooga.selectors.matching.matchers.implementations {
 	import flash.utils.getQualifiedClassName;
 
 	import net.wooga.selectors.matching.matchers.IMatcher;
-	import net.wooga.selectors.selectoradapter.ISelectorAdapter;
+	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 
 	import org.as3commons.collections.Map;
 	import org.as3commons.collections.framework.IMap;
@@ -48,13 +48,13 @@ package net.wooga.selectors.matching.matchers.implementations {
 		}
 
 
-		public function isMatching(subject:ISelectorAdapter):Boolean {
+		public function isMatching(subject:SelectorAdapter):Boolean {
 			return _matchAny || matchesType(subject);
 
 		}
 
 
-		private function matchesType(adapter:ISelectorAdapter):Boolean {
+		private function matchesType(adapter:SelectorAdapter):Boolean {
 
 			//TODO (arneschroppe 22/2/12) maybe we can find a way to avoid using the adapted element directly
 			var subject:Object = adapter.getAdaptedElement();

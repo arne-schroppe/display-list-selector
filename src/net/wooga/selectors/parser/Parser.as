@@ -13,7 +13,7 @@ package net.wooga.selectors.parser {
 	import net.wooga.selectors.matching.matchers.implementations.TypeNameMatcher;
 	import net.wooga.selectors.usagepatterns.implementations.SelectorImpl;
 	import net.wooga.selectors.pseudoclasses.Hover;
-	import net.wooga.selectors.pseudoclasses.IPseudoClass;
+	import net.wooga.selectors.pseudoclasses.PseudoClass;
 	import net.wooga.selectors.selector_internal;
 	import net.wooga.selectors.tools.DynamicMultiMap;
 	import net.wooga.selectors.tools.input.ParserInput;
@@ -29,7 +29,7 @@ package net.wooga.selectors.parser {
 		private var _currentSelector:SelectorImpl;
 
 		private var _externalPropertySource:IExternalPropertySource;
-		private var _pseudoClassProvider:IPseudoClassProvider;
+		private var _pseudoClassProvider:PseudoClassProvider;
 
 		private var _matcherMap:DynamicMultiMap = new DynamicMultiMap();
 		private var _isSyntaxExtensionAllowed:Boolean = true;
@@ -49,7 +49,7 @@ package net.wooga.selectors.parser {
 		private var _alreadyParsedSelectors:IMap = new Map();
 
 
-		public function Parser(externalPropertySource:IExternalPropertySource, pseudoClassProvider:IPseudoClassProvider) {
+		public function Parser(externalPropertySource:IExternalPropertySource, pseudoClassProvider:PseudoClassProvider) {
 			_externalPropertySource = externalPropertySource;
 			_pseudoClassProvider = pseudoClassProvider;
 		}
@@ -320,7 +320,7 @@ package net.wooga.selectors.parser {
 			if (!_pseudoClassProvider.hasPseudoClass(pseudoClassName)) {
 				throw new ParserError("Unknown pseudo-class '" + pseudoClassName + "'");
 			}
-			var pseudoClass:IPseudoClass = _pseudoClassProvider.getPseudoClass(pseudoClassName);
+			var pseudoClass:PseudoClass = _pseudoClassProvider.getPseudoClass(pseudoClassName);
 			var functionMatcher:PseudoClassMatcher = new PseudoClassMatcher(pseudoClass);
 			return functionMatcher;
 

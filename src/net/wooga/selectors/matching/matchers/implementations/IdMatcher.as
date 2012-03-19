@@ -1,7 +1,7 @@
 package net.wooga.selectors.matching.matchers.implementations {
 
 	import net.wooga.selectors.matching.matchers.IMatcher;
-	import net.wooga.selectors.selectoradapter.ISelectorAdapter;
+	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 
 	public class IdMatcher implements IMatcher {
 		private var _id:String;
@@ -10,7 +10,7 @@ package net.wooga.selectors.matching.matchers.implementations {
 			_id = id;
 		}
 
-		public function isMatching(subject:ISelectorAdapter):Boolean {
+		public function isMatching(subject:SelectorAdapter):Boolean {
 			return subject.getId() == _id;
 		}
 

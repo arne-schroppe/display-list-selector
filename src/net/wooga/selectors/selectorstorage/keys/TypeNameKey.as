@@ -5,12 +5,12 @@ package net.wooga.selectors.selectorstorage.keys {
 
 	import net.wooga.selectors.usagepatterns.implementations.SelectorImpl;
 	import net.wooga.selectors.selector_internal;
-	import net.wooga.selectors.selectoradapter.ISelectorAdapter;
+	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 
 	import org.as3commons.collections.Map;
 	import org.as3commons.collections.framework.IMap;
 
-	public class TypeNameKey implements ISelectorTreeNodeKey {
+	public class TypeNameKey implements SelectorTreeNodeKey {
 
 		use namespace selector_internal;
 
@@ -30,7 +30,7 @@ package net.wooga.selectors.selectorstorage.keys {
 		}
 
 		//TODO (arneschroppe 14/3/12) only use keys that actually exist in the tree and are isA-selectors
-		public function keysForAdapter(adapter:ISelectorAdapter, nodes:IMap):Array {
+		public function keysForAdapter(adapter:SelectorAdapter, nodes:IMap):Array {
 			var className:String = getQualifiedClassName(adapter.getAdaptedElement());
 			var keys:Array = getKeysForElement(className);
 			if(!keys) {

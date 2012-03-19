@@ -13,7 +13,7 @@ package net.wooga.selectors.pseudoclasses {
 
 	public class IsEmptyTest extends ContextViewBasedTest {
 
-		private var _pseudoClass:IPseudoClass;
+		private var _pseudoClass:PseudoClass;
 
 		[Before]
 		override public function setUp():void {

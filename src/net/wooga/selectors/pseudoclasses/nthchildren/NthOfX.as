@@ -1,15 +1,15 @@
 package net.wooga.selectors.pseudoclasses.nthchildren {
 
-	import net.wooga.selectors.pseudoclasses.IPseudoClass;
-	import net.wooga.selectors.selectoradapter.ISelectorAdapter;
+	import net.wooga.selectors.pseudoclasses.PseudoClass;
+	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 
-	public class NthOfX implements IPseudoClass {
+	public class NthOfX implements PseudoClass {
 
 		private var _a:int;
 		private var _b:int;
 		private var _argumentParser:NthChildArgumentParser = new NthChildArgumentParser();
 
-		public function isMatching(subject:ISelectorAdapter):Boolean {
+		public function isMatching(subject:SelectorAdapter):Boolean {
 
 			var targetIndex:int = indexOfObject(subject) + 1;
 
@@ -22,7 +22,7 @@ package net.wooga.selectors.pseudoclasses.nthchildren {
 			}
 		}
 
-		protected function indexOfObject(subject:ISelectorAdapter):int {
+		protected function indexOfObject(subject:SelectorAdapter):int {
 			throw new Error("Must be implemented by subclass");
 		}
 

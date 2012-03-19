@@ -14,7 +14,7 @@ package net.wooga.selectors.parser {
 		public var propertySource:IExternalPropertySource;
 
 		[Mock]
-		public var pseudoClassProvider:IPseudoClassProvider;
+		public var pseudoClassProvider:PseudoClassProvider;
 
 
 		private var _parser:Parser;

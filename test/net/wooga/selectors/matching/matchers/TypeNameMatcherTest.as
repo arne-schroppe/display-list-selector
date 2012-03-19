@@ -5,7 +5,7 @@ package net.wooga.selectors.matching.matchers {
 
 	import net.arneschroppe.displaytreebuilder.DisplayTree;
 	import net.wooga.selectors.matching.matchers.implementations.TypeNameMatcher;
-	import net.wooga.selectors.selectoradapter.ISelectorAdapter;
+	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 	import net.wooga.fixtures.ContextViewBasedTest;
 	import net.wooga.fixtures.TestSpriteA;
 	import net.wooga.fixtures.TestSpriteB;
@@ -35,7 +35,7 @@ package net.wooga.selectors.matching.matchers {
 			super.tearDown();
 		}
 
-		private function getAdapterForObjectAtIndex(index:int):ISelectorAdapter {
+		private function getAdapterForObjectAtIndex(index:int):SelectorAdapter {
 			var object:DisplayObject = contextView.getChildAt(index);
 			return getAdapterForObject(object);
 		}

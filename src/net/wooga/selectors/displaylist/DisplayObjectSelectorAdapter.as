@@ -5,7 +5,7 @@ package net.wooga.selectors.displaylist {
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 
-	public class DisplayObjectSelectorAdapter implements ISelectorAdapter {
+	public class DisplayObjectSelectorAdapter implements SelectorAdapter {
 
 		private var _adaptedElement:DisplayObject;
 

@@ -1,9 +1,9 @@
 package net.wooga.selectors.selectorstorage {
 
 	import net.wooga.selectors.usagepatterns.implementations.SelectorImpl;
-	import net.wooga.selectors.selectoradapter.ISelectorAdapter;
+	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 	import net.wooga.selectors.selectorstorage.keys.HoverKey;
-	import net.wooga.selectors.selectorstorage.keys.ISelectorTreeNodeKey;
+	import net.wooga.selectors.selectorstorage.keys.SelectorTreeNodeKey;
 	import net.wooga.selectors.selectorstorage.keys.IdKey;
 	import net.wooga.selectors.selectorstorage.keys.TypeNameKey;
 
@@ -16,7 +16,7 @@ package net.wooga.selectors.selectorstorage {
 
 
 		private var _filterRoot:SelectorFilterTreeNode;
-		private var _filterKeys:Vector.<ISelectorTreeNodeKey> = new <ISelectorTreeNodeKey>[
+		private var _filterKeys:Vector.<SelectorTreeNodeKey> = new <SelectorTreeNodeKey>[
 			new TypeNameKey(),
 			new IdKey(),
 			new HoverKey()
@@ -44,7 +44,7 @@ package net.wooga.selectors.selectorstorage {
 				return false;
 			}
 
-			var nodeKey:ISelectorTreeNodeKey = _filterKeys[keyIndex];
+			var nodeKey:SelectorTreeNodeKey = _filterKeys[keyIndex];
 
 			var hasKey:Boolean = nodeKey.selectorHasKey(selector);
 			var key:*;
@@ -81,13 +81,13 @@ package net.wooga.selectors.selectorstorage {
 		}
 
 
-		public function getPossibleMatchesFor(object:ISelectorAdapter):IIterable {
+		public function getPossibleMatchesFor(object:SelectorAdapter):IIterable {
 			_foundSelectors = new Set();
 			searchForMatches(_filterRoot, 0, object);
 			return _foundSelectors;
 		}
 
-		private function searchForMatches(node:SelectorFilterTreeNode, keyIndex:int, adapter:ISelectorAdapter):void {
+		private function searchForMatches(node:SelectorFilterTreeNode, keyIndex:int, adapter:SelectorAdapter):void {
 
 			if(!node) {
 				return;
@@ -104,7 +104,7 @@ package net.wooga.selectors.selectorstorage {
 				return;
 			}
 
-			var nodeKey:ISelectorTreeNodeKey = _filterKeys[keyIndex];
+			var nodeKey:SelectorTreeNodeKey = _filterKeys[keyIndex];
 			var keys:Array = nodeKey.keysForAdapter(adapter, node.childNodes);
 
 			for each(var key:String in keys) {
@@ -114,7 +114,7 @@ package net.wooga.selectors.selectorstorage {
 
 		//This is currently only used by the TypeNameKey (asc 2012-03-15)
 		private function invalidateAllKeyCaches():void {
-			for each(var key:ISelectorTreeNodeKey in _filterKeys) {
+			for each(var key:SelectorTreeNodeKey in _filterKeys) {
 				key.invalidateCaches();
 			}
 		}

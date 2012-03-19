@@ -1,11 +1,11 @@
 package net.wooga.selectors.selectorstorage {
 
 	import net.wooga.selectors.usagepatterns.implementations.SelectorImpl;
-	import net.wooga.selectors.parser.IPseudoClassProvider;
+	import net.wooga.selectors.parser.PseudoClassProvider;
 	import net.wooga.selectors.parser.Parser;
 	import net.wooga.selectors.pseudoclasses.Hover;
-	import net.wooga.selectors.pseudoclasses.IPseudoClass;
-	import net.wooga.selectors.selectoradapter.ISelectorAdapter;
+	import net.wooga.selectors.pseudoclasses.PseudoClass;
+	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 	import net.wooga.fixtures.SubClassOfTestSpriteA;
 	import net.wooga.fixtures.SubSubClassOfTestSpriteA;
 	import net.wooga.fixtures.TestSpriteA;
@@ -20,7 +20,7 @@ package net.wooga.selectors.selectorstorage {
 	import org.mockito.integrations.flexunit4.MockitoRule;
 	import org.mockito.integrations.given;
 
-	public class SelectorStorageTest implements IPseudoClassProvider {
+	public class SelectorStorageTest implements PseudoClassProvider {
 
 		[Rule]
 		public var mockitoRule:IMethodRule = new MockitoRule();
@@ -34,7 +34,7 @@ package net.wooga.selectors.selectorstorage {
 		private static const ORIGINAL_SELECTOR_PROPERTY:String = "originalSelectorString";
 
 		[Mock]
-		public var styleAdapter:ISelectorAdapter;
+		public var styleAdapter:SelectorAdapter;
 
 		[Before]
 		public function setUp():void {
@@ -259,7 +259,7 @@ package net.wooga.selectors.selectorstorage {
 			return pseudoClassName == "hover";
 		}
 
-		public function getPseudoClass(pseudoClassName:String):IPseudoClass {
+		public function getPseudoClass(pseudoClassName:String):PseudoClass {
 			if(pseudoClassName == "hover") {
 				return new Hover();
 			}

@@ -13,7 +13,7 @@ package net.wooga.selectors {
 	import net.wooga.selectors.pseudoclasses.Active;
 	import net.wooga.selectors.pseudoclasses.FirstChild;
 	import net.wooga.selectors.pseudoclasses.Hover;
-	import net.wooga.selectors.pseudoclasses.IPseudoClass;
+	import net.wooga.selectors.pseudoclasses.PseudoClass;
 	import net.wooga.selectors.pseudoclasses.IsEmpty;
 	import net.wooga.selectors.pseudoclasses.LastChild;
 	import net.wooga.selectors.pseudoclasses.NthChild;
@@ -21,7 +21,7 @@ package net.wooga.selectors {
 	import net.wooga.selectors.pseudoclasses.NthLastOfType;
 	import net.wooga.selectors.pseudoclasses.NthOfType;
 	import net.wooga.selectors.pseudoclasses.Root;
-	import net.wooga.selectors.selectoradapter.ISelectorAdapter;
+	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 	import net.wooga.selectors.tools.Types;
 
 	import org.as3commons.collections.Map;
@@ -37,7 +37,7 @@ package net.wooga.selectors {
 		private var _matcher:MatcherTool;
 
 
-		private var _pseudoClassProvider:PseudoClassProvider;
+		private var _pseudoClassProvider:PseudoClassProviderImpl;
 
 		private var _objectToStyleAdapterMap:IMap = new Map();
 
@@ -53,7 +53,7 @@ package net.wooga.selectors {
 				externalPropertySource = new NullPropertySource();
 			}
 
-			_pseudoClassProvider = new PseudoClassProvider();
+			_pseudoClassProvider = new PseudoClassProviderImpl();
 			addDefaultPseudoClasses();
 
 			_parser = new Parser(externalPropertySource, _pseudoClassProvider);
@@ -81,7 +81,7 @@ package net.wooga.selectors {
 		}
 
 
-		public function addPseudoClass(className:String, pseudoClass:IPseudoClass):void {
+		public function addPseudoClass(className:String, pseudoClass:PseudoClass):void {
 			if (_pseudoClassProvider.hasPseudoClass(className)) {
 				throw new ArgumentError("Pseudo class " + className + " already exists");
 			}
@@ -104,8 +104,8 @@ package net.wooga.selectors {
 
 
 		private function checkAdapterType(adapterType:Class):void {
-			if (!Types.doesTypeImplementInterface(adapterType, ISelectorAdapter)) {
-				throw new ArgumentError(getQualifiedClassName(adapterType) + " must implement " + getQualifiedClassName(ISelectorAdapter) + " to be registered as an adapter");
+			if (!Types.doesTypeImplementInterface(adapterType, SelectorAdapter)) {
+				throw new ArgumentError(getQualifiedClassName(adapterType) + " must implement " + getQualifiedClassName(SelectorAdapter) + " to be registered as an adapter");
 			}
 		}
 
@@ -122,7 +122,7 @@ package net.wooga.selectors {
 				return;
 			}
 
-			var selectorClient:ISelectorAdapter = new SelectorClientClass();
+			var selectorClient:SelectorAdapter = new SelectorClientClass();
 			_objectToStyleAdapterMap.add(object, selectorClient);
 			selectorClient.register(object);
 		}
@@ -142,7 +142,7 @@ package net.wooga.selectors {
 		public function removeStyleAdapterOf(object:Object):void {
 
 			if(_objectToStyleAdapterMap.hasKey(object)) {
-				var selectorClient:ISelectorAdapter = _objectToStyleAdapterMap.itemFor(object);
+				var selectorClient:SelectorAdapter = _objectToStyleAdapterMap.itemFor(object);
 				selectorClient.unregister();
 				_objectToStyleAdapterMap.removeKey(object);
 			}

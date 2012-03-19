@@ -4,7 +4,7 @@ package net.wooga.selectors.matching {
 	import net.wooga.selectors.matching.matchers.IMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.ChildSelectorMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.DescendantSelectorMatcher;
-	import net.wooga.selectors.selectoradapter.ISelectorAdapter;
+	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 
 	import org.as3commons.collections.framework.IMap;
 
@@ -21,7 +21,7 @@ package net.wooga.selectors.matching {
 		}
 
 
-		public function isObjectMatching(adapter:ISelectorAdapter, matchers:Vector.<IMatcher>):Boolean {
+		public function isObjectMatching(adapter:SelectorAdapter, matchers:Vector.<IMatcher>):Boolean {
 
 			_currentlyMatchedMatchers = matchers;
 
@@ -34,7 +34,7 @@ package net.wooga.selectors.matching {
 
 
 
-		private function reverseMatch(subject:ISelectorAdapter, nextMatcher:int):Boolean {
+		private function reverseMatch(subject:SelectorAdapter, nextMatcher:int):Boolean {
 
 			if (!subject) {
 				return false;
@@ -85,7 +85,7 @@ package net.wooga.selectors.matching {
 			return result;
 		}
 
-		private function reverseMatchParentIfPossible(subject:ISelectorAdapter, nextMatcher:int):Boolean {
+		private function reverseMatchParentIfPossible(subject:SelectorAdapter, nextMatcher:int):Boolean {
 
 			//TODO (arneschroppe 22/2/12) we should use a isObjectEqualTo-method here
 			if (subject.getAdaptedElement() == _rootObject) {

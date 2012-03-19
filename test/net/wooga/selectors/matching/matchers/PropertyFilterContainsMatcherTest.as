@@ -4,7 +4,7 @@ package net.wooga.selectors.matching.matchers {
 
 	import net.arneschroppe.displaytreebuilder.DisplayTree;
 	import net.wooga.selectors.matching.matchers.implementations.PropertyFilterContainsMatcher;
-	import net.wooga.selectors.selectoradapter.ISelectorAdapter;
+	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 	import net.wooga.fixtures.ContextViewBasedTest;
 	import net.wooga.fixtures.TestSpriteA;
 	import net.wooga.fixtures.TestSpriteB;
@@ -65,7 +65,7 @@ package net.wooga.selectors.matching.matchers {
 		}
 
 
-		private function getAdapterForObjectAtIndex(index:int):ISelectorAdapter {
+		private function getAdapterForObjectAtIndex(index:int):SelectorAdapter {
 			var object:DisplayObject = contextView.getChildAt(index);
 			return getAdapterForObject(object);
 		}
@@ -75,17 +75,17 @@ package net.wooga.selectors.matching.matchers {
 import flash.utils.getQualifiedClassName;
 
 import net.wooga.selectors.IExternalPropertySource;
-import net.wooga.selectors.selectoradapter.ISelectorAdapter;
+import net.wooga.selectors.selectoradapter.SelectorAdapter;
 
 import org.as3commons.collections.Set;
 
 class TestPropertySource implements IExternalPropertySource {
 
-	public function stringValueForProperty(subject:ISelectorAdapter, name:String):String {
+	public function stringValueForProperty(subject:SelectorAdapter, name:String):String {
 		throw new Error("Unexpected method called");
 	}
 
-	public function collectionValueForProperty(subject:ISelectorAdapter, name:String):Set {
+	public function collectionValueForProperty(subject:SelectorAdapter, name:String):Set {
 
 		if(name == "testProperty") {
 			var result:Set = new Set();

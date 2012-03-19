@@ -1,10 +1,10 @@
 package net.wooga.selectors.pseudoclasses {
 
-	import net.wooga.selectors.selectoradapter.ISelectorAdapter;
+	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 
-	public class IsEmpty implements IPseudoClass {
+	public class IsEmpty implements PseudoClass {
 
-		public function isMatching(subject:ISelectorAdapter):Boolean {
+		public function isMatching(subject:SelectorAdapter):Boolean {
 			return subject.isEmpty();
 		}
 

@@ -1,11 +1,11 @@
 package net.wooga.selectors.pseudoclasses {
 
-	import net.wooga.selectors.selectoradapter.ISelectorAdapter;
+	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 
 	public class FirstChild extends NthChild {
 
 
-		override public function isMatching(subject:ISelectorAdapter):Boolean {
+		override public function isMatching(subject:SelectorAdapter):Boolean {
 			super.setArguments(["1"]);
 			return super.isMatching(subject);
 		}

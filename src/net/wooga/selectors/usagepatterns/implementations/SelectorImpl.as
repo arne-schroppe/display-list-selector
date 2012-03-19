@@ -5,7 +5,7 @@ package net.wooga.selectors.usagepatterns.implementations {
 	import net.wooga.selectors.usagepatterns.*;
 	import net.wooga.selectors.parser.FilterData;
 	import net.wooga.selectors.selector_internal;
-	import net.wooga.selectors.selectoradapter.ISelectorAdapter;
+	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 
 	import org.as3commons.collections.framework.IMap;
 
@@ -21,7 +21,7 @@ package net.wooga.selectors.usagepatterns.implementations {
 
 
 		public function isMatching(object:Object):Boolean {
-			var adapter:ISelectorAdapter = _objectToStyleAdapterMap.itemFor(object);
+			var adapter:SelectorAdapter = _objectToStyleAdapterMap.itemFor(object);
 			if(!adapter) {
 				throw new ArgumentError("No style adapter registered for object " + object);
 			}

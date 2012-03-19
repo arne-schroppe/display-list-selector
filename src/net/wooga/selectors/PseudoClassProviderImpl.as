@@ -1,11 +1,11 @@
 package net.wooga.selectors {
 
-	import net.wooga.selectors.parser.IPseudoClassProvider;
-	import net.wooga.selectors.pseudoclasses.IPseudoClass;
+	import net.wooga.selectors.parser.PseudoClassProvider;
+	import net.wooga.selectors.pseudoclasses.PseudoClass;
 
 	import org.as3commons.collections.Map;
 
-	internal class PseudoClassProvider implements IPseudoClassProvider {
+	internal class PseudoClassProviderImpl implements PseudoClassProvider {
 
 		private var _pseudoClassMap:Map = new Map();
 
@@ -13,11 +13,11 @@ package net.wooga.selectors {
 			return _pseudoClassMap.hasKey(pseudoClassName);
 		}
 
-		public function getPseudoClass(pseudoClassName:String):IPseudoClass {
+		public function getPseudoClass(pseudoClassName:String):PseudoClass {
 			return _pseudoClassMap.itemFor(pseudoClassName);
 		}
 
-		internal function addPseudoClass(className:String, pseudoClass:IPseudoClass):void {
+		internal function addPseudoClass(className:String, pseudoClass:PseudoClass):void {
 			_pseudoClassMap.add(className, pseudoClass);
 		}
 	}

@@ -2,7 +2,7 @@ package net.wooga.selectors.matching.matchers.implementations {
 
 	import net.wooga.selectors.IExternalPropertySource;
 	import net.wooga.selectors.matching.matchers.IMatcher;
-	import net.wooga.selectors.selectoradapter.ISelectorAdapter;
+	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 
 	import org.as3commons.collections.Set;
 
@@ -17,7 +17,7 @@ package net.wooga.selectors.matching.matchers.implementations {
 			_value = value;
 		}
 
-		public function isMatching(subject:ISelectorAdapter):Boolean {
+		public function isMatching(subject:SelectorAdapter):Boolean {
 			if (!(_property in subject)) {
 				return getExternalProperty(subject);
 			} else {
@@ -25,7 +25,7 @@ package net.wooga.selectors.matching.matchers.implementations {
 			}
 		}
 
-		private function getObjectProperty(subject:ISelectorAdapter):Boolean {
+		private function getObjectProperty(subject:SelectorAdapter):Boolean {
 			var collection:Set = subject[_property] as Set;
 			if (collection && collection.has(_value)) {
 				return true;
@@ -34,7 +34,7 @@ package net.wooga.selectors.matching.matchers.implementations {
 			return false;
 		}
 
-		private function getExternalProperty(subject:ISelectorAdapter):Boolean {
+		private function getExternalProperty(subject:SelectorAdapter):Boolean {
 			var collection:Set = _externalPropertySource.collectionValueForProperty(subject, _property);
 
 			if (collection && collection.has(_value)) {

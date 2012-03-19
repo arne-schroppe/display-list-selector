@@ -623,7 +623,7 @@ package net.wooga.selectors {
 import flash.utils.Dictionary;
 
 import net.wooga.selectors.IExternalPropertySource;
-import net.wooga.selectors.selectoradapter.ISelectorAdapter;
+import net.wooga.selectors.selectoradapter.SelectorAdapter;
 
 import org.as3commons.collections.Set;
 
@@ -635,11 +635,11 @@ class PropertyDictionary implements IExternalPropertySource {
 		_values[key] = value;
 	}
 
-	public function stringValueForProperty(subject:ISelectorAdapter, name:String):String {
+	public function stringValueForProperty(subject:SelectorAdapter, name:String):String {
 		return _values[name];
 	}
 
-	public function collectionValueForProperty(subject:ISelectorAdapter, name:String):Set {
+	public function collectionValueForProperty(subject:SelectorAdapter, name:String):Set {
 		return _values[name];
 	}
 }

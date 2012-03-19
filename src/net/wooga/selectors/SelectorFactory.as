@@ -2,7 +2,7 @@ package net.wooga.selectors {
 
 	import net.wooga.selectors.usagepatterns.SelectorGroup;
 	import net.wooga.selectors.usagepatterns.SelectorPool;
-	import net.wooga.selectors.pseudoclasses.IPseudoClass;
+	import net.wooga.selectors.pseudoclasses.PseudoClass;
 
 	public interface SelectorFactory {
 
@@ -11,7 +11,7 @@ package net.wooga.selectors {
 		function createSelector(selectorString:String):SelectorGroup;
 		function createSelectorPool():SelectorPool;
 
-		function addPseudoClass(className:String, pseudoClass:IPseudoClass):void;
+		function addPseudoClass(className:String, pseudoClass:PseudoClass):void;
 
 
 		function setStyleAdapterForType(adapterType:Class, objectType:Class):void;

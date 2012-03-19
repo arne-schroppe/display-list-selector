@@ -1,10 +1,10 @@
 package net.wooga.selectors.pseudoclasses {
 
-	import net.wooga.selectors.selectoradapter.ISelectorAdapter;
+	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 
-	public class Hover implements IPseudoClass {
+	public class Hover implements PseudoClass {
 
-		public function isMatching(subject:ISelectorAdapter):Boolean {
+		public function isMatching(subject:SelectorAdapter):Boolean {
 			return subject.isHovered();
 		}
 

@@ -2,7 +2,7 @@ package net.wooga.selectors.matching.matchers.implementations {
 
 	import net.wooga.selectors.IExternalPropertySource;
 	import net.wooga.selectors.matching.matchers.IMatcher;
-	import net.wooga.selectors.selectoradapter.ISelectorAdapter;
+	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 
 	public class PropertyFilterEqualsMatcher implements IMatcher {
 		private var _property:String;
@@ -15,7 +15,7 @@ package net.wooga.selectors.matching.matchers.implementations {
 			_value = value;
 		}
 
-		public function isMatching(subject:ISelectorAdapter):Boolean {
+		public function isMatching(subject:SelectorAdapter):Boolean {
 			if (!(_property in subject.getAdaptedElement())) {
 				return getExternalProperty(subject);
 			} else {
@@ -23,7 +23,7 @@ package net.wooga.selectors.matching.matchers.implementations {
 			}
 		}
 
-		private function getObjectProperty(subject:ISelectorAdapter):Boolean {
+		private function getObjectProperty(subject:SelectorAdapter):Boolean {
 			//TODO (arneschroppe 22/2/12) don't use adaptedElement directly here
 			if (subject.getAdaptedElement()[_property] == _value) {
 				return true;
@@ -32,7 +32,7 @@ package net.wooga.selectors.matching.matchers.implementations {
 			return false;
 		}
 
-		private function getExternalProperty(subject:ISelectorAdapter):Boolean {
+		private function getExternalProperty(subject:SelectorAdapter):Boolean {
 			var currentValue:String = _externalPropertySource.stringValueForProperty(subject, _property);
 			if (currentValue == _value) {
 				return true;

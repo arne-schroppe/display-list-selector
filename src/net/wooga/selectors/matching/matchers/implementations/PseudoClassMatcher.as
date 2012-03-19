@@ -1,19 +1,19 @@
 package net.wooga.selectors.matching.matchers.implementations {
 
 	import net.wooga.selectors.matching.matchers.IMatcher;
-	import net.wooga.selectors.pseudoclasses.IPseudoClass;
-	import net.wooga.selectors.selectoradapter.ISelectorAdapter;
+	import net.wooga.selectors.pseudoclasses.PseudoClass;
+	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 
 	public class PseudoClassMatcher implements IMatcher {
 
-		private var _pseudoClass:IPseudoClass;
+		private var _pseudoClass:PseudoClass;
 
 
-		public function get pseudoClass():IPseudoClass {
+		public function get pseudoClass():PseudoClass {
 			return _pseudoClass;
 		}
 
-		public function PseudoClassMatcher(pseudoClass:IPseudoClass) {
+		public function PseudoClassMatcher(pseudoClass:PseudoClass) {
 			_pseudoClass = pseudoClass;
 		}
 
@@ -21,7 +21,7 @@ package net.wooga.selectors.matching.matchers.implementations {
 			_pseudoClass.setArguments(arguments);
 		}
 
-		public function isMatching(subject:ISelectorAdapter):Boolean {
+		public function isMatching(subject:SelectorAdapter):Boolean {
 			return _pseudoClass.isMatching(subject);
 		}
 	}

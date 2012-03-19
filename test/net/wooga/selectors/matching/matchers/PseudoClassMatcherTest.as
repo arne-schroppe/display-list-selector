@@ -4,7 +4,7 @@ package net.wooga.selectors.matching.matchers {
 
 	import net.arneschroppe.displaytreebuilder.DisplayTree;
 	import net.wooga.selectors.matching.matchers.implementations.PseudoClassMatcher;
-	import net.wooga.selectors.selectoradapter.ISelectorAdapter;
+	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 	import net.wooga.fixtures.ContextViewBasedTest;
 	import net.wooga.fixtures.TestSpriteA;
 	import net.wooga.fixtures.TestSpriteB;
@@ -63,7 +63,7 @@ package net.wooga.selectors.matching.matchers {
 
 		}
 
-		private function getAdapterForObjectAtIndex(index:int):ISelectorAdapter {
+		private function getAdapterForObjectAtIndex(index:int):SelectorAdapter {
 			var object:DisplayObject = contextView.getChildAt(index);
 			return getAdapterForObject(object);
 		}
@@ -71,16 +71,16 @@ package net.wooga.selectors.matching.matchers {
 	}
 }
 
-import net.wooga.selectors.pseudoclasses.IPseudoClass;
-import net.wooga.selectors.selectoradapter.ISelectorAdapter;
+import net.wooga.selectors.pseudoclasses.PseudoClass;
+import net.wooga.selectors.selectoradapter.SelectorAdapter;
 import net.wooga.fixtures.TestSpriteC;
 
-class TestPseudoClass implements IPseudoClass {
+class TestPseudoClass implements PseudoClass {
 
 	public function setArguments(arguments:Array):void {
 	}
 
-	public function isMatching(subject:ISelectorAdapter):Boolean {
+	public function isMatching(subject:SelectorAdapter):Boolean {
 		return subject.getAdaptedElement() is TestSpriteC;
 	}
 }

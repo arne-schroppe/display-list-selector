@@ -2,11 +2,11 @@ package net.wooga.selectors.selectorstorage.keys {
 
 	import net.wooga.selectors.usagepatterns.implementations.SelectorImpl;
 	import net.wooga.selectors.selector_internal;
-	import net.wooga.selectors.selectoradapter.ISelectorAdapter;
+	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 
 	import org.as3commons.collections.framework.IMap;
 
-	public class HoverKey implements ISelectorTreeNodeKey {
+	public class HoverKey implements SelectorTreeNodeKey {
 
 		use namespace selector_internal;
 
@@ -22,7 +22,7 @@ package net.wooga.selectors.selectorstorage.keys {
 		}
 
 
-		public function keysForAdapter(adapter:ISelectorAdapter, nodes:IMap):Array {
+		public function keysForAdapter(adapter:SelectorAdapter, nodes:IMap):Array {
 			return [adapter.isHovered() ? HOVER_KEY : NULL_KEY];
 		}
 

@@ -4,7 +4,7 @@ package net.wooga.selectors.usagepatterns.implementations {
 	import net.wooga.selectors.usagepatterns.*;
 	import net.wooga.selectors.parser.Parser;
 	import net.wooga.selectors.selector_internal;
-	import net.wooga.selectors.selectoradapter.ISelectorAdapter;
+	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 	import net.wooga.selectors.selectorstorage.SelectorTree;
 	import net.wooga.selectors.tools.SpecificityComparator;
 
@@ -41,7 +41,7 @@ package net.wooga.selectors.usagepatterns.implementations {
 
 
 		public function getSelectorsMatchingObject(object:Object):Vector.<SelectorDescription> {
-			var adapter:ISelectorAdapter = _objectToStyleAdapterMap.itemFor(object);
+			var adapter:SelectorAdapter = _objectToStyleAdapterMap.itemFor(object);
 			if(!adapter) {
 				throw new ArgumentError("No style adapter registered for object " + object);
 			}

@@ -1,5 +1,5 @@
 package net.wooga.selectors.selectoradapter {
-	public interface ISelectorAdapter {
+	public interface SelectorAdapter {
 		function register(adaptedElement:Object):void;
 		function unregister():void;
 

@@ -1,8 +1,9 @@
 package net.wooga.fixtures {
-	import net.wooga.uiengine.displaylistselector.selectoradapter.DisplayObjectSelectorAdapter;
-	import net.wooga.uiengine.displaylistselector.selectoradapter.ISelectorAdapter;
 
-	public function getAdapterForObject(object:Object):ISelectorAdapter {
+	import net.wooga.selectors.displaylist.DisplayObjectSelectorAdapter;
+	import net.wooga.selectors.selectoradapter.SelectorAdapter;
+
+	public function getAdapterForObject(object:Object):SelectorAdapter {
 		var adapter:DisplayObjectSelectorAdapter = new DisplayObjectSelectorAdapter();
 		adapter.register(object);
 

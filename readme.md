@@ -1,10 +1,8 @@
 
-#This readme file is OUTDATED and will be updated soon
-
 
 #CSS Selectors for the display list
 
-An implementation of CSS3–selectors for the flash display list. Selectors are
+An implementation of CSS3–selectors for flash. Selectors are
 of the form
 
     Sprite#container > MovieClip:nth-child(2) *.headline > TextField[text='About']
@@ -14,28 +12,43 @@ of matched objects.
 
 
 
+##Basic usage
 
-##Usage
+First, initialize a factory for your selectors. The factory also holds data and settings that are relevant
+for all selectors
 
-First, initialize a context for your selectors. Usually you can conveniently use the default
-context:
+    var selectorFactory:SelectorFactory = new DisplayListSelectorFactory();
+    selectorFactory.initializeWith(stage);
 
-    DefaultSelectorContext.initializeWith(rootView);
+Then just create selectors:
 
-Then just create objects of type Selector and query them:
+    var selector:SelectorGroup = selectorFactory.createSelector("Sprite:first-child(), MovieClip");
 
-    var selector:Selector = new Selector("Sprite > MovieClip:first-child()");
-    var matches:Set = selector.getMatchedObjects();
+Before you can query an object against a selector, a SelectorAdapter must be created for that object. 
+The DisplayListSelectorFactory uses the `ADDED_TO_STAGE` event to automatically add a suitable SelectorAdapter
+so usually you don't have to worry about this. You can just query the match right away:
 
-The library monitors the display list for changes, so if objects are added and removed, all
-selector instances are automatically updated. In some cases you need to inform the library
-of changes though, for example if properties change. You can do this through the context.
-
-    someObject.name = "icon";
-    DefaultSelectorContext.objectWasChanged(someObject);
+    var isMatching:Boolean = selector.isAnySelectorMatching(someDisplayObject);
 
 Selectors are modeled after the CSS3 selector standard, but not all features have been implemented
 yet.
+
+
+##Usage scenarios
+
+The selector libray supports two different usage scenarios by providing optimized objects for each. When
+a single selector needs to be matched against a single object, the mentioned `SelectorGroup` should be used.
+If many selectors need to be checked against a single object, a more optimized object is available though, the
+`SelectorPool`. It is used as follows:
+
+    var selectorPool:SelectorPool = selectorFactory.createSelectorPool();
+    selectorPool.addSelector("Sprite");
+    selectorPool.addSelector("MovieClip");
+    selectorPool.addSelector("*:first-child()");
+    
+    var matches:Vector.<SelectorDescription> = selectorPool.getSelectorsMatchingObject(someDisplayObject);
+    
+The result is sorted by specificity.
 
 
 ##Extended syntax
@@ -52,16 +65,9 @@ the identifier with ^ makes it also match superclasses and interfaces. For examp
 matches elements of type Sprite, MovieClip, or other objects that have Sprite as a super class.
 
 
-###Partly or fully qualified class names
-Identifiers in element selectors can also be partly and fully qualified with package names, by wrapping them
-in parentheses. The use of the wildcard * is also possible. Examples of valid identifiers are:
-
+###Qualified class names
+Identifiers in element selectors can also be fully qualified class names, by wrapping them
+in parentheses, for example:
 
     /* Fully qualified name */
     Sprite > (net.company.tool.view.Image)
-
-    /* Partly qualified name */
-    Sprite > (otherview.Image)
-
-    /* Using wildcards, matches both net.company.tool.view.Image and net.company.tool.otherview.Image */
-    Sprite > (net.company.tool.*.Image)

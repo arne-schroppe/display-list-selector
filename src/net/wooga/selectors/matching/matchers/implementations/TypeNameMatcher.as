@@ -9,6 +9,7 @@ package net.wooga.selectors.matching.matchers.implementations {
 	import org.as3commons.collections.Map;
 	import org.as3commons.collections.framework.IMap;
 
+	//TODO (arneschroppe 19/3/12) operations in this class take too much time, especially isMatching and calls to addFromCollection
 	public class TypeNameMatcher implements IMatcher {
 
 		private var _matchAny:Boolean = false;

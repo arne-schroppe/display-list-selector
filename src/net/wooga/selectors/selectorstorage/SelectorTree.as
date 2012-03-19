@@ -97,7 +97,8 @@ package net.wooga.selectors.selectorstorage {
 				invalidateAllKeyCaches();
 				_selectorsWereAdded = false;
 			}
-			
+
+			//TODO (arneschroppe 19/3/12) use array here, this is too costly
 			Sets.addFromCollection(_foundSelectors, node.selectors);
 
 			if(keyIndex >= _filterKeys.length) {

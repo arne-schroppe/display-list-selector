@@ -2,7 +2,7 @@ package net.wooga.selectors.matching.matchers {
 
 	import net.arneschroppe.displaytreebuilder.DisplayTree;
 	import net.wooga.selectors.matching.matchers.implementations.ChildSelectorMatcher;
-	import net.wooga.fixtures.ContextViewBasedTest;
+	import net.wooga.fixtures.tools.ContextViewBasedTest;
 	import net.wooga.fixtures.TestSpriteA;
 	import net.wooga.fixtures.TestSpriteB;
 	import net.wooga.fixtures.TestSpriteC;

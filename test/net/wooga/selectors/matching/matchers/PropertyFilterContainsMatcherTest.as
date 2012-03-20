@@ -5,12 +5,12 @@ package net.wooga.selectors.matching.matchers {
 	import net.arneschroppe.displaytreebuilder.DisplayTree;
 	import net.wooga.selectors.matching.matchers.implementations.PropertyFilterContainsMatcher;
 	import net.wooga.selectors.selectoradapter.SelectorAdapter;
-	import net.wooga.fixtures.ContextViewBasedTest;
+	import net.wooga.fixtures.tools.ContextViewBasedTest;
 	import net.wooga.fixtures.TestSpriteA;
 	import net.wooga.fixtures.TestSpriteB;
 	import net.wooga.fixtures.TestSpriteC;
-	import net.wooga.fixtures.containsInArrayExactly;
-	import net.wooga.fixtures.getAdapterForObject;
+	import net.wooga.fixtures.tools.containsInArrayExactly;
+	import net.wooga.fixtures.tools.getAdapterForObject;
 
 	import org.hamcrest.assertThat;
 	import org.hamcrest.core.isA;

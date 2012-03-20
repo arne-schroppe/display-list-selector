@@ -1,4 +1,4 @@
-package net.wooga.fixtures {
+package net.wooga.fixtures.tools {
 
 	import org.hamcrest.Description;
 	import org.hamcrest.Matcher;

@@ -10,7 +10,7 @@ package net.wooga.selectors {
 	import net.wooga.selectors.usagepatterns.SelectorGroup;
 	import net.wooga.selectors.usagepatterns.SelectorPool;
 	import net.wooga.selectors.displaylist.DisplayObjectSelectorAdapter;
-	import net.wooga.fixtures.ContextViewBasedTest;
+	import net.wooga.fixtures.tools.ContextViewBasedTest;
 	import net.wooga.fixtures.TestSpriteA;
 	import net.wooga.fixtures.TestSpriteB;
 	import net.wooga.fixtures.TestSpriteC;

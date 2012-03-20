@@ -1,4 +1,4 @@
-package net.wooga.fixtures {
+package net.wooga.fixtures.tools {
 
 	import net.wooga.selectors.displaylist.DisplayObjectSelectorAdapter;
 	import net.wooga.selectors.selectoradapter.SelectorAdapter;

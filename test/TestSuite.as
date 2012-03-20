@@ -47,7 +47,7 @@ package {
 		public var selectorStorageTest:SelectorStorageTest;
 		public var hoverTest:HoverTest;
 		public var activeTest:ActiveTest;
-		//public var parserTest:ParserTest;
+		//public var parserTest:ParserTest; //TODO (arneschroppe 20/3/12) we should test the parser
 
 	}
 }

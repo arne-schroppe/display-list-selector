@@ -47,7 +47,6 @@ package {
 		public var selectorStorageTest:SelectorStorageTest;
 		public var hoverTest:HoverTest;
 		public var activeTest:ActiveTest;
-		//public var parserTest:ParserTest;
 
 	}
 }

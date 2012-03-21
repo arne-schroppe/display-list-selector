@@ -35,7 +35,7 @@ package net.wooga.selectors.matching.matchers {
 
 			var tree:DisplayTree = new DisplayTree();
 
-			tree.hasA(contextView).containing
+			tree.uses(contextView).containing
 					.a(TestSpriteA)
 					.a(TestSpriteB)
 					.a(TestSpriteC)

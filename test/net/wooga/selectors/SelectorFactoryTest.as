@@ -56,7 +56,7 @@ package net.wooga.selectors {
 		[Test]
 		public function should_match_element_selector():void {
 
-			_displayList.hasA(contextView).containing
+			_displayList.uses(contextView).containing
 				.a(TestSpriteA)
 				.a(TestSpriteB)
 				.a(TestSpriteC)
@@ -75,7 +75,7 @@ package net.wooga.selectors {
 		[Test]
 		public function should_match_any_selector():void {
 
-			_displayList.hasA(contextView).containing
+			_displayList.uses(contextView).containing
 					.a(TestSpriteA)
 					.a(TestSpriteB)
 					.a(TestSpriteC)
@@ -94,7 +94,7 @@ package net.wooga.selectors {
 		[Test]
 		public function should_match_nested_class():void {
 
-			_displayList.hasA(contextView).containing
+			_displayList.uses(contextView).containing
 					.a(TestSpriteA)
 					.a(TestSpriteB).containing
 						.a(TestSpriteC)
@@ -116,7 +116,7 @@ package net.wooga.selectors {
 
 			var expectedName:String = "test1234";
 
-			_displayList.hasA(contextView).containing
+			_displayList.uses(contextView).containing
 					.a(TestSpriteA)
 					.a(TestSpriteB).containing
 						.a(TestSpriteC)
@@ -136,7 +136,7 @@ package net.wooga.selectors {
 		[Test]
 		public function should_match_class_with_external_property():void {
 
-			_displayList.hasA(contextView).containing
+			_displayList.uses(contextView).containing
 					.a(TestSpriteA)
 				.end.finish();
 
@@ -155,7 +155,7 @@ package net.wooga.selectors {
 		[Test]
 		public function should_match_css_id_selector():void {
 
-			_displayList.hasA(contextView).containing
+			_displayList.uses(contextView).containing
 					.a(TestSpriteA).withTheName("test")
 				.end.finish();
 
@@ -170,7 +170,7 @@ package net.wooga.selectors {
 		[Test]
 		public function should_match_oneof_selector():void {
 
-			_displayList.hasA(contextView).containing
+			_displayList.uses(contextView).containing
 					.a(TestSpriteA)
 					.a(TestSpriteB)
 					.a(TestSpriteC)
@@ -193,10 +193,10 @@ package net.wooga.selectors {
 		[Test]
 		public function should_match_cssclass_selector():void {
 
-			_displayList.hasA(contextView).containing
+			_displayList.uses(contextView).containing
 					.a(TestSpriteA)
 					.a(TestSpriteB)
-					.a(TestSpriteC).withTheProperty("groups").setTo(["A", "B", "testClass", "C"])
+					.a(TestSpriteC).withTheProperty("groups").setToThe.value(["A", "B", "testClass", "C"])
 				.end.finish();
 
 			testSelector("TestSpriteC.testClass", function(matchedObjects:Set):void {
@@ -209,7 +209,7 @@ package net.wooga.selectors {
 		[Test]
 		public function should_match_different_branches():void {
 
-			_displayList.hasA(contextView).containing
+			_displayList.uses(contextView).containing
 					.a(TestSpriteA)
 					.a(TestSpriteB).containing
 						.a(TestSpriteC)
@@ -231,7 +231,7 @@ package net.wooga.selectors {
 		[Test]
 		public function should_match_descendant_objects():void {
 
-			_displayList.hasA(contextView).containing
+			_displayList.uses(contextView).containing
 					.a(TestSpriteA).containing
 						.a(TestSpriteC).containing
 							.a(TestSpriteC)
@@ -258,7 +258,7 @@ package net.wooga.selectors {
 		[Test]
 		public function should_match_contrived_descendant_objects():void {
 
-			_displayList.hasA(contextView).containing
+			_displayList.uses(contextView).containing
 					.a(TestSpriteA).containing
 						.a(TestSpriteC).containing
 							.a(TestSpriteC).containing
@@ -291,7 +291,7 @@ package net.wooga.selectors {
 		[Test]
 		public function should_match_root_pseudo_class():void {
 
-			_displayList.hasA(contextView).containing
+			_displayList.uses(contextView).containing
 					.a(TestSpriteA).containing
 						.a(TestSpriteC).containing
 							.a(TestSpriteC)
@@ -317,7 +317,7 @@ package net.wooga.selectors {
 		[Test]
 		public function should_match_firstchild_pseudo_class():void {
 
-			_displayList.hasA(contextView).containing
+			_displayList.uses(contextView).containing
 					.a(TestSpriteA)
 					.a(TestSpriteB)
 					.a(TestSpriteC)
@@ -333,7 +333,7 @@ package net.wooga.selectors {
 		[Test]
 		public function should_match_lastchild_pseudo_class():void {
 
-			_displayList.hasA(contextView).containing
+			_displayList.uses(contextView).containing
 					.a(TestSpriteA)
 					.a(TestSpriteB)
 					.a(TestSpriteC)
@@ -349,7 +349,7 @@ package net.wooga.selectors {
 		[Test]
 		public function should_match_nthchild_pseudo_class():void {
 
-			_displayList.hasA(contextView).containing
+			_displayList.uses(contextView).containing
 					.a(TestSpriteA)
 					.a(TestSpriteA)
 					.a(TestSpriteA)
@@ -371,7 +371,7 @@ package net.wooga.selectors {
 		[Test]
 		public function should_match_nthchild_pseudo_class_with_complex_argument():void {
 
-			_displayList.hasA(contextView).containing
+			_displayList.uses(contextView).containing
 					.a(TestSpriteB)
 					.a(TestSpriteA)
 					.a(TestSpriteB)
@@ -392,7 +392,7 @@ package net.wooga.selectors {
 		[Test]
 		public function should_match_nthlastchild_pseudo_class():void {
 
-			_displayList.hasA(contextView).containing
+			_displayList.uses(contextView).containing
 					.a(TestSpriteA)
 					.a(TestSpriteA)
 					.a(TestSpriteA)
@@ -414,7 +414,7 @@ package net.wooga.selectors {
 		[Test]
 		public function should_match_id_and_attribute_selector():void {
 
-			_displayList.hasA(contextView).containing
+			_displayList.uses(contextView).containing
 					.a(TestSpriteC).withTheName("testName")
 				.end.finish();
 
@@ -434,7 +434,7 @@ package net.wooga.selectors {
 
 		[Test]
 		public function should_match_selectors_without_element_selector():void {
-			_displayList.hasA(contextView).containing
+			_displayList.uses(contextView).containing
 					.a(TestSpriteA)
 					.a(TestSpriteB)
 					.a(TestSpriteC)
@@ -449,7 +449,7 @@ package net.wooga.selectors {
 		[Test]
 		public function should_match_isA_selector():void {
 
-			_displayList.hasA(contextView).containing
+			_displayList.uses(contextView).containing
 					.a(TestSpriteA)
 					.a(MovieClip)
 					.a(MovieClip)
@@ -469,7 +469,7 @@ package net.wooga.selectors {
 		[Test]
 		public function should_match_interface():void {
 
-			_displayList.hasA(contextView).containing
+			_displayList.uses(contextView).containing
 					.a(TestSpriteWithInterface)
 					.a(TestSpriteA)
 					.a(TestSpriteA)
@@ -499,7 +499,7 @@ package net.wooga.selectors {
 		[Test]
 		public function should_have_a_comma_separator_to_select_the_union_of_several_selectors():void {
 
-			_displayList.hasA(contextView).containing
+			_displayList.uses(contextView).containing
 					.a(TestSpriteA)
 					.a(TestSpriteA)
 					.a(TestSpriteC)
@@ -522,7 +522,7 @@ package net.wooga.selectors {
 
 		[Test]
 		public function should_build_match_tree_properly():void {
-			_displayList.hasA(contextView).containing
+			_displayList.uses(contextView).containing
 					.a(TestSpriteA).containing
 						.a(TestSpriteB).containing
 							.times(3).a(TestSpriteC)

@@ -31,7 +31,7 @@ package net.wooga.selectors.pseudoclasses {
 			var instances:Array = [];
 
 			var displayTree:DisplayTree = new DisplayTree();
-			displayTree.hasA(contextView).containing
+			displayTree.uses(contextView).containing
 					.a(TestSpriteA).whichWillBeStoredIn(instances)
 					.a(TestSpriteA).whichWillBeStoredIn(instances)
 					.a(TestSpriteA).whichWillBeStoredIn(instances)
@@ -66,7 +66,7 @@ package net.wooga.selectors.pseudoclasses {
 			var instances:Array = [];
 
 			var displayTree:DisplayTree = new DisplayTree();
-			displayTree.hasA(contextView).containing
+			displayTree.uses(contextView).containing
 					.a(TestSpriteA).whichWillBeStoredIn(instances)
 					.a(TestSpriteA).whichWillBeStoredIn(instances)
 					.a(TestSpriteA).whichWillBeStoredIn(instances)
@@ -105,7 +105,7 @@ package net.wooga.selectors.pseudoclasses {
 			var instances:Array = [];
 
 			var displayTree:DisplayTree = new DisplayTree();
-			displayTree.hasA(contextView).containing
+			displayTree.uses(contextView).containing
 					.a(TestSpriteA).whichWillBeStoredIn(instances)
 					.a(TestSpriteA).whichWillBeStoredIn(instances)
 					.a(TestSpriteA).whichWillBeStoredIn(instances)
@@ -145,7 +145,7 @@ package net.wooga.selectors.pseudoclasses {
 			var instances:Array = [];
 
 			var displayTree:DisplayTree = new DisplayTree();
-			displayTree.hasA(contextView).containing
+			displayTree.uses(contextView).containing
 					.a(TestSpriteA).whichWillBeStoredIn(instances)
 					.a(TestSpriteA).whichWillBeStoredIn(instances)
 					.a(TestSpriteA).whichWillBeStoredIn(instances)
@@ -183,7 +183,7 @@ package net.wooga.selectors.pseudoclasses {
 			var instances:Array = [];
 
 			var displayTree:DisplayTree = new DisplayTree();
-			displayTree.hasA(contextView).containing
+			displayTree.uses(contextView).containing
 					.a(TestSpriteA).whichWillBeStoredIn(instances)
 					.a(TestSpriteA).whichWillBeStoredIn(instances)
 					.a(TestSpriteA).whichWillBeStoredIn(instances)

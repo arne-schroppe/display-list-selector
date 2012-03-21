@@ -37,7 +37,7 @@ package net.wooga.selectors.matching.matchers {
 		public function should_filter_elements_that_contain_property():void {
 			var tree:DisplayTree = new DisplayTree();
 
-			tree.hasA(contextView).containing
+			tree.uses(contextView).containing
 				.a(TestSpriteA)
 				.a(TestSpriteB)
 				.a(TestSpriteC)

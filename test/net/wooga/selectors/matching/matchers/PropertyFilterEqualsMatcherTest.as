@@ -35,7 +35,7 @@ package net.wooga.selectors.matching.matchers {
 		public function should_use_existing_properties_directly():void {
 			var tree:DisplayTree = new DisplayTree();
 
-			tree.hasA(contextView).containing
+			tree.uses(contextView).containing
 					.a(TestSpriteA)
 					.a(TestSpriteB).withTheName("testName")
 					.a(TestSpriteC)
@@ -74,7 +74,7 @@ package net.wooga.selectors.matching.matchers {
 		public function should_use_external_property_source_for_unknown_properties():void {
 			var tree:DisplayTree = new DisplayTree();
 
-			tree.hasA(contextView).containing
+			tree.uses(contextView).containing
 					.a(TestSpriteA)
 					.a(TestSpriteB)
 					.a(TestSpriteC)

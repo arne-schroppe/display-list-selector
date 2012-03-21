@@ -46,7 +46,7 @@ package net.wooga.selectors.matching.matchers {
 
 			var tree:DisplayTree = new DisplayTree();
 
-			tree.hasA(contextView).containing
+			tree.uses(contextView).containing
 				.a(TestSpriteA)
 				.a(TestSpriteB)
 				.a(TestSpriteC)
@@ -80,7 +80,7 @@ package net.wooga.selectors.matching.matchers {
 
 			var tree:DisplayTree = new DisplayTree();
 
-			tree.hasA(contextView).containing
+			tree.uses(contextView).containing
 					.a(TestSpriteA)
 					.a(TestSpriteB)
 					.a(TestSpriteC)
@@ -112,7 +112,7 @@ package net.wooga.selectors.matching.matchers {
 		public function should_select_elements_that_subclass_a_type():void {
 			var tree:DisplayTree = new DisplayTree();
 
-			tree.hasA(contextView).containing
+			tree.uses(contextView).containing
 					.a(TestSpriteA)
 					.a(TestSpriteA)
 					.a(InheritedTestSprite)
@@ -143,7 +143,7 @@ package net.wooga.selectors.matching.matchers {
 		public function should_select_elements_that_implements_a_type():void {
 			var tree:DisplayTree = new DisplayTree();
 
-			tree.hasA(contextView).containing
+			tree.uses(contextView).containing
 					.a(TestSpriteA)
 					.a(TestSpriteA)
 					.a(ImplementingTestSprite)
@@ -178,7 +178,7 @@ package net.wooga.selectors.matching.matchers {
 		//
 		//	var items:Array = [];
 		//
-		//	tree.hasA(contextView).containing
+		//	tree.uses(contextView).containing
 		//			.a(net.wooga.fixtures.package1.TestSpritePack).whichWillBeStoredIn(items)
 		//			.a(net.wooga.fixtures.package1.TestSpritePack).whichWillBeStoredIn(items)
 		//			.a(net.wooga.fixtures.package1.TestSpritePack).whichWillBeStoredIn(items)
@@ -214,7 +214,7 @@ package net.wooga.selectors.matching.matchers {
 		//
 		//	var items:Array = [];
 		//
-		//	tree.hasA(contextView).containing
+		//	tree.uses(contextView).containing
 		//			.a(net.wooga.fixtures.package1.TestSpritePack).whichWillBeStoredIn(items)
 		//			.a(net.wooga.fixtures.package1.TestSpritePack).whichWillBeStoredIn(items)
 		//			.a(net.wooga.fixtures.package1.TestSpritePack).whichWillBeStoredIn(items)
@@ -305,7 +305,7 @@ package net.wooga.selectors.matching.matchers {
 		//
 		//	_matcher = new TypeNameMatcher("fixtures.package1.TestSpritePack", false);
 		//
-		//	tree.hasA(contextView).containing
+		//	tree.uses(contextView).containing
 		//			.a(net.wooga.fixtures.package1.TestSpritePack).whichWillBeStoredIn(items)
 		//			.a(net.wooga.fixtures.package1.TestSpritePack).whichWillBeStoredIn(items)
 		//			.a(net.wooga.fixtures.package1.TestSpritePack).whichWillBeStoredIn(items)

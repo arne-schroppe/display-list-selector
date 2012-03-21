@@ -27,7 +27,7 @@ package net.wooga.selectors.matching.matchers {
 
 		[Test]
 		public function should_select_direct_descendants():void {
-			_displayTree.hasA(contextView).containing
+			_displayTree.uses(contextView).containing
 				.a(TestSpriteB).containing
 					.a(TestSpriteC).containing
 						.times(4).a(TestSpriteA)

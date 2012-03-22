@@ -13,6 +13,7 @@ package net.wooga.selectors.displaylist {
 		private static const CSS_CLASS_PARAMETER_NAME:String = "groups";
 		private var _isHovered:Boolean;
 		private var _isActive:Boolean;
+		private var _isFocused:Boolean;
 
 
 		public function DisplayObjectSelectorAdapter() {
@@ -26,6 +27,8 @@ package net.wooga.selectors.displaylist {
 
 			_adaptedElement = DisplayObject(adaptedElement);
 			_adaptedElement.addEventListener(SelectorAdapterEvent.SET_HOVER_STATE, onSetHoverState);
+			_adaptedElement.addEventListener(SelectorAdapterEvent.SET_ACTIVE_STATE, onSetActiveState);
+			_adaptedElement.addEventListener(SelectorAdapterEvent.SET_FOCUSED_STATE, onSetFocusedState);
 			//TODO (arneschroppe 3/19/12) also add an event listener for active state
 		}
 
@@ -33,6 +36,13 @@ package net.wooga.selectors.displaylist {
 			_isHovered = event.isEnabled;
 		}
 
+		private function onSetActiveState(event:SelectorAdapterEvent):void {
+			_isActive = event.isEnabled;
+		}
+
+		private function onSetFocusedState(event:SelectorAdapterEvent):void {
+			_isFocused = event.isEnabled;
+		}
 
 
 		public function unregister():void {
@@ -89,6 +99,10 @@ package net.wooga.selectors.displaylist {
 
 		public function isActive():Boolean {
 			return _isActive;
+		}
+
+		public function isFocused():Boolean {
+			return _isFocused;
 		}
 	}
 }

@@ -1,6 +1,7 @@
 package {
 
 	import net.wooga.selectors.SelectorFactoryTest;
+	import net.wooga.selectors.displaylist.DisplayObjectSelectorAdapterTest;
 	import net.wooga.selectors.input.ParserInputTest;
 	import net.wooga.selectors.matching.matchers.ChildSelectorMatcherTest;
 	import net.wooga.selectors.matching.matchers.PropertyFilterContainsMatcherTest;
@@ -47,6 +48,8 @@ package {
 		public var selectorStorageTest:SelectorStorageTest;
 		public var hoverTest:HoverTest;
 		public var activeTest:ActiveTest;
+
+		public var displayObjectSelectorAdapterTest:DisplayObjectSelectorAdapterTest;
 		//public var parserTest:ParserTest; //TODO (arneschroppe 20/3/12) we should test the parser
 
 	}

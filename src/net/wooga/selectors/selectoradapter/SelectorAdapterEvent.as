@@ -9,6 +9,7 @@ package net.wooga.selectors.selectoradapter {
 		//public static const SET_AUTOMATIC_MOUSE_STATE_MONITORING:String = PACKAGE + "SET_AUTOMATIC_MOUSE_STATE_MONITORING";
 		public static const SET_HOVER_STATE:String = PACKAGE + "SET_HOVER_STATE";
 		public static const SET_ACTIVE_STATE:String = PACKAGE + "SET_ACTIVE_STATE";
+		public static const SET_FOCUSED_STATE:String = PACKAGE + "SET_FOCUSED_STATE";
 
 		private var _isEnabled:Boolean;
 

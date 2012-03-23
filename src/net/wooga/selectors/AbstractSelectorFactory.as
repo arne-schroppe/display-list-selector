@@ -3,6 +3,7 @@ package net.wooga.selectors {
 	import flash.utils.getQualifiedClassName;
 
 	import net.wooga.selectors.matching.MatcherTool;
+	import net.wooga.selectors.pseudoclasses.PseudoClassName;
 	import net.wooga.selectors.usagepatterns.Selector;
 	import net.wooga.selectors.usagepatterns.SelectorGroup;
 	import net.wooga.selectors.usagepatterns.SelectorPool;
@@ -149,16 +150,16 @@ package net.wooga.selectors {
 		}
 
 		private function addDefaultPseudoClasses():void {
-			addPseudoClass("root", new Root(_rootObject));
-			addPseudoClass("first-child", new FirstChild());
-			addPseudoClass("last-child", new LastChild());
-			addPseudoClass("nth-child", new NthChild());
-			addPseudoClass("nth-last-child", new NthLastChild());
-			addPseudoClass("nth-of-type", new NthOfType());
-			addPseudoClass("nth-last-of-type", new NthLastOfType());
-			addPseudoClass("empty", new IsEmpty());
-			addPseudoClass("hover", new Hover());
-			addPseudoClass("active", new Active());
+			addPseudoClass(PseudoClassName.root, new Root(_rootObject));
+			addPseudoClass(PseudoClassName.first_child, new FirstChild());
+			addPseudoClass(PseudoClassName.last_child, new LastChild());
+			addPseudoClass(PseudoClassName.nth_child, new NthChild());
+			addPseudoClass(PseudoClassName.nth_last_child, new NthLastChild());
+			addPseudoClass(PseudoClassName.nth_of_type, new NthOfType());
+			addPseudoClass(PseudoClassName.nth_last_of_type, new NthLastOfType());
+			addPseudoClass(PseudoClassName.empty, new IsEmpty());
+			addPseudoClass(PseudoClassName.hover, new Hover());
+			addPseudoClass(PseudoClassName.active, new Active());
 		}
 
 

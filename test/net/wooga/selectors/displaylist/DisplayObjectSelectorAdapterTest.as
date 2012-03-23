@@ -3,7 +3,7 @@ package net.wooga.selectors.displaylist {
 	import flash.display.Sprite;
 
 	import net.wooga.fixtures.tools.ContextViewBasedTest;
-	import net.wooga.selectors.selectoradapter.SelectorAdapterEvent;
+	import net.wooga.selectors.selectoradapter.SelectorPseudoClassEvent;
 
 	import org.hamcrest.assertThat;
 	import org.hamcrest.object.equalTo;
@@ -27,9 +27,9 @@ package net.wooga.selectors.displaylist {
 		[Test]
 		public function should_change_hover_state():void {
 			assertThat(_adapter.isHovered(), equalTo(false));
-			adaptedSprite.dispatchEvent(new SelectorAdapterEvent(SelectorAdapterEvent.SET_HOVER_STATE, true));
+			adaptedSprite.dispatchEvent(new SelectorPseudoClassEvent(SelectorPseudoClassEvent.SET_HOVER_STATE, true));
 			assertThat(_adapter.isHovered(), equalTo(true));
-			adaptedSprite.dispatchEvent(new SelectorAdapterEvent(SelectorAdapterEvent.SET_HOVER_STATE, false));
+			adaptedSprite.dispatchEvent(new SelectorPseudoClassEvent(SelectorPseudoClassEvent.SET_HOVER_STATE, false));
 			assertThat(_adapter.isHovered(), equalTo(false));
 		}
 
@@ -38,9 +38,9 @@ package net.wooga.selectors.displaylist {
 		[Test]
 		public function should_change_active_state():void {
 			assertThat(_adapter.isActive(), equalTo(false));
-			adaptedSprite.dispatchEvent(new SelectorAdapterEvent(SelectorAdapterEvent.SET_ACTIVE_STATE, true));
+			adaptedSprite.dispatchEvent(new SelectorPseudoClassEvent(SelectorPseudoClassEvent.SET_ACTIVE_STATE, true));
 			assertThat(_adapter.isActive(), equalTo(true));
-			adaptedSprite.dispatchEvent(new SelectorAdapterEvent(SelectorAdapterEvent.SET_ACTIVE_STATE, false));
+			adaptedSprite.dispatchEvent(new SelectorPseudoClassEvent(SelectorPseudoClassEvent.SET_ACTIVE_STATE, false));
 			assertThat(_adapter.isActive(), equalTo(false));
 		}
 
@@ -48,9 +48,9 @@ package net.wooga.selectors.displaylist {
 		[Test]
 		public function should_change_focused_state():void {
 			assertThat(_adapter.isFocused(), equalTo(false));
-			adaptedSprite.dispatchEvent(new SelectorAdapterEvent(SelectorAdapterEvent.SET_ACTIVE_STATE, true));
+			adaptedSprite.dispatchEvent(new SelectorPseudoClassEvent(SelectorPseudoClassEvent.SET_ACTIVE_STATE, true));
 			assertThat(_adapter.isActive(), equalTo(true));
-			adaptedSprite.dispatchEvent(new SelectorAdapterEvent(SelectorAdapterEvent.SET_ACTIVE_STATE, false));
+			adaptedSprite.dispatchEvent(new SelectorPseudoClassEvent(SelectorPseudoClassEvent.SET_ACTIVE_STATE, false));
 			assertThat(_adapter.isActive(), equalTo(false));
 		}
 	}

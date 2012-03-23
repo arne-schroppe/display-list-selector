@@ -11,9 +11,7 @@ package net.wooga.selectors.displaylist {
 
 		//TODO (arneschroppe 2/26/12) rename groups to classes
 		private static const CSS_CLASS_PARAMETER_NAME:String = "groups";
-		private var _isHovered:Boolean;
-		private var _isActive:Boolean;
-		private var _isFocused:Boolean;
+
 
 
 		public function DisplayObjectSelectorAdapter() {
@@ -26,21 +24,16 @@ package net.wooga.selectors.displaylist {
 			}
 
 			_adaptedElement = DisplayObject(adaptedElement);
-			_adaptedElement.addEventListener(SelectorAdapterEvent.SET_HOVER_STATE, onSetHoverState);
-			_adaptedElement.addEventListener(SelectorAdapterEvent.SET_ACTIVE_STATE, onSetActiveState);
-			_adaptedElement.addEventListener(SelectorAdapterEvent.SET_FOCUSED_STATE, onSetFocusedState);
+			_adaptedElement.addEventListener(SelectorPseudoClassEvent.ADD_PSEUDO_CLASS, onAddPseudoClass);
+			_adaptedElement.addEventListener(SelectorPseudoClassEvent.REMOVE_PSEUDO_CLASS, onRemovePseudoClass);
 		}
 
-		private function onSetHoverState(event:SelectorAdapterEvent):void {
-			_isHovered = event.isEnabled;
+		private function onAddPseudoClass(event:SelectorPseudoClassEvent):void {
+
 		}
 
-		private function onSetActiveState(event:SelectorAdapterEvent):void {
-			_isActive = event.isEnabled;
-		}
+		private function onRemovePseudoClass(event:SelectorPseudoClassEvent):void {
 
-		private function onSetFocusedState(event:SelectorAdapterEvent):void {
-			_isFocused = event.isEnabled;
 		}
 
 
@@ -93,15 +86,15 @@ package net.wooga.selectors.displaylist {
 		}
 
 		public function isHovered():Boolean {
-			return _isHovered;
+			return false;
 		}
 
 		public function isActive():Boolean {
-			return _isActive;
+			return false;
 		}
 
 		public function isFocused():Boolean {
-			return _isFocused;
+			return false;
 		}
 	}
 }

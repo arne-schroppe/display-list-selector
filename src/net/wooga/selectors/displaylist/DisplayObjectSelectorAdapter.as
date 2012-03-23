@@ -29,7 +29,6 @@ package net.wooga.selectors.displaylist {
 			_adaptedElement.addEventListener(SelectorAdapterEvent.SET_HOVER_STATE, onSetHoverState);
 			_adaptedElement.addEventListener(SelectorAdapterEvent.SET_ACTIVE_STATE, onSetActiveState);
 			_adaptedElement.addEventListener(SelectorAdapterEvent.SET_FOCUSED_STATE, onSetFocusedState);
-			//TODO (arneschroppe 3/19/12) also add an event listener for active state
 		}
 
 		private function onSetHoverState(event:SelectorAdapterEvent):void {

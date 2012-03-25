@@ -1,5 +1,6 @@
 package net.wooga.selectors.selectorstorage.keys {
 
+	import net.wooga.selectors.pseudoclasses.names.PseudoClassName;
 	import net.wooga.selectors.usagepatterns.implementations.SelectorImpl;
 	import net.wooga.selectors.selector_internal;
 	import net.wooga.selectors.selectoradapter.SelectorAdapter;
@@ -23,7 +24,7 @@ package net.wooga.selectors.selectorstorage.keys {
 
 
 		public function keysForAdapter(adapter:SelectorAdapter, nodes:IMap):Array {
-			return [adapter.isHovered() ? HOVER_KEY : NULL_KEY];
+			return [adapter.hasPseudoClass(PseudoClassName.hover) ? HOVER_KEY : NULL_KEY];
 		}
 
 

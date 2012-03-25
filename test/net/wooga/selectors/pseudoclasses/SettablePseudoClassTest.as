@@ -1,5 +1,6 @@
 package net.wooga.selectors.pseudoclasses {
 
+	import net.wooga.selectors.pseudoclasses.names.PseudoClassName;
 	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 
 	import org.flexunit.rules.IMethodRule;
@@ -10,7 +11,7 @@ package net.wooga.selectors.pseudoclasses {
 	import org.mockito.integrations.flexunit4.MockitoRule;
 	import org.mockito.integrations.given;
 
-	public class ActiveTest {
+	public class SettablePseudoClassTest {
 
 		[Rule]
 		public var mockitoRule:IMethodRule = new MockitoRule();
@@ -18,25 +19,28 @@ package net.wooga.selectors.pseudoclasses {
 		[Mock]
 		public var subject:SelectorAdapter;
 
-		private var _active:PseudoClass;
+		private var _hover:PseudoClass;
+
+		private static const PSEUDO_CLASS_NAME:String = "pseudo-class-name";
 
 		[Before]
 		public function setUp():void {
-			_active = new Active();
+			_hover = new SettablePseudoClass(PSEUDO_CLASS_NAME);
 		}
 
 
 		[Test]
 		public function should_match_hovered_elements():void {
-			given(subject.isActive()).willReturn(true);
-			assertThat(_active.isMatching(subject), equalTo(true));
+			given(subject.hasPseudoClass(PSEUDO_CLASS_NAME)).willReturn(true);
+			assertThat(_hover.isMatching(subject), equalTo(true));
 		}
 
 
 		[Test]
 		public function should_not_match_elements_that_are_not_hovered():void {
-			given(subject.isActive()).willReturn(false);
-			assertThat(_active.isMatching(subject), equalTo(false));
+			given(subject.hasPseudoClass(PSEUDO_CLASS_NAME)).willReturn(false);
+			given(subject.hasPseudoClass("some_other_pseudoclass")).willReturn(true);
+			assertThat(_hover.isMatching(subject), equalTo(false));
 		}
 
 
@@ -44,7 +48,7 @@ package net.wooga.selectors.pseudoclasses {
 		public function should_not_accept_arguments():void {
 
 			assertThat(function ():void {
-				_active.setArguments(["test1"])
+				_hover.setArguments(["test1"])
 			}, throws(isA(ArgumentError)));
 
 		}

@@ -3,26 +3,27 @@ package net.wooga.selectors {
 	import flash.utils.getQualifiedClassName;
 
 	import net.wooga.selectors.matching.MatcherTool;
-	import net.wooga.selectors.usagepatterns.Selector;
-	import net.wooga.selectors.usagepatterns.SelectorGroup;
-	import net.wooga.selectors.usagepatterns.SelectorPool;
-	import net.wooga.selectors.usagepatterns.implementations.SelectorGroupImpl;
-	import net.wooga.selectors.usagepatterns.implementations.SelectorImpl;
-	import net.wooga.selectors.usagepatterns.implementations.SelectorPoolImpl;
 	import net.wooga.selectors.parser.Parser;
-	import net.wooga.selectors.pseudoclasses.Active;
 	import net.wooga.selectors.pseudoclasses.FirstChild;
-	import net.wooga.selectors.pseudoclasses.Hover;
-	import net.wooga.selectors.pseudoclasses.PseudoClass;
 	import net.wooga.selectors.pseudoclasses.IsEmpty;
 	import net.wooga.selectors.pseudoclasses.LastChild;
 	import net.wooga.selectors.pseudoclasses.NthChild;
 	import net.wooga.selectors.pseudoclasses.NthLastChild;
 	import net.wooga.selectors.pseudoclasses.NthLastOfType;
 	import net.wooga.selectors.pseudoclasses.NthOfType;
+	import net.wooga.selectors.pseudoclasses.PseudoClass;
 	import net.wooga.selectors.pseudoclasses.Root;
+	import net.wooga.selectors.pseudoclasses.SettablePseudoClass;
+	import net.wooga.selectors.pseudoclasses.names.BuiltinPseudoClassName;
+	import net.wooga.selectors.pseudoclasses.names.PseudoClassName;
 	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 	import net.wooga.selectors.tools.Types;
+	import net.wooga.selectors.usagepatterns.Selector;
+	import net.wooga.selectors.usagepatterns.SelectorGroup;
+	import net.wooga.selectors.usagepatterns.SelectorPool;
+	import net.wooga.selectors.usagepatterns.implementations.SelectorGroupImpl;
+	import net.wooga.selectors.usagepatterns.implementations.SelectorImpl;
+	import net.wooga.selectors.usagepatterns.implementations.SelectorPoolImpl;
 
 	import org.as3commons.collections.Map;
 	import org.as3commons.collections.framework.IMap;
@@ -149,18 +150,31 @@ package net.wooga.selectors {
 		}
 
 		private function addDefaultPseudoClasses():void {
-			addPseudoClass("root", new Root(_rootObject));
-			addPseudoClass("first-child", new FirstChild());
-			addPseudoClass("last-child", new LastChild());
-			addPseudoClass("nth-child", new NthChild());
-			addPseudoClass("nth-last-child", new NthLastChild());
-			addPseudoClass("nth-of-type", new NthOfType());
-			addPseudoClass("nth-last-of-type", new NthLastOfType());
-			addPseudoClass("empty", new IsEmpty());
-			addPseudoClass("hover", new Hover());
-			addPseudoClass("active", new Active());
-		}
+			addPseudoClass(BuiltinPseudoClassName.root, new Root(_rootObject));
+			addPseudoClass(BuiltinPseudoClassName.first_child, new FirstChild());
+			addPseudoClass(BuiltinPseudoClassName.last_child, new LastChild());
+			addPseudoClass(BuiltinPseudoClassName.nth_child, new NthChild());
+			addPseudoClass(BuiltinPseudoClassName.nth_last_child, new NthLastChild());
+			addPseudoClass(BuiltinPseudoClassName.nth_of_type, new NthOfType());
+			addPseudoClass(BuiltinPseudoClassName.nth_last_of_type, new NthLastOfType());
+			addPseudoClass(BuiltinPseudoClassName.empty, new IsEmpty());
 
+
+			for each(var pseudoClassName:String in [
+					PseudoClassName.hover,
+					PseudoClassName.active,
+					PseudoClassName.focus,
+					PseudoClassName.link,
+					PseudoClassName.visited,
+					PseudoClassName.target,
+					PseudoClassName.enabled,
+					PseudoClassName.disabled,
+					PseudoClassName.checked,
+					PseudoClassName.indeterminate]) {
+				addPseudoClass(pseudoClassName, new SettablePseudoClass(pseudoClassName));
+			}
+
+		}
 
 	}
 }

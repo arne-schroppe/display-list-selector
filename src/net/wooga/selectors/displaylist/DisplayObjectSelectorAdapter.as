@@ -11,9 +11,9 @@ package net.wooga.selectors.displaylist {
 
 		//TODO (arneschroppe 2/26/12) rename groups to classes
 		private static const CSS_CLASS_PARAMETER_NAME:String = "groups";
-		private var _isHovered:Boolean;
-		private var _isActive:Boolean;
 
+
+		private var _pseudoClasses:Object = {};
 
 		public function DisplayObjectSelectorAdapter() {
 		}
@@ -25,14 +25,17 @@ package net.wooga.selectors.displaylist {
 			}
 
 			_adaptedElement = DisplayObject(adaptedElement);
-			_adaptedElement.addEventListener(SelectorAdapterEvent.SET_HOVER_STATE, onSetHoverState);
-			//TODO (arneschroppe 3/19/12) also add an event listener for active state
+			_adaptedElement.addEventListener(SelectorPseudoClassEvent.ADD_PSEUDO_CLASS, onAddPseudoClass);
+			_adaptedElement.addEventListener(SelectorPseudoClassEvent.REMOVE_PSEUDO_CLASS, onRemovePseudoClass);
 		}
 
-		private function onSetHoverState(event:SelectorAdapterEvent):void {
-			_isHovered = event.isEnabled;
+		private function onAddPseudoClass(event:SelectorPseudoClassEvent):void {
+			_pseudoClasses[event.pseudoClassName] = true;
 		}
 
+		private function onRemovePseudoClass(event:SelectorPseudoClassEvent):void {
+			_pseudoClasses[event.pseudoClassName] = false;
+		}
 
 
 		public function unregister():void {
@@ -83,12 +86,10 @@ package net.wooga.selectors.displaylist {
 			return !(_adaptedElement is DisplayObjectContainer) || DisplayObjectContainer(_adaptedElement).numChildren == 0;
 		}
 
-		public function isHovered():Boolean {
-			return _isHovered;
-		}
 
-		public function isActive():Boolean {
-			return _isActive;
+
+		public function hasPseudoClass(pseudoClassName:String):Boolean {
+			return _pseudoClasses[pseudoClassName];
 		}
 	}
 }

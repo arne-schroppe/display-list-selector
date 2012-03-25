@@ -1,9 +1,10 @@
 package net.wooga.selectors.selectorstorage {
 
+	import net.wooga.selectors.pseudoclasses.names.PseudoClassName;
 	import net.wooga.selectors.usagepatterns.implementations.SelectorImpl;
 	import net.wooga.selectors.parser.PseudoClassProvider;
 	import net.wooga.selectors.parser.Parser;
-	import net.wooga.selectors.pseudoclasses.Hover;
+	import net.wooga.selectors.pseudoclasses.SettablePseudoClass;
 	import net.wooga.selectors.pseudoclasses.PseudoClass;
 	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 	import net.wooga.fixtures.SubClassOfTestSpriteA;
@@ -133,7 +134,7 @@ package net.wooga.selectors.selectorstorage {
 
 			given(styleAdapter.getAdaptedElement()).willReturn(new TestSpriteA());
 			given(styleAdapter.getId()).willReturn(id);
-			given(styleAdapter.isHovered()).willReturn(true);
+			given(styleAdapter.hasPseudoClass(PseudoClassName.hover)).willReturn(true);
 			var possibleMatches:IIterable = _selectorStorage.getPossibleMatchesFor(styleAdapter);
 
 			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel1)));
@@ -160,7 +161,7 @@ package net.wooga.selectors.selectorstorage {
 
 			given(styleAdapter.getAdaptedElement()).willReturn(new TestSpriteA());
 			given(styleAdapter.getId()).willReturn(id);
-			given(styleAdapter.isHovered()).willReturn(false);
+			given(styleAdapter.hasPseudoClass(PseudoClassName.hover)).willReturn(false);
 			var possibleMatches:IIterable = _selectorStorage.getPossibleMatchesFor(styleAdapter);
 
 			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel6)));
@@ -261,7 +262,7 @@ package net.wooga.selectors.selectorstorage {
 
 		public function getPseudoClass(pseudoClassName:String):PseudoClass {
 			if(pseudoClassName == "hover") {
-				return new Hover();
+				return new SettablePseudoClass(net.wooga.selectors.pseudoclasses.names.PseudoClassName.hover);
 			}
 			
 			return null;

@@ -28,6 +28,7 @@ package net.wooga.selectors {
 	import org.hamcrest.core.not;
 	import org.hamcrest.object.equalTo;
 	import org.hamcrest.object.hasPropertyWithValue;
+	import org.hamcrest.object.isFalse;
 	import org.hamcrest.object.isTrue;
 
 	//TODO (arneschroppe 22/2/12) maybe we should rewrite these tests with mocked adapters instead of using the DisplayObjectStyleAdapter
@@ -493,6 +494,32 @@ package net.wooga.selectors {
 			var elementSelector:Selector = _selectorFactory.createSelector("TestSpriteA").selectors[0];
 
 			assertThat(isASelector.specificity.isLessThan(elementSelector.specificity), isTrue());
+		}
+
+
+
+		//Note: We cannot know the specific class (unless a fully qualified class name is given). That's why we cannot give a specificity based on the number of super classes
+		//TODO (arneschroppe 3/25/12) unless we check this kind of specificity at runtime?
+//		[Test]
+//		public function isA_selector_for_more_abstract_class_should_have_lower_specificity_than_for_more_specialized_class():void {
+//
+//			var superClassIsASelector:Selector = _selectorFactory.createSelector("^TestSpriteA").selectors[0];
+//			var subClassIsASelector:Selector = _selectorFactory.createSelector("^SubClassOfTestSpriteA").selectors[0];
+//
+//			assertThat(superClassIsASelector.specificity.isEqualTo(subClassIsASelector.specificity), isFalse());
+//			assertThat(superClassIsASelector.specificity.isLessThan(subClassIsASelector.specificity), isTrue());
+//		}
+
+
+
+		[Test]
+		public function isA_selector_with_pseudo_class_should_have_higher_specificity():void {
+
+			var withoutPseudoClass:Selector = _selectorFactory.createSelector("^TestSpriteA").selectors[0];
+			var withPseudoClass:Selector = _selectorFactory.createSelector("^TestSpriteA:enabled").selectors[0];
+
+			assertThat(withoutPseudoClass.specificity.isEqualTo(withPseudoClass.specificity), isFalse());
+			assertThat(withoutPseudoClass.specificity.isLessThan(withPseudoClass.specificity), isTrue());
 		}
 
 

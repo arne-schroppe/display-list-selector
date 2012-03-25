@@ -11,6 +11,7 @@ package net.wooga.selectors.parser {
 	import net.wooga.selectors.matching.matchers.implementations.PropertyFilterEqualsMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.PseudoClassMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.TypeNameMatcher;
+	import net.wooga.selectors.pseudoclasses.names.PseudoClassName;
 	import net.wooga.selectors.usagepatterns.implementations.SelectorImpl;
 	import net.wooga.selectors.pseudoclasses.SettablePseudoClass;
 	import net.wooga.selectors.pseudoclasses.PseudoClass;
@@ -122,15 +123,19 @@ package net.wooga.selectors.parser {
 				selector.filterData.isImmediateType = lastTypeMatcher.onlyMatchesImmediateType;
 			}
 
-			selector.filterData.hasHover = hasPseudoClassInLastSimpleSelector(selector, SettablePseudoClass);
+			selector.filterData.hasHover = hasHoverPseudoClassInLastSimpleSelector(selector);
 		}
 
 
-		private function hasPseudoClassInLastSimpleSelector(selector:SelectorImpl, PseudoClassType:Class):Boolean {
+		//TODO (arneschroppe 3/25/12) we need a test for this, specifically to test that not just any SettablePseudoClass triggers the hasHover flag
+		private function hasHoverPseudoClassInLastSimpleSelector(selector:SelectorImpl):Boolean {
 			var matchers:Vector.<IMatcher> = selector.matchers;
 			for(var i:int = matchers.length-1; i >= 0 && !(matchers[i] is ICombinator); --i) {
 				var matcher:IMatcher = matchers[i];
-				if(matcher is PseudoClassMatcher && (matcher as PseudoClassMatcher).pseudoClass is PseudoClassType) {
+				if(
+						matcher is PseudoClassMatcher &&
+						(matcher as PseudoClassMatcher).pseudoClass is SettablePseudoClass &&
+						((matcher as PseudoClassMatcher).pseudoClass as SettablePseudoClass).pseudoClassName == PseudoClassName.hover) {
 					return true;
 				}
 			}
@@ -231,6 +236,7 @@ package net.wooga.selectors.parser {
 				return;
 			}
 
+			//TODO (arneschroppe 3/25/12) figure out specificity rules. We can't give isA selector a specificity based on super classes, since we don't know the specific class. But maybe we can, if it's a FQCN
 			if (_input.isNext("(")) {
 				checkSyntaxExtensionsAllowed();
 

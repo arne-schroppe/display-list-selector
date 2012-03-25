@@ -20,5 +20,8 @@ package net.wooga.selectors.pseudoclasses {
 		}
 
 
+		public function get pseudoClassName():String {
+			return _pseudoClassName;
+		}
 	}
 }

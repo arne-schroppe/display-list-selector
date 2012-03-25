@@ -10,14 +10,14 @@ package net.wooga.selectors.selectoradapter {
 		public static const ADD_PSEUDO_CLASS:String = PACKAGE + "ADD_PSEUDO_CLASS";
 		public static const REMOVE_PSEUDO_CLASS:String = PACKAGE + "REMOVE_PSEUDO_CLASS";
 
-		private var _pseudoClassName:Boolean;
+		private var _pseudoClassName:String;
 
-		public function SelectorPseudoClassEvent(type:String, isEnabled:Boolean) {
+		public function SelectorPseudoClassEvent(type:String, pseudoClassName:String) {
 			super(type);
-			_pseudoClassName = isEnabled;
+			_pseudoClassName = pseudoClassName;
 		}
 
-		public function get pseudoClassName():Boolean {
+		public function get pseudoClassName():String {
 			return _pseudoClassName;
 		}
 	}

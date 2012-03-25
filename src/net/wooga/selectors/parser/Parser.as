@@ -12,7 +12,7 @@ package net.wooga.selectors.parser {
 	import net.wooga.selectors.matching.matchers.implementations.PseudoClassMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.TypeNameMatcher;
 	import net.wooga.selectors.usagepatterns.implementations.SelectorImpl;
-	import net.wooga.selectors.pseudoclasses.Hover;
+	import net.wooga.selectors.pseudoclasses.SettablePseudoClass;
 	import net.wooga.selectors.pseudoclasses.PseudoClass;
 	import net.wooga.selectors.selector_internal;
 	import net.wooga.selectors.tools.DynamicMultiMap;
@@ -122,7 +122,7 @@ package net.wooga.selectors.parser {
 				selector.filterData.isImmediateType = lastTypeMatcher.onlyMatchesImmediateType;
 			}
 
-			selector.filterData.hasHover = hasPseudoClassInLastSimpleSelector(selector, Hover);
+			selector.filterData.hasHover = hasPseudoClassInLastSimpleSelector(selector, SettablePseudoClass);
 		}
 
 

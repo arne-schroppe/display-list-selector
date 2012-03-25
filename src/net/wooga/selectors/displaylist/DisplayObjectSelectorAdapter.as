@@ -13,6 +13,7 @@ package net.wooga.selectors.displaylist {
 		private static const CSS_CLASS_PARAMETER_NAME:String = "groups";
 
 
+		private var _pseudoClasses:Object = {};
 
 		public function DisplayObjectSelectorAdapter() {
 		}
@@ -29,11 +30,11 @@ package net.wooga.selectors.displaylist {
 		}
 
 		private function onAddPseudoClass(event:SelectorPseudoClassEvent):void {
-
+			_pseudoClasses[event.pseudoClassName] = true;
 		}
 
 		private function onRemovePseudoClass(event:SelectorPseudoClassEvent):void {
-
+			_pseudoClasses[event.pseudoClassName] = false;
 		}
 
 
@@ -85,16 +86,10 @@ package net.wooga.selectors.displaylist {
 			return !(_adaptedElement is DisplayObjectContainer) || DisplayObjectContainer(_adaptedElement).numChildren == 0;
 		}
 
-		public function isHovered():Boolean {
-			return false;
-		}
 
-		public function isActive():Boolean {
-			return false;
-		}
 
-		public function isFocused():Boolean {
-			return false;
+		public function hasPseudoClass(pseudoClassName:String):Boolean {
+			return _pseudoClasses[pseudoClassName];
 		}
 	}
 }

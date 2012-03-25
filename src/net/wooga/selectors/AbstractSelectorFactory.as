@@ -3,27 +3,27 @@ package net.wooga.selectors {
 	import flash.utils.getQualifiedClassName;
 
 	import net.wooga.selectors.matching.MatcherTool;
-	import net.wooga.selectors.pseudoclasses.PseudoClassName;
-	import net.wooga.selectors.usagepatterns.Selector;
-	import net.wooga.selectors.usagepatterns.SelectorGroup;
-	import net.wooga.selectors.usagepatterns.SelectorPool;
-	import net.wooga.selectors.usagepatterns.implementations.SelectorGroupImpl;
-	import net.wooga.selectors.usagepatterns.implementations.SelectorImpl;
-	import net.wooga.selectors.usagepatterns.implementations.SelectorPoolImpl;
 	import net.wooga.selectors.parser.Parser;
-	import net.wooga.selectors.pseudoclasses.Active;
 	import net.wooga.selectors.pseudoclasses.FirstChild;
-	import net.wooga.selectors.pseudoclasses.Hover;
-	import net.wooga.selectors.pseudoclasses.PseudoClass;
 	import net.wooga.selectors.pseudoclasses.IsEmpty;
 	import net.wooga.selectors.pseudoclasses.LastChild;
 	import net.wooga.selectors.pseudoclasses.NthChild;
 	import net.wooga.selectors.pseudoclasses.NthLastChild;
 	import net.wooga.selectors.pseudoclasses.NthLastOfType;
 	import net.wooga.selectors.pseudoclasses.NthOfType;
+	import net.wooga.selectors.pseudoclasses.PseudoClass;
 	import net.wooga.selectors.pseudoclasses.Root;
+	import net.wooga.selectors.pseudoclasses.SettablePseudoClass;
+	import net.wooga.selectors.pseudoclasses.names.BuiltinPseudoClassName;
+	import net.wooga.selectors.pseudoclasses.names.PseudoClassName;
 	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 	import net.wooga.selectors.tools.Types;
+	import net.wooga.selectors.usagepatterns.Selector;
+	import net.wooga.selectors.usagepatterns.SelectorGroup;
+	import net.wooga.selectors.usagepatterns.SelectorPool;
+	import net.wooga.selectors.usagepatterns.implementations.SelectorGroupImpl;
+	import net.wooga.selectors.usagepatterns.implementations.SelectorImpl;
+	import net.wooga.selectors.usagepatterns.implementations.SelectorPoolImpl;
 
 	import org.as3commons.collections.Map;
 	import org.as3commons.collections.framework.IMap;
@@ -150,16 +150,25 @@ package net.wooga.selectors {
 		}
 
 		private function addDefaultPseudoClasses():void {
-			addPseudoClass(PseudoClassName.root, new Root(_rootObject));
-			addPseudoClass(PseudoClassName.first_child, new FirstChild());
-			addPseudoClass(PseudoClassName.last_child, new LastChild());
-			addPseudoClass(PseudoClassName.nth_child, new NthChild());
-			addPseudoClass(PseudoClassName.nth_last_child, new NthLastChild());
-			addPseudoClass(PseudoClassName.nth_of_type, new NthOfType());
-			addPseudoClass(PseudoClassName.nth_last_of_type, new NthLastOfType());
-			addPseudoClass(PseudoClassName.empty, new IsEmpty());
-			addPseudoClass(PseudoClassName.hover, new Hover());
-			addPseudoClass(PseudoClassName.active, new Active());
+			addPseudoClass(BuiltinPseudoClassName.root, new Root(_rootObject));
+			addPseudoClass(BuiltinPseudoClassName.first_child, new FirstChild());
+			addPseudoClass(BuiltinPseudoClassName.last_child, new LastChild());
+			addPseudoClass(BuiltinPseudoClassName.nth_child, new NthChild());
+			addPseudoClass(BuiltinPseudoClassName.nth_last_child, new NthLastChild());
+			addPseudoClass(BuiltinPseudoClassName.nth_of_type, new NthOfType());
+			addPseudoClass(BuiltinPseudoClassName.nth_last_of_type, new NthLastOfType());
+			addPseudoClass(BuiltinPseudoClassName.empty, new IsEmpty());
+
+			addPseudoClass(PseudoClassName.hover, new SettablePseudoClass(PseudoClassName.hover));
+			addPseudoClass(PseudoClassName.active, new SettablePseudoClass(PseudoClassName.active));
+			addPseudoClass(PseudoClassName.focus, new SettablePseudoClass(PseudoClassName.focus));
+			addPseudoClass(PseudoClassName.link, new SettablePseudoClass(PseudoClassName.link));
+			addPseudoClass(PseudoClassName.visited, new SettablePseudoClass(PseudoClassName.visited));
+			addPseudoClass(PseudoClassName.target, new SettablePseudoClass(PseudoClassName.target));
+			addPseudoClass(PseudoClassName.enabled, new SettablePseudoClass(PseudoClassName.enabled));
+			addPseudoClass(PseudoClassName.disabled, new SettablePseudoClass(PseudoClassName.disabled));
+			addPseudoClass(PseudoClassName.checked, new SettablePseudoClass(PseudoClassName.checked));
+			addPseudoClass(PseudoClassName.indeterminate, new SettablePseudoClass(PseudoClassName.indeterminate));
 		}
 
 

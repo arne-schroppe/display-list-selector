@@ -9,9 +9,8 @@ package {
 	import net.wooga.selectors.matching.matchers.PseudoClassMatcherTest;
 	import net.wooga.selectors.matching.matchers.TypeNameMatcherTest;
 	import net.wooga.selectors.parser.SpecificityTest;
-	import net.wooga.selectors.pseudoclasses.ActiveTest;
 	import net.wooga.selectors.pseudoclasses.FirstChildTest;
-	import net.wooga.selectors.pseudoclasses.HoverTest;
+	import net.wooga.selectors.pseudoclasses.SettablePseudoClassTest;
 	import net.wooga.selectors.pseudoclasses.IsEmptyTest;
 	import net.wooga.selectors.pseudoclasses.LastChildTest;
 	import net.wooga.selectors.pseudoclasses.NthChildTest;
@@ -46,8 +45,7 @@ package {
 		public var specificityTest:SpecificityTest;
 
 		public var selectorStorageTest:SelectorStorageTest;
-		public var hoverTest:HoverTest;
-		public var activeTest:ActiveTest;
+		public var hoverTest:SettablePseudoClassTest;
 
 		public var displayObjectSelectorAdapterTest:DisplayObjectSelectorAdapterTest;
 		//public var parserTest:ParserTest; //TODO (arneschroppe 20/3/12) we should test the parser

@@ -457,7 +457,7 @@ package net.wooga.selectors {
 				.end.finish();
 
 
-			testSelector(":root > ^Sprite", function(matchedObjects:Array):void {
+			testSelector(":root > :is-a(Sprite)", function(matchedObjects:Array):void {
 				assertThat(matchedObjects.length, equalTo(4));
 				assertThat(matchedObjects, containsExactlyInArray(1, isA(TestSpriteA)));
 				assertThat(matchedObjects, containsExactlyInArray(2, isA(MovieClip)));
@@ -476,7 +476,7 @@ package net.wooga.selectors {
 					.a(TestSpriteWithInterface)
 					.end.finish();
 
-			testSelector(":root > ^TestInterface", function(matchedObjects:Array):void {
+			testSelector(":root > :is-a(TestInterface)", function(matchedObjects:Array):void {
 				assertThat(matchedObjects.length, equalTo(2));
 				assertThat(matchedObjects, containsExactlyInArray(2, isA(TestSpriteWithInterface)));
 			});
@@ -489,7 +489,7 @@ package net.wooga.selectors {
 		[Test]
 		public function isA_selector_should_have_lower_specificity_than_element_selector():void {
 
-			var isASelector:Selector = _selectorFactory.createSelector("^TestSpriteA").selectors[0];
+			var isASelector:Selector = _selectorFactory.createSelector(":is-a(TestSpriteA)").selectors[0];
 			var elementSelector:Selector = _selectorFactory.createSelector("TestSpriteA").selectors[0];
 
 			assertThat(isASelector.specificity.isLessThan(elementSelector.specificity), isTrue());
@@ -514,8 +514,8 @@ package net.wooga.selectors {
 		[Test]
 		public function isA_selector_with_pseudo_class_should_have_higher_specificity():void {
 
-			var withoutPseudoClass:Selector = _selectorFactory.createSelector("^TestSpriteA").selectors[0];
-			var withPseudoClass:Selector = _selectorFactory.createSelector("^TestSpriteA:enabled").selectors[0];
+			var withoutPseudoClass:Selector = _selectorFactory.createSelector(":is-a(TestSpriteA)").selectors[0];
+			var withPseudoClass:Selector = _selectorFactory.createSelector(":is-a(TestSpriteA):enabled").selectors[0];
 
 			assertThat(withoutPseudoClass.specificity.isEqualTo(withPseudoClass.specificity), isFalse());
 			assertThat(withoutPseudoClass.specificity.isLessThan(withPseudoClass.specificity), isTrue());

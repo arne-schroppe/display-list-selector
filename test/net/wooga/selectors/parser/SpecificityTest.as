@@ -13,52 +13,49 @@ package net.wooga.selectors.parser {
 		[Test]
 		public function testIsGreaterThan():void {
 
-			var smallerSpec:Specificity = specWith(1, 10, 0, 0, 0);
+			var smallerSpec:Specificity = specWith(1, 10, 0, 0);
 
-			var higherSpec:Specificity = specWith(2, 6, 0, 0, 0);
-
-			assertThat(higherSpec.isGreaterThan(smallerSpec), isTrue());
-			assertThat(higherSpec.isLessThan(smallerSpec), isFalse());
-
-
-
-
-			smallerSpec = specWith(0, 10, 0, 0, 0);
-			higherSpec = specWith(1, 0, 0, 0, 0);
+			var higherSpec:Specificity = specWith(2, 6, 0, 0);
 
 			assertThat(higherSpec.isGreaterThan(smallerSpec), isTrue());
 			assertThat(higherSpec.isLessThan(smallerSpec), isFalse());
 
 
 
-			smallerSpec = specWith(0, 0, 5, 0, 0);
-			higherSpec = specWith(0, 1, 0, 0, 0);
+
+			smallerSpec = specWith(0, 10, 0, 0);
+			higherSpec = specWith(1, 0, 0, 0);
 
 			assertThat(higherSpec.isGreaterThan(smallerSpec), isTrue());
 			assertThat(higherSpec.isLessThan(smallerSpec), isFalse());
 
 
 
-			assertThat(specWith(2, 0, 0, 0, 0).isGreaterThan(specWith(1, 0, 0, 0, 0)), isTrue());
-			assertThat(specWith(0, 2, 0, 0, 0).isGreaterThan(specWith(0, 1, 0, 0, 0)), isTrue());
-			assertThat(specWith(0, 0, 2, 0, 0).isGreaterThan(specWith(0, 0, 1, 0, 0)), isTrue());
-			assertThat(specWith(0, 0, 0, 2, 0).isGreaterThan(specWith(0, 0, 0, 1, 0)), isTrue());
-			assertThat(specWith(0, 0, 0, 0, 2).isGreaterThan(specWith(0, 0, 0, 0, 1)), isTrue());
+			smallerSpec = specWith(0, 0, 5, 0);
+			higherSpec = specWith(0, 1, 0, 0);
+
+			assertThat(higherSpec.isGreaterThan(smallerSpec), isTrue());
+			assertThat(higherSpec.isLessThan(smallerSpec), isFalse());
 
 
 
-			assertThat(specWith(1, 0, 0, 0, 0).isGreaterThan(specWith(1, 0, 0, 0, 0)), isFalse());
-			assertThat(specWith(0, 1, 0, 0, 0).isGreaterThan(specWith(0, 1, 0, 0, 0)), isFalse());
-			assertThat(specWith(0, 0, 1, 0, 0).isGreaterThan(specWith(0, 0, 1, 0, 0)), isFalse());
-			assertThat(specWith(0, 0, 0, 1, 0).isGreaterThan(specWith(0, 0, 0, 1, 0)), isFalse());
-			assertThat(specWith(0, 0, 0, 0, 1).isGreaterThan(specWith(0, 0, 0, 0, 1)), isFalse());
+			assertThat(specWith(2, 0, 0, 0).isGreaterThan(specWith(1, 0, 0, 0)), isTrue());
+			assertThat(specWith(0, 2, 0, 0).isGreaterThan(specWith(0, 1, 0, 0)), isTrue());
+			assertThat(specWith(0, 0, 2, 0).isGreaterThan(specWith(0, 0, 1, 0)), isTrue());
+			assertThat(specWith(0, 0, 0, 2).isGreaterThan(specWith(0, 0, 0, 1)), isTrue());
 
 
-			assertThat(specWith(2, 0, 0, 0, 0).isGreaterThan(specWith(3, 0, 0, 0, 0)), isFalse());
-			assertThat(specWith(0, 2, 0, 0, 0).isGreaterThan(specWith(0, 3, 0, 0, 0)), isFalse());
-			assertThat(specWith(0, 0, 2, 0, 0).isGreaterThan(specWith(0, 0, 3, 0, 0)), isFalse());
-			assertThat(specWith(0, 0, 0, 2, 0).isGreaterThan(specWith(0, 0, 0, 3, 0)), isFalse());
-			assertThat(specWith(0, 0, 0, 0, 2).isGreaterThan(specWith(0, 0, 0, 0, 3)), isFalse());
+
+			assertThat(specWith(1, 0, 0, 0).isGreaterThan(specWith(1, 0, 0, 0)), isFalse());
+			assertThat(specWith(0, 1, 0, 0).isGreaterThan(specWith(0, 1, 0, 0)), isFalse());
+			assertThat(specWith(0, 0, 1, 0).isGreaterThan(specWith(0, 0, 1, 0)), isFalse());
+			assertThat(specWith(0, 0, 0, 1).isGreaterThan(specWith(0, 0, 0, 1)), isFalse());
+
+
+			assertThat(specWith(2, 0, 0, 0).isGreaterThan(specWith(3, 0, 0, 0)), isFalse());
+			assertThat(specWith(0, 2, 0, 0).isGreaterThan(specWith(0, 3, 0, 0)), isFalse());
+			assertThat(specWith(0, 0, 2, 0).isGreaterThan(specWith(0, 0, 3, 0)), isFalse());
+			assertThat(specWith(0, 0, 0, 2).isGreaterThan(specWith(0, 0, 0, 3)), isFalse());
 
 		}
 
@@ -66,50 +63,47 @@ package net.wooga.selectors.parser {
 		[Test]
 		public function testIsLessThan():void {
 
-			var smallerSpec:Specificity = specWith(1, 10, 0, 0, 0);
+			var smallerSpec:Specificity = specWith(1, 10, 0, 0);
 
-			var higherSpec:Specificity = specWith(2, 6, 0, 0, 0);
-
-			assertThat(smallerSpec.isLessThan(higherSpec), isTrue());
-			assertThat(smallerSpec.isGreaterThan(higherSpec), isFalse());
-
-			smallerSpec = specWith(0, 10, 0, 0, 0);
-			higherSpec = specWith(1, 0, 0, 0, 0);
+			var higherSpec:Specificity = specWith(2, 6, 0, 0);
 
 			assertThat(smallerSpec.isLessThan(higherSpec), isTrue());
 			assertThat(smallerSpec.isGreaterThan(higherSpec), isFalse());
 
-
-			smallerSpec = specWith(0, 0, 5, 0, 0);
-
-			higherSpec = specWith(0, 1, 0, 0, 0);
+			smallerSpec = specWith(0, 10, 0, 0);
+			higherSpec = specWith(1, 0, 0, 0);
 
 			assertThat(smallerSpec.isLessThan(higherSpec), isTrue());
 			assertThat(smallerSpec.isGreaterThan(higherSpec), isFalse());
 
 
+			smallerSpec = specWith(0, 0, 5, 0);
+
+			higherSpec = specWith(0, 1, 0, 0);
+
+			assertThat(smallerSpec.isLessThan(higherSpec), isTrue());
+			assertThat(smallerSpec.isGreaterThan(higherSpec), isFalse());
 
 
-			assertThat(specWith(1, 0, 0, 0, 0).isLessThan(specWith(2, 0, 0, 0, 0)), isTrue());
-			assertThat(specWith(0, 1, 0, 0, 0).isLessThan(specWith(0, 2, 0, 0, 0)), isTrue());
-			assertThat(specWith(0, 0, 1, 0, 0).isLessThan(specWith(0, 0, 2, 0, 0)), isTrue());
-			assertThat(specWith(0, 0, 0, 1, 0).isLessThan(specWith(0, 0, 0, 2, 0)), isTrue());
-			assertThat(specWith(0, 0, 0, 0, 1).isLessThan(specWith(0, 0, 0, 0, 2)), isTrue());
+
+
+			assertThat(specWith(1, 0, 0, 0).isLessThan(specWith(2, 0, 0, 0)), isTrue());
+			assertThat(specWith(0, 1, 0, 0).isLessThan(specWith(0, 2, 0, 0)), isTrue());
+			assertThat(specWith(0, 0, 1, 0).isLessThan(specWith(0, 0, 2, 0)), isTrue());
+			assertThat(specWith(0, 0, 0, 1).isLessThan(specWith(0, 0, 0, 2)), isTrue());
 
 
 
-			assertThat(specWith(1, 0, 0, 0, 0).isLessThan(specWith(1, 0, 0, 0, 0)), isFalse());
-			assertThat(specWith(0, 1, 0, 0, 0).isLessThan(specWith(0, 1, 0, 0, 0)), isFalse());
-			assertThat(specWith(0, 0, 1, 0, 0).isLessThan(specWith(0, 0, 1, 0, 0)), isFalse());
-			assertThat(specWith(0, 0, 0, 1, 0).isLessThan(specWith(0, 0, 0, 1, 0)), isFalse());
-			assertThat(specWith(0, 0, 0, 0, 1).isLessThan(specWith(0, 0, 0, 0, 1)), isFalse());
+			assertThat(specWith(1, 0, 0, 0).isLessThan(specWith(1, 0, 0, 0)), isFalse());
+			assertThat(specWith(0, 1, 0, 0).isLessThan(specWith(0, 1, 0, 0)), isFalse());
+			assertThat(specWith(0, 0, 1, 0).isLessThan(specWith(0, 0, 1, 0)), isFalse());
+			assertThat(specWith(0, 0, 0, 1).isLessThan(specWith(0, 0, 0, 1)), isFalse());
 
 
-			assertThat(specWith(2, 0, 0, 0, 0).isLessThan(specWith(1, 0, 0, 0, 0)), isFalse());
-			assertThat(specWith(0, 2, 0, 0, 0).isLessThan(specWith(0, 1, 0, 0, 0)), isFalse());
-			assertThat(specWith(0, 0, 2, 0, 0).isLessThan(specWith(0, 0, 1, 0, 0)), isFalse());
-			assertThat(specWith(0, 0, 0, 2, 0).isLessThan(specWith(0, 0, 0, 1, 0)), isFalse());
-			assertThat(specWith(0, 0, 0, 0, 2).isLessThan(specWith(0, 0, 0, 0, 1)), isFalse());
+			assertThat(specWith(2, 0, 0, 0).isLessThan(specWith(1, 0, 0, 0)), isFalse());
+			assertThat(specWith(0, 2, 0, 0).isLessThan(specWith(0, 1, 0, 0)), isFalse());
+			assertThat(specWith(0, 0, 2, 0).isLessThan(specWith(0, 0, 1, 0)), isFalse());
+			assertThat(specWith(0, 0, 0, 2).isLessThan(specWith(0, 0, 0, 1)), isFalse());
 
 		}
 
@@ -117,14 +111,14 @@ package net.wooga.selectors.parser {
 		[Test]
 		public function testIsEqualTo():void {
 
-			var spec1:Specificity = specWith(12, 0, 0, 0, 0);
-			var spec2:Specificity = specWith(12, 0, 0, 0, 0);
+			var spec1:Specificity = specWith(12, 0, 0, 0);
+			var spec2:Specificity = specWith(12, 0, 0, 0);
 
 			assertThat(spec1.isEqualTo(spec2), isTrue());
 
 
-			spec1 = specWith(12, 1, 0, 0, 0);
-			spec2 = specWith(12, 0, 0, 0, 0);
+			spec1 = specWith(12, 1, 0, 0);
+			spec2 = specWith(12, 0, 0, 0);
 
 			assertThat(spec1.isEqualTo(spec2), isFalse());
 		}
@@ -170,13 +164,12 @@ package net.wooga.selectors.parser {
 		}
 
 		
-		private function specWith(a:int,  b:int,  c:int, d:int,  e:int):Specificity {
+		private function specWith(a:int,  b:int,  c:int, d:int):Specificity {
 			var spec:Specificity = new Specificity();
 			spec.manualStyleRule = a;
 			spec.idSelector = b;
 			spec.classAndAttributeAndPseudoSelectors = c;
 			spec.elementSelectorsAndPseudoElements = d;
-			spec.isAElementSelectors = e;
 
 			return spec;
 		}

@@ -13,6 +13,7 @@ package net.wooga.selectors.parser {
 	import net.wooga.selectors.matching.matchers.implementations.PropertyFilterEqualsMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.PseudoClassMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.TypeNameMatcher;
+	import net.wooga.selectors.pseudoclasses.IsA;
 	import net.wooga.selectors.pseudoclasses.PseudoClass;
 	import net.wooga.selectors.pseudoclasses.SettablePseudoClass;
 	import net.wooga.selectors.pseudoclasses.names.PseudoClassName;
@@ -41,7 +42,6 @@ package net.wooga.selectors.parser {
 		private var _subSelectorEndIndex:int = 0;
 
 		private var _pseudoClassArguments:Array;
-		private var _isExactTypeMatcher:Boolean;
 
 		private var _originalSelector:String;
 
@@ -86,7 +86,6 @@ package net.wooga.selectors.parser {
 			_individualSelectors.push(_currentSelector);
 
 			_pseudoClassArguments = [];
-			_isExactTypeMatcher = false;
 			_subSelectorStartIndex = _input.currentIndex;
 			_specificity = new Specificity();
 		}
@@ -119,7 +118,6 @@ package net.wooga.selectors.parser {
 			var lastTypeMatcher:TypeNameMatcher = findMatcherInLastSimpleSelector(selector, TypeNameMatcher) as TypeNameMatcher;
 			if (lastTypeMatcher) {
 				selector.filterData.typeName = lastTypeMatcher.typeName ? lastTypeMatcher.typeName.split("::").pop() : null;
-				selector.filterData.isImmediateType = lastTypeMatcher.onlyMatchesImmediateType;
 			}
 
 			selector.filterData.hasHover = hasHoverPseudoClassInLastSimpleSelector(selector);
@@ -197,13 +195,7 @@ package net.wooga.selectors.parser {
 		private function simpleSelectorSequence():void {
 			whitespace();
 
-
-			if(_input.isNext("^")) {
-				checkSyntaxExtensionsAllowed();
-				superClassSelector();
-			}
-			else if (_input.isNextMatching(/\*|\w+|\(/) ) {
-				_isExactTypeMatcher = true;
+			if (_input.isNextMatching(/\*|\w+|\(/) ) {
 				typeSelector();
 			}
 
@@ -216,11 +208,6 @@ package net.wooga.selectors.parser {
 			}
 		}
 
-		private function superClassSelector():void {
-			_input.consume(1); //consuming '^'
-			_isExactTypeMatcher = false;
-			typeSelector();
-		}
 
 
 		//TODO (arneschroppe 23/12/11) find out what makes up a valid identifier
@@ -243,19 +230,14 @@ package net.wooga.selectors.parser {
 				className = _input.consumeRegex(/(\w|\.|\*)+/);
 				_input.consumeString(")");
 
-				_currentSelector.matchers.push(getSingletonMatcher(TypeNameMatcher, className, _isExactTypeMatcher, new TypeNameMatcher(className, _isExactTypeMatcher)));
+				_currentSelector.matchers.push(getSingletonMatcher(TypeNameMatcher, className, new TypeNameMatcher(className)));
 			}
 			else {
 				className = _input.consumeRegex(/\w+/);
-				_currentSelector.matchers.push(getSingletonMatcher(TypeNameMatcher, className, _isExactTypeMatcher, new TypeNameMatcher(className, _isExactTypeMatcher)));
+				_currentSelector.matchers.push(getSingletonMatcher(TypeNameMatcher, className, new TypeNameMatcher(className)));
 			}
 
-			if(_isExactTypeMatcher) {
-				_specificity.elementSelectorsAndPseudoElements++;
-			}
-			else {
-				_specificity.isAElementSelectors++;
-			}
+			_specificity.elementSelectorsAndPseudoElements++;
 
 		}
 
@@ -278,7 +260,7 @@ package net.wooga.selectors.parser {
 
 		private function cssClass():void {
 			_input.consume(1);
-			var className:String = _input.consumeRegex(/[a-zA-Z]+/);
+			var className:String = _input.consumeRegex(/[a-zA-Z\-_]+/);
 			var matcher:IMatcher = new ClassMatcher(className);
 			_currentSelector.matchers.push(getSingletonMatcher(ClassMatcher, className, matcher));
 			_specificity.classAndAttributeAndPseudoSelectors++;
@@ -287,7 +269,7 @@ package net.wooga.selectors.parser {
 
 		private function cssId():void {
 			_input.consume(1);
-			var id:String = _input.consumeRegex(/[a-zA-Z]+/);
+			var id:String = _input.consumeRegex(/[a-zA-Z\-_]+/);
 			var matcher:IMatcher = new IdMatcher(id);
 			_currentSelector.matchers.push(getSingletonMatcher(IdMatcher, id, matcher));
 
@@ -315,7 +297,15 @@ package net.wooga.selectors.parser {
 			singletonAttributes.push(matcher);
 
 			_currentSelector.matchers.push(getSingletonMatcher.apply(this, singletonAttributes));
-			_specificity.classAndAttributeAndPseudoSelectors++;
+
+			//Special treatment for is-a pseudo classes: their specificity is always lower than that of element selectors
+			if(matcher.pseudoClass is IsA) {
+				_specificity.isAPseudoClassSelectors++;
+			}
+			else {
+				_specificity.classAndAttributeAndPseudoSelectors++;
+			}
+
 		}
 
 
@@ -342,7 +332,7 @@ package net.wooga.selectors.parser {
 
 
 		private function pseudoClassArgument():void {
-			var argument:String = _input.consumeRegex(/[\w\+\-][\w\+\-\s]*/);
+			var argument:String = _input.consumeRegex(/[\w\+\-\.][\w\+\-\.\s]*/);
 
 			_pseudoClassArguments.push(argument);
 

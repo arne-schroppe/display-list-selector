@@ -1,14 +1,11 @@
 package net.wooga.selectors.displaylist {
 
+	import flash.display.DisplayObject;
+	import flash.display.DisplayObjectContainer;
 	import flash.utils.describeType;
 	import flash.utils.getQualifiedClassName;
 
-	import mx.utils.ObjectUtil;
-
 	import net.wooga.selectors.selectoradapter.*;
-
-	import flash.display.DisplayObject;
-	import flash.display.DisplayObjectContainer;
 
 	public class DisplayObjectSelectorAdapter implements SelectorAdapter {
 
@@ -110,7 +107,7 @@ package net.wooga.selectors.displaylist {
 			return _elementClassName;
 		}
 
-		public function getFullyQualifiedElementClassName():String {
+		public function getQualifiedElementClassName():String {
 			if(!_qualifiedElementClassName) {
 				extractClassNames();
 			}
@@ -146,7 +143,11 @@ package net.wooga.selectors.displaylist {
 			_qualifiedInterfacesAndClasses = new <String>[];
 			_interfacesAndClasses = new <String>[];
 
-			var types:XMLList = describeType(adaptedElement).*.@type;
+			addImplementedTypes(describeType(_adaptedElement).extendsClass.@type);
+			addImplementedTypes(describeType(_adaptedElement).implementsInterface.@type);
+		}
+
+		private function addImplementedTypes(types:XMLList):void {
 
 			var className:String;
 			for each(var type:XML in types) {
@@ -154,8 +155,6 @@ package net.wooga.selectors.displaylist {
 				_qualifiedInterfacesAndClasses.push(className);
 				_interfacesAndClasses.push(className.split("::").pop());
 			}
-
-			trace(ObjectUtil.toString(_qualifiedInterfacesAndClasses));
 		}
 	}
 }

@@ -58,7 +58,7 @@ package net.wooga.selectors.matching.matchers {
 				.a(TestSpriteA)
 			.end.finish();
 
-			_matcher = new TypeNameMatcher(getQualifiedClassName(TestSpriteB), true);
+			_matcher = new TypeNameMatcher(getQualifiedClassName(TestSpriteB));
 
 			var matchedObjects:Array = [];
 
@@ -92,7 +92,7 @@ package net.wooga.selectors.matching.matchers {
 					.a(TestSpriteA)
 					.end.finish();
 
-			_matcher = new TypeNameMatcher(getQualifiedClassName(TestSpriteB).replace("::", "."), true);
+			_matcher = new TypeNameMatcher(getQualifiedClassName(TestSpriteB).replace("::", "."));
 
 			var matchedObjects:Array = [];
 
@@ -108,6 +108,7 @@ package net.wooga.selectors.matching.matchers {
 		}
 
 
+		[Ignore("Move this to is-a selector test")]
 		[Test]
 		public function should_select_elements_that_subclass_a_type():void {
 			var tree:DisplayTree = new DisplayTree();
@@ -124,7 +125,7 @@ package net.wooga.selectors.matching.matchers {
 					.a(InheritedTestSprite)
 					.end.finish();
 
-			_matcher = new TypeNameMatcher(getQualifiedClassName(TestSpriteB), false);
+			_matcher = new TypeNameMatcher(getQualifiedClassName(TestSpriteB));
 
 			var matchedObjects:Array = [];
 
@@ -139,6 +140,7 @@ package net.wooga.selectors.matching.matchers {
 		}
 
 
+		[Ignore("Move this to is-a selector test")]
 		[Test]
 		public function should_select_elements_that_implements_a_type():void {
 			var tree:DisplayTree = new DisplayTree();
@@ -155,7 +157,7 @@ package net.wooga.selectors.matching.matchers {
 					.a(TestSpriteA)
 				.end.finish();
 
-			_matcher = new TypeNameMatcher(getQualifiedClassName(TestInterface), false);
+			_matcher = new TypeNameMatcher(getQualifiedClassName(TestInterface));
 
 			var matchedObjects:Array = [];
 
@@ -255,7 +257,7 @@ package net.wooga.selectors.matching.matchers {
 		public function should_throw_exception_for_trailing_dots():void {
 
 			assertThat(function ():void {
-						new TypeNameMatcher("fixtures.somepackage.TestSpritePack.", true);
+						new TypeNameMatcher("fixtures.somepackage.TestSpritePack.");
 					}, throws(isA(ArgumentError))
 			);
 		}
@@ -265,7 +267,7 @@ package net.wooga.selectors.matching.matchers {
 		public function should_throw_exception_for_trailing_dots_at_start():void {
 
 			assertThat(function ():void {
-						new TypeNameMatcher(".fixtures.somepackage.TestSpritePack", true);
+						new TypeNameMatcher(".fixtures.somepackage.TestSpritePack");
 					}, throws(isA(ArgumentError))
 			);
 		}
@@ -275,7 +277,7 @@ package net.wooga.selectors.matching.matchers {
 		public function should_throw_exception_for_multiple_dots_in_body():void {
 
 			assertThat(function ():void {
-						new TypeNameMatcher("fixtures.somepackage..TestSpritePack", true);
+						new TypeNameMatcher("fixtures.somepackage..TestSpritePack");
 					}, throws(isA(ArgumentError))
 			);
 		}

@@ -5,7 +5,7 @@ package net.wooga.selectors.selectoradapter {
 
 		
 		function getElementClassName():String;
-		function getFullyQualifiedElementClassName():String;
+		function getQualifiedElementClassName():String;
 
 
 		//TODO (arneschroppe 22/2/12) should we even use this? better not, the adapter should handle everything

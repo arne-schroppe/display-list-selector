@@ -1,7 +1,6 @@
 package net.wooga.selectors.selectorstorage.keys {
 
 	import flash.utils.Dictionary;
-	import flash.utils.describeType;
 	import flash.utils.getQualifiedClassName;
 
 	import net.wooga.selectors.selector_internal;
@@ -14,7 +13,7 @@ package net.wooga.selectors.selectorstorage.keys {
 
 		private var _typeToKeysMap:Dictionary = new Dictionary();
 
-		private static const IS_A_PREFIX:String = "^";
+		//private static const IS_A_PREFIX:String = "^";
 
 		/*
 		Note (asc 2011-03-14) We only check by class name, not by package. This means
@@ -23,16 +22,16 @@ package net.wooga.selectors.selectorstorage.keys {
 		*/
 
 		public function keyForSelector(parsedSelector:SelectorImpl):String {
-			var prefix:String = parsedSelector.filterData.isImmediateType ? "" : IS_A_PREFIX;
+			var prefix:String = ""; //parsedSelector.filterData.isImmediateType ? "" : IS_A_PREFIX;
 			return prefix + parsedSelector.filterData.typeName;
 		}
 
 		//TODO (arneschroppe 14/3/12) only use keys that actually exist in the tree and are isA-selectors
 		public function keysForAdapter(adapter:SelectorAdapter, nodes:Dictionary):Array {
-			var className:String = getQualifiedClassName(adapter.getAdaptedElement());
+			var className:String = adapter.getQualifiedElementClassName();
 			var keys:Array = getKeysForElement(className);
 			if(!keys) {
-				keys = createKeysForElement(adapter, className, nodes);
+				keys = createKeysForElement(adapter, nodes);
 			}
 
 			return keys;
@@ -43,40 +42,39 @@ package net.wooga.selectors.selectorstorage.keys {
 		}
 
 
-		private function createKeysForElement(adapter:SelectorAdapter, fqcn:String, nodes:Dictionary):Array {
+		private function createKeysForElement(adapter:SelectorAdapter, nodes:Dictionary):Array {
 
 			var keys:Array = [];
 
-			var className:String = fqcn.split("::").pop();
-			var isASelectorKey:String = IS_A_PREFIX + className;
+			var className:String = adapter.getElementClassName();
+			//var isASelectorKey:String = IS_A_PREFIX + className;
 
 			addKeyIfItExistsInTree(className, keys, nodes);
-			addKeyIfItExistsInTree(isASelectorKey, keys, nodes);
+			//addKeyIfItExistsInTree(isASelectorKey, keys, nodes);
 			addKeyIfItExistsInTree(nullKey, keys, nodes);
 
-			//TODO (arneschroppe 30/3/12) this is extremely slow!
 			//get super-classes
-			addTypes(adapter.getInterfacesAndClasses(), keys, nodes);
+			//addTypes(adapter.getInterfacesAndClasses(), keys, nodes);
 
-			_typeToKeysMap[fqcn] = keys;
+			_typeToKeysMap[adapter.getQualifiedElementClassName()] = keys;
 
 			return keys;
 		}
 
 
 		private function addKeyIfItExistsInTree(className:String, keys:Array, nodes:Dictionary):void {
-			if (nodes.hasOwnProperty(className)) {
+			if (className in nodes) {
 				keys.push(className);
 			}
 		}
 
 
-		private function addTypes(types:Vector.<String>, keys:Array, nodes:Dictionary):void {
-			for each(var implementedType:String in types) {
-
-				addKeyIfItExistsInTree(IS_A_PREFIX + implementedType, keys, nodes);
-			}
-		}
+		//TODO (arneschroppe 3/31/12) use is-a selector here
+//		private function addTypes(types:Vector.<String>, keys:Array, nodes:Dictionary):void {
+//			for each(var implementedType:String in types) {
+//				addKeyIfItExistsInTree(IS_A_PREFIX + implementedType, keys, nodes);
+//			}
+//		}
 
 
 		public function selectorHasKey(parsedSelector:SelectorImpl):Boolean {

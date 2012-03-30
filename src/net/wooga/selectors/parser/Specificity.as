@@ -103,12 +103,12 @@ package net.wooga.selectors.parser {
 		}
 
 
-		public function get isAElementSelectors():int {
+		public function get isAPseudoClassSelectors():int {
 			return _digits[0];
 		}
 
 		//is-A selectors
-		public function set isAElementSelectors(value:int):void {
+		public function set isAPseudoClassSelectors(value:int):void {
 			_digits[0] = value;
 			recalculateNumberValue();
 		}

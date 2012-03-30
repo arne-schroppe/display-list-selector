@@ -1,8 +1,6 @@
 package net.wooga.selectors.matching.matchers.implementations {
 
 	import flash.utils.Dictionary;
-	import flash.utils.describeType;
-	import flash.utils.getQualifiedClassName;
 
 	import net.wooga.selectors.matching.matchers.IMatcher;
 	import net.wooga.selectors.selectoradapter.SelectorAdapter;
@@ -55,38 +53,36 @@ package net.wooga.selectors.matching.matchers.implementations {
 
 		private function matchesType(adapter:SelectorAdapter):Boolean {
 
-			//TODO (arneschroppe 22/2/12) maybe we can find a way to avoid using the adapted element directly
-			var subject:Object = adapter.getAdaptedElement();
 
 			if(_onlyMatchesImmediateType) {
-				var className:String = getQualifiedClassName(subject);
-				return isMatchingType(className);
+				return isMatchingType(adapter.getFullyQualifiedElementClassName());
 			}
 
-			return isAnySuperClassMatchingTypeName(subject);
+			return isAnySuperClassMatchingTypeName(adapter);
 		}
 
 
-		private function isAnySuperClassMatchingTypeName(subject:Object):Boolean {
+		private function isAnySuperClassMatchingTypeName(adapter:SelectorAdapter):Boolean {
 
-			var className:String = getQualifiedClassName(subject);
+			var className:String = adapter.getElementClassName();
 			var key:String = createDictKeyFor(className);
 			var cacheEntry:MatchCacheEntry = _typeMatchCache[key];
 			if(cacheEntry !== null) {
 				return cacheEntry.isMatching;
 			}
 
-			var isMatching:Boolean = isMatchingType(className) || hasSuperClassMatch(subject);
+			var isMatching:Boolean = isMatchingType(className) || hasSuperClassMatch(adapter);
 			_typeMatchCache[key] = new MatchCacheEntry(isMatching);
 
 			return isMatching;
 		}
 
 
-		private function hasSuperClassMatch(subject:Object):Boolean {
-			var types:XMLList = describeType(subject).*.@type;
+		private function hasSuperClassMatch(adapter:SelectorAdapter):Boolean {
 
-			for each(var type:XML in types) {
+			var implementedTypes:Vector.<String> = adapter.getQualifiedInterfacesAndClasses();
+
+			for each(var type:String in implementedTypes) {
 				if(isMatchingType(type.toString())) {
 					return true;
 				}
@@ -96,6 +92,7 @@ package net.wooga.selectors.matching.matchers.implementations {
 		}
 
 
+		//TODO (arneschroppe 3/30/12) optimize this, we don't need to split here
 		private function isMatchingType(className:String):Boolean {
 
 			if(_classNameOnly) {

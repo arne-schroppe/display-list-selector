@@ -3,6 +3,9 @@ package net.wooga.selectors.selectoradapter {
 		function register(adaptedElement:Object):void;
 		function unregister():void;
 
+		
+		function getElementClassName():String;
+		function getFullyQualifiedElementClassName():String;
 
 
 		//TODO (arneschroppe 22/2/12) should we even use this? better not, the adapter should handle everything
@@ -22,5 +25,8 @@ package net.wooga.selectors.selectoradapter {
 		function getElementAtIndex(index:int):Object;
 
 		function isEmpty():Boolean;
+
+		function getQualifiedInterfacesAndClasses():Vector.<String>;
+		function getInterfacesAndClasses():Vector.<String>;
 	}
 }

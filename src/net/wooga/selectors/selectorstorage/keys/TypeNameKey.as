@@ -32,7 +32,7 @@ package net.wooga.selectors.selectorstorage.keys {
 			var className:String = getQualifiedClassName(adapter.getAdaptedElement());
 			var keys:Array = getKeysForElement(className);
 			if(!keys) {
-				keys = createKeysForElement(adapter.getAdaptedElement(), className, nodes);
+				keys = createKeysForElement(adapter, className, nodes);
 			}
 
 			return keys;
@@ -43,7 +43,7 @@ package net.wooga.selectors.selectorstorage.keys {
 		}
 
 
-		private function createKeysForElement(element:Object, fqcn:String, nodes:Dictionary):Array {
+		private function createKeysForElement(adapter:SelectorAdapter, fqcn:String, nodes:Dictionary):Array {
 
 			var keys:Array = [];
 
@@ -56,8 +56,7 @@ package net.wooga.selectors.selectorstorage.keys {
 
 			//TODO (arneschroppe 30/3/12) this is extremely slow!
 			//get super-classes
-			addTypes(describeType(element).extendsClass.@type, keys, nodes);
-			addTypes(describeType(element).implementsInterface.@type, keys, nodes);
+			addTypes(adapter.getInterfacesAndClasses(), keys, nodes);
 
 			_typeToKeysMap[fqcn] = keys;
 
@@ -72,11 +71,10 @@ package net.wooga.selectors.selectorstorage.keys {
 		}
 
 
-		private function addTypes(types:XMLList, keys:Array, nodes:Dictionary):void {
+		private function addTypes(types:Vector.<String>, keys:Array, nodes:Dictionary):void {
 			for each(var implementedType:String in types) {
-				var className:String = implementedType.split("::").pop();
 
-				addKeyIfItExistsInTree(IS_A_PREFIX + className, keys, nodes);
+				addKeyIfItExistsInTree(IS_A_PREFIX + implementedType, keys, nodes);
 			}
 		}
 

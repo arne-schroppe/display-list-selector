@@ -1,5 +1,10 @@
 package net.wooga.selectors.displaylist {
 
+	import flash.utils.describeType;
+	import flash.utils.getQualifiedClassName;
+
+	import mx.utils.ObjectUtil;
+
 	import net.wooga.selectors.selectoradapter.*;
 
 	import flash.display.DisplayObject;
@@ -8,6 +13,11 @@ package net.wooga.selectors.displaylist {
 	public class DisplayObjectSelectorAdapter implements SelectorAdapter {
 
 		private var _adaptedElement:DisplayObject;
+		
+		private var _elementClassName:String;
+		private var _qualifiedElementClassName:String;
+		private var _qualifiedInterfacesAndClasses:Vector.<String>;
+		private var _interfacesAndClasses:Vector.<String>;
 
 		//TODO (arneschroppe 2/26/12) rename groups to classes
 		private static const CSS_CLASS_PARAMETER_NAME:String = "groups";
@@ -90,6 +100,62 @@ package net.wooga.selectors.displaylist {
 
 		public function hasPseudoClass(pseudoClassName:String):Boolean {
 			return _pseudoClasses[pseudoClassName];
+		}
+
+		public function getElementClassName():String {
+			if(!_elementClassName) {
+				extractClassNames()
+			}
+
+			return _elementClassName;
+		}
+
+		public function getFullyQualifiedElementClassName():String {
+			if(!_qualifiedElementClassName) {
+				extractClassNames();
+			}
+
+			return _qualifiedElementClassName;
+		}
+
+		private function extractClassNames():void {
+			_qualifiedElementClassName = getQualifiedClassName(adaptedElement);
+			_elementClassName = _qualifiedElementClassName.split("::").pop();
+		}
+
+
+		public function getQualifiedInterfacesAndClasses():Vector.<String> {
+			if(!_qualifiedInterfacesAndClasses) {
+				extractImplementedTypes();
+			}
+
+			return _qualifiedInterfacesAndClasses;
+		}
+
+
+
+		public function getInterfacesAndClasses():Vector.<String> {
+			if(!_interfacesAndClasses) {
+				extractImplementedTypes();
+			}
+
+			return _interfacesAndClasses;
+		}
+
+		private function extractImplementedTypes():void {
+			_qualifiedInterfacesAndClasses = new <String>[];
+			_interfacesAndClasses = new <String>[];
+
+			var types:XMLList = describeType(adaptedElement).*.@type;
+
+			var className:String;
+			for each(var type:XML in types) {
+				className = type.toString();
+				_qualifiedInterfacesAndClasses.push(className);
+				_interfacesAndClasses.push(className.split("::").pop());
+			}
+
+			trace(ObjectUtil.toString(_qualifiedInterfacesAndClasses));
 		}
 	}
 }

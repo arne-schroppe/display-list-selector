@@ -129,6 +129,7 @@ package net.wooga.selectors {
 
 
 		private function getStyleAdapterClass(object:Object):Class {
+			//TODO (arneschroppe 3/30/12) we could also just set the class name in the adapter
 			var objectTypeName:String = getQualifiedClassName(object);
 			var SelectorClientClass:Class = _objectTypeToStyleAdapterTypeMap[objectTypeName];
 			if (!SelectorClientClass) {

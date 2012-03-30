@@ -26,7 +26,8 @@ package net.wooga.selectors.tools {
 				}
 			}
 
-			return currentLevel.itemFor(key);
+			//TODO (arneschroppe 30/3/12) this line is untested!
+			return currentLevel[key];
 			
 		}
 

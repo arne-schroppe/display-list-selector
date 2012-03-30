@@ -419,6 +419,7 @@ package net.wooga.selectors.parser {
 		}
 
 
+		//TODO (arneschroppe 30/3/12) untested method
 		private function getSingletonMatcher(...keysAndValue):IMatcher {
 			var keys:Array = keysAndValue.slice(0, keysAndValue.length - 1);
 

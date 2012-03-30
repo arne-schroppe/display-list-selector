@@ -89,9 +89,10 @@ package net.wooga.selectors {
 		}
 
 
+		//TODO (arneschroppe 30/3/12) untested
 		public function setStyleAdapterForType(adapterType:Class, objectType:Class):void {
 			checkAdapterType(adapterType);
-			_objectTypeToStyleAdapterTypeMap.add(getQualifiedClassName(objectType), adapterType);
+			_objectTypeToStyleAdapterTypeMap[getQualifiedClassName(objectType)] = adapterType;
 		}
 
 
@@ -138,12 +139,13 @@ package net.wooga.selectors {
 		}
 
 
+		//TODO (arneschroppe 30/3/12) this method is untested
 		public function removeStyleAdapterOf(object:Object):void {
 
-			if(_objectToStyleAdapterMap.hasKey(object)) {
-				var selectorClient:SelectorAdapter = _objectToStyleAdapterMap.itemFor(object);
+			if(object in _objectToStyleAdapterMap) {
+				var selectorClient:SelectorAdapter = _objectToStyleAdapterMap[object];
 				selectorClient.unregister();
-				_objectToStyleAdapterMap.removeKey(object);
+				delete _objectToStyleAdapterMap[object];
 			}
 		}
 

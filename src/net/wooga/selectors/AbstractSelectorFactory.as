@@ -1,5 +1,6 @@
 package net.wooga.selectors {
 
+	import flash.utils.Dictionary;
 	import flash.utils.getQualifiedClassName;
 
 	import net.wooga.selectors.matching.MatcherTool;
@@ -25,9 +26,6 @@ package net.wooga.selectors {
 	import net.wooga.selectors.usagepatterns.implementations.SelectorImpl;
 	import net.wooga.selectors.usagepatterns.implementations.SelectorPoolImpl;
 
-	import org.as3commons.collections.Map;
-	import org.as3commons.collections.framework.IMap;
-
 	public class AbstractSelectorFactory implements SelectorFactory {
 
 		use namespace selector_internal;
@@ -40,9 +38,9 @@ package net.wooga.selectors {
 
 		private var _pseudoClassProvider:PseudoClassProviderImpl;
 
-		private var _objectToStyleAdapterMap:IMap = new Map();
+		private var _objectToStyleAdapterMap:Dictionary = new Dictionary();
 
-		private var _objectTypeToStyleAdapterTypeMap:IMap = new Map();
+		private var _objectTypeToStyleAdapterTypeMap:Dictionary = new Dictionary();
 		private var _defaultStyleAdapterType:Class;
 
 
@@ -113,7 +111,7 @@ package net.wooga.selectors {
 
 
 		public function createStyleAdapterFor(object:Object):void {
-			if(_objectToStyleAdapterMap.hasKey(object)) {
+			if(object in _objectToStyleAdapterMap) {
 				return;	
 			}
 
@@ -124,14 +122,14 @@ package net.wooga.selectors {
 			}
 
 			var selectorClient:SelectorAdapter = new SelectorClientClass();
-			_objectToStyleAdapterMap.add(object, selectorClient);
+			_objectToStyleAdapterMap[object] = selectorClient;
 			selectorClient.register(object);
 		}
 
 
 		private function getStyleAdapterClass(object:Object):Class {
 			var objectTypeName:String = getQualifiedClassName(object);
-			var SelectorClientClass:Class = _objectTypeToStyleAdapterTypeMap.itemFor(objectTypeName);
+			var SelectorClientClass:Class = _objectTypeToStyleAdapterTypeMap[objectTypeName];
 			if (!SelectorClientClass) {
 				SelectorClientClass = _defaultStyleAdapterType;
 			}

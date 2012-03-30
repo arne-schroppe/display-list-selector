@@ -5,24 +5,23 @@ package net.wooga.selectors {
 	import flash.display.MovieClip;
 
 	import net.arneschroppe.displaytreebuilder.DisplayTree;
-	import net.wooga.selectors.usagepatterns.Selector;
-	import net.wooga.selectors.usagepatterns.SelectorDescription;
-	import net.wooga.selectors.usagepatterns.SelectorGroup;
-	import net.wooga.selectors.usagepatterns.SelectorPool;
-	import net.wooga.selectors.displaylist.DisplayObjectSelectorAdapter;
-	import net.wooga.fixtures.tools.ContextViewBasedTest;
 	import net.wooga.fixtures.TestSpriteA;
 	import net.wooga.fixtures.TestSpriteB;
 	import net.wooga.fixtures.TestSpriteC;
 	import net.wooga.fixtures.TestSpriteWithInterface;
-	import net.wooga.utils.flexunit.hamcrestcollection.containsExactly;
-	import net.wooga.utils.flexunit.hamcrestcollection.everyItemInCollection;
+	import net.wooga.fixtures.matcher.containsExactlyInArray;
+	import net.wooga.fixtures.tools.ContextViewBasedTest;
+	import net.wooga.selectors.displaylist.DisplayObjectSelectorAdapter;
+	import net.wooga.selectors.usagepatterns.Selector;
+	import net.wooga.selectors.usagepatterns.SelectorDescription;
+	import net.wooga.selectors.usagepatterns.SelectorGroup;
+	import net.wooga.selectors.usagepatterns.SelectorPool;
 	import net.wooga.utils.flexunit.hamcrestcollection.hasItemInCollection;
 
-	import org.as3commons.collections.Set;
-	import org.as3commons.collections.framework.IIterable;
 	import org.flexunit.asserts.assertEquals;
 	import org.hamcrest.assertThat;
+	import org.hamcrest.collection.everyItem;
+	import org.hamcrest.collection.hasItem;
 	import org.hamcrest.core.allOf;
 	import org.hamcrest.core.isA;
 	import org.hamcrest.core.not;
@@ -64,7 +63,7 @@ package net.wooga.selectors {
 			.end.finish();
 
 
-			testSelector("TestSpriteB", function(matchedObjects:Set):void {
+			testSelector("TestSpriteB", function(matchedObjects:Array):void {
 				assertContainsObjectOfClass(matchedObjects, TestSpriteB);
 				assertDoesNotContainObjectOfClass(matchedObjects, TestSpriteA);
 				assertDoesNotContainObjectOfClass(matchedObjects, TestSpriteC);	
@@ -83,7 +82,7 @@ package net.wooga.selectors {
 				.end.finish();
 
 
-			testSelector("*", function(matchedObjects:Set):void {
+			testSelector("*", function(matchedObjects:Array):void {
 
 				assertContainsObjectOfClass(matchedObjects, TestSpriteA);
 				assertContainsObjectOfClass(matchedObjects, TestSpriteB);
@@ -103,11 +102,11 @@ package net.wooga.selectors {
 					.a(TestSpriteC)
 				.end.finish();
 
-			testSelector("TestSpriteB > TestSpriteC", function(matchedObjects:Set):void {
+			testSelector("TestSpriteB > TestSpriteC", function(matchedObjects:Array):void {
 				assertContainsObjectOfClass(matchedObjects, TestSpriteC);
 				assertDoesNotContainObjectOfClass(matchedObjects, TestSpriteA);
 				assertDoesNotContainObjectOfClass(matchedObjects, TestSpriteB);
-				assertEquals(1, matchedObjects.size);
+				assertEquals(1, matchedObjects.length);
 			})
 		}
 
@@ -125,11 +124,11 @@ package net.wooga.selectors {
 					.a(TestSpriteC).withTheName(expectedName)
 				.end.finish();
 
-			testSelector("TestSpriteC[name='" + expectedName + "']", function(matchedObjects:Set):void {
-				assertThat(matchedObjects, hasItemInCollection(allOf(isA(TestSpriteC), hasPropertyWithValue("name", expectedName))));
+			testSelector("TestSpriteC[name='" + expectedName + "']", function(matchedObjects:Array):void {
+				assertThat(matchedObjects, hasItem(allOf(isA(TestSpriteC), hasPropertyWithValue("name", expectedName))));
 				assertDoesNotContainObjectOfClass(matchedObjects, TestSpriteA);
 				assertDoesNotContainObjectOfClass(matchedObjects, TestSpriteB);
-				assertEquals(1, matchedObjects.size);
+				assertEquals(1, matchedObjects.length);
 			});
 		}
 
@@ -145,9 +144,9 @@ package net.wooga.selectors {
 			var value:String = "success";
 
 			_propertyDictionary.addItem(propertyName, value);
-			testSelector("TestSpriteA[" + propertyName + "='" + value + "']", function(matchedObjects:Set):void {
-				assertThat(matchedObjects, containsExactly(1, isA(TestSpriteA)));
-				assertEquals(1, matchedObjects.size);
+			testSelector("TestSpriteA[" + propertyName + "='" + value + "']", function(matchedObjects:Array):void {
+				assertThat(matchedObjects, containsExactlyInArray(1, isA(TestSpriteA)));
+				assertEquals(1, matchedObjects.length);
 			});
 		}
 
@@ -161,9 +160,9 @@ package net.wooga.selectors {
 				.end.finish();
 
 
-			testSelector("TestSpriteA#test", function(matchedObjects:Set):void {
-				assertThat(matchedObjects, containsExactly(1, isA(TestSpriteA)));
-				assertEquals(1, matchedObjects.size);
+			testSelector("TestSpriteA#test", function(matchedObjects:Array):void {
+				assertThat(matchedObjects, containsExactlyInArray(1, isA(TestSpriteA)));
+				assertEquals(1, matchedObjects.length);
 			});
 		}
 
@@ -177,16 +176,16 @@ package net.wooga.selectors {
 					.a(TestSpriteC)
 				.end.finish();
 
-			var values:Set = new Set();
-			values.add("A");
-			values.add("B");
-			values.add("expectedValue");
-			values.add("C");
+			var values:Array = new Array();
+			values.push("A");
+			values.push("B");
+			values.push("expectedValue");
+			values.push("C");
 			_propertyDictionary.addItem("state", values);
 
-			testSelector("TestSpriteA[state~='expectedValue']", function(matchedObjects:Set):void {
-				assertThat(matchedObjects, containsExactly(1, isA(TestSpriteA)));
-				assertEquals(1, matchedObjects.size);
+			testSelector("TestSpriteA[state~='expectedValue']", function(matchedObjects:Array):void {
+				assertThat(matchedObjects, containsExactlyInArray(1, isA(TestSpriteA)));
+				assertEquals(1, matchedObjects.length);
 			});
 		}
 
@@ -200,9 +199,9 @@ package net.wooga.selectors {
 					.a(TestSpriteC).withTheProperty("groups").setToThe.value(["A", "B", "testClass", "C"])
 				.end.finish();
 
-			testSelector("TestSpriteC.testClass", function(matchedObjects:Set):void {
-				assertThat(matchedObjects, containsExactly(1, isA(TestSpriteC)));
-				assertEquals(1, matchedObjects.size);
+			testSelector("TestSpriteC.testClass", function(matchedObjects:Array):void {
+				assertThat(matchedObjects, containsExactlyInArray(1, isA(TestSpriteC)));
+				assertEquals(1, matchedObjects.length);
 			});
 		}
 
@@ -220,11 +219,11 @@ package net.wooga.selectors {
 					.end
 				.end.finish();
 
-			testSelector("* > TestSpriteC", function(matchedObjects:Set):void {
-				assertThat(matchedObjects, containsExactly(2, isA(TestSpriteC)));
+			testSelector("* > TestSpriteC", function(matchedObjects:Array):void {
+				assertThat(matchedObjects, containsExactlyInArray(2, isA(TestSpriteC)));
 				assertDoesNotContainObjectOfClass(matchedObjects, TestSpriteA);
 				assertDoesNotContainObjectOfClass(matchedObjects, TestSpriteB);
-				assertEquals(2, matchedObjects.size);
+				assertEquals(2, matchedObjects.length);
 			});
 		}
 
@@ -248,9 +247,9 @@ package net.wooga.selectors {
 					.a(TestSpriteC)
 				.end.finish();
 
-			testSelector("TestSpriteA TestSpriteC", function(matchedObjects:Set):void {
-				assertThat(matchedObjects, containsExactly(3, isA(TestSpriteC)));
-				assertEquals(3, matchedObjects.size);
+			testSelector("TestSpriteA TestSpriteC", function(matchedObjects:Array):void {
+				assertThat(matchedObjects, containsExactlyInArray(3, isA(TestSpriteC)));
+				assertEquals(3, matchedObjects.length);
 			});
 		}
 
@@ -281,9 +280,9 @@ package net.wooga.selectors {
 					.a(TestSpriteC)
 				.end.finish();
 
-			testSelector("TestSpriteA TestSpriteC", function(matchedObjects:Set):void {
-				assertThat(matchedObjects, containsExactly(4, isA(TestSpriteC)));
-				assertEquals(4, matchedObjects.size);
+			testSelector("TestSpriteA TestSpriteC", function(matchedObjects:Array):void {
+				assertThat(matchedObjects, containsExactlyInArray(4, isA(TestSpriteC)));
+				assertEquals(4, matchedObjects.length);
 			});
 		}
 
@@ -308,9 +307,9 @@ package net.wooga.selectors {
 					.a(TestSpriteC)
 				.end.finish();
 
-			testSelector("*:root", function(matchedObjects:Set):void {
-				assertThat(matchedObjects, containsExactly(1, equalTo(contextView)));
-				assertEquals(1, matchedObjects.size);
+			testSelector("*:root", function(matchedObjects:Array):void {
+				assertThat(matchedObjects, containsExactlyInArray(1, equalTo(contextView)));
+				assertEquals(1, matchedObjects.length);
 			});
 		}
 
@@ -324,9 +323,9 @@ package net.wooga.selectors {
 					.a(TestSpriteC)
 				.end.finish();
 
-			testSelector("*:first-child", function(matchedObjects:Set):void {
-				assertThat(matchedObjects, containsExactly(1, isA(TestSpriteA)));
-				assertEquals(1, matchedObjects.size);
+			testSelector("*:first-child", function(matchedObjects:Array):void {
+				assertThat(matchedObjects, containsExactlyInArray(1, isA(TestSpriteA)));
+				assertEquals(1, matchedObjects.length);
 			});
 		}
 
@@ -340,9 +339,9 @@ package net.wooga.selectors {
 					.a(TestSpriteC)
 				.end.finish();
 
-			testSelector("*:root > *:last-child", function(matchedObjects:Set):void {
-				assertThat(matchedObjects, containsExactly(1, isA(TestSpriteC)));
-				assertEquals(1, matchedObjects.size);
+			testSelector("*:root > *:last-child", function(matchedObjects:Array):void {
+				assertThat(matchedObjects, containsExactlyInArray(1, isA(TestSpriteC)));
+				assertEquals(1, matchedObjects.length);
 			});
 		}
 
@@ -362,9 +361,9 @@ package net.wooga.selectors {
 				.end.finish();
 
 
-			testSelector("*:nth-child(6)", function(matchedObjects:Set):void {
-				assertThat(matchedObjects, containsExactly(1, isA(TestSpriteB)));
-				assertThat(matchedObjects.size, equalTo(1));
+			testSelector("*:nth-child(6)", function(matchedObjects:Array):void {
+				assertThat(matchedObjects, containsExactlyInArray(1, isA(TestSpriteB)));
+				assertThat(matchedObjects.length, equalTo(1));
 			});
 		}
 
@@ -383,9 +382,9 @@ package net.wooga.selectors {
 					.a(TestSpriteA)
 					.end.finish();
 
-			testSelector("*:nth-child(-2n + 5)", function(matchedObjects:Set):void {
-				assertThat(matchedObjects, containsExactly(3, isA(TestSpriteB)));
-				assertEquals(3, matchedObjects.size);
+			testSelector("*:nth-child(-2n + 5)", function(matchedObjects:Array):void {
+				assertThat(matchedObjects, containsExactlyInArray(3, isA(TestSpriteB)));
+				assertEquals(3, matchedObjects.length);
 			});
 		}
 
@@ -405,9 +404,9 @@ package net.wooga.selectors {
 				.end.finish();
 
 
-			testSelector("*:nth-last-child(3)", function(matchedObjects:Set):void {
-				assertThat(matchedObjects, containsExactly(1, isA(TestSpriteB)));
-				assertThat(matchedObjects.size, equalTo(1));
+			testSelector("*:nth-last-child(3)", function(matchedObjects:Array):void {
+				assertThat(matchedObjects, containsExactlyInArray(1, isA(TestSpriteB)));
+				assertThat(matchedObjects.length, equalTo(1));
 			});
 		}
 
@@ -419,16 +418,16 @@ package net.wooga.selectors {
 					.a(TestSpriteC).withTheName("testName")
 				.end.finish();
 
-			var values:Set = new Set();
-			values.add("A");
-			values.add("B");
-			values.add("1234");
-			values.add("C");
+			var values:Array = new Array();
+			values.push("A");
+			values.push("B");
+			values.push("1234");
+			values.push("C");
 			_propertyDictionary.addItem("testattrib", values);
 
-			testSelector(":root > *#testName[testattrib~='1234']", function(matchedObjects:Set):void {
-				assertThat(matchedObjects.size, equalTo(1));
-				assertThat(matchedObjects, containsExactly(1, isA(TestSpriteC)));
+			testSelector(":root > *#testName[testattrib~='1234']", function(matchedObjects:Array):void {
+				assertThat(matchedObjects.length, equalTo(1));
+				assertThat(matchedObjects, containsExactlyInArray(1, isA(TestSpriteC)));
 			});
 		}
 
@@ -441,9 +440,9 @@ package net.wooga.selectors {
 					.a(TestSpriteC)
 				.end.finish();
 
-			testSelector(":root > :nth-child(2)", function(matchedObjects:Set):void {
-				assertThat(matchedObjects.size, equalTo(1));
-				assertThat(matchedObjects, containsExactly(1, isA(TestSpriteB)));
+			testSelector(":root > :nth-child(2)", function(matchedObjects:Array):void {
+				assertThat(matchedObjects.length, equalTo(1));
+				assertThat(matchedObjects, containsExactlyInArray(1, isA(TestSpriteB)));
 			});
 		}
 
@@ -458,11 +457,11 @@ package net.wooga.selectors {
 				.end.finish();
 
 
-			testSelector(":root > ^Sprite", function(matchedObjects:Set):void {
-				assertThat(matchedObjects.size, equalTo(4));
-				assertThat(matchedObjects, containsExactly(1, isA(TestSpriteA)));
-				assertThat(matchedObjects, containsExactly(2, isA(MovieClip)));
-				assertThat(matchedObjects, containsExactly(1, isA(TestSpriteB)));
+			testSelector(":root > ^Sprite", function(matchedObjects:Array):void {
+				assertThat(matchedObjects.length, equalTo(4));
+				assertThat(matchedObjects, containsExactlyInArray(1, isA(TestSpriteA)));
+				assertThat(matchedObjects, containsExactlyInArray(2, isA(MovieClip)));
+				assertThat(matchedObjects, containsExactlyInArray(1, isA(TestSpriteB)));
 			});
 		}
 
@@ -477,9 +476,9 @@ package net.wooga.selectors {
 					.a(TestSpriteWithInterface)
 					.end.finish();
 
-			testSelector(":root > ^TestInterface", function(matchedObjects:Set):void {
-				assertThat(matchedObjects.size, equalTo(2));
-				assertThat(matchedObjects, containsExactly(2, isA(TestSpriteWithInterface)));
+			testSelector(":root > ^TestInterface", function(matchedObjects:Array):void {
+				assertThat(matchedObjects.length, equalTo(2));
+				assertThat(matchedObjects, containsExactlyInArray(2, isA(TestSpriteWithInterface)));
 			});
 		}
 
@@ -539,10 +538,10 @@ package net.wooga.selectors {
 				.end.finish();
 
 
-			testSelector("TestSpriteA, TestSpriteB", function(matchedObjects:Set):void {
-				assertThat(matchedObjects.size, equalTo(6));
-				assertThat(matchedObjects, containsExactly(2, isA(TestSpriteA)));
-				assertThat(matchedObjects, containsExactly(4, isA(TestSpriteB)));
+			testSelector("TestSpriteA, TestSpriteB", function(matchedObjects:Array):void {
+				assertThat(matchedObjects.length, equalTo(6));
+				assertThat(matchedObjects, containsExactlyInArray(2, isA(TestSpriteA)));
+				assertThat(matchedObjects, containsExactlyInArray(4, isA(TestSpriteB)));
 			});
 		}
 
@@ -558,22 +557,22 @@ package net.wooga.selectors {
 				.end.finish();
 
 
-			testSelector("TestSpriteB TestSpriteC:first-child, TestSpriteB > TestSpriteC", function(matchedObjects:Set):void {
-				assertThat(matchedObjects.size, equalTo(3));
-				assertThat(matchedObjects, containsExactly(3, isA(TestSpriteC)));
+			testSelector("TestSpriteB TestSpriteC:first-child, TestSpriteB > TestSpriteC", function(matchedObjects:Array):void {
+				assertThat(matchedObjects.length, equalTo(3));
+				assertThat(matchedObjects, containsExactlyInArray(3, isA(TestSpriteC)));
 			});
 		}
 
 
 
 
-		private function assertContainsObjectOfClass(objects:IIterable, Type:Class):void {
-			assertThat(objects, hasItemInCollection(isA(Type)));
+		private function assertContainsObjectOfClass(objects:Array, Type:Class):void {
+			assertThat(objects, hasItem(isA(Type)));
 		}
 
 
-		private function assertDoesNotContainObjectOfClass(objects:IIterable, Type:Class):void {
-			assertThat(objects, everyItemInCollection(not(isA(Type))));
+		private function assertDoesNotContainObjectOfClass(objects:Array, Type:Class):void {
+			assertThat(objects, everyItem(not(isA(Type))));
 		}
 
 
@@ -581,7 +580,7 @@ package net.wooga.selectors {
 
 
 
-			var result:Set = getMatchedObjectsFromSelectorPool(selectorString);
+			var result:Array = getMatchedObjectsFromSelectorPool(selectorString);
 			assertions.call(this, result);
 
 			result = getMatchedObjectsFromSingleSelector(selectorString);
@@ -590,10 +589,10 @@ package net.wooga.selectors {
 
 
 
-		private function getMatchedObjectsFromSelectorPool(selectorString:String):Set {
+		private function getMatchedObjectsFromSelectorPool(selectorString:String):Array {
 			_selectorPool = _selectorFactory.createSelectorPool();
 			_selectorPool.addSelector(selectorString);
-			var result:Set = new Set();
+			var result:Array = new Array();
 
 			scanForMatches(contextView, selectorString, result, selectorPoolMatchMethod);
 
@@ -601,7 +600,7 @@ package net.wooga.selectors {
 		}
 
 
-		private function scanForMatches(object:DisplayObject, selectorString:String, result:Set, matchMethod:Function):void {
+		private function scanForMatches(object:DisplayObject, selectorString:String, result:Array, matchMethod:Function):void {
 
 			_selectorFactory.createStyleAdapterFor(object);
 
@@ -614,25 +613,25 @@ package net.wooga.selectors {
 			}
 		}
 
-		private function selectorPoolMatchMethod(object:DisplayObject, selectorString:String, result:Set):void {
+		private function selectorPoolMatchMethod(object:DisplayObject, selectorString:String, result:Array):void {
 			var matchingSelectors:Vector.<SelectorDescription> = _selectorPool.getSelectorsMatchingObject(object);
 			if (matchingSelectors.filter(filterFunctionFor(selectorString)).length > 0) {
-				result.add(object);
+				result.push(object);
 			}
 		}
 
 
-		private function getMatchedObjectsFromSingleSelector(selectorString:String):Set {
-			var result:Set = new Set();
+		private function getMatchedObjectsFromSingleSelector(selectorString:String):Array {
+			var result:Array = new Array();
 			scanForMatches(contextView, selectorString, result, singleSelectorMatchMethod);
 			return result;
 		}
 
 
-		private function singleSelectorMatchMethod(object:DisplayObject, selectorString:String, result:Set):void {
+		private function singleSelectorMatchMethod(object:DisplayObject, selectorString:String, result:Array):void {
 			var selector:SelectorGroup = _selectorFactory.createSelector(selectorString);
 			if (selector.isAnySelectorMatching(object)) {
-				result.add(object);
+				result.push(object);
 			}
 		}
 
@@ -652,8 +651,6 @@ import flash.utils.Dictionary;
 import net.wooga.selectors.IExternalPropertySource;
 import net.wooga.selectors.selectoradapter.SelectorAdapter;
 
-import org.as3commons.collections.Set;
-
 class PropertyDictionary implements IExternalPropertySource {
 
 	private var _values:Dictionary = new Dictionary();
@@ -666,7 +663,7 @@ class PropertyDictionary implements IExternalPropertySource {
 		return _values[name];
 	}
 
-	public function collectionValueForProperty(subject:SelectorAdapter, name:String):Set {
+	public function collectionValueForProperty(subject:SelectorAdapter, name:String):Array {
 		return _values[name];
 	}
 }

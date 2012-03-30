@@ -1,16 +1,11 @@
 package net.wooga.selectors.selectorstorage {
 
-	import net.wooga.selectors.usagepatterns.implementations.SelectorImpl;
 	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 	import net.wooga.selectors.selectorstorage.keys.HoverKey;
-	import net.wooga.selectors.selectorstorage.keys.SelectorTreeNodeKey;
 	import net.wooga.selectors.selectorstorage.keys.IdKey;
+	import net.wooga.selectors.selectorstorage.keys.SelectorTreeNodeKey;
 	import net.wooga.selectors.selectorstorage.keys.TypeNameKey;
-
-	import org.as3commons.collections.Set;
-	import org.as3commons.collections.framework.IIterable;
-	import org.as3commons.collections.framework.ISet;
-	import org.as3commons.collections.utils.Sets;
+	import net.wooga.selectors.usagepatterns.implementations.SelectorImpl;
 
 	public class SelectorTree {
 
@@ -22,7 +17,7 @@ package net.wooga.selectors.selectorstorage {
 			new HoverKey()
 		];
 
-		private var _foundSelectors:ISet;
+		private var _foundSelectors:Array;
 
 		private var _selectorsWereAdded:Boolean;
 
@@ -57,17 +52,17 @@ package net.wooga.selectors.selectorstorage {
 
 			createKeyIfNeeded(node, key);
 
-			var canPlaceSelector:Boolean = addToNode(node.childNodes.itemFor(key), keyIndex + 1, selector);
+			var canPlaceSelector:Boolean = addToNode(node.childNodes[key], keyIndex + 1, selector);
 			if(canPlaceSelector) {
 				return true;
 			}
 			else if(hasKey) {
-				var targetNode:SelectorFilterTreeNode = node.childNodes.itemFor(key);
-				targetNode.selectors.add(selector);
+				var targetNode:SelectorFilterTreeNode = node.childNodes[key];
+				targetNode.selectors.push(selector);
 				return true;
 			}
 			else if(keyIndex == 0) {
-				node.selectors.add(selector);
+				node.selectors.push(selector);
 			}
 
 			return false;
@@ -75,14 +70,14 @@ package net.wooga.selectors.selectorstorage {
 
 
 		private function createKeyIfNeeded(node:SelectorFilterTreeNode, key:*):void {
-			if(!node.childNodes.hasKey(key)) {
-				node.childNodes.add(key, new SelectorFilterTreeNode());
+			if(!node.childNodes.hasOwnProperty(key)) {
+				node.childNodes[key] = new SelectorFilterTreeNode();
 			}
 		}
 
 
-		public function getPossibleMatchesFor(object:SelectorAdapter):IIterable {
-			_foundSelectors = new Set();
+		public function getPossibleMatchesFor(object:SelectorAdapter):Array {
+			_foundSelectors = [];
 			searchForMatches(_filterRoot, 0, object);
 			return _foundSelectors;
 		}
@@ -99,8 +94,9 @@ package net.wooga.selectors.selectorstorage {
 			}
 
 			//TODO (arneschroppe 19/3/12) use array here, this is too costly
-			Sets.addFromCollection(_foundSelectors, node.selectors);
 
+			_foundSelectors = _foundSelectors.concat(node.selectors);
+			
 			if(keyIndex >= _filterKeys.length) {
 				return;
 			}
@@ -109,7 +105,7 @@ package net.wooga.selectors.selectorstorage {
 			var keys:Array = nodeKey.keysForAdapter(adapter, node.childNodes);
 
 			for each(var key:String in keys) {
-				searchForMatches(node.childNodes.itemFor(key), keyIndex + 1, adapter);
+				searchForMatches(node.childNodes[key], keyIndex + 1, adapter);
 			}
 		}
 

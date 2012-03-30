@@ -1,14 +1,14 @@
 package net.wooga.selectors.selectorstorage.keys {
 
-	import net.wooga.selectors.usagepatterns.implementations.SelectorImpl;
-	import net.wooga.selectors.selectoradapter.SelectorAdapter;
+	import flash.utils.Dictionary;
 
-	import org.as3commons.collections.framework.IMap;
+	import net.wooga.selectors.selectoradapter.SelectorAdapter;
+	import net.wooga.selectors.usagepatterns.implementations.SelectorImpl;
 
 	public interface SelectorTreeNodeKey {
 		function keyForSelector(parsedSelector:SelectorImpl):String;
 
-		function keysForAdapter(adapter:SelectorAdapter, nodes:IMap):Array;
+		function keysForAdapter(adapter:SelectorAdapter, nodes:Dictionary):Array;
 
 		//function isKeyMatching(parsedSelector:ParsedSelector, key:*):Boolean;
 

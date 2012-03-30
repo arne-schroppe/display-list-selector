@@ -3,14 +3,7 @@ package net.wooga.selectors.tools {
 	import net.wooga.selectors.ISpecificity;
 	import net.wooga.selectors.usagepatterns.SelectorDescription;
 
-	import org.as3commons.collections.framework.IComparator;
-
-	public class SpecificityComparator implements IComparator {
-
-
-		public function compare(item1:*, item2:*):int {
-			return staticCompare(item1, item2);
-		}
+	public class SpecificityComparator  {
 		
 		public static function staticCompare(item1:*,  item2:*):int {
 			var specificity1:ISpecificity = (item1 as SelectorDescription).specificity;

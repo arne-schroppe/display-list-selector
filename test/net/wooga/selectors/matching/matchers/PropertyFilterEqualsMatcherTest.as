@@ -3,14 +3,14 @@ package net.wooga.selectors.matching.matchers {
 	import flash.display.DisplayObject;
 
 	import net.arneschroppe.displaytreebuilder.DisplayTree;
-	import net.wooga.selectors.matching.matchers.implementations.PropertyFilterEqualsMatcher;
-	import net.wooga.selectors.selectoradapter.SelectorAdapter;
-	import net.wooga.fixtures.tools.ContextViewBasedTest;
 	import net.wooga.fixtures.TestSpriteA;
 	import net.wooga.fixtures.TestSpriteB;
 	import net.wooga.fixtures.TestSpriteC;
+	import net.wooga.fixtures.tools.ContextViewBasedTest;
 	import net.wooga.fixtures.tools.containsInArrayExactly;
 	import net.wooga.fixtures.tools.getAdapterForObject;
+	import net.wooga.selectors.matching.matchers.implementations.PropertyFilterEqualsMatcher;
+	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 
 	import org.hamcrest.assertThat;
 	import org.hamcrest.collection.everyItem;
@@ -107,15 +107,13 @@ import flash.utils.getQualifiedClassName;
 import net.wooga.selectors.IExternalPropertySource;
 import net.wooga.selectors.selectoradapter.SelectorAdapter;
 
-import org.as3commons.collections.Set;
-
 class NoCallPropertySource implements IExternalPropertySource {
 
 	public function stringValueForProperty(subject:SelectorAdapter, name:String):String {
 		throw new Error("Unexpected method called");
 	}
 
-	public function collectionValueForProperty(subject:SelectorAdapter, name:String):Set {
+	public function collectionValueForProperty(subject:SelectorAdapter, name:String):Array {
 		throw new Error("Unexpected method called");
 	}
 }
@@ -131,7 +129,7 @@ class ClassNamePropertySource implements IExternalPropertySource {
 		return null;
 	}
 
-	public function collectionValueForProperty(subject:SelectorAdapter, name:String):Set {
+	public function collectionValueForProperty(subject:SelectorAdapter, name:String):Array {
 		throw new Error("Unexpected method called");
 	}
 }

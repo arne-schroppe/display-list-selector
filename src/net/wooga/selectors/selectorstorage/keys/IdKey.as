@@ -1,10 +1,10 @@
 package net.wooga.selectors.selectorstorage.keys {
 
-	import net.wooga.selectors.usagepatterns.implementations.SelectorImpl;
+	import flash.utils.Dictionary;
+
 	import net.wooga.selectors.selector_internal;
 	import net.wooga.selectors.selectoradapter.SelectorAdapter;
-
-	import org.as3commons.collections.framework.IMap;
+	import net.wooga.selectors.usagepatterns.implementations.SelectorImpl;
 
 	public class IdKey implements SelectorTreeNodeKey {
 
@@ -16,7 +16,7 @@ package net.wooga.selectors.selectorstorage.keys {
 			return parsedSelector.filterData.id;
 		}
 
-		public function keysForAdapter(adapter:SelectorAdapter, nodes:IMap):Array {
+		public function keysForAdapter(adapter:SelectorAdapter, nodes:Dictionary):Array {
 			return [adapter.getId(), NULL_KEY];
 		}
 

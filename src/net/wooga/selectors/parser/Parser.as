@@ -1,5 +1,7 @@
 package net.wooga.selectors.parser {
 
+	import flash.utils.Dictionary;
+
 	import net.wooga.selectors.IExternalPropertySource;
 	import net.wooga.selectors.matching.matchers.ICombinator;
 	import net.wooga.selectors.matching.matchers.IMatcher;
@@ -11,16 +13,13 @@ package net.wooga.selectors.parser {
 	import net.wooga.selectors.matching.matchers.implementations.PropertyFilterEqualsMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.PseudoClassMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.TypeNameMatcher;
-	import net.wooga.selectors.pseudoclasses.names.PseudoClassName;
-	import net.wooga.selectors.usagepatterns.implementations.SelectorImpl;
-	import net.wooga.selectors.pseudoclasses.SettablePseudoClass;
 	import net.wooga.selectors.pseudoclasses.PseudoClass;
+	import net.wooga.selectors.pseudoclasses.SettablePseudoClass;
+	import net.wooga.selectors.pseudoclasses.names.PseudoClassName;
 	import net.wooga.selectors.selector_internal;
 	import net.wooga.selectors.tools.DynamicMultiMap;
 	import net.wooga.selectors.tools.input.ParserInput;
-
-	import org.as3commons.collections.Map;
-	import org.as3commons.collections.framework.IMap;
+	import net.wooga.selectors.usagepatterns.implementations.SelectorImpl;
 
 	use namespace selector_internal;
 
@@ -47,7 +46,7 @@ package net.wooga.selectors.parser {
 		private var _originalSelector:String;
 
 
-		private var _alreadyParsedSelectors:IMap = new Map();
+		private var _alreadyParsedSelectors:Dictionary = new Dictionary();
 
 
 		public function Parser(externalPropertySource:IExternalPropertySource, pseudoClassProvider:PseudoClassProvider) {
@@ -59,8 +58,8 @@ package net.wooga.selectors.parser {
 		public function parse(inputString:String):Vector.<SelectorImpl> {
 
 			//TODO (arneschroppe 3/19/12) this class should only parse, not cache
-			if(_alreadyParsedSelectors.hasKey(inputString)) {
-				return _alreadyParsedSelectors.itemFor(inputString) as Vector.<SelectorImpl>;
+			if(_alreadyParsedSelectors.hasOwnProperty(inputString)) {
+				return _alreadyParsedSelectors[inputString] as Vector.<SelectorImpl>;
 			}
 			
 			_originalSelector = inputString;
@@ -74,7 +73,7 @@ package net.wooga.selectors.parser {
 			_subSelectorEndIndex = _input.currentIndex;
 			endMatcherSequence();
 
-			_alreadyParsedSelectors.add(inputString, _individualSelectors);
+			_alreadyParsedSelectors[inputString] = _individualSelectors;
 
 			return _individualSelectors;
 		}

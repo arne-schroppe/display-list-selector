@@ -1,21 +1,21 @@
 package net.wooga.selectors.matching {
 
+	import flash.utils.Dictionary;
+
 	import net.wooga.selectors.matching.matchers.ICombinator;
 	import net.wooga.selectors.matching.matchers.IMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.ChildSelectorMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.DescendantSelectorMatcher;
 	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 
-	import org.as3commons.collections.framework.IMap;
-
 	public class MatcherTool {
 
 		private var _rootObject:Object;
 
 		private var _currentlyMatchedMatchers:Vector.<IMatcher>;
-		private var _objectToAdapterMap:IMap;
+		private var _objectToAdapterMap:Dictionary;
 
-		public function MatcherTool(rootObject:Object, objectToAdapterMap:IMap) {
+		public function MatcherTool(rootObject:Object, objectToAdapterMap:Dictionary) {
 			_rootObject = rootObject;
 			_objectToAdapterMap = objectToAdapterMap;
 		}
@@ -92,7 +92,7 @@ package net.wooga.selectors.matching {
 				return false;
 			}
 
-			return reverseMatch(_objectToAdapterMap.itemFor(subject.getParentElement()), nextMatcher);
+			return reverseMatch(_objectToAdapterMap[subject.getParentElement()], nextMatcher);
 		}
 
 

@@ -3,14 +3,14 @@ package net.wooga.selectors.matching.matchers {
 	import flash.display.DisplayObject;
 
 	import net.arneschroppe.displaytreebuilder.DisplayTree;
-	import net.wooga.selectors.matching.matchers.implementations.PropertyFilterContainsMatcher;
-	import net.wooga.selectors.selectoradapter.SelectorAdapter;
-	import net.wooga.fixtures.tools.ContextViewBasedTest;
 	import net.wooga.fixtures.TestSpriteA;
 	import net.wooga.fixtures.TestSpriteB;
 	import net.wooga.fixtures.TestSpriteC;
+	import net.wooga.fixtures.tools.ContextViewBasedTest;
 	import net.wooga.fixtures.tools.containsInArrayExactly;
 	import net.wooga.fixtures.tools.getAdapterForObject;
+	import net.wooga.selectors.matching.matchers.implementations.PropertyFilterContainsMatcher;
+	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 
 	import org.hamcrest.assertThat;
 	import org.hamcrest.core.isA;
@@ -77,22 +77,20 @@ import flash.utils.getQualifiedClassName;
 import net.wooga.selectors.IExternalPropertySource;
 import net.wooga.selectors.selectoradapter.SelectorAdapter;
 
-import org.as3commons.collections.Set;
-
 class TestPropertySource implements IExternalPropertySource {
 
 	public function stringValueForProperty(subject:SelectorAdapter, name:String):String {
 		throw new Error("Unexpected method called");
 	}
 
-	public function collectionValueForProperty(subject:SelectorAdapter, name:String):Set {
+	public function collectionValueForProperty(subject:SelectorAdapter, name:String):Array {
 
 		if(name == "testProperty") {
-			var result:Set = new Set();
-			result.add(getQualifiedClassName(subject.getAdaptedElement()).split("::").pop());
-			result.add("dummy1");
-			result.add("dummy2");
-			result.add("dummy3");
+			var result:Array = new Array();
+			result.push(getQualifiedClassName(subject.getAdaptedElement()).split("::").pop());
+			result.push("dummy1");
+			result.push("dummy2");
+			result.push("dummy3");
 
 			return result;
 		}

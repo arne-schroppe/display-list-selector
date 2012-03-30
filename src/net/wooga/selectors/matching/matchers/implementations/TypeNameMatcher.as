@@ -1,13 +1,11 @@
 package net.wooga.selectors.matching.matchers.implementations {
 
+	import flash.utils.Dictionary;
 	import flash.utils.describeType;
 	import flash.utils.getQualifiedClassName;
 
 	import net.wooga.selectors.matching.matchers.IMatcher;
 	import net.wooga.selectors.selectoradapter.SelectorAdapter;
-
-	import org.as3commons.collections.Map;
-	import org.as3commons.collections.framework.IMap;
 
 	//TODO (arneschroppe 19/3/12) operations in this class take too much time, especially isMatching and calls to addFromCollection
 	public class TypeNameMatcher implements IMatcher {
@@ -15,7 +13,7 @@ package net.wooga.selectors.matching.matchers.implementations {
 		private var _matchAny:Boolean = false;
 		private var _onlyMatchesImmediateType:Boolean = true;
 		private var _typeName:String;
-		private static const _typeMatchCache:IMap = new Map();
+		private static const _typeMatchCache:Dictionary = new Dictionary();
 
 		private var _classNameOnly:Boolean;
 
@@ -73,13 +71,13 @@ package net.wooga.selectors.matching.matchers.implementations {
 
 			var className:String = getQualifiedClassName(subject);
 			var key:String = createDictKeyFor(className);
-			var cacheEntry:MatchCacheEntry = _typeMatchCache.itemFor(key);
+			var cacheEntry:MatchCacheEntry = _typeMatchCache[key];
 			if(cacheEntry !== null) {
 				return cacheEntry.isMatching;
 			}
 
 			var isMatching:Boolean = isMatchingType(className) || hasSuperClassMatch(subject);
-			_typeMatchCache.add(key, new MatchCacheEntry(isMatching));
+			_typeMatchCache[key] = new MatchCacheEntry(isMatching);
 
 			return isMatching;
 		}

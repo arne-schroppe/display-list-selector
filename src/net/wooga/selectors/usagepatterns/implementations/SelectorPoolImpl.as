@@ -1,29 +1,27 @@
 package net.wooga.selectors.usagepatterns.implementations {
 
+	import flash.utils.Dictionary;
+
 	import net.wooga.selectors.matching.MatcherTool;
-	import net.wooga.selectors.usagepatterns.*;
 	import net.wooga.selectors.parser.Parser;
 	import net.wooga.selectors.selector_internal;
 	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 	import net.wooga.selectors.selectorstorage.SelectorTree;
 	import net.wooga.selectors.tools.SpecificityComparator;
-
-	import org.as3commons.collections.framework.IIterable;
-	import org.as3commons.collections.framework.IIterator;
-	import org.as3commons.collections.framework.IMap;
+	import net.wooga.selectors.usagepatterns.*;
 
 	public class SelectorPoolImpl implements SelectorPool {
 
 		use namespace selector_internal;
 
 		private var _matcher:MatcherTool;
-		private var _objectToStyleAdapterMap:IMap;
+		private var _objectToStyleAdapterMap:Dictionary;
 		private var _parser:Parser;
 
 		private var _knownSelectors:SelectorTree = new SelectorTree();
 
 
-		public function SelectorPoolImpl(parser:Parser, matcher:MatcherTool, objectToStyleAdapterMap:IMap) {
+		public function SelectorPoolImpl(parser:Parser, matcher:MatcherTool, objectToStyleAdapterMap:Dictionary) {
 			_parser = parser;
 			_matcher = matcher;
 			_objectToStyleAdapterMap = objectToStyleAdapterMap;
@@ -41,21 +39,18 @@ package net.wooga.selectors.usagepatterns.implementations {
 
 
 		public function getSelectorsMatchingObject(object:Object):Vector.<SelectorDescription> {
-			var adapter:SelectorAdapter = _objectToStyleAdapterMap.itemFor(object);
+			var adapter:SelectorAdapter = _objectToStyleAdapterMap[object] as SelectorAdapter;
 			if(!adapter) {
 				throw new ArgumentError("No style adapter registered for object " + object);
 			}
 
 			var matches:Vector.<SelectorDescription> = new <SelectorDescription>[];
 
-			var possibleMatches:IIterable = _knownSelectors.getPossibleMatchesFor(adapter);
+			var possibleMatches:Array = _knownSelectors.getPossibleMatchesFor(adapter);
 
-			var keyIterator:IIterator = possibleMatches.iterator();
-			while (keyIterator.hasNext()) {
-				var selector:SelectorImpl = keyIterator.next();
+			for each (var selector:SelectorImpl in possibleMatches) {
 
 				if (_matcher.isObjectMatching(adapter, selector.matchers)) {
-
 					//TODO (arneschroppe 3/18/12) use an object pool here, so we don't have the overhead of creating objects all the time. They're flyweight's anyway
 					matches.push(selector);
 				}

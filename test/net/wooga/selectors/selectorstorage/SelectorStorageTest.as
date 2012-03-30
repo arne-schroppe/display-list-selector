@@ -1,19 +1,17 @@
 package net.wooga.selectors.selectorstorage {
 
-	import net.wooga.selectors.pseudoclasses.names.PseudoClassName;
-	import net.wooga.selectors.usagepatterns.implementations.SelectorImpl;
-	import net.wooga.selectors.parser.PseudoClassProvider;
-	import net.wooga.selectors.parser.Parser;
-	import net.wooga.selectors.pseudoclasses.SettablePseudoClass;
-	import net.wooga.selectors.pseudoclasses.PseudoClass;
-	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 	import net.wooga.fixtures.SubClassOfTestSpriteA;
 	import net.wooga.fixtures.SubSubClassOfTestSpriteA;
 	import net.wooga.fixtures.TestSpriteA;
-	import net.wooga.utils.flexunit.hamcrestcollection.containsExactly;
+	import net.wooga.fixtures.matcher.containsExactlyInArray;
+	import net.wooga.selectors.parser.Parser;
+	import net.wooga.selectors.parser.PseudoClassProvider;
+	import net.wooga.selectors.pseudoclasses.PseudoClass;
+	import net.wooga.selectors.pseudoclasses.SettablePseudoClass;
+	import net.wooga.selectors.pseudoclasses.names.PseudoClassName;
+	import net.wooga.selectors.selectoradapter.SelectorAdapter;
+	import net.wooga.selectors.usagepatterns.implementations.SelectorImpl;
 
-	import org.as3commons.collections.framework.ICollection;
-	import org.as3commons.collections.framework.IIterable;
 	import org.flexunit.rules.IMethodRule;
 	import org.hamcrest.assertThat;
 	import org.hamcrest.object.equalTo;
@@ -57,12 +55,12 @@ package net.wooga.selectors.selectorstorage {
 
 			given(styleAdapter.getAdaptedElement()).willReturn(new TestSpriteA());
 
-			var possibleMatches:IIterable = _selectorStorage.getPossibleMatchesFor(styleAdapter);
+			var possibleMatches:Array = _selectorStorage.getPossibleMatchesFor(styleAdapter);
 
-			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel1)));
-			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel2)));
-			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel5)));
-			assertThat((possibleMatches as ICollection).size, equalTo(3));
+			assertThat(possibleMatches, containsExactlyInArray(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel1)));
+			assertThat(possibleMatches, containsExactlyInArray(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel2)));
+			assertThat(possibleMatches, containsExactlyInArray(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel5)));
+			assertThat(possibleMatches.length, equalTo(3));
 
 		}
 
@@ -82,12 +80,12 @@ package net.wooga.selectors.selectorstorage {
 
 			given(styleAdapter.getAdaptedElement()).willReturn(new TestSpriteA());
 
-			var possibleMatches:IIterable = _selectorStorage.getPossibleMatchesFor(styleAdapter);
+			var possibleMatches:Array = _selectorStorage.getPossibleMatchesFor(styleAdapter);
 
-			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel1)));
-			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel2)));
-			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel5)));
-			assertThat((possibleMatches as ICollection).size, equalTo(3));
+			assertThat(possibleMatches, containsExactlyInArray(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel1)));
+			assertThat(possibleMatches, containsExactlyInArray(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel2)));
+			assertThat(possibleMatches, containsExactlyInArray(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel5)));
+			assertThat(possibleMatches.length, equalTo(3));
 
 		}
 
@@ -107,12 +105,12 @@ package net.wooga.selectors.selectorstorage {
 
 			given(styleAdapter.getAdaptedElement()).willReturn(new TestSpriteA());
 			given(styleAdapter.getId()).willReturn(id);
-			var possibleMatches:IIterable = _selectorStorage.getPossibleMatchesFor(styleAdapter);
+			var possibleMatches:Array = _selectorStorage.getPossibleMatchesFor(styleAdapter);
 
-			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel1)));
-			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel3)));
-			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel5)));
-			assertThat((possibleMatches as ICollection).size, equalTo(3));
+			assertThat(possibleMatches, containsExactlyInArray(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel1)));
+			assertThat(possibleMatches, containsExactlyInArray(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel3)));
+			assertThat(possibleMatches, containsExactlyInArray(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel5)));
+			assertThat(possibleMatches.length, equalTo(3));
 
 		}
 
@@ -135,13 +133,13 @@ package net.wooga.selectors.selectorstorage {
 			given(styleAdapter.getAdaptedElement()).willReturn(new TestSpriteA());
 			given(styleAdapter.getId()).willReturn(id);
 			given(styleAdapter.hasPseudoClass(PseudoClassName.hover)).willReturn(true);
-			var possibleMatches:IIterable = _selectorStorage.getPossibleMatchesFor(styleAdapter);
+			var possibleMatches:Array = _selectorStorage.getPossibleMatchesFor(styleAdapter);
 
-			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel1)));
-			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel2)));
-			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel5)));
-			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel6)));
-			assertThat((possibleMatches as ICollection).size, equalTo(4));
+			assertThat(possibleMatches, containsExactlyInArray(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel1)));
+			assertThat(possibleMatches, containsExactlyInArray(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel2)));
+			assertThat(possibleMatches, containsExactlyInArray(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel5)));
+			assertThat(possibleMatches, containsExactlyInArray(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel6)));
+			assertThat(possibleMatches.length, equalTo(4));
 		}
 
 
@@ -162,10 +160,10 @@ package net.wooga.selectors.selectorstorage {
 			given(styleAdapter.getAdaptedElement()).willReturn(new TestSpriteA());
 			given(styleAdapter.getId()).willReturn(id);
 			given(styleAdapter.hasPseudoClass(PseudoClassName.hover)).willReturn(false);
-			var possibleMatches:IIterable = _selectorStorage.getPossibleMatchesFor(styleAdapter);
+			var possibleMatches:Array = _selectorStorage.getPossibleMatchesFor(styleAdapter);
 
-			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel6)));
-			assertThat((possibleMatches as ICollection).size, equalTo(1));
+			assertThat(possibleMatches, containsExactlyInArray(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel6)));
+			assertThat(possibleMatches.length, equalTo(1));
 
 		}
 
@@ -186,13 +184,13 @@ package net.wooga.selectors.selectorstorage {
 
 			given(styleAdapter.getAdaptedElement()).willReturn(new SubClassOfTestSpriteA());
 
-			var possibleMatches:IIterable = _selectorStorage.getPossibleMatchesFor(styleAdapter);
+			var possibleMatches:Array = _selectorStorage.getPossibleMatchesFor(styleAdapter);
 
-			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel1)));
-			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel2)));
-			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel5)));
-			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel6)));
-			assertThat((possibleMatches as ICollection).size, equalTo(4));
+			assertThat(possibleMatches, containsExactlyInArray(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel1)));
+			assertThat(possibleMatches, containsExactlyInArray(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel2)));
+			assertThat(possibleMatches, containsExactlyInArray(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel5)));
+			assertThat(possibleMatches, containsExactlyInArray(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel6)));
+			assertThat(possibleMatches.length, equalTo(4));
 		}
 
 
@@ -211,13 +209,13 @@ package net.wooga.selectors.selectorstorage {
 
 			given(styleAdapter.getAdaptedElement()).willReturn(new SubClassOfTestSpriteA());
 
-			var possibleMatches:IIterable = _selectorStorage.getPossibleMatchesFor(styleAdapter);
+			var possibleMatches:Array = _selectorStorage.getPossibleMatchesFor(styleAdapter);
 
-			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel1)));
-			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel2)));
-			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel5)));
-			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel6)));
-			assertThat((possibleMatches as ICollection).size, equalTo(4));
+			assertThat(possibleMatches, containsExactlyInArray(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel1)));
+			assertThat(possibleMatches, containsExactlyInArray(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel2)));
+			assertThat(possibleMatches, containsExactlyInArray(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel5)));
+			assertThat(possibleMatches, containsExactlyInArray(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel6)));
+			assertThat(possibleMatches.length, equalTo(4));
 		}
 
 
@@ -236,12 +234,12 @@ package net.wooga.selectors.selectorstorage {
 
 			given(styleAdapter.getAdaptedElement()).willReturn(new SubSubClassOfTestSpriteA());
 
-			var possibleMatches:IIterable = _selectorStorage.getPossibleMatchesFor(styleAdapter);
+			var possibleMatches:Array = _selectorStorage.getPossibleMatchesFor(styleAdapter);
 
-			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel1)));
-			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel2)));
-			assertThat(possibleMatches, containsExactly(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel5)));
-			assertThat((possibleMatches as ICollection).size, equalTo(3));
+			assertThat(possibleMatches, containsExactlyInArray(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel1)));
+			assertThat(possibleMatches, containsExactlyInArray(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel2)));
+			assertThat(possibleMatches, containsExactlyInArray(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel5)));
+			assertThat(possibleMatches.length, equalTo(3));
 		}
 
 
@@ -262,7 +260,7 @@ package net.wooga.selectors.selectorstorage {
 
 		public function getPseudoClass(pseudoClassName:String):PseudoClass {
 			if(pseudoClassName == "hover") {
-				return new SettablePseudoClass(net.wooga.selectors.pseudoclasses.names.PseudoClassName.hover);
+				return new SettablePseudoClass(PseudoClassName.hover);
 			}
 			
 			return null;

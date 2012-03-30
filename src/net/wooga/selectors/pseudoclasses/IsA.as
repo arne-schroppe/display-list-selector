@@ -4,7 +4,7 @@ package net.wooga.selectors.pseudoclasses {
 
 	public class IsA implements PseudoClass {
 
-		private var _className:String;
+		private var _typeName:String;
 		private var _isQualifiedClassName:Boolean;
 
 
@@ -14,17 +14,17 @@ package net.wooga.selectors.pseudoclasses {
 				throw new ArgumentError("Wrong argument count");
 			}
 
-			_className = arguments[0] as String;
+			_typeName = arguments[0] as String;
 
-			if(/^(\w|\$)+$/i.test(_className)) {
+			if(/^(\w|\$)+$/i.test(_typeName)) {
 				_isQualifiedClassName = false;
 			}
 			else {
 				_isQualifiedClassName = true;
 			}
 			
-			if(_isQualifiedClassName && /^\s*((\w|\$)+\.)*(\w|\$)+\s*$/i.test(_className)) {
-				_className = convertToDoubleColonForm(_className);
+			if(_isQualifiedClassName && /^\s*((\w|\$)+\.)*(\w|\$)+\s*$/i.test(_typeName)) {
+				_typeName = convertToDoubleColonForm(_typeName);
 			}
 		}
 
@@ -36,11 +36,15 @@ package net.wooga.selectors.pseudoclasses {
 
 		public function isMatching(adapter:SelectorAdapter):Boolean {
 			if(_isQualifiedClassName) {
-				return adapter.getQualifiedInterfacesAndClasses().indexOf(_className) != -1;
+				return adapter.getQualifiedInterfacesAndClasses().indexOf(_typeName) != -1;
 			}
 			else {
-				return adapter.getInterfacesAndClasses().indexOf(_className) != -1;
+				return adapter.getInterfacesAndClasses().indexOf(_typeName) != -1;
 			}
+		}
+
+		public function get typeName():String {
+			return _typeName;
 		}
 	}
 }

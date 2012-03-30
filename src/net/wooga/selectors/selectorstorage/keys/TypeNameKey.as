@@ -13,7 +13,7 @@ package net.wooga.selectors.selectorstorage.keys {
 
 		private var _typeToKeysMap:Dictionary = new Dictionary();
 
-		//private static const IS_A_PREFIX:String = "^";
+		private static const IS_A_PREFIX:String = "^";
 
 		/*
 		Note (asc 2011-03-14) We only check by class name, not by package. This means
@@ -22,7 +22,7 @@ package net.wooga.selectors.selectorstorage.keys {
 		*/
 
 		public function keyForSelector(parsedSelector:SelectorImpl):String {
-			var prefix:String = ""; //parsedSelector.filterData.isImmediateType ? "" : IS_A_PREFIX;
+			var prefix:String = parsedSelector.filterData.isImmediateType ? "" : IS_A_PREFIX;
 			return prefix + parsedSelector.filterData.typeName;
 		}
 
@@ -47,14 +47,14 @@ package net.wooga.selectors.selectorstorage.keys {
 			var keys:Array = [];
 
 			var className:String = adapter.getElementClassName();
-			//var isASelectorKey:String = IS_A_PREFIX + className;
+			var isASelectorKey:String = IS_A_PREFIX + className;
 
 			addKeyIfItExistsInTree(className, keys, nodes);
-			//addKeyIfItExistsInTree(isASelectorKey, keys, nodes);
+			addKeyIfItExistsInTree(isASelectorKey, keys, nodes);
 			addKeyIfItExistsInTree(nullKey, keys, nodes);
 
 			//get super-classes
-			//addTypes(adapter.getInterfacesAndClasses(), keys, nodes);
+			addTypes(adapter.getInterfacesAndClasses(), keys, nodes);
 
 			_typeToKeysMap[adapter.getQualifiedElementClassName()] = keys;
 
@@ -69,12 +69,11 @@ package net.wooga.selectors.selectorstorage.keys {
 		}
 
 
-		//TODO (arneschroppe 3/31/12) use is-a selector here
-//		private function addTypes(types:Vector.<String>, keys:Array, nodes:Dictionary):void {
-//			for each(var implementedType:String in types) {
-//				addKeyIfItExistsInTree(IS_A_PREFIX + implementedType, keys, nodes);
-//			}
-//		}
+		private function addTypes(types:Vector.<String>, keys:Array, nodes:Dictionary):void {
+			for each(var implementedType:String in types) {
+				addKeyIfItExistsInTree(IS_A_PREFIX + implementedType, keys, nodes);
+			}
+		}
 
 
 		public function selectorHasKey(parsedSelector:SelectorImpl):Boolean {

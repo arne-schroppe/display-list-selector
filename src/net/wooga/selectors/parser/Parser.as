@@ -116,9 +116,19 @@ package net.wooga.selectors.parser {
 			}
 
 			var lastTypeMatcher:TypeNameMatcher = findMatcherInLastSimpleSelector(selector, TypeNameMatcher) as TypeNameMatcher;
-			if (lastTypeMatcher) {
-				selector.filterData.typeName = lastTypeMatcher.typeName ? lastTypeMatcher.typeName.split("::").pop() : null;
+			var lastIsAPseudoClass:IsA = findIsAPseudoClassInLastSimpleSelector(selector);
+
+
+			if(lastIsAPseudoClass) {
+				selector.filterData.typeName = lastIsAPseudoClass.typeName.split("::").pop();
+				selector.filterData.isImmediateType = false;
 			}
+			else if(lastTypeMatcher) {
+				selector.filterData.typeName = lastTypeMatcher.typeName ? lastTypeMatcher.typeName.split("::").pop() : null;
+				selector.filterData.isImmediateType = true;
+			}
+
+
 
 			selector.filterData.hasHover = hasHoverPseudoClassInLastSimpleSelector(selector);
 		}
@@ -139,6 +149,22 @@ package net.wooga.selectors.parser {
 
 			return false;
 		}
+
+
+
+		private function findIsAPseudoClassInLastSimpleSelector(selector:SelectorImpl):IsA {
+			var matchers:Vector.<IMatcher> = selector.matchers;
+			for(var i:int = matchers.length-1; i >= 0 && !(matchers[i] is ICombinator); --i) {
+				var matcher:IMatcher = matchers[i];
+				if( matcher is PseudoClassMatcher &&
+					(matcher as PseudoClassMatcher).pseudoClass is IsA) {
+					return (matcher as PseudoClassMatcher).pseudoClass as IsA;
+				}
+			}
+
+			return null;
+		}
+
 
 		private function findMatcherInLastSimpleSelector(selector:SelectorImpl, MatcherType:Class):IMatcher {
 

@@ -108,69 +108,6 @@ package net.wooga.selectors.matching.matchers {
 		}
 
 
-		[Ignore("Move this to is-a selector test")]
-		[Test]
-		public function should_select_elements_that_subclass_a_type():void {
-			var tree:DisplayTree = new DisplayTree();
-
-			tree.uses(contextView).containing
-					.a(TestSpriteA)
-					.a(TestSpriteA)
-					.a(InheritedTestSprite)
-					.a(TestSpriteA)
-					.a(TestSpriteA)
-					.a(InheritedTestSprite)
-					.a(InheritedTestSprite)
-					.a(TestSpriteA)
-					.a(InheritedTestSprite)
-					.end.finish();
-
-			_matcher = new TypeNameMatcher(getQualifiedClassName(TestSpriteB));
-
-			var matchedObjects:Array = [];
-
-			for(var i:int = 0; i < contextView.numChildren; ++i) {
-				if(_matcher.isMatching(getAdapterForObjectAtIndex(i))) {
-					matchedObjects.push(contextView.getChildAt(i));
-				}
-			}
-
-			assertThat(matchedObjects, containsInArrayExactly(4, allOf(isA(InheritedTestSprite), isA(TestSpriteB))));
-			assertThat(matchedObjects.length, equalTo(4));
-		}
-
-
-		[Ignore("Move this to is-a selector test")]
-		[Test]
-		public function should_select_elements_that_implements_a_type():void {
-			var tree:DisplayTree = new DisplayTree();
-
-			tree.uses(contextView).containing
-					.a(TestSpriteA)
-					.a(TestSpriteA)
-					.a(ImplementingTestSprite)
-					.a(TestSpriteA)
-					.a(TestSpriteA)
-					.a(TestSpriteA)
-					.a(ImplementingTestSprite)
-					.a(ImplementingTestSprite)
-					.a(TestSpriteA)
-				.end.finish();
-
-			_matcher = new TypeNameMatcher(getQualifiedClassName(TestInterface));
-
-			var matchedObjects:Array = [];
-
-			for(var i:int = 0; i < contextView.numChildren; ++i) {
-				if(_matcher.isMatching(getAdapterForObjectAtIndex(i))) {
-					matchedObjects.push(contextView.getChildAt(i));
-				}
-
-			}
-
-			assertThat(matchedObjects, containsInArrayExactly(3, allOf(isA(TestInterface), isA(ImplementingTestSprite), isA(TestSpriteC))));
-			assertThat(matchedObjects.length, equalTo(3));
-		}
 
 
 
@@ -351,14 +288,8 @@ package net.wooga.selectors.matching.matchers {
 import net.wooga.fixtures.TestSpriteB;
 import net.wooga.fixtures.TestSpriteC;
 
-interface TestInterface {
 
-}
 
-class ImplementingTestSprite extends TestSpriteC implements TestInterface {
 
-}
 
-class InheritedTestSprite extends TestSpriteB {
 
-}

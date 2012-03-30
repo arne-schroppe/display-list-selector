@@ -10,6 +10,7 @@ package {
 	import net.wooga.selectors.matching.matchers.TypeNameMatcherTest;
 	import net.wooga.selectors.parser.SpecificityTest;
 	import net.wooga.selectors.pseudoclasses.FirstChildTest;
+	import net.wooga.selectors.pseudoclasses.IsATest;
 	import net.wooga.selectors.pseudoclasses.SettablePseudoClassTest;
 	import net.wooga.selectors.pseudoclasses.IsEmptyTest;
 	import net.wooga.selectors.pseudoclasses.LastChildTest;
@@ -43,6 +44,7 @@ package {
 		public var rootTest:RootTest;
 		public var nthParserTest:NthParserTest;
 		public var specificityTest:SpecificityTest;
+		public var isATest:IsATest;
 
 		public var selectorStorageTest:SelectorStorageTest;
 		public var settablePseudoClassTest:SettablePseudoClassTest;

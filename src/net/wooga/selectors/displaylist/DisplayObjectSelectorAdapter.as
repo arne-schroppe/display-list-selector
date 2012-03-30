@@ -2,6 +2,7 @@ package net.wooga.selectors.displaylist {
 
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
+	import flash.utils.Dictionary;
 	import flash.utils.describeType;
 	import flash.utils.getQualifiedClassName;
 
@@ -15,6 +16,9 @@ package net.wooga.selectors.displaylist {
 		private var _qualifiedElementClassName:String;
 		private var _qualifiedInterfacesAndClasses:Vector.<String>;
 		private var _interfacesAndClasses:Vector.<String>;
+
+
+		private static var _implementedTypeCache:Dictionary = new Dictionary();
 
 		//TODO (arneschroppe 2/26/12) rename groups to classes
 		private static const CSS_CLASS_PARAMETER_NAME:String = "groups";
@@ -140,12 +144,34 @@ package net.wooga.selectors.displaylist {
 		}
 
 		private function extractImplementedTypes():void {
+
+			var className:String = getQualifiedElementClassName();
+			if(className in _implementedTypeCache) {
+				var cachedTypes:Array = _implementedTypeCache[className];
+
+				_qualifiedInterfacesAndClasses = cachedTypes[0];
+				_interfacesAndClasses = cachedTypes[1];
+			}
+			
 			_qualifiedInterfacesAndClasses = new <String>[];
 			_interfacesAndClasses = new <String>[];
 
 			addImplementedTypes(describeType(_adaptedElement).extendsClass.@type);
 			addImplementedTypes(describeType(_adaptedElement).implementsInterface.@type);
+
+
+			createCacheEntryForImplementedTypes(className);
 		}
+
+
+		private function createCacheEntryForImplementedTypes(className:String):void {
+			var cacheEntry:Array = [];
+			cacheEntry.push(_qualifiedInterfacesAndClasses);
+			cacheEntry.push(_interfacesAndClasses);
+
+			_implementedTypeCache[className] = cacheEntry;
+		}
+
 
 		private function addImplementedTypes(types:XMLList):void {
 

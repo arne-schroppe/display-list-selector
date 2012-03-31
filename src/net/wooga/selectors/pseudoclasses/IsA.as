@@ -1,5 +1,7 @@
 package net.wooga.selectors.pseudoclasses {
 
+	import flash.utils.Dictionary;
+
 	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 
 	public class IsA implements PseudoClass {
@@ -7,6 +9,7 @@ package net.wooga.selectors.pseudoclasses {
 		private var _typeName:String;
 		private var _isQualifiedClassName:Boolean;
 
+		private var _matchCache:Dictionary = new Dictionary();
 
 
 		public function setArguments(arguments:Array):void {
@@ -37,20 +40,50 @@ package net.wooga.selectors.pseudoclasses {
 		}
 
 		public function isMatching(adapter:SelectorAdapter):Boolean {
-
-			var result:Boolean;
 			if(_isQualifiedClassName) {
-				result = adapter.getQualifiedElementClassName() == _typeName || adapter.getQualifiedInterfacesAndClasses().indexOf(_typeName) != -1;
+				return matchQualified(adapter)
+			} else {
+				return matchUnqualified(adapter);
 			}
-			else {
-				result = adapter.getElementClassName() == _typeName || adapter.getInterfacesAndClasses().indexOf(_typeName) != -1;
-			}
-
-			return result;
 		}
 
 		public function get typeName():String {
 			return _typeName;
+		}
+
+
+		private function matchQualified(adapter:SelectorAdapter):Boolean {
+
+			var cacheKey:String = createCacheKey(adapter.getQualifiedElementClassName());
+			if(_matchCache[cacheKey] !== undefined) {
+				return _matchCache[cacheKey];
+			}
+
+			var result:Boolean = adapter.getQualifiedElementClassName() == _typeName || adapter.getQualifiedInterfacesAndClasses().indexOf(_typeName) != -1;
+			_matchCache[cacheKey] = result;
+
+			return result;
+		}
+
+
+
+		private function matchUnqualified(adapter:SelectorAdapter):Boolean {
+
+			var cacheKey:String = createCacheKey(adapter.getQualifiedElementClassName());
+			if(_matchCache[cacheKey] !== undefined) {
+				return _matchCache[cacheKey];
+			}
+
+			var result:Boolean = adapter.getElementClassName() == _typeName || adapter.getInterfacesAndClasses().indexOf(_typeName) != -1;
+			_matchCache[cacheKey] = result;
+
+			return result;
+		}
+
+
+
+		private function createCacheKey(className:String):String {
+			return _typeName + "&" + className;
 		}
 	}
 }

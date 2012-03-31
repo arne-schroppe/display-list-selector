@@ -2,6 +2,8 @@ package net.wooga.selectors.parser {
 
 	import flash.utils.Dictionary;
 
+	import mx.utils.ObjectUtil;
+
 	import net.wooga.selectors.IExternalPropertySource;
 	import net.wooga.selectors.matching.matchers.ICombinator;
 	import net.wooga.selectors.matching.matchers.IMatcher;
@@ -16,6 +18,7 @@ package net.wooga.selectors.parser {
 	import net.wooga.selectors.pseudoclasses.IsA;
 	import net.wooga.selectors.pseudoclasses.PseudoClass;
 	import net.wooga.selectors.pseudoclasses.SettablePseudoClass;
+	import net.wooga.selectors.pseudoclasses.names.BuiltinPseudoClassName;
 	import net.wooga.selectors.pseudoclasses.names.PseudoClassName;
 	import net.wooga.selectors.selector_internal;
 	import net.wooga.selectors.tools.DynamicMultiMap;
@@ -46,7 +49,7 @@ package net.wooga.selectors.parser {
 		private var _originalSelector:String;
 
 
-		private var _alreadyParsedSelectors:Dictionary = new Dictionary();
+		//private var _alreadyParsedSelectors:Dictionary = new Dictionary();
 
 
 		public function Parser(externalPropertySource:IExternalPropertySource, pseudoClassProvider:PseudoClassProvider) {
@@ -58,9 +61,9 @@ package net.wooga.selectors.parser {
 		public function parse(inputString:String):Vector.<SelectorImpl> {
 
 			//TODO (arneschroppe 3/19/12) this class should only parse, not cache
-			if(_alreadyParsedSelectors.hasOwnProperty(inputString)) {
-				return _alreadyParsedSelectors[inputString] as Vector.<SelectorImpl>;
-			}
+//			if(_alreadyParsedSelectors.hasOwnProperty(inputString)) {
+//				return _alreadyParsedSelectors[inputString] as Vector.<SelectorImpl>;
+//			}
 			
 			_originalSelector = inputString;
 			_input = new ParserInput(inputString);
@@ -73,7 +76,7 @@ package net.wooga.selectors.parser {
 			_subSelectorEndIndex = _input.currentIndex;
 			endMatcherSequence();
 
-			_alreadyParsedSelectors[inputString] = _individualSelectors;
+			//_alreadyParsedSelectors[inputString] = _individualSelectors;
 
 			return _individualSelectors;
 		}
@@ -116,11 +119,11 @@ package net.wooga.selectors.parser {
 			}
 
 			var lastTypeMatcher:TypeNameMatcher = findMatcherInLastSimpleSelector(selector, TypeNameMatcher) as TypeNameMatcher;
-			var lastIsAPseudoClass:IsA = findIsAPseudoClassInLastSimpleSelector(selector);
+			var isA_PseudoClassInLastSimpleSelector:IsA = findIsAPseudoClassInLastSimpleSelector(selector);
 
 
-			if(lastIsAPseudoClass) {
-				selector.filterData.typeName = lastIsAPseudoClass.typeName.split("::").pop();
+			if(isA_PseudoClassInLastSimpleSelector) {
+				selector.filterData.typeName = isA_PseudoClassInLastSimpleSelector.typeName.split("::").pop();
 				selector.filterData.isImmediateType = false;
 			}
 			else if(lastTypeMatcher) {
@@ -139,12 +142,18 @@ package net.wooga.selectors.parser {
 			var matchers:Vector.<IMatcher> = selector.matchers;
 			for(var i:int = matchers.length-1; i >= 0 && !(matchers[i] is ICombinator); --i) {
 				var matcher:IMatcher = matchers[i];
-				if(
-						matcher is PseudoClassMatcher &&
-						(matcher as PseudoClassMatcher).pseudoClass is SettablePseudoClass &&
-						((matcher as PseudoClassMatcher).pseudoClass as SettablePseudoClass).pseudoClassName == PseudoClassName.hover) {
+				
+				if(matcher is ICombinator) {
+					return false;
+				}
+				
+				if( matcher is PseudoClassMatcher &&
+					(matcher as PseudoClassMatcher).pseudoClass is SettablePseudoClass &&
+					((matcher as PseudoClassMatcher).pseudoClass as SettablePseudoClass).pseudoClassName == PseudoClassName.hover) {
 					return true;
 				}
+				
+				
 			}
 
 			return false;
@@ -156,6 +165,11 @@ package net.wooga.selectors.parser {
 			var matchers:Vector.<IMatcher> = selector.matchers;
 			for(var i:int = matchers.length-1; i >= 0 && !(matchers[i] is ICombinator); --i) {
 				var matcher:IMatcher = matchers[i];
+
+				if(matcher is ICombinator) {
+					return null;
+				}
+
 				if( matcher is PseudoClassMatcher &&
 					(matcher as PseudoClassMatcher).pseudoClass is IsA) {
 					return (matcher as PseudoClassMatcher).pseudoClass as IsA;
@@ -303,9 +317,6 @@ package net.wooga.selectors.parser {
 		}
 
 
-
-
-
 		private function pseudo():void {
 			_input.consumeString(":");
 			var matcher:PseudoClassMatcher = functionalPseudo();
@@ -336,12 +347,21 @@ package net.wooga.selectors.parser {
 
 
 		private function functionalPseudo():PseudoClassMatcher {
-			var pseudoClassName:String = _input.consumeRegex(/[a-zA-Z][\w-]*/);
+			var pseudoClassName:String = _input.consumeRegex(/[a-zA-Z][\w\-]*/);
 
-			if (!_pseudoClassProvider.hasPseudoClass(pseudoClassName)) {
+			if (pseudoClassName != BuiltinPseudoClassName.is_a && !_pseudoClassProvider.hasPseudoClass(pseudoClassName)) {
 				throw new ParserError("Unknown pseudo-class '" + pseudoClassName + "'");
 			}
-			var pseudoClass:PseudoClass = _pseudoClassProvider.getPseudoClass(pseudoClassName);
+
+			//TODO (arneschroppe 3/31/12) handle this more elegantly (this is also a general problem, we need instances for pseudoclasses)
+			var pseudoClass:PseudoClass;
+			if(pseudoClassName == BuiltinPseudoClassName.is_a) {
+				pseudoClass = new IsA();
+			}
+			else {
+				pseudoClass = _pseudoClassProvider.getPseudoClass(pseudoClassName);
+			}
+
 			var functionMatcher:PseudoClassMatcher = new PseudoClassMatcher(pseudoClass);
 			return functionMatcher;
 

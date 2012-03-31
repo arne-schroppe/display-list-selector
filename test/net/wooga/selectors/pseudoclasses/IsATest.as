@@ -28,6 +28,31 @@ package net.wooga.selectors.pseudoclasses {
 			_pseudoClass = new IsA;
 		}
 
+		[Test]
+		public function should_match_type_itself():void {
+			var tree:DisplayTree = new DisplayTree();
+
+			tree.uses(contextView).containing
+					.a(TestSpriteA)
+					.a(TestSpriteB)
+					.a(TestSpriteC)
+			.end.finish();
+
+
+			_pseudoClass.setArguments(["TestSpriteA"]);
+
+
+			var matchedObjects:Array = [];
+
+			for(var i:int = 0; i < contextView.numChildren; ++i) {
+				if(_pseudoClass.isMatching(getAdapterForObjectAtIndex(i))) {
+					matchedObjects.push(contextView.getChildAt(i));
+				}
+			}
+
+			assertThat(matchedObjects, containsInArrayExactly(1, isA(TestSpriteA)));
+			assertThat(matchedObjects.length, equalTo(1));
+		}
 
 		[Test]
 		public function should_select_elements_that_subclass_a_type():void {

@@ -6,7 +6,6 @@ package net.wooga.selectors {
 	import net.wooga.selectors.matching.MatcherTool;
 	import net.wooga.selectors.parser.Parser;
 	import net.wooga.selectors.pseudoclasses.FirstChild;
-	import net.wooga.selectors.pseudoclasses.IsA;
 	import net.wooga.selectors.pseudoclasses.IsEmpty;
 	import net.wooga.selectors.pseudoclasses.LastChild;
 	import net.wooga.selectors.pseudoclasses.NthChild;
@@ -152,7 +151,7 @@ package net.wooga.selectors {
 		}
 
 		private function addDefaultPseudoClasses():void {
-			addPseudoClass(BuiltinPseudoClassName.is_a, new IsA());
+			//addPseudoClass(BuiltinPseudoClassName.isA, new Is);
 			addPseudoClass(BuiltinPseudoClassName.root, new Root(_rootObject));
 			addPseudoClass(BuiltinPseudoClassName.first_child, new FirstChild());
 			addPseudoClass(BuiltinPseudoClassName.last_child, new LastChild());

@@ -1,5 +1,6 @@
 package net.wooga.selectors.selectorstorage {
 
+	import net.wooga.selectors.matching.matchers.implementations.TypeNameMatcher;
 	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 	import net.wooga.selectors.selectorstorage.keys.HoverKey;
 	import net.wooga.selectors.selectorstorage.keys.IdKey;
@@ -39,7 +40,7 @@ package net.wooga.selectors.selectorstorage {
 				return false;
 			}
 
-			var nodeKey:SelectorTreeNodeKey = _filterKeys[keyIndex];
+			var nodeKey:SelectorTreeNodeKey = _filterKeys[keyIndex] as SelectorTreeNodeKey;
 
 			var hasKey:Boolean = nodeKey.selectorHasKey(selector);
 			var key:*;
@@ -57,7 +58,7 @@ package net.wooga.selectors.selectorstorage {
 				return true;
 			}
 			else if(hasKey) {
-				var targetNode:SelectorFilterTreeNode = node.childNodes[key];
+				var targetNode:SelectorFilterTreeNode = node.childNodes[key] as SelectorFilterTreeNode;
 				targetNode.selectors.push(selector);
 				return true;
 			}

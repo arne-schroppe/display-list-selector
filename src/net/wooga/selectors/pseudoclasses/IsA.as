@@ -26,6 +26,8 @@ package net.wooga.selectors.pseudoclasses {
 			if(_isQualifiedClassName && /^\s*((\w|\$)+\.)*(\w|\$)+\s*$/i.test(_typeName)) {
 				_typeName = convertToDoubleColonForm(_typeName);
 			}
+
+			//TODO (arneschroppe 3/31/12) strip whitespace!
 		}
 
 
@@ -35,12 +37,16 @@ package net.wooga.selectors.pseudoclasses {
 		}
 
 		public function isMatching(adapter:SelectorAdapter):Boolean {
+
+			var result:Boolean;
 			if(_isQualifiedClassName) {
-				return adapter.getQualifiedInterfacesAndClasses().indexOf(_typeName) != -1;
+				result = adapter.getQualifiedElementClassName() == _typeName || adapter.getQualifiedInterfacesAndClasses().indexOf(_typeName) != -1;
 			}
 			else {
-				return adapter.getInterfacesAndClasses().indexOf(_typeName) != -1;
+				result = adapter.getElementClassName() == _typeName || adapter.getInterfacesAndClasses().indexOf(_typeName) != -1;
 			}
+
+			return result;
 		}
 
 		public function get typeName():String {

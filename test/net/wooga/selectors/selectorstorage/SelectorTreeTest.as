@@ -20,7 +20,7 @@ package net.wooga.selectors.selectorstorage {
 	import org.mockito.integrations.flexunit4.MockitoRule;
 	import org.mockito.integrations.given;
 
-	public class SelectorStorageTest implements PseudoClassProvider {
+	public class SelectorTreeTest implements PseudoClassProvider {
 
 		[Rule]
 		public var mockitoRule:IMethodRule = new MockitoRule();
@@ -178,9 +178,6 @@ package net.wooga.selectors.selectorstorage {
 
 		}
 
-
-		//TODO (arneschroppe 14/3/12) test this with unqualified class name
-		//TODO (arneschroppe 14/3/12) test this with intermediate classes (SubSubClassOfTestSpriteA)
 		[Test]
 		public function should_properly_handle_isA_selectors():void {
 
@@ -253,7 +250,7 @@ package net.wooga.selectors.selectorstorage {
 
 			addSelectors([sel1, sel2, sel3, sel4, sel5, sel6]);
 
-			given(styleAdapter.getAdaptedElement()).willReturn(new SubSubClassOfTestSpriteA());
+			given(styleAdapter.getElementClassName()).willReturn("SubSubClassOfTestSpriteA");
 			given(styleAdapter.getInterfacesAndClasses()).willReturn(new <String>[
 				"TestSpriteA",
 				"SubClassOfTestSpriteA"
@@ -266,6 +263,7 @@ package net.wooga.selectors.selectorstorage {
 			assertThat(possibleMatches, containsExactlyInArray(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel5)));
 			assertThat(possibleMatches.length, equalTo(3));
 		}
+
 
 
 		private function addSelectors(selectorsStrings:Array):void {

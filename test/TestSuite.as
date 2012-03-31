@@ -20,7 +20,7 @@ package {
 	import net.wooga.selectors.pseudoclasses.NthOfTypeTest;
 	import net.wooga.selectors.pseudoclasses.RootTest;
 	import net.wooga.selectors.pseudoclasses.nthchildren.NthParserTest;
-	import net.wooga.selectors.selectorstorage.SelectorStorageTest;
+	import net.wooga.selectors.selectorstorage.SelectorTreeTest;
 
 	[Suite]
 	[RunWith("org.flexunit.runners.Suite")]
@@ -46,7 +46,7 @@ package {
 		public var specificityTest:SpecificityTest;
 		public var isATest:IsATest;
 
-		public var selectorStorageTest:SelectorStorageTest;
+		public var selectorStorageTest:SelectorTreeTest;
 		public var settablePseudoClassTest:SettablePseudoClassTest;
 
 		public var displayObjectSelectorAdapterTest:DisplayObjectSelectorAdapterTest;

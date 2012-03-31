@@ -1,7 +1,6 @@
 package net.wooga.selectors.selectorstorage.keys {
 
 	import flash.utils.Dictionary;
-	import flash.utils.getQualifiedClassName;
 
 	import net.wooga.selectors.selector_internal;
 	import net.wooga.selectors.selectoradapter.SelectorAdapter;

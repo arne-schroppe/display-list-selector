@@ -56,11 +56,11 @@ The result is sorted by specificity.
 This library also supports an extended selector syntax, that is better suited in dealing with ActionScript objects.
 
 
-###The isA-matcher
-The regular element selector only matches if the element's classname equals the given identifier. Prefixing
-the identifier with ^ makes it also match superclasses and interfaces. For example:
+###The `is-a` pseudo class
+The regular element selector only matches if the element's classname equals the given identifier.
+The `is-a` pseudo class also matches superclasses and implemented interfaces. For example:
 
-    ^Sprite
+    :is-a(Sprite)
 
 matches elements of type Sprite, MovieClip, or other objects that have Sprite as a super class.
 

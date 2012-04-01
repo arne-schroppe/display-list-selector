@@ -176,7 +176,7 @@ package net.wooga.selectors.parser {
 			spec.idSelector = b;
 			spec.classAndAttributeAndPseudoSelectors = c;
 			spec.elementSelectorsAndPseudoElements = d;
-			spec.isAElementSelectors = e;
+			spec.isAPseudoClassSelectors = e;
 
 			return spec;
 		}

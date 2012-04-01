@@ -1,5 +1,9 @@
 package net.wooga.selectors.parser {
 
+	import flash.utils.Dictionary;
+
+	import mx.utils.ObjectUtil;
+
 	import net.wooga.selectors.IExternalPropertySource;
 	import net.wooga.selectors.matching.matchers.ICombinator;
 	import net.wooga.selectors.matching.matchers.IMatcher;
@@ -11,16 +15,15 @@ package net.wooga.selectors.parser {
 	import net.wooga.selectors.matching.matchers.implementations.PropertyFilterEqualsMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.PseudoClassMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.TypeNameMatcher;
-	import net.wooga.selectors.pseudoclasses.names.PseudoClassName;
-	import net.wooga.selectors.usagepatterns.implementations.SelectorImpl;
-	import net.wooga.selectors.pseudoclasses.SettablePseudoClass;
+	import net.wooga.selectors.pseudoclasses.IsA;
 	import net.wooga.selectors.pseudoclasses.PseudoClass;
+	import net.wooga.selectors.pseudoclasses.SettablePseudoClass;
+	import net.wooga.selectors.pseudoclasses.names.BuiltinPseudoClassName;
+	import net.wooga.selectors.pseudoclasses.names.PseudoClassName;
 	import net.wooga.selectors.selector_internal;
 	import net.wooga.selectors.tools.DynamicMultiMap;
 	import net.wooga.selectors.tools.input.ParserInput;
-
-	import org.as3commons.collections.Map;
-	import org.as3commons.collections.framework.IMap;
+	import net.wooga.selectors.usagepatterns.implementations.SelectorImpl;
 
 	use namespace selector_internal;
 
@@ -42,12 +45,11 @@ package net.wooga.selectors.parser {
 		private var _subSelectorEndIndex:int = 0;
 
 		private var _pseudoClassArguments:Array;
-		private var _isExactTypeMatcher:Boolean;
 
 		private var _originalSelector:String;
 
 
-		private var _alreadyParsedSelectors:IMap = new Map();
+		//private var _alreadyParsedSelectors:Dictionary = new Dictionary();
 
 
 		public function Parser(externalPropertySource:IExternalPropertySource, pseudoClassProvider:PseudoClassProvider) {
@@ -59,9 +61,9 @@ package net.wooga.selectors.parser {
 		public function parse(inputString:String):Vector.<SelectorImpl> {
 
 			//TODO (arneschroppe 3/19/12) this class should only parse, not cache
-			if(_alreadyParsedSelectors.hasKey(inputString)) {
-				return _alreadyParsedSelectors.itemFor(inputString) as Vector.<SelectorImpl>;
-			}
+//			if(_alreadyParsedSelectors.hasOwnProperty(inputString)) {
+//				return _alreadyParsedSelectors[inputString] as Vector.<SelectorImpl>;
+//			}
 			
 			_originalSelector = inputString;
 			_input = new ParserInput(inputString);
@@ -74,7 +76,7 @@ package net.wooga.selectors.parser {
 			_subSelectorEndIndex = _input.currentIndex;
 			endMatcherSequence();
 
-			_alreadyParsedSelectors.add(inputString, _individualSelectors);
+			//_alreadyParsedSelectors[inputString] = _individualSelectors;
 
 			return _individualSelectors;
 		}
@@ -87,7 +89,6 @@ package net.wooga.selectors.parser {
 			_individualSelectors.push(_currentSelector);
 
 			_pseudoClassArguments = [];
-			_isExactTypeMatcher = false;
 			_subSelectorStartIndex = _input.currentIndex;
 			_specificity = new Specificity();
 		}
@@ -118,10 +119,19 @@ package net.wooga.selectors.parser {
 			}
 
 			var lastTypeMatcher:TypeNameMatcher = findMatcherInLastSimpleSelector(selector, TypeNameMatcher) as TypeNameMatcher;
-			if (lastTypeMatcher) {
-				selector.filterData.typeName = lastTypeMatcher.typeName ? lastTypeMatcher.typeName.split("::").pop() : null;
-				selector.filterData.isImmediateType = lastTypeMatcher.onlyMatchesImmediateType;
+			var isA_PseudoClassInLastSimpleSelector:IsA = findIsAPseudoClassInLastSimpleSelector(selector);
+
+
+			if(isA_PseudoClassInLastSimpleSelector) {
+				selector.filterData.typeName = isA_PseudoClassInLastSimpleSelector.typeName.split("::").pop();
+				selector.filterData.isImmediateType = false;
 			}
+			else if(lastTypeMatcher) {
+				selector.filterData.typeName = lastTypeMatcher.typeName ? lastTypeMatcher.typeName.split("::").pop() : null;
+				selector.filterData.isImmediateType = true;
+			}
+
+
 
 			selector.filterData.hasHover = hasHoverPseudoClassInLastSimpleSelector(selector);
 		}
@@ -132,16 +142,43 @@ package net.wooga.selectors.parser {
 			var matchers:Vector.<IMatcher> = selector.matchers;
 			for(var i:int = matchers.length-1; i >= 0 && !(matchers[i] is ICombinator); --i) {
 				var matcher:IMatcher = matchers[i];
-				if(
-						matcher is PseudoClassMatcher &&
-						(matcher as PseudoClassMatcher).pseudoClass is SettablePseudoClass &&
-						((matcher as PseudoClassMatcher).pseudoClass as SettablePseudoClass).pseudoClassName == PseudoClassName.hover) {
+				
+				if(matcher is ICombinator) {
+					return false;
+				}
+				
+				if( matcher is PseudoClassMatcher &&
+					(matcher as PseudoClassMatcher).pseudoClass is SettablePseudoClass &&
+					((matcher as PseudoClassMatcher).pseudoClass as SettablePseudoClass).pseudoClassName == PseudoClassName.hover) {
 					return true;
 				}
+				
+				
 			}
 
 			return false;
 		}
+
+
+
+		private function findIsAPseudoClassInLastSimpleSelector(selector:SelectorImpl):IsA {
+			var matchers:Vector.<IMatcher> = selector.matchers;
+			for(var i:int = matchers.length-1; i >= 0 && !(matchers[i] is ICombinator); --i) {
+				var matcher:IMatcher = matchers[i];
+
+				if(matcher is ICombinator) {
+					return null;
+				}
+
+				if( matcher is PseudoClassMatcher &&
+					(matcher as PseudoClassMatcher).pseudoClass is IsA) {
+					return (matcher as PseudoClassMatcher).pseudoClass as IsA;
+				}
+			}
+
+			return null;
+		}
+
 
 		private function findMatcherInLastSimpleSelector(selector:SelectorImpl, MatcherType:Class):IMatcher {
 
@@ -198,13 +235,7 @@ package net.wooga.selectors.parser {
 		private function simpleSelectorSequence():void {
 			whitespace();
 
-
-			if(_input.isNext("^")) {
-				checkSyntaxExtensionsAllowed();
-				superClassSelector();
-			}
-			else if (_input.isNextMatching(/\*|\w+|\(/) ) {
-				_isExactTypeMatcher = true;
+			if (_input.isNextMatching(/\*|\w+|\(/) ) {
 				typeSelector();
 			}
 
@@ -217,11 +248,6 @@ package net.wooga.selectors.parser {
 			}
 		}
 
-		private function superClassSelector():void {
-			_input.consume(1); //consuming '^'
-			_isExactTypeMatcher = false;
-			typeSelector();
-		}
 
 
 		//TODO (arneschroppe 23/12/11) find out what makes up a valid identifier
@@ -244,19 +270,14 @@ package net.wooga.selectors.parser {
 				className = _input.consumeRegex(/(\w|\.|\*)+/);
 				_input.consumeString(")");
 
-				_currentSelector.matchers.push(getSingletonMatcher(TypeNameMatcher, className, _isExactTypeMatcher, new TypeNameMatcher(className, _isExactTypeMatcher)));
+				_currentSelector.matchers.push(getSingletonMatcher(TypeNameMatcher, className, new TypeNameMatcher(className)));
 			}
 			else {
 				className = _input.consumeRegex(/\w+/);
-				_currentSelector.matchers.push(getSingletonMatcher(TypeNameMatcher, className, _isExactTypeMatcher, new TypeNameMatcher(className, _isExactTypeMatcher)));
+				_currentSelector.matchers.push(getSingletonMatcher(TypeNameMatcher, className, new TypeNameMatcher(className)));
 			}
 
-			if(_isExactTypeMatcher) {
-				_specificity.elementSelectorsAndPseudoElements++;
-			}
-			else {
-				_specificity.isAElementSelectors++;
-			}
+			_specificity.elementSelectorsAndPseudoElements++;
 
 		}
 
@@ -279,7 +300,7 @@ package net.wooga.selectors.parser {
 
 		private function cssClass():void {
 			_input.consume(1);
-			var className:String = _input.consumeRegex(/[a-zA-Z]+/);
+			var className:String = _input.consumeRegex(/[a-zA-Z\-_]+/);
 			var matcher:IMatcher = new ClassMatcher(className);
 			_currentSelector.matchers.push(getSingletonMatcher(ClassMatcher, className, matcher));
 			_specificity.classAndAttributeAndPseudoSelectors++;
@@ -288,15 +309,12 @@ package net.wooga.selectors.parser {
 
 		private function cssId():void {
 			_input.consume(1);
-			var id:String = _input.consumeRegex(/[a-zA-Z]+/);
+			var id:String = _input.consumeRegex(/[a-zA-Z\-_]+/);
 			var matcher:IMatcher = new IdMatcher(id);
 			_currentSelector.matchers.push(getSingletonMatcher(IdMatcher, id, matcher));
 
 			_specificity.idSelector++;
 		}
-
-
-
 
 
 		private function pseudo():void {
@@ -316,17 +334,34 @@ package net.wooga.selectors.parser {
 			singletonAttributes.push(matcher);
 
 			_currentSelector.matchers.push(getSingletonMatcher.apply(this, singletonAttributes));
-			_specificity.classAndAttributeAndPseudoSelectors++;
+
+			//Special treatment for is-a pseudo classes: their specificity is always lower than that of element selectors
+			if(matcher.pseudoClass is IsA) {
+				_specificity.isAPseudoClassSelectors++;
+			}
+			else {
+				_specificity.classAndAttributeAndPseudoSelectors++;
+			}
+
 		}
 
 
 		private function functionalPseudo():PseudoClassMatcher {
-			var pseudoClassName:String = _input.consumeRegex(/[a-zA-Z][\w-]*/);
+			var pseudoClassName:String = _input.consumeRegex(/[a-zA-Z][\w\-]*/);
 
-			if (!_pseudoClassProvider.hasPseudoClass(pseudoClassName)) {
+			if (pseudoClassName != BuiltinPseudoClassName.is_a && !_pseudoClassProvider.hasPseudoClass(pseudoClassName)) {
 				throw new ParserError("Unknown pseudo-class '" + pseudoClassName + "'");
 			}
-			var pseudoClass:PseudoClass = _pseudoClassProvider.getPseudoClass(pseudoClassName);
+
+			//TODO (arneschroppe 3/31/12) handle this more elegantly (this is also a general problem, we need instances for pseudoclasses)
+			var pseudoClass:PseudoClass;
+			if(pseudoClassName == BuiltinPseudoClassName.is_a) {
+				pseudoClass = new IsA();
+			}
+			else {
+				pseudoClass = _pseudoClassProvider.getPseudoClass(pseudoClassName);
+			}
+
 			var functionMatcher:PseudoClassMatcher = new PseudoClassMatcher(pseudoClass);
 			return functionMatcher;
 
@@ -343,7 +378,7 @@ package net.wooga.selectors.parser {
 
 
 		private function pseudoClassArgument():void {
-			var argument:String = _input.consumeRegex(/[\w\+\-][\w\+\-\s]*/);
+			var argument:String = _input.consumeRegex(/[\w\+\-\.][\w\+\-\.\s]*/);
 
 			_pseudoClassArguments.push(argument);
 
@@ -420,6 +455,7 @@ package net.wooga.selectors.parser {
 		}
 
 
+		//TODO (arneschroppe 30/3/12) untested method
 		private function getSingletonMatcher(...keysAndValue):IMatcher {
 			var keys:Array = keysAndValue.slice(0, keysAndValue.length - 1);
 

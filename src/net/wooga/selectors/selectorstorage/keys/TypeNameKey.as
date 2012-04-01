@@ -1,20 +1,16 @@
 package net.wooga.selectors.selectorstorage.keys {
 
-	import flash.utils.describeType;
-	import flash.utils.getQualifiedClassName;
+	import flash.utils.Dictionary;
 
-	import net.wooga.selectors.usagepatterns.implementations.SelectorImpl;
 	import net.wooga.selectors.selector_internal;
 	import net.wooga.selectors.selectoradapter.SelectorAdapter;
-
-	import org.as3commons.collections.Map;
-	import org.as3commons.collections.framework.IMap;
+	import net.wooga.selectors.usagepatterns.implementations.SelectorImpl;
 
 	public class TypeNameKey implements SelectorTreeNodeKey {
 
 		use namespace selector_internal;
 
-		private var _typeToKeysMap:IMap = new Map();
+		private var _typeToKeysMap:Dictionary = new Dictionary();
 
 		private static const IS_A_PREFIX:String = "^";
 
@@ -29,27 +25,27 @@ package net.wooga.selectors.selectorstorage.keys {
 			return prefix + parsedSelector.filterData.typeName;
 		}
 
-		//TODO (arneschroppe 14/3/12) only use keys that actually exist in the tree and are isA-selectors
-		public function keysForAdapter(adapter:SelectorAdapter, nodes:IMap):Array {
-			var className:String = getQualifiedClassName(adapter.getAdaptedElement());
+
+		public function keysForAdapter(adapter:SelectorAdapter, nodes:Dictionary):Array {
+			var className:String = adapter.getQualifiedElementClassName();
 			var keys:Array = getKeysForElement(className);
 			if(!keys) {
-				keys = createKeysForElement(adapter.getAdaptedElement(), className, nodes);
+				keys = createKeysForElement(adapter, nodes);
 			}
 
 			return keys;
 		}
 
 		private function getKeysForElement(className:String):Array {
-			return _typeToKeysMap.itemFor(className);
+			return _typeToKeysMap[className] as Array;
 		}
 
 
-		private function createKeysForElement(element:Object, fqcn:String, nodes:IMap):Array {
+		private function createKeysForElement(adapter:SelectorAdapter, nodes:Dictionary):Array {
 
 			var keys:Array = [];
 
-			var className:String = fqcn.split("::").pop();
+			var className:String = adapter.getElementClassName();
 			var isASelectorKey:String = IS_A_PREFIX + className;
 
 			addKeyIfItExistsInTree(className, keys, nodes);
@@ -57,27 +53,24 @@ package net.wooga.selectors.selectorstorage.keys {
 			addKeyIfItExistsInTree(nullKey, keys, nodes);
 
 			//get super-classes
-			addTypes(describeType(element).extendsClass.@type, keys, nodes);
-			addTypes(describeType(element).implementsInterface.@type, keys, nodes);
+			addTypes(adapter.getInterfacesAndClasses(), keys, nodes);
 
-			_typeToKeysMap.add(fqcn, keys);
+			_typeToKeysMap[adapter.getQualifiedElementClassName()] = keys;
 
 			return keys;
 		}
 
 
-		private function addKeyIfItExistsInTree(className:String, keys:Array, nodes:IMap):void {
-			if (nodes.hasKey(className)) {
+		private function addKeyIfItExistsInTree(className:String, keys:Array, nodes:Dictionary):void {
+			if (className in nodes) {
 				keys.push(className);
 			}
 		}
 
 
-		private function addTypes(types:XMLList, keys:Array, nodes:IMap):void {
+		private function addTypes(types:Vector.<String>, keys:Array, nodes:Dictionary):void {
 			for each(var implementedType:String in types) {
-				var className:String = implementedType.split("::").pop();
-
-				addKeyIfItExistsInTree(IS_A_PREFIX + className, keys, nodes);
+				addKeyIfItExistsInTree(IS_A_PREFIX + implementedType, keys, nodes);
 			}
 		}
 
@@ -94,7 +87,7 @@ package net.wooga.selectors.selectorstorage.keys {
 
 		//Because keys are based on what keys already exist in the tree, we need to recreate them if a selector is added
 		public function invalidateCaches():void {
-			_typeToKeysMap = new Map();
+			_typeToKeysMap = new Dictionary();
 		}
 	}
 }

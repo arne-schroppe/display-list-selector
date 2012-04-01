@@ -1,24 +1,24 @@
 package net.wooga.selectors {
 
+	import flash.utils.Dictionary;
+
 	import net.wooga.selectors.parser.PseudoClassProvider;
 	import net.wooga.selectors.pseudoclasses.PseudoClass;
 
-	import org.as3commons.collections.Map;
-
 	internal class PseudoClassProviderImpl implements PseudoClassProvider {
 
-		private var _pseudoClassMap:Map = new Map();
+		private var _pseudoClassMap:Dictionary = new Dictionary();
 
 		public function hasPseudoClass(pseudoClassName:String):Boolean {
-			return _pseudoClassMap.hasKey(pseudoClassName);
+			return _pseudoClassMap.hasOwnProperty(pseudoClassName);
 		}
 
 		public function getPseudoClass(pseudoClassName:String):PseudoClass {
-			return _pseudoClassMap.itemFor(pseudoClassName);
+			return _pseudoClassMap[pseudoClassName];
 		}
 
 		internal function addPseudoClass(className:String, pseudoClass:PseudoClass):void {
-			_pseudoClassMap.add(className, pseudoClass);
+			_pseudoClassMap[className] = pseudoClass;
 		}
 	}
 }

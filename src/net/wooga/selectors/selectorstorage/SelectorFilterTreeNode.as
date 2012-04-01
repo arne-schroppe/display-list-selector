@@ -1,20 +1,17 @@
 package net.wooga.selectors.selectorstorage {
 
-	import org.as3commons.collections.Map;
-	import org.as3commons.collections.Set;
-	import org.as3commons.collections.framework.IMap;
-	import org.as3commons.collections.framework.ISet;
+	import flash.utils.Dictionary;
 
 	public class SelectorFilterTreeNode {
 
-		private var _selectors:ISet = new Set();
-		private var _childNodes:IMap = new Map();
+		private var _selectors:Array = [];
+		private var _childNodes:Dictionary = new Dictionary();
 
-		public function get selectors():ISet {
+		public function get selectors():Array {
 			return _selectors;
 		}
 
-		public function get childNodes():IMap {
+		public function get childNodes():Dictionary {
 			return _childNodes;
 		}
 	}

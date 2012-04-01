@@ -4,8 +4,6 @@ package net.wooga.selectors.matching.matchers.implementations {
 	import net.wooga.selectors.matching.matchers.IMatcher;
 	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 
-	import org.as3commons.collections.Set;
-
 	public class PropertyFilterContainsMatcher implements IMatcher {
 		private var _property:String;
 		private var _value:String;
@@ -26,8 +24,8 @@ package net.wooga.selectors.matching.matchers.implementations {
 		}
 
 		private function getObjectProperty(subject:SelectorAdapter):Boolean {
-			var collection:Set = subject[_property] as Set;
-			if (collection && collection.has(_value)) {
+			var collection:Array = subject[_property] as Array;
+			if (collection && collection.indexOf(_value) != -1) {
 				return true;
 			}
 
@@ -35,9 +33,9 @@ package net.wooga.selectors.matching.matchers.implementations {
 		}
 
 		private function getExternalProperty(subject:SelectorAdapter):Boolean {
-			var collection:Set = _externalPropertySource.collectionValueForProperty(subject, _property);
+			var collection:Array = _externalPropertySource.collectionValueForProperty(subject, _property);
 
-			if (collection && collection.has(_value)) {
+			if (collection && collection.indexOf(_value) != -1) {
 				return true;
 			}
 

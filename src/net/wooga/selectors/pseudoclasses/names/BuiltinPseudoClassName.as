@@ -9,6 +9,7 @@ package net.wooga.selectors.pseudoclasses.names {
 		public static const nth_last_of_type:String = "nth-last-of-type";
 		//TODO (arneschroppe 3/25/12) implement first-of-type, last-of-type, etc
 		public static const empty:String = "empty";
+		public static const is_a:String = "is-a";
 
 
 	}

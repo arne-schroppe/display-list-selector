@@ -1,6 +1,8 @@
 package net.wooga.selectors.parser {
 
 	import flash.utils.Dictionary;
+	import flash.utils.getDefinitionByName;
+	import flash.utils.getQualifiedClassName;
 
 	import mx.utils.ObjectUtil;
 
@@ -329,7 +331,7 @@ package net.wooga.selectors.parser {
 
 			var singletonAttributes:Array = [];
 			singletonAttributes.push(PseudoClassMatcher);
-			singletonAttributes.push(matcher.pseudoClass);
+			singletonAttributes.push(getDefinitionByName(getQualifiedClassName(matcher.pseudoClass)));
 			singletonAttributes = singletonAttributes.concat(_pseudoClassArguments);
 			singletonAttributes.push(matcher);
 
@@ -353,14 +355,7 @@ package net.wooga.selectors.parser {
 				throw new ParserError("Unknown pseudo-class '" + pseudoClassName + "'");
 			}
 
-			//TODO (arneschroppe 3/31/12) handle this more elegantly (this is also a general problem, we need instances for pseudoclasses)
-			var pseudoClass:PseudoClass;
-			if(pseudoClassName == BuiltinPseudoClassName.is_a) {
-				pseudoClass = new IsA();
-			}
-			else {
-				pseudoClass = _pseudoClassProvider.getPseudoClass(pseudoClassName);
-			}
+			var pseudoClass:PseudoClass = _pseudoClassProvider.getPseudoClass(pseudoClassName);
 
 			var functionMatcher:PseudoClassMatcher = new PseudoClassMatcher(pseudoClass);
 			return functionMatcher;
@@ -456,6 +451,7 @@ package net.wooga.selectors.parser {
 
 
 		//TODO (arneschroppe 30/3/12) untested method
+		//TODO (arneschroppe 4/2/12) do we even need this? doesn't seem so
 		private function getSingletonMatcher(...keysAndValue):IMatcher {
 			var keys:Array = keysAndValue.slice(0, keysAndValue.length - 1);
 

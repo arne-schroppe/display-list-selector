@@ -11,7 +11,7 @@ package net.wooga.selectors {
 		function createSelector(selectorString:String):SelectorGroup;
 		function createSelectorPool():SelectorPool;
 
-		function addPseudoClass(className:String, pseudoClass:PseudoClass):void;
+		function addPseudoClass(className:String, pseudoClassType:Class, constructorArguments:Array=null):void;
 
 
 		function setStyleAdapterForType(adapterType:Class, objectType:Class):void;

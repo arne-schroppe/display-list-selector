@@ -6,6 +6,7 @@ package net.wooga.selectors {
 	import net.wooga.selectors.matching.MatcherTool;
 	import net.wooga.selectors.parser.Parser;
 	import net.wooga.selectors.pseudoclasses.FirstChild;
+	import net.wooga.selectors.pseudoclasses.IsA;
 	import net.wooga.selectors.pseudoclasses.IsEmpty;
 	import net.wooga.selectors.pseudoclasses.LastChild;
 	import net.wooga.selectors.pseudoclasses.NthChild;
@@ -17,6 +18,7 @@ package net.wooga.selectors {
 	import net.wooga.selectors.pseudoclasses.SettablePseudoClass;
 	import net.wooga.selectors.pseudoclasses.names.BuiltinPseudoClassName;
 	import net.wooga.selectors.pseudoclasses.names.PseudoClassName;
+	import net.wooga.selectors.pseudoclasses.provider.PseudoClassProviderImpl;
 	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 	import net.wooga.selectors.tools.Types;
 	import net.wooga.selectors.usagepatterns.Selector;
@@ -80,12 +82,12 @@ package net.wooga.selectors {
 		}
 
 
-		public function addPseudoClass(className:String, pseudoClass:PseudoClass):void {
+		public function addPseudoClass(className:String, pseudoClassType:Class, constructorArguments:Array=null):void {
 			if (_pseudoClassProvider.hasPseudoClass(className)) {
 				throw new ArgumentError("Pseudo class " + className + " already exists");
 			}
 
-			_pseudoClassProvider.addPseudoClass(className, pseudoClass);
+			_pseudoClassProvider.addPseudoClass(className, pseudoClassType, constructorArguments);
 		}
 
 
@@ -151,15 +153,15 @@ package net.wooga.selectors {
 		}
 
 		private function addDefaultPseudoClasses():void {
-			//addPseudoClass(BuiltinPseudoClassName.isA, new Is);
-			addPseudoClass(BuiltinPseudoClassName.root, new Root(_rootObject));
-			addPseudoClass(BuiltinPseudoClassName.first_child, new FirstChild());
-			addPseudoClass(BuiltinPseudoClassName.last_child, new LastChild());
-			addPseudoClass(BuiltinPseudoClassName.nth_child, new NthChild());
-			addPseudoClass(BuiltinPseudoClassName.nth_last_child, new NthLastChild());
-			addPseudoClass(BuiltinPseudoClassName.nth_of_type, new NthOfType());
-			addPseudoClass(BuiltinPseudoClassName.nth_last_of_type, new NthLastOfType());
-			addPseudoClass(BuiltinPseudoClassName.empty, new IsEmpty());
+			addPseudoClass(BuiltinPseudoClassName.is_a, IsA);
+			addPseudoClass(BuiltinPseudoClassName.root, Root, [_rootObject]);
+			addPseudoClass(BuiltinPseudoClassName.first_child, FirstChild);
+			addPseudoClass(BuiltinPseudoClassName.last_child, LastChild);
+			addPseudoClass(BuiltinPseudoClassName.nth_child, NthChild);
+			addPseudoClass(BuiltinPseudoClassName.nth_last_child, NthLastChild);
+			addPseudoClass(BuiltinPseudoClassName.nth_of_type, NthOfType);
+			addPseudoClass(BuiltinPseudoClassName.nth_last_of_type, NthLastOfType);
+			addPseudoClass(BuiltinPseudoClassName.empty, IsEmpty);
 
 
 			for each(var pseudoClassName:String in [
@@ -173,7 +175,7 @@ package net.wooga.selectors {
 					PseudoClassName.disabled,
 					PseudoClassName.checked,
 					PseudoClassName.indeterminate]) {
-				addPseudoClass(pseudoClassName, new SettablePseudoClass(pseudoClassName));
+				addPseudoClass(pseudoClassName, SettablePseudoClass, [pseudoClassName]);
 			}
 
 		}

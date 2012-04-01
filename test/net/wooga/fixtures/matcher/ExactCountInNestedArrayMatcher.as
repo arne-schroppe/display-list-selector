@@ -4,11 +4,11 @@ package net.wooga.fixtures.matcher {
 	import org.hamcrest.Matcher;
 	import org.hamcrest.TypeSafeDiagnosingMatcher;
 
-	public class ExactCountInArrayMatcher extends TypeSafeDiagnosingMatcher{
+	public class ExactCountInNestedArrayMatcher extends TypeSafeDiagnosingMatcher{
 		private var _matcher:Matcher;
 		private var _expectedCount:int;
 
-		public function ExactCountInArrayMatcher(expectedCount:int, matcher:Matcher) {
+		public function ExactCountInNestedArrayMatcher(expectedCount:int, matcher:Matcher) {
 			super(Object);
 			_matcher = matcher;
 			_expectedCount = expectedCount;
@@ -25,12 +25,13 @@ package net.wooga.fixtures.matcher {
 			}
 
 			var actualMatchCount:int = 0;
-			for each(var item:* in collection) {
+			for each(var subArray:* in collection) {
 
-				if (_matcher.matches(item))
-				{
-					++actualMatchCount;
-
+				for each(var item:* in subArray) {
+					if (_matcher.matches(item))
+					{
+						++actualMatchCount;
+					}
 				}
 			}
 

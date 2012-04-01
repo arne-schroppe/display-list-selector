@@ -25,7 +25,7 @@ package net.wooga.selectors.selectorstorage.keys {
 			return prefix + parsedSelector.filterData.typeName;
 		}
 
-		//TODO (arneschroppe 14/3/12) only use keys that actually exist in the tree and are isA-selectors
+
 		public function keysForAdapter(adapter:SelectorAdapter, nodes:Dictionary):Array {
 			var className:String = adapter.getQualifiedElementClassName();
 			var keys:Array = getKeysForElement(className);

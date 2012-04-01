@@ -48,8 +48,9 @@ package net.wooga.selectors.usagepatterns.implementations {
 
 			var possibleMatches:Array = _knownSelectors.getPossibleMatchesFor(adapter);
 
-			for each (var selector:SelectorImpl in possibleMatches) {
-
+			var len:int = possibleMatches.length;
+			for(var i:int = 0; i < len; ++i) {
+				var selector:SelectorImpl = possibleMatches[i] as SelectorImpl;
 				if (_matcher.isObjectMatching(adapter, selector.matchers)) {
 					//TODO (arneschroppe 3/18/12) use an object pool here, so we don't have the overhead of creating objects all the time. They're flyweight's anyway
 					matches.push(selector);

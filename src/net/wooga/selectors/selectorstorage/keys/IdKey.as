@@ -10,7 +10,7 @@ package net.wooga.selectors.selectorstorage.keys {
 
 		use namespace selector_internal;
 
-		private static const NULL_KEY:String = "$$";
+		private static const NULL_KEY:String = "$";
 
 		public function keyForSelector(parsedSelector:SelectorImpl):String {
 			return parsedSelector.filterData.id;

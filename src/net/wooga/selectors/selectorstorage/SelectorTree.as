@@ -1,6 +1,5 @@
 package net.wooga.selectors.selectorstorage {
 
-	import net.wooga.selectors.matching.matchers.implementations.TypeNameMatcher;
 	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 	import net.wooga.selectors.selectorstorage.keys.HoverKey;
 	import net.wooga.selectors.selectorstorage.keys.IdKey;
@@ -18,12 +17,16 @@ package net.wooga.selectors.selectorstorage {
 			new HoverKey()
 		];
 
+		private var _numFilterKeys:int;
+
+
 		private var _foundSelectors:Array;
 
 		private var _selectorsWereAdded:Boolean;
 
 		public function SelectorTree() {
 			_filterRoot = new SelectorFilterTreeNode();
+			_numFilterKeys = _filterKeys.length;
 		}
 
 
@@ -78,6 +81,7 @@ package net.wooga.selectors.selectorstorage {
 
 
 		public function getPossibleMatchesFor(object:SelectorAdapter):Array {
+
 			_foundSelectors = [];
 			searchForMatches(_filterRoot, 0, object);
 			return _foundSelectors;
@@ -86,7 +90,7 @@ package net.wooga.selectors.selectorstorage {
 		private function searchForMatches(node:SelectorFilterTreeNode, keyIndex:int, adapter:SelectorAdapter):void {
 
 			if(!node) {
-				return;
+				return ;
 			}
 			
 			if(_selectorsWereAdded) {
@@ -94,19 +98,18 @@ package net.wooga.selectors.selectorstorage {
 				_selectorsWereAdded = false;
 			}
 
-			//TODO (arneschroppe 19/3/12) use array here, this is too costly
-
 			_foundSelectors = _foundSelectors.concat(node.selectors);
 			
-			if(keyIndex >= _filterKeys.length) {
+			if(keyIndex >= _numFilterKeys) {
 				return;
 			}
 
-			var nodeKey:SelectorTreeNodeKey = _filterKeys[keyIndex];
+			var nodeKey:SelectorTreeNodeKey = _filterKeys[keyIndex] as SelectorTreeNodeKey;
 			var keys:Array = nodeKey.keysForAdapter(adapter, node.childNodes);
 
-			for each(var key:String in keys) {
-				searchForMatches(node.childNodes[key], keyIndex + 1, adapter);
+			var len:int = keys.length
+			for(var i:int = 0; i < len; ++i ) {
+				searchForMatches(node.childNodes[keys[i] as String] as SelectorFilterTreeNode, keyIndex + 1, adapter);
 			}
 		}
 

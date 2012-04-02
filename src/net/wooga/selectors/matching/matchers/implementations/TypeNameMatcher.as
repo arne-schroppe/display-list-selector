@@ -3,7 +3,7 @@ package net.wooga.selectors.matching.matchers.implementations {
 	import net.wooga.selectors.matching.matchers.IMatcher;
 	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 
-	//TODO (arneschroppe 19/3/12) operations in this class take too much time, especially isMatching and calls to addFromCollection
+
 	public class TypeNameMatcher implements IMatcher {
 
 		private var _matchAny:Boolean = false;

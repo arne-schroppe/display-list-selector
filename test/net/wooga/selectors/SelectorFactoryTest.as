@@ -175,6 +175,25 @@ package net.wooga.selectors {
 
 
 
+		[Test]
+		public function should_match_objects_that_have_a_specific_attribute():void {
+
+			_displayList.uses(contextView).containing
+					.a(TestSpriteA)
+					.a(TestSpriteB).containing
+						.a(TestSpriteC)
+					.end
+					.a(TestSpriteC)
+				.end.finish();
+
+
+			testSelector("*[groups]", function(matchedObjects:Array):void {
+				assertEquals(2, matchedObjects.length);
+				assertThat(matchedObjects, containsExactlyInArray(2, isA(TestSpriteC)));
+			});
+		}
+
+
 
 		[Test]
 		public function should_match_objects_whose_names_contain_a_specific_substring():void {

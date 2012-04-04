@@ -20,6 +20,7 @@ package net.wooga.selectors.parser {
 	import net.wooga.selectors.matching.matchers.implementations.attributes.AttributeEqualsMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.PseudoClassMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.TypeNameMatcher;
+	import net.wooga.selectors.matching.matchers.implementations.attributes.AttributeExistsMatcher;
 	import net.wooga.selectors.pseudoclasses.IsA;
 	import net.wooga.selectors.pseudoclasses.PseudoClass;
 	import net.wooga.selectors.pseudoclasses.SettablePseudoClass;
@@ -405,12 +406,20 @@ package net.wooga.selectors.parser {
 			whitespace();
 			var property:String = propertyName();
 			whitespace();
-			var compareFunction:String = comparisonFunction();
-			whitespace();
-			var value:String = attributeValue();
-			whitespace();
 
-			var matcher:IMatcher = matcherForCompareFunction(compareFunction, property, value);
+			var matcher:IMatcher;
+			if(_input.isNext("]")) {
+				matcher = getSingletonMatcher(AttributeExistsMatcher, property, new AttributeExistsMatcher(property));
+			}
+			else {
+				var compareFunction:String = comparisonFunction();
+				whitespace();
+				var value:String = attributeValue();
+				whitespace();
+
+				matcher = matcherForCompareFunction(compareFunction, property, value);
+			}
+
 
 			_currentSelector.matchers.push(matcher);
 			_specificity.classAndAttributeAndPseudoSelectors++;

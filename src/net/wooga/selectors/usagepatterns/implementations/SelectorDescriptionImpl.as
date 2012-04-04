@@ -1,11 +1,11 @@
 package net.wooga.selectors.usagepatterns.implementations {
 
-	import net.wooga.selectors.ISpecificity;
+	import net.wooga.selectors.Specificity;
 	import net.wooga.selectors.usagepatterns.*;
 
 	public class SelectorDescriptionImpl implements SelectorDescription {
 		private var _selectorString:String;
-		private var _specificity:ISpecificity;
+		private var _specificity:Specificity;
 		private var _originalSelectorString:String;
 
 
@@ -13,7 +13,7 @@ package net.wooga.selectors.usagepatterns.implementations {
 			_selectorString = value;
 		}
 
-		public function set specificity(value:ISpecificity):void {
+		public function set specificity(value:Specificity):void {
 			_specificity = value;
 		}
 
@@ -22,7 +22,7 @@ package net.wooga.selectors.usagepatterns.implementations {
 		}
 
 
-		public function get specificity():ISpecificity {
+		public function get specificity():Specificity {
 			return _specificity;
 		}
 

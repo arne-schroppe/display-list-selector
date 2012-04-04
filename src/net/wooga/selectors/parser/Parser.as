@@ -6,17 +6,21 @@ package net.wooga.selectors.parser {
 
 	import mx.utils.ObjectUtil;
 
-	import net.wooga.selectors.IExternalPropertySource;
+	import net.wooga.selectors.ExternalPropertySource;
 	import net.wooga.selectors.matching.matchers.ICombinator;
 	import net.wooga.selectors.matching.matchers.IMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.ChildSelectorMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.ClassMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.DescendantSelectorMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.IdMatcher;
-	import net.wooga.selectors.matching.matchers.implementations.PropertyFilterContainsMatcher;
-	import net.wooga.selectors.matching.matchers.implementations.PropertyFilterEqualsMatcher;
+	import net.wooga.selectors.matching.matchers.implementations.attributes.AttributeBeginsWithMatcher;
+	import net.wooga.selectors.matching.matchers.implementations.attributes.AttributeContainsMatcher;
+	import net.wooga.selectors.matching.matchers.implementations.attributes.AttributeContainsSubstringMatcher;
+	import net.wooga.selectors.matching.matchers.implementations.attributes.AttributeEndsWithMatcher;
+	import net.wooga.selectors.matching.matchers.implementations.attributes.AttributeEqualsMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.PseudoClassMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.TypeNameMatcher;
+	import net.wooga.selectors.matching.matchers.implementations.attributes.AttributeExistsMatcher;
 	import net.wooga.selectors.pseudoclasses.IsA;
 	import net.wooga.selectors.pseudoclasses.PseudoClass;
 	import net.wooga.selectors.pseudoclasses.SettablePseudoClass;
@@ -34,14 +38,14 @@ package net.wooga.selectors.parser {
 		private var _individualSelectors:Vector.<SelectorImpl>;
 		private var _currentSelector:SelectorImpl;
 
-		private var _externalPropertySource:IExternalPropertySource;
+		private var _externalPropertySource:ExternalPropertySource;
 		private var _pseudoClassProvider:PseudoClassProvider;
 
 		private var _matcherMap:DynamicMultiMap = new DynamicMultiMap();
 		private var _isSyntaxExtensionAllowed:Boolean = true;
 
 		private var _input:ParserInput;
-		private var _specificity:Specificity;
+		private var _specificity:SpecificityImpl;
 
 		private var _subSelectorStartIndex:int = 0;
 		private var _subSelectorEndIndex:int = 0;
@@ -54,7 +58,7 @@ package net.wooga.selectors.parser {
 		//private var _alreadyParsedSelectors:Dictionary = new Dictionary();
 
 
-		public function Parser(externalPropertySource:IExternalPropertySource, pseudoClassProvider:PseudoClassProvider) {
+		public function Parser(externalPropertySource:ExternalPropertySource, pseudoClassProvider:PseudoClassProvider) {
 			_externalPropertySource = externalPropertySource;
 			_pseudoClassProvider = pseudoClassProvider;
 		}
@@ -92,7 +96,7 @@ package net.wooga.selectors.parser {
 
 			_pseudoClassArguments = [];
 			_subSelectorStartIndex = _input.currentIndex;
-			_specificity = new Specificity();
+			_specificity = new SpecificityImpl();
 		}
 
 		private function endMatcherSequence():void {
@@ -391,23 +395,31 @@ package net.wooga.selectors.parser {
 			_input.consumeString("[");
 
 			whitespace();
-			propertyExpression();
+			attributeExpression();
 			whitespace();
 			_input.consumeString("]");
 
 		}
 
 
-		private function propertyExpression():void {
+		private function attributeExpression():void {
 			whitespace();
 			var property:String = propertyName();
 			whitespace();
-			var compareFunction:String = comparisonFunction();
-			whitespace();
-			var value:String = value();
-			whitespace();
 
-			var matcher:IMatcher = matcherForCompareFunction(compareFunction, property, value);
+			var matcher:IMatcher;
+			if(_input.isNext("]")) {
+				matcher = getSingletonMatcher(AttributeExistsMatcher, property, new AttributeExistsMatcher(property));
+			}
+			else {
+				var compareFunction:String = comparisonFunction();
+				whitespace();
+				var value:String = attributeValue();
+				whitespace();
+
+				matcher = matcherForCompareFunction(compareFunction, property, value);
+			}
+
 
 			_currentSelector.matchers.push(matcher);
 			_specificity.classAndAttributeAndPseudoSelectors++;
@@ -417,10 +429,19 @@ package net.wooga.selectors.parser {
 		private function matcherForCompareFunction(compareFunction:String, property:String, value:String):IMatcher {
 			switch (compareFunction) {
 				case "=":
-					return getSingletonMatcher(PropertyFilterEqualsMatcher, _externalPropertySource, property, value, new PropertyFilterEqualsMatcher(_externalPropertySource, property, value));
+					return getSingletonMatcher(AttributeEqualsMatcher, _externalPropertySource, property, value, new AttributeEqualsMatcher(_externalPropertySource, property, value));
 
 				case "~=":
-					return getSingletonMatcher(PropertyFilterContainsMatcher, _externalPropertySource, property, value, new PropertyFilterContainsMatcher(_externalPropertySource, property, value));
+					return getSingletonMatcher(AttributeContainsMatcher, _externalPropertySource, property, value, new AttributeContainsMatcher(_externalPropertySource, property, value));
+
+				case "^=":
+					return getSingletonMatcher(AttributeBeginsWithMatcher, _externalPropertySource, property, value, new AttributeBeginsWithMatcher(_externalPropertySource, property, value));
+
+				case "$=":
+					return getSingletonMatcher(AttributeEndsWithMatcher, _externalPropertySource, property, value, new AttributeEndsWithMatcher(_externalPropertySource, property, value));
+
+				case "*=":
+					return getSingletonMatcher(AttributeContainsSubstringMatcher, _externalPropertySource, property, value, new AttributeContainsSubstringMatcher(_externalPropertySource, property, value));
 
 				default:
 					return null;
@@ -428,7 +449,7 @@ package net.wooga.selectors.parser {
 		}
 
 
-		private function value():String {
+		private function attributeValue():String {
 			var quotationType:String = _input.consumeRegex(/"|'/);
 			var value:String = _input.consumeRegex(new RegExp("[^\\s" + quotationType + "]+"));
 			_input.consumeString(quotationType);
@@ -439,7 +460,7 @@ package net.wooga.selectors.parser {
 
 		private function comparisonFunction():String {
 			var compareFunction:String;
-			compareFunction = _input.consumeRegex(/~=|=/);
+			compareFunction = _input.consumeRegex(/~=|\*=|\$=|\^=|=/);
 			return compareFunction;
 		}
 

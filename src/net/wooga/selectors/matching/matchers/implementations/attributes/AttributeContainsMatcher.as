@@ -1,15 +1,15 @@
-package net.wooga.selectors.matching.matchers.implementations {
+package net.wooga.selectors.matching.matchers.implementations.attributes {
 
-	import net.wooga.selectors.IExternalPropertySource;
+	import net.wooga.selectors.ExternalPropertySource;
 	import net.wooga.selectors.matching.matchers.IMatcher;
 	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 
-	public class PropertyFilterContainsMatcher implements IMatcher {
+	public class AttributeContainsMatcher implements IMatcher {
 		private var _property:String;
 		private var _value:String;
-		private var _externalPropertySource:IExternalPropertySource;
+		private var _externalPropertySource:ExternalPropertySource;
 
-		public function PropertyFilterContainsMatcher(externalPropertySource:IExternalPropertySource, property:String, value:String) {
+		public function AttributeContainsMatcher(externalPropertySource:ExternalPropertySource, property:String, value:String) {
 			_externalPropertySource = externalPropertySource;
 			_property = property;
 			_value = value;

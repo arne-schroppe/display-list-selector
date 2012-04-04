@@ -1,4 +1,4 @@
-package net.wooga.selectors.matching.matchers {
+package net.wooga.selectors.matching.matchers.implementations.attributes {
 
 	import flash.display.DisplayObject;
 
@@ -9,17 +9,17 @@ package net.wooga.selectors.matching.matchers {
 	import net.wooga.fixtures.tools.ContextViewBasedTest;
 	import net.wooga.fixtures.tools.containsInArrayExactly;
 	import net.wooga.fixtures.tools.getAdapterForObject;
-	import net.wooga.selectors.matching.matchers.implementations.PropertyFilterContainsMatcher;
+	import net.wooga.selectors.matching.matchers.implementations.attributes.AttributeContainsMatcher;
 	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 
 	import org.hamcrest.assertThat;
 	import org.hamcrest.core.isA;
 	import org.hamcrest.object.equalTo;
 
-	public class PropertyFilterContainsMatcherTest extends ContextViewBasedTest {
+	public class AttributeContainsMatcherTest extends ContextViewBasedTest {
 
 
-		private var _matcher:PropertyFilterContainsMatcher;
+		private var _matcher:AttributeContainsMatcher;
 		
 		[Before]
 		override public function setUp():void {
@@ -49,7 +49,7 @@ package net.wooga.selectors.matching.matchers {
 				.a(TestSpriteA)
 			.end.finish();
 
-			_matcher = new PropertyFilterContainsMatcher(new TestPropertySource(), "testProperty", "TestSpriteC");
+			_matcher = new AttributeContainsMatcher(new TestPropertySource(), "testProperty", "TestSpriteC");
 
 			var matchedObjects:Array = [];
 
@@ -74,10 +74,10 @@ package net.wooga.selectors.matching.matchers {
 
 import flash.utils.getQualifiedClassName;
 
-import net.wooga.selectors.IExternalPropertySource;
+import net.wooga.selectors.ExternalPropertySource;
 import net.wooga.selectors.selectoradapter.SelectorAdapter;
 
-class TestPropertySource implements IExternalPropertySource {
+class TestPropertySource implements ExternalPropertySource {
 
 	public function stringValueForProperty(subject:SelectorAdapter, name:String):String {
 		throw new Error("Unexpected method called");

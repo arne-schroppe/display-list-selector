@@ -134,6 +134,87 @@ package net.wooga.selectors {
 
 
 		[Test]
+		public function should_match_objects_whose_names_begin_with_a_value():void {
+
+			_displayList.uses(contextView).containing
+					.a(TestSpriteA).withTheName("123abcde")
+					.a(TestSpriteB).containing
+						.a(TestSpriteC).withTheName("12abcd")
+					.end
+					.a(TestSpriteC).withTheName("12345678")
+				.end.finish();
+
+
+			testSelector("*[name^='123']", function(matchedObjects:Array):void {
+				assertEquals(2, matchedObjects.length);
+				assertThat(matchedObjects, hasItem( allOf(isA(TestSpriteA), hasPropertyWithValue("name", "123abcde"))));
+				assertThat(matchedObjects, hasItem( allOf(isA(TestSpriteC), hasPropertyWithValue("name", "12345678"))));
+			});
+		}
+
+
+
+		[Test]
+		public function should_match_objects_whose_names_end_with_a_value():void {
+
+			_displayList.uses(contextView).containing
+					.a(TestSpriteA).withTheName("abcde789")
+					.a(TestSpriteB).containing
+						.a(TestSpriteC).withTheName("abcde7890")
+					.end
+					.a(TestSpriteC).withTheName("123456789")
+					.end.finish();
+
+
+			testSelector("*[name$='789']", function(matchedObjects:Array):void {
+				assertEquals(2, matchedObjects.length);
+				assertThat(matchedObjects, hasItem( allOf(isA(TestSpriteA), hasPropertyWithValue("name", "abcde789"))));
+				assertThat(matchedObjects, hasItem( allOf(isA(TestSpriteC), hasPropertyWithValue("name", "123456789"))));
+			});
+		}
+
+
+
+		[Test]
+		public function should_match_objects_that_have_a_specific_attribute():void {
+
+			_displayList.uses(contextView).containing
+					.a(TestSpriteA)
+					.a(TestSpriteB).containing
+						.a(TestSpriteC)
+					.end
+					.a(TestSpriteC)
+				.end.finish();
+
+
+			testSelector("*[groups]", function(matchedObjects:Array):void {
+				assertEquals(2, matchedObjects.length);
+				assertThat(matchedObjects, containsExactlyInArray(2, isA(TestSpriteC)));
+			});
+		}
+
+
+
+		[Test]
+		public function should_match_objects_whose_names_contain_a_specific_substring():void {
+
+			_displayList.uses(contextView).containing
+					.a(TestSpriteA).withTheName("abcd456efg")
+					.a(TestSpriteB).containing
+					.a(TestSpriteC)
+					.end
+					.a(TestSpriteC).withTheName("123456789")
+					.end.finish();
+
+
+			testSelector("*[name*='456']", function(matchedObjects:Array):void {
+				assertEquals(2, matchedObjects.length);
+				assertThat(matchedObjects, hasItem( allOf(isA(TestSpriteA), hasPropertyWithValue("name", "abcd456efg"))));
+				assertThat(matchedObjects, hasItem( allOf(isA(TestSpriteC), hasPropertyWithValue("name", "123456789"))));
+			});
+		}
+
+		[Test]
 		public function should_match_class_with_external_property():void {
 
 			_displayList.uses(contextView).containing
@@ -648,10 +729,10 @@ package net.wooga.selectors {
 
 import flash.utils.Dictionary;
 
-import net.wooga.selectors.IExternalPropertySource;
+import net.wooga.selectors.ExternalPropertySource;
 import net.wooga.selectors.selectoradapter.SelectorAdapter;
 
-class PropertyDictionary implements IExternalPropertySource {
+class PropertyDictionary implements ExternalPropertySource {
 
 	private var _values:Dictionary = new Dictionary();
 

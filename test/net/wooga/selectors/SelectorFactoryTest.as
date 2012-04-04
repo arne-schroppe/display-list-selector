@@ -648,10 +648,10 @@ package net.wooga.selectors {
 
 import flash.utils.Dictionary;
 
-import net.wooga.selectors.IExternalPropertySource;
+import net.wooga.selectors.ExternalPropertySource;
 import net.wooga.selectors.selectoradapter.SelectorAdapter;
 
-class PropertyDictionary implements IExternalPropertySource {
+class PropertyDictionary implements ExternalPropertySource {
 
 	private var _values:Dictionary = new Dictionary();
 

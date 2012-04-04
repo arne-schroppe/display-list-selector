@@ -4,14 +4,15 @@ package {
 	import net.wooga.selectors.displaylist.DisplayObjectSelectorAdapterTest;
 	import net.wooga.selectors.input.ParserInputTest;
 	import net.wooga.selectors.matching.matchers.ChildSelectorMatcherTest;
-	import net.wooga.selectors.matching.matchers.AttributeContainsMatcherTest;
-	import net.wooga.selectors.matching.matchers.AttributeEqualsMatcherTest;
 	import net.wooga.selectors.matching.matchers.PseudoClassMatcherTest;
 	import net.wooga.selectors.matching.matchers.TypeNameMatcherTest;
+	import net.wooga.selectors.matching.matchers.implementations.attributes.AbstractStringAttributeMatcherTest;
+	import net.wooga.selectors.matching.matchers.implementations.attributes.AttributeContainsMatcherTest;
+	import net.wooga.selectors.matching.matchers.implementations.attributes.AttributeEqualsMatcherTest;
+	import net.wooga.selectors.matching.matchers.implementations.attributes.AttributeExistsMatcherTest;
 	import net.wooga.selectors.parser.SpecificityTest;
 	import net.wooga.selectors.pseudoclasses.FirstChildTest;
 	import net.wooga.selectors.pseudoclasses.IsATest;
-	import net.wooga.selectors.pseudoclasses.SettablePseudoClassTest;
 	import net.wooga.selectors.pseudoclasses.IsEmptyTest;
 	import net.wooga.selectors.pseudoclasses.LastChildTest;
 	import net.wooga.selectors.pseudoclasses.NthChildTest;
@@ -19,6 +20,7 @@ package {
 	import net.wooga.selectors.pseudoclasses.NthLastOfTypeTest;
 	import net.wooga.selectors.pseudoclasses.NthOfTypeTest;
 	import net.wooga.selectors.pseudoclasses.RootTest;
+	import net.wooga.selectors.pseudoclasses.SettablePseudoClassTest;
 	import net.wooga.selectors.pseudoclasses.nthchildren.NthParserTest;
 	import net.wooga.selectors.selectorstorage.SelectorTreeTest;
 
@@ -31,8 +33,10 @@ package {
 		public var parserInputTest:ParserInputTest;
 		public var childSelectorMatcherTest:ChildSelectorMatcherTest;
 		public var classNameMatcherTest:TypeNameMatcherTest;
-		public var propertyFilterContainsMatcherTest:AttributeContainsMatcherTest;
-		public var propertyFilterEqualsMatcherTest:AttributeEqualsMatcherTest;
+		public var attributeContainsMatcherTest:AttributeContainsMatcherTest;
+		public var attributeEqualsMatcherTest:AttributeEqualsMatcherTest;
+		public var attributeExistsMatcherTest:AttributeExistsMatcherTest;
+		public var abstractStringAttributeMatcherTest:AbstractStringAttributeMatcherTest;
 		public var pseudoClassMatcherTest:PseudoClassMatcherTest;
 		public var firstChildTest:FirstChildTest;
 		public var lastChildTest:LastChildTest;

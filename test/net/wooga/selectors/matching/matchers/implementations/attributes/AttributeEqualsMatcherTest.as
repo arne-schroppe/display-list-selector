@@ -1,4 +1,4 @@
-package net.wooga.selectors.matching.matchers {
+package net.wooga.selectors.matching.matchers.implementations.attributes {
 
 	import flash.display.DisplayObject;
 
@@ -69,45 +69,15 @@ package net.wooga.selectors.matching.matchers {
 			return getAdapterForObject(object);
 		}
 
-
-		[Test]
-		public function should_use_external_property_source_for_unknown_properties():void {
-			var tree:DisplayTree = new DisplayTree();
-
-			tree.uses(contextView).containing
-					.a(TestSpriteA)
-					.a(TestSpriteB)
-					.a(TestSpriteC)
-					.a(TestSpriteB)
-					.a(TestSpriteA)
-					.a(TestSpriteA)
-					.a(TestSpriteC)
-					.a(TestSpriteC)
-					.a(TestSpriteA)
-				.end.finish();
-
-			_matcher = new AttributeEqualsMatcher(new ClassNamePropertySource(), "testProperty", "TestSpriteA");
-
-			var matchedObjects:Array = [];
-
-			for(var i:int = 0; i < contextView.numChildren; ++i) {
-				if(_matcher.isMatching(getAdapterForObjectAtIndex(i))) {
-					matchedObjects.push(contextView.getChildAt(i));
-				}
-			}
-
-			assertThat(matchedObjects, everyItem(isA(TestSpriteA)));
-			assertThat(matchedObjects.length, equalTo(4));
-		}
 	}
 }
 
 import flash.utils.getQualifiedClassName;
 
-import net.wooga.selectors.IExternalPropertySource;
+import net.wooga.selectors.ExternalPropertySource;
 import net.wooga.selectors.selectoradapter.SelectorAdapter;
 
-class NoCallPropertySource implements IExternalPropertySource {
+class NoCallPropertySource implements ExternalPropertySource {
 
 	public function stringValueForProperty(subject:SelectorAdapter, name:String):String {
 		throw new Error("Unexpected method called");
@@ -119,7 +89,7 @@ class NoCallPropertySource implements IExternalPropertySource {
 }
 
 
-class ClassNamePropertySource implements IExternalPropertySource {
+class ClassNamePropertySource implements ExternalPropertySource {
 
 	public function stringValueForProperty(subject:SelectorAdapter, name:String):String {
 		if(name == "testProperty") {

@@ -1,8 +1,8 @@
 package net.wooga.selectors.parser {
 
-	import net.wooga.selectors.ISpecificity;
+	import net.wooga.selectors.Specificity;
 
-	internal class Specificity implements ISpecificity {
+	internal class SpecificityImpl implements Specificity {
 		
 		private static const SPECIFICITY_BASE:int = 60;
 
@@ -18,25 +18,25 @@ package net.wooga.selectors.parser {
 			return _numberValue;
 		}
 
-		public function isLessThan(other:ISpecificity):Boolean {
-			return other is Specificity ? compare(other as Specificity) == -1 : this.toNumber() < other.toNumber();
+		public function isLessThan(other:Specificity):Boolean {
+			return other is SpecificityImpl ? compare(other as SpecificityImpl) == -1 : this.toNumber() < other.toNumber();
 		}
 
-		public function isGreaterThan(other:ISpecificity):Boolean {
-			return other is Specificity ? compare(other as Specificity) == 1 : this.toNumber() > other.toNumber();
+		public function isGreaterThan(other:Specificity):Boolean {
+			return other is SpecificityImpl ? compare(other as SpecificityImpl) == 1 : this.toNumber() > other.toNumber();
 		}
 
-		public function isEqualTo(other:ISpecificity):Boolean {
-			return other is Specificity ? compare(other as Specificity) == 0: this.toNumber() == other.toNumber();
+		public function isEqualTo(other:Specificity):Boolean {
+			return other is SpecificityImpl ? compare(other as SpecificityImpl) == 0: this.toNumber() == other.toNumber();
 		}
 
 //TODO (arneschroppe 14/2/12) this is slighlty hacked, get the type right
-		public function compare(other:ISpecificity):int {
-			return compareFromPosition(other as Specificity, _digits.length-1);
+		public function compare(other:Specificity):int {
+			return compareFromPosition(other as SpecificityImpl, _digits.length-1);
 		}
 
 
-		private function compareFromPosition(other:Specificity, position:int):int {
+		private function compareFromPosition(other:SpecificityImpl, position:int):int {
 			if(position < 0) {
 				return 0;
 			}
@@ -44,7 +44,7 @@ package net.wooga.selectors.parser {
 			return comparePosition(other, position) || compareFromPosition(other, position - 1);
 		}
 
-		private function comparePosition(other:Specificity, position:int):int {
+		private function comparePosition(other:SpecificityImpl, position:int):int {
 			var here:int = this._digits[position];
 			var there:int = other._digits[position];
 			

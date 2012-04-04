@@ -1,4 +1,4 @@
-package net.wooga.selectors.matching.matchers {
+package net.wooga.selectors.matching.matchers.implementations.attributes {
 
 	import flash.display.DisplayObject;
 
@@ -74,10 +74,10 @@ package net.wooga.selectors.matching.matchers {
 
 import flash.utils.getQualifiedClassName;
 
-import net.wooga.selectors.IExternalPropertySource;
+import net.wooga.selectors.ExternalPropertySource;
 import net.wooga.selectors.selectoradapter.SelectorAdapter;
 
-class TestPropertySource implements IExternalPropertySource {
+class TestPropertySource implements ExternalPropertySource {
 
 	public function stringValueForProperty(subject:SelectorAdapter, name:String):String {
 		throw new Error("Unexpected method called");

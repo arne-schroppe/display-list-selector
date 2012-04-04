@@ -13,9 +13,9 @@ package net.wooga.selectors.parser {
 		[Test]
 		public function testIsGreaterThan():void {
 
-			var smallerSpec:Specificity = specWith(1, 10, 0, 0, 0);
+			var smallerSpec:SpecificityImpl = specWith(1, 10, 0, 0, 0);
 
-			var higherSpec:Specificity = specWith(2, 6, 0, 0, 0);
+			var higherSpec:SpecificityImpl = specWith(2, 6, 0, 0, 0);
 
 			assertThat(higherSpec.isGreaterThan(smallerSpec), isTrue());
 			assertThat(higherSpec.isLessThan(smallerSpec), isFalse());
@@ -66,9 +66,9 @@ package net.wooga.selectors.parser {
 		[Test]
 		public function testIsLessThan():void {
 
-			var smallerSpec:Specificity = specWith(1, 10, 0, 0, 0);
+			var smallerSpec:SpecificityImpl = specWith(1, 10, 0, 0, 0);
 
-			var higherSpec:Specificity = specWith(2, 6, 0, 0, 0);
+			var higherSpec:SpecificityImpl = specWith(2, 6, 0, 0, 0);
 
 			assertThat(smallerSpec.isLessThan(higherSpec), isTrue());
 			assertThat(smallerSpec.isGreaterThan(higherSpec), isFalse());
@@ -117,8 +117,8 @@ package net.wooga.selectors.parser {
 		[Test]
 		public function testIsEqualTo():void {
 
-			var spec1:Specificity = specWith(12, 0, 0, 0, 0);
-			var spec2:Specificity = specWith(12, 0, 0, 0, 0);
+			var spec1:SpecificityImpl = specWith(12, 0, 0, 0, 0);
+			var spec2:SpecificityImpl = specWith(12, 0, 0, 0, 0);
 
 			assertThat(spec1.isEqualTo(spec2), isTrue());
 
@@ -134,21 +134,21 @@ package net.wooga.selectors.parser {
 		[Test]
 		public function testToNumber():void {
 
-			var spec1:Specificity = new Specificity();
+			var spec1:SpecificityImpl = new SpecificityImpl();
 			spec1.manualStyleRule = 12;
 
-			var spec2:Specificity = new Specificity();
+			var spec2:SpecificityImpl = new SpecificityImpl();
 			spec2.manualStyleRule = 12;
 
 			assertThat(spec1.toNumber(), equalTo(spec2.toNumber()));
 
 
 
-			spec1 = new Specificity();
+			spec1 = new SpecificityImpl();
 			spec1.manualStyleRule = 12;
 			spec1.idSelector = 1;
 
-			spec2 = new Specificity();
+			spec2 = new SpecificityImpl();
 			spec2.manualStyleRule = 12;
 			spec2.idSelector = 0;
 
@@ -157,11 +157,11 @@ package net.wooga.selectors.parser {
 
 
 
-			spec1 = new Specificity();
+			spec1 = new SpecificityImpl();
 			spec1.manualStyleRule = 0;
 			spec1.idSelector = 1;
 
-			spec2 = new Specificity();
+			spec2 = new SpecificityImpl();
 			spec2.manualStyleRule = 12;
 			spec2.idSelector = 0;
 
@@ -170,8 +170,8 @@ package net.wooga.selectors.parser {
 		}
 
 		
-		private function specWith(a:int,  b:int,  c:int, d:int,  e:int):Specificity {
-			var spec:Specificity = new Specificity();
+		private function specWith(a:int,  b:int,  c:int, d:int,  e:int):SpecificityImpl {
+			var spec:SpecificityImpl = new SpecificityImpl();
 			spec.manualStyleRule = a;
 			spec.idSelector = b;
 			spec.classAndAttributeAndPseudoSelectors = c;

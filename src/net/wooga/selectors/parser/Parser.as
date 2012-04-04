@@ -6,7 +6,7 @@ package net.wooga.selectors.parser {
 
 	import mx.utils.ObjectUtil;
 
-	import net.wooga.selectors.IExternalPropertySource;
+	import net.wooga.selectors.ExternalPropertySource;
 	import net.wooga.selectors.matching.matchers.ICombinator;
 	import net.wooga.selectors.matching.matchers.IMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.ChildSelectorMatcher;
@@ -34,14 +34,14 @@ package net.wooga.selectors.parser {
 		private var _individualSelectors:Vector.<SelectorImpl>;
 		private var _currentSelector:SelectorImpl;
 
-		private var _externalPropertySource:IExternalPropertySource;
+		private var _externalPropertySource:ExternalPropertySource;
 		private var _pseudoClassProvider:PseudoClassProvider;
 
 		private var _matcherMap:DynamicMultiMap = new DynamicMultiMap();
 		private var _isSyntaxExtensionAllowed:Boolean = true;
 
 		private var _input:ParserInput;
-		private var _specificity:Specificity;
+		private var _specificity:SpecificityImpl;
 
 		private var _subSelectorStartIndex:int = 0;
 		private var _subSelectorEndIndex:int = 0;
@@ -54,7 +54,7 @@ package net.wooga.selectors.parser {
 		//private var _alreadyParsedSelectors:Dictionary = new Dictionary();
 
 
-		public function Parser(externalPropertySource:IExternalPropertySource, pseudoClassProvider:PseudoClassProvider) {
+		public function Parser(externalPropertySource:ExternalPropertySource, pseudoClassProvider:PseudoClassProvider) {
 			_externalPropertySource = externalPropertySource;
 			_pseudoClassProvider = pseudoClassProvider;
 		}
@@ -92,7 +92,7 @@ package net.wooga.selectors.parser {
 
 			_pseudoClassArguments = [];
 			_subSelectorStartIndex = _input.currentIndex;
-			_specificity = new Specificity();
+			_specificity = new SpecificityImpl();
 		}
 
 		private function endMatcherSequence():void {

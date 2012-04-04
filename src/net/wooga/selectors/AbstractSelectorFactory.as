@@ -46,10 +46,10 @@ package net.wooga.selectors {
 		private var _defaultStyleAdapterType:Class;
 
 
-		public function initializeWith(rootObject:Object, externalPropertySource:IExternalPropertySource = null):void {
+		public function initializeWith(rootObject:Object, externalPropertySource:ExternalPropertySource = null):void {
 			_rootObject = rootObject;
 
-			var externalPropertySource:IExternalPropertySource = externalPropertySource;
+			var externalPropertySource:ExternalPropertySource = externalPropertySource;
 			if (externalPropertySource == null) {
 				externalPropertySource = new NullPropertySource();
 			}

@@ -10,7 +10,7 @@ package net.wooga.selectors.matching.matchers.implementations.attributes {
 			super(externalPropertySource, property, value);
 			_canSucceed = (value !== "");
 		}
-		
+
 
 		override protected function isValueMatching(objectValue:String, matchedValue:String):Boolean {
 			return _canSucceed && objectValue.indexOf(matchedValue) != -1;

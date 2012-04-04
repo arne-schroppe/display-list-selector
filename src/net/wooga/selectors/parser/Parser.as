@@ -13,7 +13,10 @@ package net.wooga.selectors.parser {
 	import net.wooga.selectors.matching.matchers.implementations.ClassMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.DescendantSelectorMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.IdMatcher;
+	import net.wooga.selectors.matching.matchers.implementations.attributes.AttributeBeginsWithMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.attributes.AttributeContainsMatcher;
+	import net.wooga.selectors.matching.matchers.implementations.attributes.AttributeContainsSubstringMatcher;
+	import net.wooga.selectors.matching.matchers.implementations.attributes.AttributeEndsWithMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.attributes.AttributeEqualsMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.PseudoClassMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.TypeNameMatcher;
@@ -391,20 +394,20 @@ package net.wooga.selectors.parser {
 			_input.consumeString("[");
 
 			whitespace();
-			propertyExpression();
+			attributeExpression();
 			whitespace();
 			_input.consumeString("]");
 
 		}
 
 
-		private function propertyExpression():void {
+		private function attributeExpression():void {
 			whitespace();
 			var property:String = propertyName();
 			whitespace();
 			var compareFunction:String = comparisonFunction();
 			whitespace();
-			var value:String = value();
+			var value:String = attributeValue();
 			whitespace();
 
 			var matcher:IMatcher = matcherForCompareFunction(compareFunction, property, value);
@@ -422,13 +425,22 @@ package net.wooga.selectors.parser {
 				case "~=":
 					return getSingletonMatcher(AttributeContainsMatcher, _externalPropertySource, property, value, new AttributeContainsMatcher(_externalPropertySource, property, value));
 
+				case "^=":
+					return getSingletonMatcher(AttributeBeginsWithMatcher, _externalPropertySource, property, value, new AttributeBeginsWithMatcher(_externalPropertySource, property, value));
+
+				case "$=":
+					return getSingletonMatcher(AttributeEndsWithMatcher, _externalPropertySource, property, value, new AttributeEndsWithMatcher(_externalPropertySource, property, value));
+
+				case "*=":
+					return getSingletonMatcher(AttributeContainsSubstringMatcher, _externalPropertySource, property, value, new AttributeContainsSubstringMatcher(_externalPropertySource, property, value));
+
 				default:
 					return null;
 			}
 		}
 
 
-		private function value():String {
+		private function attributeValue():String {
 			var quotationType:String = _input.consumeRegex(/"|'/);
 			var value:String = _input.consumeRegex(new RegExp("[^\\s" + quotationType + "]+"));
 			_input.consumeString(quotationType);
@@ -439,7 +451,7 @@ package net.wooga.selectors.parser {
 
 		private function comparisonFunction():String {
 			var compareFunction:String;
-			compareFunction = _input.consumeRegex(/~=|=/);
+			compareFunction = _input.consumeRegex(/~=|\*=|\$=|\^=|=/);
 			return compareFunction;
 		}
 

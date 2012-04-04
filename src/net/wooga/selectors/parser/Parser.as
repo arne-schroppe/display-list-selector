@@ -13,8 +13,8 @@ package net.wooga.selectors.parser {
 	import net.wooga.selectors.matching.matchers.implementations.ClassMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.DescendantSelectorMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.IdMatcher;
-	import net.wooga.selectors.matching.matchers.implementations.PropertyFilterContainsMatcher;
-	import net.wooga.selectors.matching.matchers.implementations.PropertyFilterEqualsMatcher;
+	import net.wooga.selectors.matching.matchers.implementations.attributes.AttributeContainsMatcher;
+	import net.wooga.selectors.matching.matchers.implementations.attributes.AttributeEqualsMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.PseudoClassMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.TypeNameMatcher;
 	import net.wooga.selectors.pseudoclasses.IsA;
@@ -417,10 +417,10 @@ package net.wooga.selectors.parser {
 		private function matcherForCompareFunction(compareFunction:String, property:String, value:String):IMatcher {
 			switch (compareFunction) {
 				case "=":
-					return getSingletonMatcher(PropertyFilterEqualsMatcher, _externalPropertySource, property, value, new PropertyFilterEqualsMatcher(_externalPropertySource, property, value));
+					return getSingletonMatcher(AttributeEqualsMatcher, _externalPropertySource, property, value, new AttributeEqualsMatcher(_externalPropertySource, property, value));
 
 				case "~=":
-					return getSingletonMatcher(PropertyFilterContainsMatcher, _externalPropertySource, property, value, new PropertyFilterContainsMatcher(_externalPropertySource, property, value));
+					return getSingletonMatcher(AttributeContainsMatcher, _externalPropertySource, property, value, new AttributeContainsMatcher(_externalPropertySource, property, value));
 
 				default:
 					return null;

@@ -9,7 +9,7 @@ package net.wooga.selectors.matching.matchers {
 	import net.wooga.fixtures.tools.ContextViewBasedTest;
 	import net.wooga.fixtures.tools.containsInArrayExactly;
 	import net.wooga.fixtures.tools.getAdapterForObject;
-	import net.wooga.selectors.matching.matchers.implementations.PropertyFilterEqualsMatcher;
+	import net.wooga.selectors.matching.matchers.implementations.attributes.AttributeEqualsMatcher;
 	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 
 	import org.hamcrest.assertThat;
@@ -17,9 +17,9 @@ package net.wooga.selectors.matching.matchers {
 	import org.hamcrest.core.isA;
 	import org.hamcrest.object.equalTo;
 
-	public class PropertyFilterEqualsMatcherTest extends ContextViewBasedTest {
+	public class AttributeEqualsMatcherTest extends ContextViewBasedTest {
 
-		private var _matcher:PropertyFilterEqualsMatcher;
+		private var _matcher:AttributeEqualsMatcher;
 
 		[Before]
 		override public function setUp():void {
@@ -47,7 +47,7 @@ package net.wooga.selectors.matching.matchers {
 					.a(TestSpriteA).withTheName("testName")
 				.end.finish();
 
-			_matcher = new PropertyFilterEqualsMatcher(new NoCallPropertySource(), "name", "testName");
+			_matcher = new AttributeEqualsMatcher(new NoCallPropertySource(), "name", "testName");
 
 			var matchedObjects:Array = [];
 
@@ -86,7 +86,7 @@ package net.wooga.selectors.matching.matchers {
 					.a(TestSpriteA)
 				.end.finish();
 
-			_matcher = new PropertyFilterEqualsMatcher(new ClassNamePropertySource(), "testProperty", "TestSpriteA");
+			_matcher = new AttributeEqualsMatcher(new ClassNamePropertySource(), "testProperty", "TestSpriteA");
 
 			var matchedObjects:Array = [];
 

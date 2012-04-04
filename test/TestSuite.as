@@ -4,8 +4,8 @@ package {
 	import net.wooga.selectors.displaylist.DisplayObjectSelectorAdapterTest;
 	import net.wooga.selectors.input.ParserInputTest;
 	import net.wooga.selectors.matching.matchers.ChildSelectorMatcherTest;
-	import net.wooga.selectors.matching.matchers.PropertyFilterContainsMatcherTest;
-	import net.wooga.selectors.matching.matchers.PropertyFilterEqualsMatcherTest;
+	import net.wooga.selectors.matching.matchers.AttributeContainsMatcherTest;
+	import net.wooga.selectors.matching.matchers.AttributeEqualsMatcherTest;
 	import net.wooga.selectors.matching.matchers.PseudoClassMatcherTest;
 	import net.wooga.selectors.matching.matchers.TypeNameMatcherTest;
 	import net.wooga.selectors.parser.SpecificityTest;
@@ -31,8 +31,8 @@ package {
 		public var parserInputTest:ParserInputTest;
 		public var childSelectorMatcherTest:ChildSelectorMatcherTest;
 		public var classNameMatcherTest:TypeNameMatcherTest;
-		public var propertyFilterContainsMatcherTest:PropertyFilterContainsMatcherTest;
-		public var propertyFilterEqualsMatcherTest:PropertyFilterEqualsMatcherTest;
+		public var propertyFilterContainsMatcherTest:AttributeContainsMatcherTest;
+		public var propertyFilterEqualsMatcherTest:AttributeEqualsMatcherTest;
 		public var pseudoClassMatcherTest:PseudoClassMatcherTest;
 		public var firstChildTest:FirstChildTest;
 		public var lastChildTest:LastChildTest;

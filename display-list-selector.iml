@@ -1,11 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module type="Flex" version="4">
-  <component name="Flex.Build.Configuration">
-    <option name="DO_BUILD" value="true" />
-    <option name="OUTPUT_TYPE" value="Library" />
-    <option name="OUTPUT_FILE_NAME" value="display_list_selector.swc" />
-    <option name="TARGET_PLAYER_VERSION" value="10.1" />
-    <option name="VERSION" value="3" />
+  <component name="FlexBuildConfigurationManager" active="display-list-selector">
+    <configurations>
+      <configuration name="display-list-selector" output-type="Library" output-file="display_list_selector.swc" output-folder="$MODULE_DIR$/bin">
+        <dependencies target-player="10.1">
+          <entries>
+            <entry library-name="Libs" library-level="project">
+              <dependency linkage="Merged" />
+            </entry>
+          </entries>
+          <sdk name="flex_sdk_4.5.1" />
+        </dependencies>
+        <compiler-options />
+        <packaging-air-desktop />
+        <packaging-android />
+        <packaging-ios />
+      </configuration>
+    </configurations>
+    <compiler-options />
   </component>
   <component name="NewModuleRootManager" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/bin" />
@@ -15,9 +27,9 @@
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/test" isTestSource="true" />
     </content>
-    <orderEntry type="jdk" jdkName="flex_sdk_4.5.1 (player 10.1)" jdkType="Flex SDK Type" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Libs" level="project" />
+    <orderEntry type="jdk" jdkName="flex_sdk_4.5.1" jdkType="__CompositeFlexSdk__" />
   </component>
 </module>
 

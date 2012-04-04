@@ -1,10 +1,6 @@
 package net.wooga.selectors.parser {
 
 	import flash.utils.Dictionary;
-	import flash.utils.getDefinitionByName;
-	import flash.utils.getQualifiedClassName;
-
-	import mx.utils.ObjectUtil;
 
 	import net.wooga.selectors.ExternalPropertySource;
 	import net.wooga.selectors.matching.matchers.ICombinator;
@@ -13,13 +9,13 @@ package net.wooga.selectors.parser {
 	import net.wooga.selectors.matching.matchers.implementations.ClassMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.DescendantSelectorMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.IdMatcher;
+	import net.wooga.selectors.matching.matchers.implementations.PseudoClassMatcher;
+	import net.wooga.selectors.matching.matchers.implementations.TypeNameMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.attributes.AttributeBeginsWithMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.attributes.AttributeContainsMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.attributes.AttributeContainsSubstringMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.attributes.AttributeEndsWithMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.attributes.AttributeEqualsMatcher;
-	import net.wooga.selectors.matching.matchers.implementations.PseudoClassMatcher;
-	import net.wooga.selectors.matching.matchers.implementations.TypeNameMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.attributes.AttributeExistsMatcher;
 	import net.wooga.selectors.pseudoclasses.IsA;
 	import net.wooga.selectors.pseudoclasses.PseudoClass;
@@ -27,7 +23,6 @@ package net.wooga.selectors.parser {
 	import net.wooga.selectors.pseudoclasses.names.BuiltinPseudoClassName;
 	import net.wooga.selectors.pseudoclasses.names.PseudoClassName;
 	import net.wooga.selectors.selector_internal;
-	import net.wooga.selectors.tools.DynamicMultiMap;
 	import net.wooga.selectors.tools.input.ParserInput;
 	import net.wooga.selectors.usagepatterns.implementations.SelectorImpl;
 
@@ -41,7 +36,6 @@ package net.wooga.selectors.parser {
 		private var _externalPropertySource:ExternalPropertySource;
 		private var _pseudoClassProvider:PseudoClassProvider;
 
-		private var _matcherMap:DynamicMultiMap = new DynamicMultiMap();
 		private var _isSyntaxExtensionAllowed:Boolean = true;
 
 		private var _input:ParserInput;

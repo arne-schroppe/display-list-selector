@@ -46,7 +46,7 @@ package net.wooga.selectors.matching.matchers.implementations.attributes {
 		[Test]
 		public function should_use_existing_properties_directly():void {
 
-			var attributeName:String = "existingProperty";
+			var attributeName:String = "property";
 
 			_matcher = new AbstractStringAttributeMatcher(externalPropertySource, attributeName, "123");
 
@@ -55,7 +55,7 @@ package net.wooga.selectors.matching.matchers.implementations.attributes {
 			_matcher.isMatching(adapter);
 
 			verify(never()).that(externalPropertySource.stringValueForProperty(any(), any()));
-			verify().that(object.existingProperty);
+			verify().that(object.property);
 
 		}
 
@@ -73,7 +73,7 @@ package net.wooga.selectors.matching.matchers.implementations.attributes {
 			_matcher.isMatching(adapter);
 
 			verify().that(externalPropertySource.stringValueForProperty(adapter, attributeName));
-			verify(never()).that(object.existingProperty);
+			verify(never()).that(object.property);
 		}
 
 

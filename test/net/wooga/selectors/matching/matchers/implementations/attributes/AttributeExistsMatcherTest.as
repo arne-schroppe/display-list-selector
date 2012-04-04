@@ -24,13 +24,12 @@ package net.wooga.selectors.matching.matchers.implementations.attributes {
 		[Before]
 		public function setUp():void {
 			given(adapter.getAdaptedElement()).willReturn(object);
-
 		}
 
 
 		[Test]
 		public function should_match_when_property_exists():void {
-			_matcher = new AttributeExistsMatcher("existingProperty");
+			_matcher = new AttributeExistsMatcher("property");
 			assertThat(_matcher.isMatching(adapter), equalTo(true));
 		}
 

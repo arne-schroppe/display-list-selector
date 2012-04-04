@@ -31,7 +31,7 @@ package net.wooga.selectors.matching.matchers.implementations.attributes {
 			return isValueMatching(objectValue, _value);
 		}
 
-		protected function isValueMatching(objectValue:String, matcherValue:String):Boolean {
+		protected function isValueMatching(objectValue:String, matchedValue:String):Boolean {
 			return false;
 		}
 	}

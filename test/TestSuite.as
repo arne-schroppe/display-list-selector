@@ -7,7 +7,10 @@ package {
 	import net.wooga.selectors.matching.matchers.PseudoClassMatcherTest;
 	import net.wooga.selectors.matching.matchers.TypeNameMatcherTest;
 	import net.wooga.selectors.matching.matchers.implementations.attributes.AbstractStringAttributeMatcherTest;
+	import net.wooga.selectors.matching.matchers.implementations.attributes.AttributeBeginsWithMatcherTest;
 	import net.wooga.selectors.matching.matchers.implementations.attributes.AttributeContainsMatcherTest;
+	import net.wooga.selectors.matching.matchers.implementations.attributes.AttributeContainsSubstringMatcherTest;
+	import net.wooga.selectors.matching.matchers.implementations.attributes.AttributeEndsWithMatcherTest;
 	import net.wooga.selectors.matching.matchers.implementations.attributes.AttributeEqualsMatcherTest;
 	import net.wooga.selectors.matching.matchers.implementations.attributes.AttributeExistsMatcherTest;
 	import net.wooga.selectors.parser.SpecificityTest;
@@ -37,6 +40,9 @@ package {
 		public var attributeEqualsMatcherTest:AttributeEqualsMatcherTest;
 		public var attributeExistsMatcherTest:AttributeExistsMatcherTest;
 		public var abstractStringAttributeMatcherTest:AbstractStringAttributeMatcherTest;
+		public var attributeBeginsWithMatcherTest:AttributeBeginsWithMatcherTest;
+		public var attributeEndsWithMatcherTest:AttributeEndsWithMatcherTest;
+		public var attributeContainsSubstringMatcherTest:AttributeContainsSubstringMatcherTest;
 		public var pseudoClassMatcherTest:PseudoClassMatcherTest;
 		public var firstChildTest:FirstChildTest;
 		public var lastChildTest:LastChildTest;

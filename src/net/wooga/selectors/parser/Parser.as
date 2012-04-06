@@ -59,27 +59,35 @@ package net.wooga.selectors.parser {
 
 
 		public function parse(inputString:String):Vector.<SelectorImpl> {
-
-			//TODO (arneschroppe 3/19/12) this class should only parse, not cache
 			if(_alreadyParsedSelectors.hasOwnProperty(inputString)) {
 				return _alreadyParsedSelectors[inputString] as Vector.<SelectorImpl>;
 			}
-			
-			_originalSelector = inputString;
-			_input = new ParserInput(inputString);
 
-			_individualSelectors = new <SelectorImpl>[];
+			parseIndividualSelectors(inputString);
+
+			_alreadyParsedSelectors[inputString] = _individualSelectors;
+			return _individualSelectors;
+		}
+
+
+		private function parseIndividualSelectors(inputString:String):void {
+			setupParsing(inputString);
 
 			startNewMatcherSequence();
 			selectorsGroup();
 
+			//TODO (arneschroppe 06/04/2012) we don't test whether sub selectors are built properly!
 			_subSelectorEndIndex = _input.currentIndex;
 			endMatcherSequence();
-
-			_alreadyParsedSelectors[inputString] = _individualSelectors;
-
-			return _individualSelectors;
 		}
+
+
+		private function setupParsing(inputString:String):void {
+			_originalSelector = inputString;
+			_input = new ParserInput(inputString);
+			_individualSelectors = new <SelectorImpl>[];
+		}
+
 
 		private function startNewMatcherSequence():void {
 
@@ -92,6 +100,7 @@ package net.wooga.selectors.parser {
 			_subSelectorStartIndex = _input.currentIndex;
 			_specificity = new SpecificityImpl();
 		}
+
 
 		private function endMatcherSequence():void {
 			

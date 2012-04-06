@@ -1,11 +1,14 @@
 package net.wooga.selectors.selectorstorage {
 
+	import net.wooga.selectors.selector_internal;
 	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 	import net.wooga.selectors.selectorstorage.keys.HoverKey;
 	import net.wooga.selectors.selectorstorage.keys.IdKey;
 	import net.wooga.selectors.selectorstorage.keys.SelectorTreeNodeKey;
 	import net.wooga.selectors.selectorstorage.keys.TypeNameKey;
 	import net.wooga.selectors.usagepatterns.implementations.SelectorImpl;
+
+	use namespace selector_internal;
 
 	public class SelectorTree {
 
@@ -18,11 +21,10 @@ package net.wooga.selectors.selectorstorage {
 		];
 
 		private var _numFilterKeys:int;
-
-
 		private var _foundSelectors:Array;
-
 		private var _selectorsWereAdded:Boolean;
+		private var _filterDataExtractor:FilterDataExtractor = new FilterDataExtractor();
+
 
 		public function SelectorTree() {
 			_filterRoot = new SelectorFilterTreeNode();
@@ -32,6 +34,9 @@ package net.wooga.selectors.selectorstorage {
 
 
 		public function add(parsedSelector:SelectorImpl):void {
+
+			_filterDataExtractor.setupFilterData(parsedSelector);
+
 			_selectorsWereAdded = true;
 			addToNode(_filterRoot, 0, parsedSelector);
 		}

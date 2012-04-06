@@ -119,14 +119,6 @@ package net.wooga.selectors.parser {
 
 
 
-
-		//TODO (arneschroppe 2/26/12) do this in a separate class?
-
-
-		//TODO ^^^ do this in separate class?
-
-
-
 		private function selectorsGroup():void {
 
 			simpleSelectorSequence();

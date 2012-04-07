@@ -1,14 +1,8 @@
 package net.wooga.selectors.pseudoclasses {
 
-	import net.wooga.selectors.AdapterSource;
 	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 
 	public class FirstOfType extends NthOfType {
-
-		public function FirstOfType(adapterSource:AdapterSource) {
-			super(adapterSource);
-		}
-
 
 		override public function isMatching(subject:SelectorAdapter):Boolean {
 			super.setArguments(["1"]);

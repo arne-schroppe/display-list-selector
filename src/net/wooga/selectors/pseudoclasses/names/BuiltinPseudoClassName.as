@@ -11,6 +11,8 @@ package net.wooga.selectors.pseudoclasses.names {
 		public static const empty:String = "empty";
 		public static const is_a:String = "is-a";
 
+		public static const first_of_type:String = "first-of-type";
+
 
 	}
 }

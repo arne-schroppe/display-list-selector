@@ -6,6 +6,7 @@ package net.wooga.selectors.pseudoclasses {
 	import net.wooga.fixtures.TestSpriteB;
 	import net.wooga.fixtures.TestSpriteC;
 	import net.wooga.fixtures.tools.getAdapterForObject;
+	import net.wooga.selectors.pseudoclasses.fixtures.ProgrammableAdapterMap;
 
 	import org.hamcrest.assertThat;
 	import org.hamcrest.object.equalTo;
@@ -14,9 +15,13 @@ package net.wooga.selectors.pseudoclasses {
 
 		private var _pseudoClass:PseudoClass;
 
+		private var _adapterSource:ProgrammableAdapterMap;
+
 		[Before]
 		override public function setUp():void {
 			super.setUp();
+
+			_adapterSource = new ProgrammableAdapterMap();
 		}
 
 		[After]
@@ -44,18 +49,29 @@ package net.wooga.selectors.pseudoclasses {
 					.a(TestSpriteB).whichWillBeStoredIn(instances)
 					.end.finish();
 
-			_pseudoClass = new NthOfType();
+			_pseudoClass = new NthOfType(_adapterSource);
 			_pseudoClass.setArguments(["2"]);
 
-			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[0])), equalTo(false));
-			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[1])), equalTo(true));
-			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[2])), equalTo(false));
-			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[3])), equalTo(false));
 
-			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[4])), equalTo(false));
-			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[5])), equalTo(true));
-			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[6])), equalTo(false));
-			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[7])), equalTo(false));
+
+			_adapterSource.map[instances[0]] = getAdapterForObject(instances[0])
+			_adapterSource.map[instances[1]] = getAdapterForObject(instances[1])
+			_adapterSource.map[instances[2]] = getAdapterForObject(instances[2])
+			_adapterSource.map[instances[3]] = getAdapterForObject(instances[3])
+			_adapterSource.map[instances[4]] = getAdapterForObject(instances[4])
+			_adapterSource.map[instances[5]] = getAdapterForObject(instances[5])
+			_adapterSource.map[instances[6]] = getAdapterForObject(instances[6])
+			_adapterSource.map[instances[7]] = getAdapterForObject(instances[7])
+
+			assertThat(_pseudoClass.isMatching(_adapterSource.getAdapterForObject(instances[0])), equalTo(false));
+			assertThat(_pseudoClass.isMatching(_adapterSource.getAdapterForObject(instances[1])), equalTo(true));
+			assertThat(_pseudoClass.isMatching(_adapterSource.getAdapterForObject(instances[2])), equalTo(false));
+			assertThat(_pseudoClass.isMatching(_adapterSource.getAdapterForObject(instances[3])), equalTo(false));
+
+			assertThat(_pseudoClass.isMatching(_adapterSource.getAdapterForObject(instances[4])), equalTo(false));
+			assertThat(_pseudoClass.isMatching(_adapterSource.getAdapterForObject(instances[5])), equalTo(true));
+			assertThat(_pseudoClass.isMatching(_adapterSource.getAdapterForObject(instances[6])), equalTo(false));
+			assertThat(_pseudoClass.isMatching(_adapterSource.getAdapterForObject(instances[7])), equalTo(false));
 		}
 
 
@@ -79,20 +95,29 @@ package net.wooga.selectors.pseudoclasses {
 					.a(TestSpriteB).whichWillBeStoredIn(instances)
 					.end.finish();
 
-			_pseudoClass = new NthOfType();
+			_pseudoClass = new NthOfType(_adapterSource);
 			_pseudoClass.setArguments(["2n + 1"]);
 
-			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[0])), equalTo(true));
-			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[1])), equalTo(false));
-			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[2])), equalTo(true));
-			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[3])), equalTo(false));
 
-			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[4])), equalTo(true));
+			_adapterSource.map[instances[0]] = getAdapterForObject(instances[0])
+			_adapterSource.map[instances[1]] = getAdapterForObject(instances[1])
+			_adapterSource.map[instances[2]] = getAdapterForObject(instances[2])
+			_adapterSource.map[instances[3]] = getAdapterForObject(instances[3])
+			_adapterSource.map[instances[4]] = getAdapterForObject(instances[4])
+			_adapterSource.map[instances[5]] = getAdapterForObject(instances[5])
+			_adapterSource.map[instances[6]] = getAdapterForObject(instances[6])
+			_adapterSource.map[instances[7]] = getAdapterForObject(instances[7])
+			_adapterSource.map[instances[8]] = getAdapterForObject(instances[8])
 
-			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[5])), equalTo(true));
-			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[6])), equalTo(false));
-			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[7])), equalTo(true));
-			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[8])), equalTo(false));
+			assertThat(_pseudoClass.isMatching(_adapterSource.getAdapterForObject(instances[0])), equalTo(true));
+			assertThat(_pseudoClass.isMatching(_adapterSource.getAdapterForObject(instances[1])), equalTo(false));
+			assertThat(_pseudoClass.isMatching(_adapterSource.getAdapterForObject(instances[2])), equalTo(true));
+			assertThat(_pseudoClass.isMatching(_adapterSource.getAdapterForObject(instances[3])), equalTo(false));
+			assertThat(_pseudoClass.isMatching(_adapterSource.getAdapterForObject(instances[4])), equalTo(true));
+			assertThat(_pseudoClass.isMatching(_adapterSource.getAdapterForObject(instances[5])), equalTo(true));
+			assertThat(_pseudoClass.isMatching(_adapterSource.getAdapterForObject(instances[6])), equalTo(false));
+			assertThat(_pseudoClass.isMatching(_adapterSource.getAdapterForObject(instances[7])), equalTo(true));
+			assertThat(_pseudoClass.isMatching(_adapterSource.getAdapterForObject(instances[8])), equalTo(false));
 		}
 
 
@@ -117,22 +142,32 @@ package net.wooga.selectors.pseudoclasses {
 					.a(TestSpriteB).whichWillBeStoredIn(instances)
 					.end.finish();
 
-			_pseudoClass = new NthOfType();
+			_pseudoClass = new NthOfType(_adapterSource);
 			_pseudoClass.setArguments(["even"]);
 
-			/* this might look odd, but index 1, 3 and 5 are the even indices in terms of CSS, where indices are 1-based (asc) */
-			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[0])), equalTo(false));
-			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[1])), equalTo(true));
-			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[2])), equalTo(false));
-			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[3])), equalTo(true));
-			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[4])), equalTo(false));
 
+			_adapterSource.map[instances[0]] = getAdapterForObject(instances[0])
+			_adapterSource.map[instances[1]] = getAdapterForObject(instances[1])
+			_adapterSource.map[instances[2]] = getAdapterForObject(instances[2])
+			_adapterSource.map[instances[3]] = getAdapterForObject(instances[3])
+			_adapterSource.map[instances[4]] = getAdapterForObject(instances[4])
+			_adapterSource.map[instances[5]] = getAdapterForObject(instances[5])
+			_adapterSource.map[instances[6]] = getAdapterForObject(instances[6])
+			_adapterSource.map[instances[7]] = getAdapterForObject(instances[7])
+			_adapterSource.map[instances[8]] = getAdapterForObject(instances[8])
+			_adapterSource.map[instances[9]] = getAdapterForObject(instances[9])
 
-			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[5])), equalTo(false));
-			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[6])), equalTo(true));
-			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[7])), equalTo(false));
-			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[8])), equalTo(true));
-			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[9])), equalTo(false));
+			/* this might look weird, but index 1, 3 and 5 are the even indices in terms of CSS, where indices are 1-based (asc) */
+			assertThat(_pseudoClass.isMatching(_adapterSource.getAdapterForObject(instances[0])), equalTo(false));
+			assertThat(_pseudoClass.isMatching(_adapterSource.getAdapterForObject(instances[1])), equalTo(true));
+			assertThat(_pseudoClass.isMatching(_adapterSource.getAdapterForObject(instances[2])), equalTo(false));
+			assertThat(_pseudoClass.isMatching(_adapterSource.getAdapterForObject(instances[3])), equalTo(true));
+			assertThat(_pseudoClass.isMatching(_adapterSource.getAdapterForObject(instances[4])), equalTo(false));
+			assertThat(_pseudoClass.isMatching(_adapterSource.getAdapterForObject(instances[5])), equalTo(false));
+			assertThat(_pseudoClass.isMatching(_adapterSource.getAdapterForObject(instances[6])), equalTo(true));
+			assertThat(_pseudoClass.isMatching(_adapterSource.getAdapterForObject(instances[7])), equalTo(false));
+			assertThat(_pseudoClass.isMatching(_adapterSource.getAdapterForObject(instances[8])), equalTo(true));
+			assertThat(_pseudoClass.isMatching(_adapterSource.getAdapterForObject(instances[9])), equalTo(false));
 		}
 
 
@@ -156,21 +191,34 @@ package net.wooga.selectors.pseudoclasses {
 					.a(TestSpriteB).whichWillBeStoredIn(instances)
 					.end.finish();
 
-			_pseudoClass = new NthOfType();
+			_pseudoClass = new NthOfType(_adapterSource);
 			_pseudoClass.setArguments(["odd"]);
 
-			/* this might look weird, but index 0, 2, 4 are the odd indices in terms of CSS, where indices are 1-based (asc) */
-			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[0])), equalTo(true));
-			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[1])), equalTo(false));
-			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[2])), equalTo(true));
-			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[3])), equalTo(false));
-			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[4])), equalTo(true));
 
-			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[5])), equalTo(true));
-			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[6])), equalTo(false));
-			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[7])), equalTo(true));
-			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[8])), equalTo(false));
-			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[9])), equalTo(true));
+			_adapterSource.map[instances[0]] = getAdapterForObject(instances[0])
+			_adapterSource.map[instances[1]] = getAdapterForObject(instances[1])
+			_adapterSource.map[instances[2]] = getAdapterForObject(instances[2])
+			_adapterSource.map[instances[3]] = getAdapterForObject(instances[3])
+			_adapterSource.map[instances[4]] = getAdapterForObject(instances[4])
+			_adapterSource.map[instances[5]] = getAdapterForObject(instances[5])
+			_adapterSource.map[instances[6]] = getAdapterForObject(instances[6])
+			_adapterSource.map[instances[7]] = getAdapterForObject(instances[7])
+			_adapterSource.map[instances[8]] = getAdapterForObject(instances[8])
+			_adapterSource.map[instances[9]] = getAdapterForObject(instances[9])
+
+
+			/* this might look weird, but index 0, 2, 4 are the odd indices in terms of CSS, where indices are 1-based (asc) */
+			assertThat(_pseudoClass.isMatching(_adapterSource.getAdapterForObject(instances[0])), equalTo(true));
+			assertThat(_pseudoClass.isMatching(_adapterSource.getAdapterForObject(instances[1])), equalTo(false));
+			assertThat(_pseudoClass.isMatching(_adapterSource.getAdapterForObject(instances[2])), equalTo(true));
+			assertThat(_pseudoClass.isMatching(_adapterSource.getAdapterForObject(instances[3])), equalTo(false));
+			assertThat(_pseudoClass.isMatching(_adapterSource.getAdapterForObject(instances[4])), equalTo(true));
+
+			assertThat(_pseudoClass.isMatching(_adapterSource.getAdapterForObject(instances[5])), equalTo(true));
+			assertThat(_pseudoClass.isMatching(_adapterSource.getAdapterForObject(instances[6])), equalTo(false));
+			assertThat(_pseudoClass.isMatching(_adapterSource.getAdapterForObject(instances[7])), equalTo(true));
+			assertThat(_pseudoClass.isMatching(_adapterSource.getAdapterForObject(instances[8])), equalTo(false));
+			assertThat(_pseudoClass.isMatching(_adapterSource.getAdapterForObject(instances[9])), equalTo(true));
 		}
 
 
@@ -197,26 +245,74 @@ package net.wooga.selectors.pseudoclasses {
 					.a(TestSpriteB).whichWillBeStoredIn(instances)
 					.end.finish();
 
-			_pseudoClass = new NthOfType();
+			_pseudoClass = new NthOfType(_adapterSource);
 			_pseudoClass.setArguments(["-n+3"]);
 
-			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[0])), equalTo(true));
-			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[1])), equalTo(true));
-			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[2])), equalTo(true));
-			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[3])), equalTo(false));
-			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[4])), equalTo(false));
-			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[5])), equalTo(false));
+			_adapterSource.map[instances[0]] = getAdapterForObject(instances[0])
+			_adapterSource.map[instances[1]] = getAdapterForObject(instances[1])
+			_adapterSource.map[instances[2]] = getAdapterForObject(instances[2])
+			_adapterSource.map[instances[3]] = getAdapterForObject(instances[3])
+			_adapterSource.map[instances[4]] = getAdapterForObject(instances[4])
+			_adapterSource.map[instances[5]] = getAdapterForObject(instances[5])
+			_adapterSource.map[instances[6]] = getAdapterForObject(instances[6])
+			_adapterSource.map[instances[7]] = getAdapterForObject(instances[7])
+			_adapterSource.map[instances[8]] = getAdapterForObject(instances[8])
+			_adapterSource.map[instances[9]] = getAdapterForObject(instances[9])
+			_adapterSource.map[instances[10]] = getAdapterForObject(instances[10])
+			_adapterSource.map[instances[11]] = getAdapterForObject(instances[11])
 
 
-
-			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[6])), equalTo(true));
-			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[7])), equalTo(true));
-			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[8])), equalTo(true));
-			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[9])), equalTo(false));
-			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[10])), equalTo(false));
-			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[11])), equalTo(false));
+			assertThat(_pseudoClass.isMatching(_adapterSource.getAdapterForObject(instances[0])), equalTo(true));
+			assertThat(_pseudoClass.isMatching(_adapterSource.getAdapterForObject(instances[1])), equalTo(true));
+			assertThat(_pseudoClass.isMatching(_adapterSource.getAdapterForObject(instances[2])), equalTo(true));
+			assertThat(_pseudoClass.isMatching(_adapterSource.getAdapterForObject(instances[3])), equalTo(false));
+			assertThat(_pseudoClass.isMatching(_adapterSource.getAdapterForObject(instances[4])), equalTo(false));
+			assertThat(_pseudoClass.isMatching(_adapterSource.getAdapterForObject(instances[5])), equalTo(false));
+			assertThat(_pseudoClass.isMatching(_adapterSource.getAdapterForObject(instances[6])), equalTo(true));
+			assertThat(_pseudoClass.isMatching(_adapterSource.getAdapterForObject(instances[7])), equalTo(true));
+			assertThat(_pseudoClass.isMatching(_adapterSource.getAdapterForObject(instances[8])), equalTo(true));
+			assertThat(_pseudoClass.isMatching(_adapterSource.getAdapterForObject(instances[9])), equalTo(false));
+			assertThat(_pseudoClass.isMatching(_adapterSource.getAdapterForObject(instances[10])), equalTo(false));
+			assertThat(_pseudoClass.isMatching(_adapterSource.getAdapterForObject(instances[11])), equalTo(false));
 
 		}
 
+
+		[Test]
+		public function should_ignore_elements_that_do_not_have_type_adapters():void {
+			var instances:Array = [];
+
+			var displayTree:DisplayTree = new DisplayTree();
+			displayTree.uses(contextView).containing
+					.a(TestSpriteA).whichWillBeStoredIn(instances)
+					.a(TestSpriteA).whichWillBeStoredIn(instances)
+					.a(TestSpriteA).whichWillBeStoredIn(instances)
+
+					.a(TestSpriteB).whichWillBeStoredIn(instances)
+					.a(TestSpriteB).whichWillBeStoredIn(instances)
+					.a(TestSpriteB).whichWillBeStoredIn(instances)
+					.end.finish();
+
+			_pseudoClass = new NthOfType(_adapterSource);
+			_pseudoClass.setArguments(["2"]);
+
+
+
+			//_adapterSource.map[instances[0]] = getAdapterForObject(instances[0])
+			_adapterSource.map[instances[1]] = getAdapterForObject(instances[1])
+			_adapterSource.map[instances[2]] = getAdapterForObject(instances[2])
+			//_adapterSource.map[instances[3]] = getAdapterForObject(instances[3])
+			_adapterSource.map[instances[4]] = getAdapterForObject(instances[4])
+			_adapterSource.map[instances[5]] = getAdapterForObject(instances[5])
+
+
+
+			assertThat(_pseudoClass.isMatching(_adapterSource.getAdapterForObject(instances[1])), equalTo(false));
+			assertThat(_pseudoClass.isMatching(_adapterSource.getAdapterForObject(instances[2])), equalTo(true));
+
+			assertThat(_pseudoClass.isMatching(_adapterSource.getAdapterForObject(instances[4])), equalTo(false));
+			assertThat(_pseudoClass.isMatching(_adapterSource.getAdapterForObject(instances[5])), equalTo(true));
+		}
 	}
 }
+

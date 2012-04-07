@@ -4,6 +4,7 @@ package net.wooga.selectors {
 	import flash.utils.getQualifiedClassName;
 
 	import net.wooga.selectors.matching.MatcherTool;
+	import net.wooga.selectors.namespace.selector_internal;
 	import net.wooga.selectors.parser.Parser;
 	import net.wooga.selectors.pseudoclasses.FirstChild;
 	import net.wooga.selectors.pseudoclasses.IsA;

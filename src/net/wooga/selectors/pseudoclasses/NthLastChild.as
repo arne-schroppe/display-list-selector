@@ -6,7 +6,7 @@ package net.wooga.selectors.pseudoclasses {
 	public class NthLastChild extends NthOfX {
 
 		override protected function indexOfObject(subject:SelectorAdapter):int {
-			return subject.getNumberOfElements() - subject.getElementIndex() - 1;
+			return subject.getNumberOfElementsInContainer() - subject.getElementIndex() - 1;
 		}
 	}
 }

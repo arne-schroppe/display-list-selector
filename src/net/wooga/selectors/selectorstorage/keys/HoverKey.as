@@ -3,7 +3,7 @@ package net.wooga.selectors.selectorstorage.keys {
 	import flash.utils.Dictionary;
 
 	import net.wooga.selectors.pseudoclasses.names.PseudoClassName;
-	import net.wooga.selectors.selector_internal;
+	import net.wooga.selectors.namespace.selector_internal;
 	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 	import net.wooga.selectors.usagepatterns.implementations.SelectorImpl;
 

@@ -157,5 +157,29 @@ package net.wooga.selectors.pseudoclasses {
 			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[5])), equalTo(false));
 
 		}
+
+
+
+		[Test]
+		public function should_ignore_items_without_adapter():void {
+
+			var instances:Array = [];
+
+			var displayTree:DisplayTree = new DisplayTree();
+			displayTree.uses(contextView).containing
+					.a(TestSpriteA).whichWillBeStoredIn(instances)
+					.a(TestSpriteA).whichWillBeStoredIn(instances)
+					.a(TestSpriteA).whichWillBeStoredIn(instances)
+					.a(TestSpriteA).whichWillBeStoredIn(instances)
+					.end.finish();
+
+			_pseudoClass = new NthChild();
+			_pseudoClass.setArguments([2]);
+
+			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[0])), equalTo(false));
+			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[1])), equalTo(true));
+			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[2])), equalTo(false));
+			assertThat(_pseudoClass.isMatching(getAdapterForObject(instances[3])), equalTo(false));
+		}
 	}
 }

@@ -16,13 +16,17 @@ package {
 	import net.wooga.selectors.parser.ParserTest;
 	import net.wooga.selectors.parser.SpecificityTest;
 	import net.wooga.selectors.pseudoclasses.FirstChildTest;
+	import net.wooga.selectors.pseudoclasses.FirstOfTypeTest;
 	import net.wooga.selectors.pseudoclasses.IsATest;
 	import net.wooga.selectors.pseudoclasses.IsEmptyTest;
 	import net.wooga.selectors.pseudoclasses.LastChildTest;
+	import net.wooga.selectors.pseudoclasses.LastOfTypeTest;
 	import net.wooga.selectors.pseudoclasses.NthChildTest;
 	import net.wooga.selectors.pseudoclasses.NthLastChildTest;
 	import net.wooga.selectors.pseudoclasses.NthLastOfTypeTest;
 	import net.wooga.selectors.pseudoclasses.NthOfTypeTest;
+	import net.wooga.selectors.pseudoclasses.OnlyChildTest;
+	import net.wooga.selectors.pseudoclasses.OnlyOfTypeTest;
 	import net.wooga.selectors.pseudoclasses.RootTest;
 	import net.wooga.selectors.pseudoclasses.SettablePseudoClassTest;
 	import net.wooga.selectors.pseudoclasses.nthchildren.NthParserTest;
@@ -57,6 +61,12 @@ package {
 		public var specificityTest:SpecificityTest;
 		public var isATest:IsATest;
 		public var parserTest:ParserTest;
+		public var firstOfTypeTest:FirstOfTypeTest;
+		public var lastOfTypeTest:LastOfTypeTest;
+		
+		public var onlyChildTest:OnlyChildTest;
+		public var onlyOfTypeTest:OnlyOfTypeTest;
+
 
 		public var selectorStorageTest:SelectorTreeTest;
 		public var settablePseudoClassTest:SettablePseudoClassTest;

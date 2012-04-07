@@ -4,15 +4,20 @@ package net.wooga.selectors {
 	import flash.utils.getQualifiedClassName;
 
 	import net.wooga.selectors.matching.MatcherTool;
+	import net.wooga.selectors.namespace.selector_internal;
 	import net.wooga.selectors.parser.Parser;
 	import net.wooga.selectors.pseudoclasses.FirstChild;
+	import net.wooga.selectors.pseudoclasses.FirstOfType;
 	import net.wooga.selectors.pseudoclasses.IsA;
 	import net.wooga.selectors.pseudoclasses.IsEmpty;
 	import net.wooga.selectors.pseudoclasses.LastChild;
+	import net.wooga.selectors.pseudoclasses.LastOfType;
 	import net.wooga.selectors.pseudoclasses.NthChild;
 	import net.wooga.selectors.pseudoclasses.NthLastChild;
 	import net.wooga.selectors.pseudoclasses.NthLastOfType;
 	import net.wooga.selectors.pseudoclasses.NthOfType;
+	import net.wooga.selectors.pseudoclasses.OnlyChild;
+	import net.wooga.selectors.pseudoclasses.OnlyOfType;
 	import net.wooga.selectors.pseudoclasses.PseudoClass;
 	import net.wooga.selectors.pseudoclasses.Root;
 	import net.wooga.selectors.pseudoclasses.SettablePseudoClass;
@@ -161,7 +166,11 @@ package net.wooga.selectors {
 			addPseudoClass(BuiltinPseudoClassName.nth_last_child, NthLastChild);
 			addPseudoClass(BuiltinPseudoClassName.nth_of_type, NthOfType);
 			addPseudoClass(BuiltinPseudoClassName.nth_last_of_type, NthLastOfType);
+			addPseudoClass(BuiltinPseudoClassName.first_of_type, FirstOfType);
+			addPseudoClass(BuiltinPseudoClassName.last_of_type, LastOfType);
 			addPseudoClass(BuiltinPseudoClassName.empty, IsEmpty);
+			addPseudoClass(BuiltinPseudoClassName.only_child, OnlyChild);
+			addPseudoClass(BuiltinPseudoClassName.only_of_type, OnlyOfType);
 
 
 			for each(var pseudoClassName:String in [

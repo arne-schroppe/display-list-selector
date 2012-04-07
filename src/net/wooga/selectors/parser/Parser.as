@@ -3,7 +3,6 @@ package net.wooga.selectors.parser {
 	import flash.utils.Dictionary;
 
 	import net.wooga.selectors.ExternalPropertySource;
-	import net.wooga.selectors.matching.matchers.ICombinator;
 	import net.wooga.selectors.matching.matchers.IMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.ChildSelectorMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.ClassMatcher;
@@ -19,9 +18,7 @@ package net.wooga.selectors.parser {
 	import net.wooga.selectors.matching.matchers.implementations.attributes.AttributeExistsMatcher;
 	import net.wooga.selectors.pseudoclasses.IsA;
 	import net.wooga.selectors.pseudoclasses.PseudoClass;
-	import net.wooga.selectors.pseudoclasses.SettablePseudoClass;
 	import net.wooga.selectors.pseudoclasses.names.BuiltinPseudoClassName;
-	import net.wooga.selectors.pseudoclasses.names.PseudoClassName;
 	import net.wooga.selectors.selector_internal;
 	import net.wooga.selectors.tools.input.ParserInput;
 	import net.wooga.selectors.usagepatterns.implementations.SelectorImpl;

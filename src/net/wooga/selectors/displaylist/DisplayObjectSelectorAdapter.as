@@ -73,7 +73,7 @@ package net.wooga.selectors.displaylist {
 			return _adaptedElement.parent ? _adaptedElement.parent.getChildIndex(_adaptedElement) : -1;
 		}
 
-		public function getNumberOfElements():int {
+		public function getNumberOfElementsInContainer():int {
 			return _adaptedElement.parent ? _adaptedElement.parent.numChildren : 0;
 		}
 

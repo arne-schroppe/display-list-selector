@@ -493,6 +493,61 @@ package net.wooga.selectors {
 
 
 		[Test]
+		public function should_match_first_of_type_pseudo_class():void {
+
+			var instances:Array = [];
+
+			_displayList.uses(contextView).containing
+					.a(TestSpriteA).whichWillBeStoredIn(instances)
+					.a(TestSpriteA).whichWillBeStoredIn(instances)
+					.a(TestSpriteC).whichWillBeStoredIn(instances)
+					.a(TestSpriteC).whichWillBeStoredIn(instances)
+					.end.finish();
+
+			testSelector("*:root > *:first-of-type", function(matchedObjects:Array):void {
+				assertThat(matchedObjects, containsExactlyInArray(1, allOf(isA(TestSpriteA), equalTo(instances[0])) ));
+				assertThat(matchedObjects, containsExactlyInArray(1, allOf(isA(TestSpriteC), equalTo(instances[2])) ));
+				assertEquals(2, matchedObjects.length);
+			});
+		}
+
+
+		[Test]
+		public function should_match_only_child_pseudo_class():void {
+
+			var instances:Array = [];
+
+			_displayList.uses(contextView).containing
+					.a(TestSpriteA).whichWillBeStoredIn(instances)
+				.end.finish();
+
+			testSelector("*:root > *:only-child", function(matchedObjects:Array):void {
+				assertThat(matchedObjects, containsExactlyInArray(1, allOf(isA(TestSpriteA), equalTo(instances[0])) ));
+				assertEquals(1, matchedObjects.length);
+			});
+		}
+
+		[Test]
+		public function should_match_last_of_type_pseudo_class():void {
+
+			var instances:Array = [];
+
+			_displayList.uses(contextView).containing
+					.a(TestSpriteA).whichWillBeStoredIn(instances)
+					.a(TestSpriteA).whichWillBeStoredIn(instances)
+					.a(TestSpriteC).whichWillBeStoredIn(instances)
+					.a(TestSpriteC).whichWillBeStoredIn(instances)
+					.end.finish();
+
+			testSelector("*:root > *:last-of-type", function(matchedObjects:Array):void {
+				assertThat(matchedObjects, containsExactlyInArray(1, allOf(isA(TestSpriteA), equalTo(instances[1])) ));
+				assertThat(matchedObjects, containsExactlyInArray(1, allOf(isA(TestSpriteC), equalTo(instances[3])) ));
+				assertEquals(2, matchedObjects.length);
+			});
+		}
+
+
+		[Test]
 		public function should_match_id_and_attribute_selector():void {
 
 			_displayList.uses(contextView).containing

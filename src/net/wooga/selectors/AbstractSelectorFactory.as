@@ -17,6 +17,7 @@ package net.wooga.selectors {
 	import net.wooga.selectors.pseudoclasses.NthLastOfType;
 	import net.wooga.selectors.pseudoclasses.NthOfType;
 	import net.wooga.selectors.pseudoclasses.OnlyChild;
+	import net.wooga.selectors.pseudoclasses.OnlyOfType;
 	import net.wooga.selectors.pseudoclasses.PseudoClass;
 	import net.wooga.selectors.pseudoclasses.Root;
 	import net.wooga.selectors.pseudoclasses.SettablePseudoClass;
@@ -169,6 +170,7 @@ package net.wooga.selectors {
 			addPseudoClass(BuiltinPseudoClassName.last_of_type, LastOfType);
 			addPseudoClass(BuiltinPseudoClassName.empty, IsEmpty);
 			addPseudoClass(BuiltinPseudoClassName.only_child, OnlyChild);
+			addPseudoClass(BuiltinPseudoClassName.only_of_type, OnlyOfType);
 
 
 			for each(var pseudoClassName:String in [

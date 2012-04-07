@@ -527,6 +527,25 @@ package net.wooga.selectors {
 			});
 		}
 
+
+		[Test]
+		public function should_match_only_of_type_pseudo_class():void {
+
+			var instances:Array = [];
+
+			_displayList.uses(contextView).containing
+					.a(TestSpriteA).whichWillBeStoredIn(instances)
+					.a(TestSpriteB).whichWillBeStoredIn(instances)
+					.a(TestSpriteB).whichWillBeStoredIn(instances)
+					.end.finish();
+
+			testSelector("*:root > *:only-of-type", function(matchedObjects:Array):void {
+				assertThat(matchedObjects, containsExactlyInArray(1, allOf(isA(TestSpriteA), equalTo(instances[0])) ));
+				assertEquals(1, matchedObjects.length);
+			});
+		}
+
+
 		[Test]
 		public function should_match_last_of_type_pseudo_class():void {
 

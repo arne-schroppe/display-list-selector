@@ -26,6 +26,7 @@ package {
 	import net.wooga.selectors.pseudoclasses.NthLastOfTypeTest;
 	import net.wooga.selectors.pseudoclasses.NthOfTypeTest;
 	import net.wooga.selectors.pseudoclasses.OnlyChildTest;
+	import net.wooga.selectors.pseudoclasses.OnlyOfTypeTest;
 	import net.wooga.selectors.pseudoclasses.RootTest;
 	import net.wooga.selectors.pseudoclasses.SettablePseudoClassTest;
 	import net.wooga.selectors.pseudoclasses.nthchildren.NthParserTest;
@@ -61,8 +62,11 @@ package {
 		public var isATest:IsATest;
 		public var parserTest:ParserTest;
 		public var firstOfTypeTest:FirstOfTypeTest;
-		public var onlyChildTest:OnlyChildTest;
 		public var lastOfTypeTest:LastOfTypeTest;
+		
+		public var onlyChildTest:OnlyChildTest;
+		public var onlyOfTypeTest:OnlyOfTypeTest;
+
 
 		public var selectorStorageTest:SelectorTreeTest;
 		public var settablePseudoClassTest:SettablePseudoClassTest;

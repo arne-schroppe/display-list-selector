@@ -1,11 +1,11 @@
 package net.wooga.selectors.matching.matchers.implementations.attributes {
 
 	import net.wooga.selectors.ExternalPropertySource;
-	import net.wooga.selectors.matching.matchers.IMatcher;
+	import net.wooga.selectors.matching.matchers.Matcher;
 	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 
 
-	public class AbstractStringAttributeMatcher implements IMatcher {
+	public class AbstractStringAttributeMatcher implements Matcher {
 
 		private var _property:String;
 		private var _externalPropertySource:ExternalPropertySource;

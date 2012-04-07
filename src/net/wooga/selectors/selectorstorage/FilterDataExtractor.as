@@ -1,7 +1,7 @@
 package net.wooga.selectors.selectorstorage {
 
-	import net.wooga.selectors.matching.matchers.ICombinator;
-	import net.wooga.selectors.matching.matchers.IMatcher;
+	import net.wooga.selectors.matching.matchers.GenericDescendantCombinator;
+	import net.wooga.selectors.matching.matchers.Matcher;
 	import net.wooga.selectors.matching.matchers.implementations.IdMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.PseudoClassMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.TypeNameMatcher;
@@ -49,11 +49,11 @@ package net.wooga.selectors.selectorstorage {
 
 		//TODO (arneschroppe 3/25/12) we need a test for this, specifically to test that not just any SettablePseudoClass triggers the hasHover flag
 		private function hasHoverPseudoClassInLastSimpleSelector(selector:SelectorImpl):Boolean {
-			var matchers:Vector.<IMatcher> = selector.matchers;
-			for(var i:int = matchers.length-1; i >= 0 && !(matchers[i] is ICombinator); --i) {
-				var matcher:IMatcher = matchers[i];
+			var matchers:Vector.<Matcher> = selector.matchers;
+			for(var i:int = matchers.length-1; i >= 0 && !(matchers[i] is GenericDescendantCombinator); --i) {
+				var matcher:Matcher = matchers[i];
 
-				if(matcher is ICombinator) {
+				if(matcher is GenericDescendantCombinator) {
 					return false;
 				}
 
@@ -72,11 +72,11 @@ package net.wooga.selectors.selectorstorage {
 
 
 		private function findIsAPseudoClassInLastSimpleSelector(selector:SelectorImpl):IsA {
-			var matchers:Vector.<IMatcher> = selector.matchers;
-			for(var i:int = matchers.length-1; i >= 0 && !(matchers[i] is ICombinator); --i) {
-				var matcher:IMatcher = matchers[i];
+			var matchers:Vector.<Matcher> = selector.matchers;
+			for(var i:int = matchers.length-1; i >= 0 && !(matchers[i] is GenericDescendantCombinator); --i) {
+				var matcher:Matcher = matchers[i];
 
-				if(matcher is ICombinator) {
+				if(matcher is GenericDescendantCombinator) {
 					return null;
 				}
 
@@ -90,11 +90,11 @@ package net.wooga.selectors.selectorstorage {
 		}
 
 
-		private function findMatcherInLastSimpleSelector(selector:SelectorImpl, MatcherType:Class):IMatcher {
+		private function findMatcherInLastSimpleSelector(selector:SelectorImpl, MatcherType:Class):Matcher {
 
-			var matchers:Vector.<IMatcher> = selector.matchers;
-			for(var i:int = matchers.length-1; i >= 0 && !(matchers[i] is ICombinator); --i) {
-				var matcher:IMatcher = matchers[i];
+			var matchers:Vector.<Matcher> = selector.matchers;
+			for(var i:int = matchers.length-1; i >= 0 && !(matchers[i] is GenericDescendantCombinator); --i) {
+				var matcher:Matcher = matchers[i];
 				if(matcher is MatcherType) {
 					return matcher;
 				}

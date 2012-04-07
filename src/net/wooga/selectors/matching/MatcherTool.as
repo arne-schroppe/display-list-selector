@@ -2,18 +2,20 @@ package net.wooga.selectors.matching {
 
 	import flash.utils.Dictionary;
 
-	import net.wooga.selectors.matching.matchers.ICombinator;
-	import net.wooga.selectors.matching.matchers.IMatcher;
-	import net.wooga.selectors.matching.matchers.implementations.ChildSelectorMatcher;
-	import net.wooga.selectors.matching.matchers.implementations.DescendantSelectorMatcher;
+	import net.wooga.selectors.matching.matchers.GenericDescendantCombinator;
+	import net.wooga.selectors.matching.matchers.GenericSiblingCombinator;
+	import net.wooga.selectors.matching.matchers.Matcher;
+	import net.wooga.selectors.matching.matchers.implementations.combinators.AdjacentSiblingCombinator;
+	import net.wooga.selectors.matching.matchers.implementations.combinators.ChildCombinator;
+	import net.wooga.selectors.matching.matchers.implementations.combinators.DescendantCombinator;
 	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 
 	public class MatcherTool {
 
 		private var _rootObject:Object;
 
-		private var _currentlyMatchedMatchers:Vector.<IMatcher>;
-		private var _objectToAdapterMap:Dictionary;
+		private var _currentlyMatchedMatchers:Vector.<Matcher>;
+		private var _objectToAdapterMap:Dictionary; //TODO (arneschroppe 08/04/2012) use interface here?
 
 		public function MatcherTool(rootObject:Object, objectToAdapterMap:Dictionary) {
 			_rootObject = rootObject;
@@ -21,7 +23,7 @@ package net.wooga.selectors.matching {
 		}
 
 
-		public function isObjectMatching(adapter:SelectorAdapter, matchers:Vector.<IMatcher>):Boolean {
+		public function isObjectMatching(adapter:SelectorAdapter, matchers:Vector.<Matcher>):Boolean {
 
 			_currentlyMatchedMatchers = matchers;
 
@@ -41,18 +43,22 @@ package net.wooga.selectors.matching {
 			}
 
 			var retryParent:Boolean = false;
-			if (currentMatcherIsChildMatcher(nextMatcher)) {
+
+			if (_currentlyMatchedMatchers[nextMatcher] is ChildCombinator) {
 				nextMatcher--;
 			}
-
-			if (currentMatcherIsDescendantMatcher(nextMatcher)) {
+			else if (_currentlyMatchedMatchers[nextMatcher] is DescendantCombinator) {
 				nextMatcher--;
 				retryParent = true;
 			}
+			else if (_currentlyMatchedMatchers[nextMatcher] is AdjacentSiblingCombinator) {
+				nextMatcher--;
+			}
 
 
+			var proceedWithParent:Boolean; //alternative is to proceed with previous siblings
 			for (var i:int = nextMatcher; i >= 0; --i) {
-				var matcher:IMatcher = _currentlyMatchedMatchers[i];
+				var matcher:Matcher = _currentlyMatchedMatchers[i];
 
 				if (!matcher.isMatching(subject)) {
 					if(retryParent) {
@@ -63,7 +69,13 @@ package net.wooga.selectors.matching {
 					}
 				}
 
-				if (matcher is ICombinator) {
+				//TODO (arneschroppe 08/04/2012) "is" is slow, use a property instead
+				if (matcher is GenericDescendantCombinator) {
+					proceedWithParent = true;
+					break;
+				}
+				else if(matcher is GenericSiblingCombinator) {
+					proceedWithParent = false;
 					break;
 				}
 			}
@@ -81,7 +93,15 @@ package net.wooga.selectors.matching {
 				return true;
 			}
 
-			result = reverseMatchParentIfPossible(subject, i);
+			if(proceedWithParent) {
+				result = reverseMatchParentIfPossible(subject, i);
+			}
+			else {
+				result = reverseMatchPreviousSiblingIfPossible(subject, i);
+			}
+
+
+
 			return result;
 		}
 
@@ -96,14 +116,16 @@ package net.wooga.selectors.matching {
 		}
 
 
-		private function currentMatcherIsChildMatcher(currentIndex:int):Boolean {
-			return _currentlyMatchedMatchers[currentIndex] is ChildSelectorMatcher;
-		}
+		private function reverseMatchPreviousSiblingIfPossible(subject:SelectorAdapter, nextMatcher:int):Boolean {
 
-		private function currentMatcherIsDescendantMatcher(currentIndex:int):Boolean {
-			return _currentlyMatchedMatchers[currentIndex] is DescendantSelectorMatcher;
-		}
+			var objectIndex:int = subject.getElementIndex();
+			if(objectIndex == 0) {
+				return false;
+			}
 
+			var previousElement:Object = subject.getElementAtIndex(objectIndex - 1);
+			return reverseMatch(_objectToAdapterMap[previousElement], nextMatcher);
+		}
 
 	}
 }

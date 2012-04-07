@@ -13,6 +13,7 @@ package {
 	import net.wooga.selectors.matching.matchers.implementations.attributes.AttributeEndsWithMatcherTest;
 	import net.wooga.selectors.matching.matchers.implementations.attributes.AttributeEqualsMatcherTest;
 	import net.wooga.selectors.matching.matchers.implementations.attributes.AttributeExistsMatcherTest;
+	import net.wooga.selectors.parser.ParserTest;
 	import net.wooga.selectors.parser.SpecificityTest;
 	import net.wooga.selectors.pseudoclasses.FirstChildTest;
 	import net.wooga.selectors.pseudoclasses.IsATest;
@@ -55,6 +56,7 @@ package {
 		public var nthParserTest:NthParserTest;
 		public var specificityTest:SpecificityTest;
 		public var isATest:IsATest;
+		public var parserTest:ParserTest;
 
 		public var selectorStorageTest:SelectorTreeTest;
 		public var settablePseudoClassTest:SettablePseudoClassTest;

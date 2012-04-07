@@ -73,7 +73,6 @@ package net.wooga.selectors.parser {
 			startNewMatcherSequence();
 			selectorsGroup();
 
-			//TODO (arneschroppe 06/04/2012) we don't test whether sub selectors are built properly!
 			_subSelectorEndIndex = _input.currentIndex;
 			endMatcherSequence();
 		}
@@ -110,7 +109,6 @@ package net.wooga.selectors.parser {
 			var subSelector:String = _input.getSubString(_subSelectorStartIndex, _subSelectorEndIndex);
 			_currentSelector.selectorString = subSelector;
 			_currentSelector.specificity = _specificity;
-
 
 		}
 

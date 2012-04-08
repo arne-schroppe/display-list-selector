@@ -17,6 +17,7 @@ package net.wooga.selectors.parser {
 	import net.wooga.selectors.matching.matchers.implementations.attributes.AttributeEndsWithMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.attributes.AttributeEqualsMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.attributes.AttributeExistsMatcher;
+	import net.wooga.selectors.matching.matchers.implementations.combinators.GeneralSiblingCombinator;
 	import net.wooga.selectors.pseudoclasses.IsA;
 	import net.wooga.selectors.pseudoclasses.PseudoClass;
 	import net.wooga.selectors.pseudoclasses.names.BuiltinPseudoClassName;
@@ -135,7 +136,7 @@ package net.wooga.selectors.parser {
 
 		private function combinator():void {
 
-			var combinator:String = _input.consumeRegex(/(\s*>\s*)|(\s*\+\s*)|(\s*,\s*)|(\s+)/);
+			var combinator:String = _input.consumeRegex(/(\s*>\s*)|(\s*,\s*)|(\s*\+\s*)|(\s*~\s*)|(\s+)/);
 
 
 			var combinatorOnly:String = combinator.replace(/\s*/g, "");
@@ -148,6 +149,9 @@ package net.wooga.selectors.parser {
 			}
 			else if(combinatorOnly == "+") {
 				_currentSelector.matchers.push(new AdjacentSiblingCombinator());
+			}
+			else if(combinatorOnly == "~") {
+				_currentSelector.matchers.push(new GeneralSiblingCombinator());
 			}
 			else if (/\s+/.test(combinator)) {
 				_currentSelector.matchers.push(new DescendantCombinator());

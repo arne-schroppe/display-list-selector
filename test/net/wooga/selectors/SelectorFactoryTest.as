@@ -738,9 +738,29 @@ package net.wooga.selectors {
 		}
 
 
+		//TODO (arneschroppe 08/04/2012) we need to test sibling combinators more thoroughly
+		[Test]
+		public function should_match_general_siblings():void {
+
+			var instances:Array = [];
+			_displayList.uses(contextView).containing
+					.a(TestSpriteB).whichWillBeStoredIn(instances)
+					.a(TestSpriteA).whichWillBeStoredIn(instances)
+					.a(TestSpriteB).whichWillBeStoredIn(instances)
+					.a(TestSpriteB).whichWillBeStoredIn(instances)
+					.a(TestSpriteC).whichWillBeStoredIn(instances)
+					.a(TestSpriteB).whichWillBeStoredIn(instances)
+					.end.finish();
 
 
+			testSelector("TestSpriteA ~ TestSpriteB", function(matchedObjects:Array):void {
 
+				assertThat(matchedObjects, containsExactlyInArray(1, allOf(isA(TestSpriteB), equalTo(instances[2]))));
+				assertThat(matchedObjects, containsExactlyInArray(1, allOf(isA(TestSpriteB), equalTo(instances[3]))));
+				assertThat(matchedObjects, containsExactlyInArray(1, allOf(isA(TestSpriteB), equalTo(instances[5]))));
+				assertThat(matchedObjects.length, equalTo(3));
+			});
+		}
 
 
 		private function assertContainsObjectOfClass(objects:Array, Type:Class):void {

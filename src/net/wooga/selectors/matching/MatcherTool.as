@@ -3,11 +3,12 @@ package net.wooga.selectors.matching {
 	import flash.utils.Dictionary;
 
 	import net.wooga.selectors.matching.matchers.GenericDescendantCombinator;
-	import net.wooga.selectors.matching.matchers.GenericSiblingCombinator;
+	import net.wooga.selectors.matching.matchers.SiblingCombinator;
 	import net.wooga.selectors.matching.matchers.Matcher;
 	import net.wooga.selectors.matching.matchers.implementations.combinators.AdjacentSiblingCombinator;
 	import net.wooga.selectors.matching.matchers.implementations.combinators.ChildCombinator;
 	import net.wooga.selectors.matching.matchers.implementations.combinators.DescendantCombinator;
+	import net.wooga.selectors.matching.matchers.implementations.combinators.GeneralSiblingCombinator;
 	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 
 	public class MatcherTool {
@@ -43,6 +44,8 @@ package net.wooga.selectors.matching {
 			}
 
 			var retryParent:Boolean = false;
+			var retrySibling:Boolean = false;
+			var startMatcherIndex:int = nextMatcher;
 
 			if (_currentlyMatchedMatchers[nextMatcher] is ChildCombinator) {
 				nextMatcher--;
@@ -54,6 +57,10 @@ package net.wooga.selectors.matching {
 			else if (_currentlyMatchedMatchers[nextMatcher] is AdjacentSiblingCombinator) {
 				nextMatcher--;
 			}
+			else if (_currentlyMatchedMatchers[nextMatcher] is GeneralSiblingCombinator) {
+				nextMatcher--;
+				retrySibling = true;
+			}
 
 
 			var proceedWithParent:Boolean; //alternative is to proceed with previous siblings
@@ -61,7 +68,7 @@ package net.wooga.selectors.matching {
 				var matcher:Matcher = _currentlyMatchedMatchers[i];
 
 				if (!matcher.isMatching(subject)) {
-					if(retryParent) {
+					if(retryParent || retrySibling) {
 						break
 					}
 					else {
@@ -74,24 +81,27 @@ package net.wooga.selectors.matching {
 					proceedWithParent = true;
 					break;
 				}
-				else if(matcher is GenericSiblingCombinator) {
+				else if(matcher is SiblingCombinator) {
 					proceedWithParent = false;
 					break;
 				}
 			}
 
 
-			var result:Boolean;
-			if (i >= 0 && retryParent) { //TODO (arneschroppe 6/2/12) specifically test this line!
-
-				result = reverseMatchParentIfPossible(subject, nextMatcher);
-				return result;
-			}
-
-
 			if (i < 0) {
 				return true;
 			}
+
+			var result:Boolean;
+			if (i >= 0 && retryParent) {
+				result = reverseMatchParentIfPossible(subject, startMatcherIndex);
+				return result;
+			}
+			else if (i >= 0 && retrySibling){
+				result = reverseMatchPreviousSiblingIfPossible(subject, startMatcherIndex);
+				return result;
+			}
+
 
 			if(proceedWithParent) {
 				result = reverseMatchParentIfPossible(subject, i);

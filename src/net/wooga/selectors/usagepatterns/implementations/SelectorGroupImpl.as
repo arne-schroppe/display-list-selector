@@ -11,10 +11,6 @@ package net.wooga.selectors.usagepatterns.implementations {
 
 		}
 
-		public function get selectors():Vector.<Selector> {
-			return _selectors;
-		}
-
 		public function isAnySelectorMatching(object:Object):Boolean {
 			for each(var selector:Selector in _selectors) {
 				if(selector.isMatching(object)) {
@@ -23,6 +19,14 @@ package net.wooga.selectors.usagepatterns.implementations {
 			}
 
 			return false;
+		}
+
+		public function get length():int {
+			return _selectors.length;
+		}
+
+		public function getSelectorAtIndex(index:int):Selector {
+			return _selectors[index];
 		}
 	}
 }

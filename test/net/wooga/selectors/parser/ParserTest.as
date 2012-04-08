@@ -3,6 +3,8 @@ package net.wooga.selectors.parser {
 	import net.wooga.selectors.usagepatterns.implementations.SelectorImpl;
 
 	import org.hamcrest.assertThat;
+	import org.hamcrest.core.isA;
+	import org.hamcrest.core.throws;
 
 	import org.hamcrest.object.equalTo;
 
@@ -13,7 +15,7 @@ package net.wooga.selectors.parser {
 
 		[Before]
 		public function setUp():void {
-			_parser = new Parser(null, new NullPseudoClassProvider());
+			_parser = new Parser(null, null, new NullPseudoClassProvider());
 		}
 
 
@@ -40,6 +42,22 @@ package net.wooga.selectors.parser {
 			assertThat(result[1].originalSelectorString, equalTo("Elem1[xyz='abc']:hover, a > B Elem2, *:active"));
 			assertThat(result[2].originalSelectorString, equalTo("Elem1[xyz='abc']:hover, a > B Elem2, *:active"));
 
+		}
+
+
+		[Test]
+		public function should_throw_error_if_pseudo_element_is_not_last_in_simple_selector():void {
+			assertThat(function():void {
+				_parser.parse("Element::pseudo-element#id");
+			}, throws(isA(ParserError)));
+		}
+
+
+		[Test]
+		public function should_throw_error_if_pseudo_element_is_not_last_in_sequence():void {
+			assertThat(function():void {
+				_parser.parse("Element::pseudo-element > #id");
+			}, throws(isA(ParserError)));
 		}
 
 	}

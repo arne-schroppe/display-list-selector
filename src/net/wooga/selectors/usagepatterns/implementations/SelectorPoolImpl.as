@@ -15,16 +15,16 @@ package net.wooga.selectors.usagepatterns.implementations {
 		use namespace selector_internal;
 
 		private var _matcher:MatcherTool;
-		private var _objectToStyleAdapterMap:Dictionary;
+		private var _objectToSelectorAdapterMap:Dictionary;
 		private var _parser:Parser;
 
 		private var _knownSelectors:SelectorTree = new SelectorTree();
 
 
-		public function SelectorPoolImpl(parser:Parser, matcher:MatcherTool, objectToStyleAdapterMap:Dictionary) {
+		public function SelectorPoolImpl(parser:Parser, matcher:MatcherTool, objectToSelectorAdapterMap:Dictionary) {
 			_parser = parser;
 			_matcher = matcher;
-			_objectToStyleAdapterMap = objectToStyleAdapterMap;
+			_objectToSelectorAdapterMap = objectToSelectorAdapterMap;
 
 		}
 
@@ -39,7 +39,7 @@ package net.wooga.selectors.usagepatterns.implementations {
 
 
 		public function getSelectorsMatchingObject(object:Object):Vector.<SelectorDescription> {
-			var adapter:SelectorAdapter = _objectToStyleAdapterMap[object] as SelectorAdapter;
+			var adapter:SelectorAdapter = _objectToSelectorAdapterMap[object] as SelectorAdapter;
 			if(!adapter) {
 				throw new ArgumentError("No style adapter registered for object " + object);
 			}

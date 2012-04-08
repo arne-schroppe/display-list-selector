@@ -2,6 +2,8 @@ package net.wooga.selectors.usagepatterns.implementations {
 
 	import flash.utils.Dictionary;
 
+	import net.wooga.selectors.PseudoElementSource;
+
 	import net.wooga.selectors.matching.MatcherTool;
 	import net.wooga.selectors.matching.matchers.Matcher;
 	import net.wooga.selectors.parser.FilterData;
@@ -9,29 +11,48 @@ package net.wooga.selectors.usagepatterns.implementations {
 	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 	import net.wooga.selectors.usagepatterns.*;
 
+	import org.hamcrest.object.nullOr;
+
 	use namespace selector_internal;
 
 	public class SelectorImpl extends SelectorDescriptionImpl implements Selector {
 
-		private var _objectToStyleAdapterMap:Dictionary;
+		private var _objectToSelectorAdapterMap:Dictionary;
 		private var _matcherTool:MatcherTool;
 		private var _matchers:Vector.<Matcher> = new <Matcher>[];
 		private var _filterData:FilterData = new FilterData();
-
+		private var _pseudoElementName:String;
+		private var _pseudoElementSource:PseudoElementSource;
 
 
 		public function isMatching(object:Object):Boolean {
-			var adapter:SelectorAdapter = _objectToStyleAdapterMap[object];
+			var adapter:SelectorAdapter = _objectToSelectorAdapterMap[object];
 			if(!adapter) {
-				throw new ArgumentError("No style adapter registered for object " + object);
+				throw new ArgumentError("No selector adapter registered for object " + object);
 			}
 
 			return _matcherTool.isObjectMatching(adapter, _matchers);
 		}
 
 
-		selector_internal function set objectToStyleAdapterMap(value:Dictionary):void {
-			_objectToStyleAdapterMap = value;
+		selector_internal function set pseudoElementName(value:String):void {
+			_pseudoElementName = value;
+		}
+
+		selector_internal function get pseudoElementName():String {
+			return _pseudoElementName;
+		}
+
+		selector_internal function set pseudoElementSource(value:PseudoElementSource):void {
+			_pseudoElementSource = value;
+		}
+
+		selector_internal function get pseudoElementSource():PseudoElementSource {
+			return _pseudoElementSource;
+		}
+
+		selector_internal function set objectToSelectorAdapterMap(value:Dictionary):void {
+			_objectToSelectorAdapterMap = value;
 		}
 
 		selector_internal function set matcherTool(value:MatcherTool):void {
@@ -47,10 +68,27 @@ package net.wooga.selectors.usagepatterns.implementations {
 			return _matchers;
 		}
 
+
+
+
+
 		//TODO (arneschroppe 14/3/12) it might be good to get rid of this object
 		selector_internal function get filterData():FilterData {
 			return _filterData;
 		}
+
+
+		public function getMatchedObjectFor(object:Object):Object {
+			if(!isMatching(object)) {
+				return null;
+			}
+			if(_pseudoElementName) {
+				return _pseudoElementSource.pseudoElementForIdentifier(object, _pseudoElementName);
+			}
+			
+			return object;
+		}
+
 
 
 	}

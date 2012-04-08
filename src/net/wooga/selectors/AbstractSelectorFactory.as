@@ -44,13 +44,20 @@ package net.wooga.selectors {
 
 		private var _pseudoClassProvider:PseudoClassProviderImpl;
 
-		private var _objectToStyleAdapterMap:Dictionary = new Dictionary();
+		private var _objectToSelectorAdapterMap:Dictionary = new Dictionary();
 
-		private var _objectTypeToStyleAdapterTypeMap:Dictionary = new Dictionary();
-		private var _defaultStyleAdapterType:Class;
+		private var _objectTypeToSelectorAdapterTypeMap:Dictionary = new Dictionary();
+		private var _defaultSelectorAdapterType:Class;
+
+		private var _isInitialized:Boolean;
 
 
-		public function initializeWith(rootObject:Object, externalPropertySource:ExternalPropertySource = null):void {
+		public function initializeWith(rootObject:Object, externalPropertySource:ExternalPropertySource = null, pseudoElementSource:PseudoElementSource = null):void {
+
+			if(_isInitialized) {
+				throw new Error("Factory is already initialized");
+			}
+			
 			_rootObject = rootObject;
 
 			var externalPropertySource:ExternalPropertySource = externalPropertySource;
@@ -61,8 +68,10 @@ package net.wooga.selectors {
 			_pseudoClassProvider = new PseudoClassProviderImpl();
 			addDefaultPseudoClasses();
 
-			_parser = new Parser(externalPropertySource, _pseudoClassProvider);
-			_matcher = new MatcherTool(_rootObject, _objectToStyleAdapterMap);
+			_parser = new Parser(externalPropertySource, pseudoElementSource, _pseudoClassProvider);
+			_matcher = new MatcherTool(_rootObject, _objectToSelectorAdapterMap);
+
+			_isInitialized = true;
 		}
 
 
@@ -72,7 +81,7 @@ package net.wooga.selectors {
 			var selectors:Vector.<Selector> = new <Selector>[];
 			for each(var partialSelector:SelectorImpl in partialSelectors) {
 				partialSelector.matcherTool = _matcher;
-				partialSelector.objectToStyleAdapterMap = _objectToStyleAdapterMap;
+				partialSelector.objectToSelectorAdapterMap = _objectToSelectorAdapterMap;
 
 				selectors.push(partialSelector);
 			}
@@ -82,7 +91,7 @@ package net.wooga.selectors {
 
 
 		public function createSelectorPool():SelectorPool {
-			return new SelectorPoolImpl(_parser, _matcher, _objectToStyleAdapterMap);
+			return new SelectorPoolImpl(_parser, _matcher, _objectToSelectorAdapterMap);
 		}
 
 
@@ -98,13 +107,13 @@ package net.wooga.selectors {
 		//TODO (arneschroppe 30/3/12) untested
 		public function setSelectorAdapterForType(adapterType:Class, objectType:Class):void {
 			checkAdapterType(adapterType);
-			_objectTypeToStyleAdapterTypeMap[getQualifiedClassName(objectType)] = adapterType;
+			_objectTypeToSelectorAdapterTypeMap[getQualifiedClassName(objectType)] = adapterType;
 		}
 
 
 		public function setDefaultSelectorAdapter(adapterType:Class):void {
 			checkAdapterType(adapterType);
-			_defaultStyleAdapterType = adapterType;
+			_defaultSelectorAdapterType = adapterType;
 		}
 
 
@@ -118,7 +127,7 @@ package net.wooga.selectors {
 
 		//TODO (arneschroppe 08/04/2012) test overrideDefaultSelectorAdapter !!
 		public function createSelectorAdapterFor(object:Object, overrideDefaultSelectorAdapter:Class = null):void {
-			if(object in _objectToStyleAdapterMap) {
+			if(object in _objectToSelectorAdapterMap) {
 				return;	
 			}
 
@@ -129,7 +138,7 @@ package net.wooga.selectors {
 				SelectorClientClass = overrideDefaultSelectorAdapter;
 			}
 			else {
-				SelectorClientClass = getStyleAdapterClass(object);
+				SelectorClientClass = getSelectorAdapterClass(object);
 			}
 
 			if(!SelectorClientClass) {
@@ -138,17 +147,17 @@ package net.wooga.selectors {
 			}
 
 			var selectorClient:SelectorAdapter = new SelectorClientClass();
-			_objectToStyleAdapterMap[object] = selectorClient;
+			_objectToSelectorAdapterMap[object] = selectorClient;
 			selectorClient.register(object);
 		}
 
 
-		private function getStyleAdapterClass(object:Object):Class {
+		private function getSelectorAdapterClass(object:Object):Class {
 			//TODO (arneschroppe 3/30/12) we could also just set the class name in the adapter
 			var objectTypeName:String = getQualifiedClassName(object);
-			var SelectorClientClass:Class = _objectTypeToStyleAdapterTypeMap[objectTypeName];
+			var SelectorClientClass:Class = _objectTypeToSelectorAdapterTypeMap[objectTypeName];
 			if (!SelectorClientClass) {
-				SelectorClientClass = _defaultStyleAdapterType;
+				SelectorClientClass = _defaultSelectorAdapterType;
 			}
 
 			return SelectorClientClass;
@@ -158,10 +167,10 @@ package net.wooga.selectors {
 		//TODO (arneschroppe 30/3/12) this method is untested
 		public function removeSelectorAdapterOf(object:Object):void {
 
-			if(object in _objectToStyleAdapterMap) {
-				var selectorClient:SelectorAdapter = _objectToStyleAdapterMap[object];
+			if(object in _objectToSelectorAdapterMap) {
+				var selectorClient:SelectorAdapter = _objectToSelectorAdapterMap[object];
 				selectorClient.unregister();
-				delete _objectToStyleAdapterMap[object];
+				delete _objectToSelectorAdapterMap[object];
 			}
 		}
 

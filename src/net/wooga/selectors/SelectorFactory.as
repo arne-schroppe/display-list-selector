@@ -5,7 +5,7 @@ package net.wooga.selectors {
 
 	public interface SelectorFactory {
 
-		function initializeWith(rootObject:Object, externalPropertySource:ExternalPropertySource = null):void;
+		function initializeWith(rootObject:Object, externalPropertySource:ExternalPropertySource = null, pseudoElementSource:PseudoElementSource = null):void;
 
 		function createSelector(selectorString:String):SelectorGroup;
 		function createSelectorPool():SelectorPool;

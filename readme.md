@@ -26,7 +26,7 @@ Then just create selectors:
 
 Before you can query an object against a selector, a `SelectorAdapter` must be created for that object. 
 The `DisplayListSelectorFactory` uses the `ADDED_TO_STAGE` event to automatically add a suitable `SelectorAdapter`,
-so usually you don't have to worry about this. You can just query the match right away:
+so usually you don't have to worry about this. You can just query the selector right away:
 
     var isMatching:Boolean = selector.isAnySelectorMatching(someDisplayObject);
 
@@ -38,7 +38,7 @@ yet.
 
 The selector library supports two different usage scenarios by providing optimized objects for each. When
 a single selector needs to be matched against a single object, the mentioned `SelectorGroup` should be used.
-If many selectors need to be checked against a single object, a more optimized object is available though, the
+If many selectors need to be checked against a single object, though, a more optimized object is available, the
 `SelectorPool`. It is used as follows:
 
     var selectorPool:SelectorPool = selectorFactory.createSelectorPool();
@@ -48,7 +48,8 @@ If many selectors need to be checked against a single object, a more optimized o
 
     var matches:Vector.<SelectorDescription> = selectorPool.getSelectorsMatchingObject(someDisplayObject);
 
-The result is sorted by specificity.
+The result is sorted by
+[specificity](http://www.w3.org/TR/selectors/#specificity).
 
 
 ##Extended selector syntax
@@ -62,7 +63,9 @@ The `is-a` pseudo class also matches superclasses and implemented interfaces. Fo
 
     :is-a(Sprite)
 
-matches elements of type Sprite, MovieClip, or other objects that have Sprite as a super class.
+matches elements of type Sprite, MovieClip, and other objects that have Sprite as a super class.
+Please note, that the `is-a` pseudo class has a *lower* specificity than the element selector 
+and therefore also has a lower specificity than other pseudo classes.
 
 
 ###Qualified class names

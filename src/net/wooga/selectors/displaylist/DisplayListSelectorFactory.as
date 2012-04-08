@@ -21,7 +21,7 @@ package net.wooga.selectors.displaylist {
 		override public function initializeWith(rootObject:Object, externalPropertySource:ExternalPropertySource = null):void {
 			super.initializeWith(rootObject, externalPropertySource);
 
-			setDefaultStyleAdapter(DisplayObjectSelectorAdapter);
+			setDefaultSelectorAdapter(DisplayObjectSelectorAdapter);
 
 			_rootObject = DisplayObjectContainer(rootObject);
 			if(_autoCreateAdapters) {
@@ -34,13 +34,13 @@ package net.wooga.selectors.displaylist {
 		//TODO (arneschroppe 14/3/12) we don't need a decorator to automatically create style adapters, just write a small class for that
 		private function onAddedToStage(event:Event):void {
 			var object:Object = event.target;
-			createStyleAdapterFor(object as DisplayObject);
+			createSelectorAdapterFor(object as DisplayObject);
 		}
 
 
 		private function onRemovedFromStage(event:Event):void {
 			var object:Object = event.target;
-			removeStyleAdapterOf(object as DisplayObject);
+			removeSelectorAdapterOf(object as DisplayObject);
 		}
 
 

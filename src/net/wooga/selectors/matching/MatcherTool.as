@@ -2,18 +2,22 @@ package net.wooga.selectors.matching {
 
 	import flash.utils.Dictionary;
 
-	import net.wooga.selectors.matching.matchers.ICombinator;
-	import net.wooga.selectors.matching.matchers.IMatcher;
-	import net.wooga.selectors.matching.matchers.implementations.ChildSelectorMatcher;
-	import net.wooga.selectors.matching.matchers.implementations.DescendantSelectorMatcher;
+	import net.wooga.selectors.matching.matchers.AncestorCombinator;
+	import net.wooga.selectors.matching.matchers.Combinator;
+	import net.wooga.selectors.matching.matchers.SiblingCombinator;
+	import net.wooga.selectors.matching.matchers.Matcher;
+	import net.wooga.selectors.matching.matchers.implementations.combinators.AdjacentSiblingCombinator;
+	import net.wooga.selectors.matching.matchers.implementations.combinators.ChildCombinator;
+	import net.wooga.selectors.matching.matchers.implementations.combinators.DescendantCombinator;
+	import net.wooga.selectors.matching.matchers.implementations.combinators.GeneralSiblingCombinator;
 	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 
 	public class MatcherTool {
 
 		private var _rootObject:Object;
 
-		private var _currentlyMatchedMatchers:Vector.<IMatcher>;
-		private var _objectToAdapterMap:Dictionary;
+		private var _currentlyMatchedMatchers:Vector.<Matcher>;
+		private var _objectToAdapterMap:Dictionary; //TODO (arneschroppe 08/04/2012) use interface here?
 
 		public function MatcherTool(rootObject:Object, objectToAdapterMap:Dictionary) {
 			_rootObject = rootObject;
@@ -21,7 +25,7 @@ package net.wooga.selectors.matching {
 		}
 
 
-		public function isObjectMatching(adapter:SelectorAdapter, matchers:Vector.<IMatcher>):Boolean {
+		public function isObjectMatching(adapter:SelectorAdapter, matchers:Vector.<Matcher>):Boolean {
 
 			_currentlyMatchedMatchers = matchers;
 
@@ -41,21 +45,29 @@ package net.wooga.selectors.matching {
 			}
 
 			var retryParent:Boolean = false;
-			if (currentMatcherIsChildMatcher(nextMatcher)) {
+			var retrySibling:Boolean = false;
+			var startMatcherIndex:int = nextMatcher;
+
+			var nextMatcherObject:Object = _currentlyMatchedMatchers[nextMatcher];
+			
+			if(nextMatcherObject is Combinator) {
 				nextMatcher--;
+				if (nextMatcherObject is DescendantCombinator) {
+					retryParent = true;
+				}
+				if (nextMatcherObject is GeneralSiblingCombinator) {
+					retrySibling = true;
+				}
 			}
 
-			if (currentMatcherIsDescendantMatcher(nextMatcher)) {
-				nextMatcher--;
-				retryParent = true;
-			}
 
 
+			var proceedWithParent:Boolean; //if false: proceed with previous *siblings*
 			for (var i:int = nextMatcher; i >= 0; --i) {
-				var matcher:IMatcher = _currentlyMatchedMatchers[i];
+				var matcher:Matcher = _currentlyMatchedMatchers[i];
 
 				if (!matcher.isMatching(subject)) {
-					if(retryParent) {
+					if(retryParent || retrySibling) {
 						break
 					}
 					else {
@@ -63,17 +75,15 @@ package net.wooga.selectors.matching {
 					}
 				}
 
-				if (matcher is ICombinator) {
+				//TODO (arneschroppe 08/04/2012) "is" is slow, use a property instead
+				if (matcher is AncestorCombinator) {
+					proceedWithParent = true;
 					break;
 				}
-			}
-
-
-			var result:Boolean;
-			if (i >= 0 && retryParent) { //TODO (arneschroppe 6/2/12) specifically test this line!
-
-				result = reverseMatchParentIfPossible(subject, nextMatcher);
-				return result;
+				else if(matcher is SiblingCombinator) {
+					proceedWithParent = false;
+					break;
+				}
 			}
 
 
@@ -81,7 +91,26 @@ package net.wooga.selectors.matching {
 				return true;
 			}
 
-			result = reverseMatchParentIfPossible(subject, i);
+			var result:Boolean;
+			if (i >= 0 && retryParent) {
+				result = reverseMatchParentIfPossible(subject, startMatcherIndex);
+				return result;
+			}
+			else if (i >= 0 && retrySibling){
+				result = reverseMatchPreviousSiblingIfPossible(subject, startMatcherIndex);
+				return result;
+			}
+
+
+			if(proceedWithParent) {
+				result = reverseMatchParentIfPossible(subject, i);
+			}
+			else {
+				result = reverseMatchPreviousSiblingIfPossible(subject, i);
+			}
+
+
+
 			return result;
 		}
 
@@ -96,14 +125,16 @@ package net.wooga.selectors.matching {
 		}
 
 
-		private function currentMatcherIsChildMatcher(currentIndex:int):Boolean {
-			return _currentlyMatchedMatchers[currentIndex] is ChildSelectorMatcher;
-		}
+		private function reverseMatchPreviousSiblingIfPossible(subject:SelectorAdapter, nextMatcher:int):Boolean {
 
-		private function currentMatcherIsDescendantMatcher(currentIndex:int):Boolean {
-			return _currentlyMatchedMatchers[currentIndex] is DescendantSelectorMatcher;
-		}
+			var objectIndex:int = subject.getElementIndex();
+			if(objectIndex == 0) {
+				return false;
+			}
 
+			var previousElement:Object = subject.getElementAtIndex(objectIndex - 1);
+			return reverseMatch(_objectToAdapterMap[previousElement], nextMatcher);
+		}
 
 	}
 }

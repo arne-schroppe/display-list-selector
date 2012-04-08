@@ -1,10 +1,10 @@
 package net.wooga.selectors.matching.matchers.implementations {
 
-	import net.wooga.selectors.matching.matchers.IMatcher;
+	import net.wooga.selectors.matching.matchers.Matcher;
 	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 
 
-	public class TypeNameMatcher implements IMatcher {
+	public class TypeNameMatcher implements Matcher {
 
 		private var _matchAny:Boolean = false;
 		private var _typeName:String;

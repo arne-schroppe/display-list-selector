@@ -1,10 +1,10 @@
 package net.wooga.selectors.matching.matchers.implementations {
 
-	import net.wooga.selectors.matching.matchers.IMatcher;
+	import net.wooga.selectors.matching.matchers.Matcher;
 	import net.wooga.selectors.pseudoclasses.PseudoClass;
 	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 
-	public class PseudoClassMatcher implements IMatcher {
+	public class PseudoClassMatcher implements Matcher {
 
 		private var _pseudoClass:PseudoClass;
 

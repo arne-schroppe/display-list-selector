@@ -3,7 +3,6 @@ package {
 	import net.wooga.selectors.SelectorFactoryTest;
 	import net.wooga.selectors.displaylist.DisplayObjectSelectorAdapterTest;
 	import net.wooga.selectors.input.ParserInputTest;
-	import net.wooga.selectors.matching.matchers.ChildSelectorMatcherTest;
 	import net.wooga.selectors.matching.matchers.PseudoClassMatcherTest;
 	import net.wooga.selectors.matching.matchers.TypeNameMatcherTest;
 	import net.wooga.selectors.matching.matchers.implementations.attributes.AbstractStringAttributeMatcherTest;
@@ -39,7 +38,6 @@ package {
 		public var displayListSelectorTest:SelectorFactoryTest;
 
 		public var parserInputTest:ParserInputTest;
-		public var childSelectorMatcherTest:ChildSelectorMatcherTest;
 		public var classNameMatcherTest:TypeNameMatcherTest;
 		public var attributeContainsMatcherTest:AttributeContainsMatcherTest;
 		public var attributeEqualsMatcherTest:AttributeEqualsMatcherTest;

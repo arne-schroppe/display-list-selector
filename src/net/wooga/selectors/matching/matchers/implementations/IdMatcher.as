@@ -1,9 +1,9 @@
 package net.wooga.selectors.matching.matchers.implementations {
 
-	import net.wooga.selectors.matching.matchers.IMatcher;
+	import net.wooga.selectors.matching.matchers.Matcher;
 	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 
-	public class IdMatcher implements IMatcher {
+	public class IdMatcher implements Matcher {
 		private var _id:String;
 
 		public function IdMatcher(id:String) {

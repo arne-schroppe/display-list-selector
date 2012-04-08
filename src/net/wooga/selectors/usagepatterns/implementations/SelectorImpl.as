@@ -3,7 +3,7 @@ package net.wooga.selectors.usagepatterns.implementations {
 	import flash.utils.Dictionary;
 
 	import net.wooga.selectors.matching.MatcherTool;
-	import net.wooga.selectors.matching.matchers.IMatcher;
+	import net.wooga.selectors.matching.matchers.Matcher;
 	import net.wooga.selectors.parser.FilterData;
 	import net.wooga.selectors.namespace.selector_internal;
 	import net.wooga.selectors.selectoradapter.SelectorAdapter;
@@ -15,7 +15,7 @@ package net.wooga.selectors.usagepatterns.implementations {
 
 		private var _objectToStyleAdapterMap:Dictionary;
 		private var _matcherTool:MatcherTool;
-		private var _matchers:Vector.<IMatcher> = new <IMatcher>[];
+		private var _matchers:Vector.<Matcher> = new <Matcher>[];
 		private var _filterData:FilterData = new FilterData();
 
 
@@ -39,11 +39,11 @@ package net.wooga.selectors.usagepatterns.implementations {
 		}
 
 
-		selector_internal function set matchers(value:Vector.<IMatcher>):void {
+		selector_internal function set matchers(value:Vector.<Matcher>):void {
 			_matchers = value;
 		}
 
-		selector_internal function get matchers():Vector.<IMatcher> {
+		selector_internal function get matchers():Vector.<Matcher> {
 			return _matchers;
 		}
 

@@ -43,7 +43,7 @@ package net.wooga.selectors.selectorstorage {
 
 
 		private function addToNode(node:SelectorFilterTreeNode, keyIndex:int, selector:SelectorImpl):Boolean {
-			
+
 			if(keyIndex >= _filterKeys.length) {
 				return false;
 			}
@@ -87,24 +87,25 @@ package net.wooga.selectors.selectorstorage {
 
 		public function getPossibleMatchesFor(object:SelectorAdapter):Array {
 
+			if(_selectorsWereAdded) {
+				invalidateAllKeyCaches();
+				_selectorsWereAdded = false;
+			}
+
 			_foundSelectors = [];
 			searchForMatches(_filterRoot, 0, object);
 			return _foundSelectors;
 		}
+
 
 		private function searchForMatches(node:SelectorFilterTreeNode, keyIndex:int, adapter:SelectorAdapter):void {
 
 			if(!node) {
 				return ;
 			}
-			
-			if(_selectorsWereAdded) {
-				invalidateAllKeyCaches();
-				_selectorsWereAdded = false;
-			}
 
 			_foundSelectors = _foundSelectors.concat(node.selectors);
-			
+
 			if(keyIndex >= _numFilterKeys) {
 				return;
 			}

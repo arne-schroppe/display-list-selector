@@ -21,12 +21,7 @@ package {
 		private var _textField:TextField;
 
 
-		public function MatchingSpeedTest() {
-			super();
-			prepare();
-		}
-
-		protected function prepare():void {
+		override protected function prepare():void {
 			_selectorPool = _selectorFactory.createSelectorPool();
 
 			_selectorPool.addSelector("Label");

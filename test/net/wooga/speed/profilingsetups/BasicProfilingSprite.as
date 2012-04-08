@@ -35,25 +35,29 @@ package net.wooga.speed.profilingsetups  {
 			_status.y = 100;
 			addChild(_status);
 
+			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
+		}
+
+		private function onAddedToStage(event:Event):void {
+			prepare();
 		}
 
 
 
 		private function onStartClicked(event:MouseEvent):void {
 
-
 			_status.text = "started";
-
 			performAction();
-
 			_status.text = "finished";
 		}
 
 
+		protected function prepare():void {
+
+		}
 
 
 		protected function performAction():void {
-
 
 		}
 	}

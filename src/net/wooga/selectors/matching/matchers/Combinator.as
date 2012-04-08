@@ -1,5 +1,5 @@
 package net.wooga.selectors.matching.matchers {
-	public interface GenericDescendantCombinator {
+	public interface Combinator {
 
 	}
 }

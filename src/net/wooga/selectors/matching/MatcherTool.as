@@ -2,7 +2,8 @@ package net.wooga.selectors.matching {
 
 	import flash.utils.Dictionary;
 
-	import net.wooga.selectors.matching.matchers.GenericDescendantCombinator;
+	import net.wooga.selectors.matching.matchers.AncestorCombinator;
+	import net.wooga.selectors.matching.matchers.Combinator;
 	import net.wooga.selectors.matching.matchers.SiblingCombinator;
 	import net.wooga.selectors.matching.matchers.Matcher;
 	import net.wooga.selectors.matching.matchers.implementations.combinators.AdjacentSiblingCombinator;
@@ -47,23 +48,21 @@ package net.wooga.selectors.matching {
 			var retrySibling:Boolean = false;
 			var startMatcherIndex:int = nextMatcher;
 
-			if (_currentlyMatchedMatchers[nextMatcher] is ChildCombinator) {
+			var nextMatcherObject:Object = _currentlyMatchedMatchers[nextMatcher];
+			
+			if(nextMatcherObject is Combinator) {
 				nextMatcher--;
-			}
-			else if (_currentlyMatchedMatchers[nextMatcher] is DescendantCombinator) {
-				nextMatcher--;
-				retryParent = true;
-			}
-			else if (_currentlyMatchedMatchers[nextMatcher] is AdjacentSiblingCombinator) {
-				nextMatcher--;
-			}
-			else if (_currentlyMatchedMatchers[nextMatcher] is GeneralSiblingCombinator) {
-				nextMatcher--;
-				retrySibling = true;
+				if (nextMatcherObject is DescendantCombinator) {
+					retryParent = true;
+				}
+				if (nextMatcherObject is GeneralSiblingCombinator) {
+					retrySibling = true;
+				}
 			}
 
 
-			var proceedWithParent:Boolean; //alternative is to proceed with previous siblings
+
+			var proceedWithParent:Boolean; //if false: proceed with previous *siblings*
 			for (var i:int = nextMatcher; i >= 0; --i) {
 				var matcher:Matcher = _currentlyMatchedMatchers[i];
 
@@ -77,7 +76,7 @@ package net.wooga.selectors.matching {
 				}
 
 				//TODO (arneschroppe 08/04/2012) "is" is slow, use a property instead
-				if (matcher is GenericDescendantCombinator) {
+				if (matcher is AncestorCombinator) {
 					proceedWithParent = true;
 					break;
 				}

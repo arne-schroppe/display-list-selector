@@ -47,7 +47,7 @@ package net.wooga.selectors {
 
 			_selectorFactory = new AbstractSelectorFactory();
 			_selectorFactory.initializeWith(contextView, _propertyDictionary);
-			_selectorFactory.setDefaultStyleAdapter(DisplayObjectSelectorAdapter);
+			_selectorFactory.setDefaultSelectorAdapter(DisplayObjectSelectorAdapter);
 
 
 		}
@@ -799,7 +799,7 @@ package net.wooga.selectors {
 
 		private function scanForMatches(object:DisplayObject, selectorString:String, result:Array, matchMethod:Function):void {
 
-			_selectorFactory.createStyleAdapterFor(object);
+			_selectorFactory.createSelectorAdapterFor(object);
 
 			matchMethod(object, selectorString, result);
 			var container:DisplayObjectContainer = object as DisplayObjectContainer;

@@ -18,7 +18,6 @@ package net.wooga.selectors {
 	import net.wooga.selectors.pseudoclasses.NthOfType;
 	import net.wooga.selectors.pseudoclasses.OnlyChild;
 	import net.wooga.selectors.pseudoclasses.OnlyOfType;
-	import net.wooga.selectors.pseudoclasses.PseudoClass;
 	import net.wooga.selectors.pseudoclasses.Root;
 	import net.wooga.selectors.pseudoclasses.SettablePseudoClass;
 	import net.wooga.selectors.pseudoclasses.names.BuiltinPseudoClassName;
@@ -97,13 +96,13 @@ package net.wooga.selectors {
 
 
 		//TODO (arneschroppe 30/3/12) untested
-		public function setStyleAdapterForType(adapterType:Class, objectType:Class):void {
+		public function setSelectorAdapterForType(adapterType:Class, objectType:Class):void {
 			checkAdapterType(adapterType);
 			_objectTypeToStyleAdapterTypeMap[getQualifiedClassName(objectType)] = adapterType;
 		}
 
 
-		public function setDefaultStyleAdapter(adapterType:Class):void {
+		public function setDefaultSelectorAdapter(adapterType:Class):void {
 			checkAdapterType(adapterType);
 			_defaultStyleAdapterType = adapterType;
 		}
@@ -117,13 +116,22 @@ package net.wooga.selectors {
 		}
 
 
-
-		public function createStyleAdapterFor(object:Object):void {
+		//TODO (arneschroppe 08/04/2012) test overrideDefaultSelectorAdapter !!
+		public function createSelectorAdapterFor(object:Object, overrideDefaultSelectorAdapter:Class = null):void {
 			if(object in _objectToStyleAdapterMap) {
 				return;	
 			}
 
-			var SelectorClientClass:Class = getStyleAdapterClass(object);
+			var SelectorClientClass:Class
+
+			if(overrideDefaultSelectorAdapter) {
+				checkAdapterType(overrideDefaultSelectorAdapter);
+				SelectorClientClass = overrideDefaultSelectorAdapter;
+			}
+			else {
+				SelectorClientClass = getStyleAdapterClass(object);
+			}
+
 			if(!SelectorClientClass) {
 				//report("Warning! No selector client type registered for type " + getQualifiedClassName(object) + " and no default set!");
 				return;
@@ -148,7 +156,7 @@ package net.wooga.selectors {
 
 
 		//TODO (arneschroppe 30/3/12) this method is untested
-		public function removeStyleAdapterOf(object:Object):void {
+		public function removeSelectorAdapterOf(object:Object):void {
 
 			if(object in _objectToStyleAdapterMap) {
 				var selectorClient:SelectorAdapter = _objectToStyleAdapterMap[object];

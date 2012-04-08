@@ -1,5 +1,4 @@
 
-
 #CSS Selectors for the display list
 
 An implementation of CSS3–selectors for flash. Selectors are
@@ -30,14 +29,14 @@ so usually you don't have to worry about this. You can just query the selector r
 
     var isMatching:Boolean = selector.isAnySelectorMatching(someDisplayObject);
 
-Selectors are modeled after the CSS3 selector standard, but not all features have been implemented
+Selectors are modeled after the CSS3 selector standard but not all features have been implemented
 yet.
 
 
 ##Usage scenarios
 
 The selector library supports two different usage scenarios by providing optimized objects for each. When
-a single selector needs to be matched against a single object, the mentioned `SelectorGroup` should be used.
+a single selector needs to be matched against a single object the mentioned `SelectorGroup` should be used.
 If many selectors need to be checked against a single object, though, a more optimized object is available, the
 `SelectorPool`. It is used as follows:
 
@@ -48,8 +47,7 @@ If many selectors need to be checked against a single object, though, a more opt
 
     var matches:Vector.<SelectorDescription> = selectorPool.getSelectorsMatchingObject(someDisplayObject);
 
-The result is sorted by
-[specificity](http://www.w3.org/TR/selectors/#specificity).
+The result is sorted by [specificity](http://www.w3.org/TR/selectors/#specificity).
 
 
 ##Extended selector syntax
@@ -64,7 +62,7 @@ The `is-a` pseudo class also matches superclasses and implemented interfaces. Fo
     :is-a(Sprite)
 
 matches elements of type Sprite, MovieClip, and other objects that have Sprite as a super class.
-Please note, that the `is-a` pseudo class has a *lower* specificity than the element selector 
+Please note that the `is-a` pseudo class has a *lower* specificity than the element selector 
 and therefore also has a lower specificity than other pseudo classes.
 
 

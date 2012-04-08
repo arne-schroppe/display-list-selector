@@ -257,12 +257,6 @@ package {
 			_scoutButton = instances[2] as Sprite;
 			_textField = instances[3] as TextField;
 
-			_selectorFactory.setDefaultSelectorAdapter(DisplayObjectSelectorAdapter);
-			_selectorFactory.createSelectorAdapterFor(_infoButton);
-			_selectorFactory.createSelectorAdapterFor(_icon);
-			_selectorFactory.createSelectorAdapterFor(_scoutButton);
-			_selectorFactory.createSelectorAdapterFor(_textField);
-
 		}
 
 		override protected function performAction():void {

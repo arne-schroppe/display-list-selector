@@ -6,6 +6,7 @@ package net.wooga.speed.profilingsetups  {
 	import flash.text.TextField;
 
 	import net.wooga.selectors.AbstractSelectorFactory;
+	import net.wooga.selectors.displaylist.DisplayListSelectorFactory;
 
 	public class BasicProfilingSprite extends Sprite {
 		
@@ -18,7 +19,7 @@ package net.wooga.speed.profilingsetups  {
 		
 		public function BasicProfilingSprite() {
 
-			_selectorFactory = new AbstractSelectorFactory();
+			_selectorFactory = new DisplayListSelectorFactory();
 			_selectorFactory.initializeWith(this);
 
 			_startButton = new TextField();

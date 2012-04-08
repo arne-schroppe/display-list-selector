@@ -24,8 +24,8 @@ Then just create selectors:
 
     var selector:SelectorGroup = selectorFactory.createSelector("Sprite:first-child(), MovieClip");
 
-Before you can query an object against a selector, a SelectorAdapter must be created for that object. 
-The DisplayListSelectorFactory uses the `ADDED_TO_STAGE` event to automatically add a suitable SelectorAdapter,
+Before you can query an object against a selector, a `SelectorAdapter` must be created for that object. 
+The `DisplayListSelectorFactory` uses the `ADDED_TO_STAGE` event to automatically add a suitable `SelectorAdapter`,
 so usually you don't have to worry about this. You can just query the match right away:
 
     var isMatching:Boolean = selector.isAnySelectorMatching(someDisplayObject);
@@ -36,7 +36,7 @@ yet.
 
 ##Usage scenarios
 
-The selector libray supports two different usage scenarios by providing optimized objects for each. When
+The selector library supports two different usage scenarios by providing optimized objects for each. When
 a single selector needs to be matched against a single object, the mentioned `SelectorGroup` should be used.
 If many selectors need to be checked against a single object, a more optimized object is available though, the
 `SelectorPool`. It is used as follows:
@@ -46,7 +46,7 @@ If many selectors need to be checked against a single object, a more optimized o
     selectorPool.addSelector("MovieClip");
     selectorPool.addSelector("*:first-child()");
 
-var matches:Vector.<SelectorDescription> = selectorPool.getSelectorsMatchingObject(someDisplayObject);
+    var matches:Vector.<SelectorDescription> = selectorPool.getSelectorsMatchingObject(someDisplayObject);
 
 The result is sorted by specificity.
 

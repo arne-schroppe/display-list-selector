@@ -8,7 +8,6 @@ package net.wooga.selectors.pseudoclasses {
 	import net.wooga.fixtures.tools.getAdapterForObject;
 
 	import org.hamcrest.assertThat;
-
 	import org.hamcrest.object.equalTo;
 
 	public class LastOfTypeTest extends ContextViewBasedTest {

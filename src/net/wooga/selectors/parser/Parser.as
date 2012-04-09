@@ -3,11 +3,9 @@ package net.wooga.selectors.parser {
 	import flash.utils.Dictionary;
 
 	import net.wooga.selectors.ExternalPropertySource;
+	import net.wooga.selectors.PseudoElementSource;
 	import net.wooga.selectors.matching.matchers.Matcher;
-	import net.wooga.selectors.matching.matchers.implementations.combinators.AdjacentSiblingCombinator;
-	import net.wooga.selectors.matching.matchers.implementations.combinators.ChildCombinator;
 	import net.wooga.selectors.matching.matchers.implementations.ClassMatcher;
-	import net.wooga.selectors.matching.matchers.implementations.combinators.DescendantCombinator;
 	import net.wooga.selectors.matching.matchers.implementations.IdMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.PseudoClassMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.TypeNameMatcher;
@@ -17,11 +15,14 @@ package net.wooga.selectors.parser {
 	import net.wooga.selectors.matching.matchers.implementations.attributes.AttributeEndsWithMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.attributes.AttributeEqualsMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.attributes.AttributeExistsMatcher;
+	import net.wooga.selectors.matching.matchers.implementations.combinators.AdjacentSiblingCombinator;
+	import net.wooga.selectors.matching.matchers.implementations.combinators.ChildCombinator;
+	import net.wooga.selectors.matching.matchers.implementations.combinators.DescendantCombinator;
 	import net.wooga.selectors.matching.matchers.implementations.combinators.GeneralSiblingCombinator;
+	import net.wooga.selectors.namespace.selector_internal;
 	import net.wooga.selectors.pseudoclasses.IsA;
 	import net.wooga.selectors.pseudoclasses.PseudoClass;
 	import net.wooga.selectors.pseudoclasses.names.BuiltinPseudoClassName;
-	import net.wooga.selectors.namespace.selector_internal;
 	import net.wooga.selectors.tools.input.ParserInput;
 	import net.wooga.selectors.usagepatterns.implementations.SelectorImpl;
 
@@ -33,6 +34,7 @@ package net.wooga.selectors.parser {
 
 
 		private var _externalPropertySource:ExternalPropertySource;
+		private var _pseudoElementSource:PseudoElementSource;
 		private var _pseudoClassProvider:PseudoClassProvider;
 
 		private var _isSyntaxExtensionAllowed:Boolean = true;
@@ -43,16 +45,18 @@ package net.wooga.selectors.parser {
 		private var _currentSelector:SelectorImpl;
 		private var _subSelectorStartIndex:int = 0;
 		private var _subSelectorEndIndex:int = 0;
+		private var _currentSelectorHasPseudoElement:Boolean = false;
+		private var _pseudoElementName:String;
 
 		private var _pseudoClassArguments:Array;
 		private var _originalSelector:String;
 
-
 		private var _alreadyParsedSelectors:Dictionary = new Dictionary();
 
 
-		public function Parser(externalPropertySource:ExternalPropertySource, pseudoClassProvider:PseudoClassProvider) {
+		public function Parser(externalPropertySource:ExternalPropertySource, pseudoElementSource:PseudoElementSource, pseudoClassProvider:PseudoClassProvider) {
 			_externalPropertySource = externalPropertySource;
+			_pseudoElementSource = pseudoElementSource;
 			_pseudoClassProvider = pseudoClassProvider;
 		}
 
@@ -112,6 +116,12 @@ package net.wooga.selectors.parser {
 			_currentSelector.selectorString = subSelector;
 			_currentSelector.specificity = _specificity;
 
+			if(_pseudoElementName) {
+				_currentSelector.pseudoElementName = _pseudoElementName;
+				_currentSelector.pseudoElementSource = _pseudoElementSource;
+			}
+
+			_currentSelectorHasPseudoElement = false;
 		}
 
 
@@ -134,6 +144,7 @@ package net.wooga.selectors.parser {
 		}
 
 
+		//TODO (arneschroppe 09/04/2012) comma should be handled in selectors group!
 		private function combinator():void {
 
 			var combinator:String = _input.consumeRegex(/(\s*>\s*)|(\s*,\s*)|(\s*\+\s*)|(\s*~\s*)|(\s+)/);
@@ -141,6 +152,7 @@ package net.wooga.selectors.parser {
 
 			var combinatorOnly:String = combinator.replace(/\s*/g, "");
 			if (combinatorOnly == ">") {
+				checkPseudoElement();
 				_currentSelector.matchers.push(new ChildCombinator());
 			}
 			else if(combinatorOnly == ",") {
@@ -148,16 +160,25 @@ package net.wooga.selectors.parser {
 				startNewMatcherSequence();
 			}
 			else if(combinatorOnly == "+") {
+				checkPseudoElement();
 				_currentSelector.matchers.push(new AdjacentSiblingCombinator());
 			}
 			else if(combinatorOnly == "~") {
+				checkPseudoElement();
 				_currentSelector.matchers.push(new GeneralSiblingCombinator());
 			}
 			else if (/\s+/.test(combinator)) {
+				checkPseudoElement();
 				_currentSelector.matchers.push(new DescendantCombinator());
 			}
 			
 			 
+		}
+
+		private function checkPseudoElement():void {
+			if(_currentSelectorHasPseudoElement) {
+				throw new ParserError("Pseudo-element '" + _pseudoElementName + "' must be last element in simple selector sequence. (In selector: '" + _originalSelector + "')" )
+			}
 		}
 
 
@@ -168,12 +189,12 @@ package net.wooga.selectors.parser {
 				typeSelector();
 			}
 
-			simpleSelectorSequence2();
+			classAndIdAndPseudoAndAttribute();
 		}
 
 		private function checkSyntaxExtensionsAllowed():void {
 			if (!_isSyntaxExtensionAllowed) {
-				throw new ParserError("Syntax extensions must be enabled before using them");
+				throw new ParserError("Syntax extensions must be enabled before using them. (In selector: '" + _originalSelector + "')");
 			}
 		}
 
@@ -210,19 +231,22 @@ package net.wooga.selectors.parser {
 
 		}
 
-		private function simpleSelectorSequence2():void {
+		private function classAndIdAndPseudoAndAttribute():void {
 			if (_input.isNext("[")) {
 				attributeSelector();
-				simpleSelectorSequence2();
+				classAndIdAndPseudoAndAttribute();
+			} else if (_input.isNext("::")) {
+				pseudoElement();
+				//there can't be any other objects after this one
 			} else if (_input.isNext(":")) {
-				pseudo();
-				simpleSelectorSequence2();
+				pseudoClass();
+				classAndIdAndPseudoAndAttribute();
 			} else if (_input.isNext(".")) {
 				cssClass();
-				simpleSelectorSequence2();
+				classAndIdAndPseudoAndAttribute();
 			} else if (_input.isNext("#")) {
 				cssId();
-				simpleSelectorSequence2();
+				classAndIdAndPseudoAndAttribute();
 			}
 		}
 
@@ -246,7 +270,16 @@ package net.wooga.selectors.parser {
 		}
 
 
-		private function pseudo():void {
+		private function pseudoElement():void {
+			_input.consumeString("::");
+			_pseudoElementName = _input.consumeRegex(/[a-zA-Z][\w\-]*/);
+
+			_currentSelectorHasPseudoElement = true;
+
+			_specificity.elementSelectorsAndPseudoElements++;
+		}
+
+		private function pseudoClass():void {
 			_input.consumeString(":");
 			var matcher:PseudoClassMatcher = functionalPseudo();
 
@@ -258,7 +291,7 @@ package net.wooga.selectors.parser {
 
 			_currentSelector.matchers.push(matcher);
 
-			//Special treatment for is-a pseudo classes: their specificity is always lower than that of element selectors
+			//Special treatment for is-a pseudoClass classes: their specificity is always lower than that of element selectors
 			if(matcher.pseudoClass is IsA) {
 				_specificity.isAPseudoClassSelectors++;
 			}
@@ -273,7 +306,7 @@ package net.wooga.selectors.parser {
 			var pseudoClassName:String = _input.consumeRegex(/[a-zA-Z][\w\-]*/);
 
 			if (pseudoClassName != BuiltinPseudoClassName.is_a && !_pseudoClassProvider.hasPseudoClass(pseudoClassName)) {
-				throw new ParserError("Unknown pseudo-class '" + pseudoClassName + "'");
+				throw new ParserError("Unknown pseudoClass-class '" + pseudoClassName + "' (In selector: '" + _originalSelector + "')");
 			}
 
 			var pseudoClass:PseudoClass = _pseudoClassProvider.getPseudoClass(pseudoClassName);

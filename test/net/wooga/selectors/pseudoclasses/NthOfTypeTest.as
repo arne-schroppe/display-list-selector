@@ -1,12 +1,11 @@
 package net.wooga.selectors.pseudoclasses {
 
 	import net.arneschroppe.displaytreebuilder.DisplayTree;
-	import net.wooga.fixtures.tools.ContextViewBasedTest;
 	import net.wooga.fixtures.TestSpriteA;
 	import net.wooga.fixtures.TestSpriteB;
 	import net.wooga.fixtures.TestSpriteC;
+	import net.wooga.fixtures.tools.ContextViewBasedTest;
 	import net.wooga.fixtures.tools.getAdapterForObject;
-	import net.wooga.selectors.pseudoclasses.fixtures.ProgrammableAdapterMap;
 
 	import org.hamcrest.assertThat;
 	import org.hamcrest.object.equalTo;

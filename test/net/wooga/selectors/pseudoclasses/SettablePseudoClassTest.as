@@ -1,6 +1,5 @@
 package net.wooga.selectors.pseudoclasses {
 
-	import net.wooga.selectors.pseudoclasses.names.PseudoClassName;
 	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 
 	import org.flexunit.rules.IMethodRule;

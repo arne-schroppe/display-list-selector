@@ -4,10 +4,8 @@ package net.wooga.selectors.matching {
 
 	import net.wooga.selectors.matching.matchers.AncestorCombinator;
 	import net.wooga.selectors.matching.matchers.Combinator;
-	import net.wooga.selectors.matching.matchers.SiblingCombinator;
 	import net.wooga.selectors.matching.matchers.Matcher;
-	import net.wooga.selectors.matching.matchers.implementations.combinators.AdjacentSiblingCombinator;
-	import net.wooga.selectors.matching.matchers.implementations.combinators.ChildCombinator;
+	import net.wooga.selectors.matching.matchers.SiblingCombinator;
 	import net.wooga.selectors.matching.matchers.implementations.combinators.DescendantCombinator;
 	import net.wooga.selectors.matching.matchers.implementations.combinators.GeneralSiblingCombinator;
 	import net.wooga.selectors.selectoradapter.SelectorAdapter;

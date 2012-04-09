@@ -3,13 +3,13 @@ package net.wooga.selectors.matching.matchers {
 	import flash.display.DisplayObject;
 
 	import net.arneschroppe.displaytreebuilder.DisplayTree;
-	import net.wooga.selectors.matching.matchers.implementations.PseudoClassMatcher;
-	import net.wooga.selectors.selectoradapter.SelectorAdapter;
-	import net.wooga.fixtures.tools.ContextViewBasedTest;
 	import net.wooga.fixtures.TestSpriteA;
 	import net.wooga.fixtures.TestSpriteB;
 	import net.wooga.fixtures.TestSpriteC;
+	import net.wooga.fixtures.tools.ContextViewBasedTest;
 	import net.wooga.fixtures.tools.getAdapterForObject;
+	import net.wooga.selectors.matching.matchers.implementations.PseudoClassMatcher;
+	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 
 	import org.hamcrest.assertThat;
 	import org.hamcrest.collection.everyItem;
@@ -71,9 +71,9 @@ package net.wooga.selectors.matching.matchers {
 	}
 }
 
+import net.wooga.fixtures.TestSpriteC;
 import net.wooga.selectors.pseudoclasses.PseudoClass;
 import net.wooga.selectors.selectoradapter.SelectorAdapter;
-import net.wooga.fixtures.TestSpriteC;
 
 class TestPseudoClass implements PseudoClass {
 

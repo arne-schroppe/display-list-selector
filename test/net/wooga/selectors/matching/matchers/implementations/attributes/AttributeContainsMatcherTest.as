@@ -9,7 +9,6 @@ package net.wooga.selectors.matching.matchers.implementations.attributes {
 	import net.wooga.fixtures.tools.ContextViewBasedTest;
 	import net.wooga.fixtures.tools.containsInArrayExactly;
 	import net.wooga.fixtures.tools.getAdapterForObject;
-	import net.wooga.selectors.matching.matchers.implementations.attributes.AttributeContainsMatcher;
 	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 
 	import org.hamcrest.assertThat;

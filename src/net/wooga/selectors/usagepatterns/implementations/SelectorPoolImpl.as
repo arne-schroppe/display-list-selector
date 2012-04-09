@@ -3,8 +3,8 @@ package net.wooga.selectors.usagepatterns.implementations {
 	import flash.utils.Dictionary;
 
 	import net.wooga.selectors.matching.MatcherTool;
-	import net.wooga.selectors.parser.Parser;
 	import net.wooga.selectors.namespace.selector_internal;
+	import net.wooga.selectors.parser.Parser;
 	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 	import net.wooga.selectors.selectorstorage.SelectorTree;
 	import net.wooga.selectors.tools.SpecificityComparator;
@@ -15,16 +15,16 @@ package net.wooga.selectors.usagepatterns.implementations {
 		use namespace selector_internal;
 
 		private var _matcher:MatcherTool;
-		private var _objectToStyleAdapterMap:Dictionary;
+		private var _objectToSelectorAdapterMap:Dictionary;
 		private var _parser:Parser;
 
 		private var _knownSelectors:SelectorTree = new SelectorTree();
 
 
-		public function SelectorPoolImpl(parser:Parser, matcher:MatcherTool, objectToStyleAdapterMap:Dictionary) {
+		public function SelectorPoolImpl(parser:Parser, matcher:MatcherTool, objectToSelectorAdapterMap:Dictionary) {
 			_parser = parser;
 			_matcher = matcher;
-			_objectToStyleAdapterMap = objectToStyleAdapterMap;
+			_objectToSelectorAdapterMap = objectToSelectorAdapterMap;
 
 		}
 
@@ -38,13 +38,13 @@ package net.wooga.selectors.usagepatterns.implementations {
 		}
 
 
-		public function getSelectorsMatchingObject(object:Object):Vector.<SelectorDescription> {
-			var adapter:SelectorAdapter = _objectToStyleAdapterMap[object] as SelectorAdapter;
+		public function getSelectorsMatchingObject(object:Object):Vector.<MatchedSelector> {
+			var adapter:SelectorAdapter = _objectToSelectorAdapterMap[object] as SelectorAdapter;
 			if(!adapter) {
 				throw new ArgumentError("No style adapter registered for object " + object);
 			}
 
-			var matches:Vector.<SelectorDescription> = new <SelectorDescription>[];
+			var matches:Vector.<MatchedSelector> = new <MatchedSelector>[];
 
 			var possibleMatches:Array = _knownSelectors.getPossibleMatchesFor(adapter);
 
@@ -52,6 +52,7 @@ package net.wooga.selectors.usagepatterns.implementations {
 			for(var i:int = 0; i < len; ++i) {
 				var selector:SelectorImpl = possibleMatches[i] as SelectorImpl;
 				if (_matcher.isObjectMatching(adapter, selector.matchers)) {
+					selector.matchedObjectReference = object;
 					//TODO (arneschroppe 3/18/12) use an object pool here, so we don't have the overhead of creating objects all the time. They're flyweight's anyway
 					matches.push(selector);
 				}

@@ -3,7 +3,6 @@ package net.wooga.selectors.pseudoclasses.nthchildren {
 	import net.wooga.selectors.pseudoclasses.PseudoClass;
 	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 
-
 	//TODO (arneschroppe 08/04/2012) both nth-child and nth-of-type should become faster (i.e. no looping in nth-of-type). They should also ignore elements without adapters and match strictly by same type, with an option to also recognize super classes and interfaces
 	public class NthOfX implements PseudoClass {
 

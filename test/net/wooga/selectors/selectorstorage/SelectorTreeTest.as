@@ -1,9 +1,7 @@
 package net.wooga.selectors.selectorstorage {
 
 	import net.wooga.fixtures.SubClassOfTestSpriteA;
-	import net.wooga.fixtures.SubSubClassOfTestSpriteA;
 	import net.wooga.fixtures.TestSpriteA;
-	import net.wooga.fixtures.matcher.containsExactlyInArray;
 	import net.wooga.fixtures.matcher.containsExactlyInArray;
 	import net.wooga.selectors.parser.Parser;
 	import net.wooga.selectors.parser.PseudoClassProvider;
@@ -35,12 +33,12 @@ package net.wooga.selectors.selectorstorage {
 		private static const ORIGINAL_SELECTOR_PROPERTY:String = "originalSelectorString";
 
 		[Mock]
-		public var styleAdapter:SelectorAdapter;
+		public var selectorAdapter:SelectorAdapter;
 
 		[Before]
 		public function setUp():void {
 			_selectorStorage = new SelectorTree();
-			_parser = new Parser(null, this);
+			_parser = new Parser(null, null, this);
 		}
 
 
@@ -55,11 +53,11 @@ package net.wooga.selectors.selectorstorage {
 
 			addSelectors([sel1, sel2, sel3, sel4, sel5]);
 
-			given(styleAdapter.getAdaptedElement()).willReturn(new TestSpriteA());
-			given(styleAdapter.getQualifiedElementClassName()).willReturn("net.wooga.fixtures.TestSpriteA");
-			given(styleAdapter.getElementClassName()).willReturn("TestSpriteA");
+			given(selectorAdapter.getAdaptedElement()).willReturn(new TestSpriteA());
+			given(selectorAdapter.getQualifiedElementClassName()).willReturn("net.wooga.fixtures.TestSpriteA");
+			given(selectorAdapter.getElementClassName()).willReturn("TestSpriteA");
 
-			var possibleMatches:Array = _selectorStorage.getPossibleMatchesFor(styleAdapter);
+			var possibleMatches:Array = _selectorStorage.getPossibleMatchesFor(selectorAdapter);
 
 			assertThat(possibleMatches, containsExactlyInArray(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel1)));
 			assertThat(possibleMatches, containsExactlyInArray(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel2)));
@@ -82,11 +80,11 @@ package net.wooga.selectors.selectorstorage {
 
 			addSelectors([sel1, sel2, sel3, sel4, sel5]);
 
-			given(styleAdapter.getAdaptedElement()).willReturn(new TestSpriteA());
-			given(styleAdapter.getQualifiedElementClassName()).willReturn("net.wooga.fixtures.TestSpriteA");
-			given(styleAdapter.getElementClassName()).willReturn("TestSpriteA");
+			given(selectorAdapter.getAdaptedElement()).willReturn(new TestSpriteA());
+			given(selectorAdapter.getQualifiedElementClassName()).willReturn("net.wooga.fixtures.TestSpriteA");
+			given(selectorAdapter.getElementClassName()).willReturn("TestSpriteA");
 
-			var possibleMatches:Array = _selectorStorage.getPossibleMatchesFor(styleAdapter);
+			var possibleMatches:Array = _selectorStorage.getPossibleMatchesFor(selectorAdapter);
 
 			assertThat(possibleMatches, containsExactlyInArray(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel1)));
 			assertThat(possibleMatches, containsExactlyInArray(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel2)));
@@ -109,11 +107,11 @@ package net.wooga.selectors.selectorstorage {
 
 			addSelectors([sel1, sel2, sel3, sel4, sel5]);
 
-			given(styleAdapter.getAdaptedElement()).willReturn(new TestSpriteA());
-			given(styleAdapter.getQualifiedElementClassName()).willReturn("net.wooga.fixtures.TestSpriteA");
-			given(styleAdapter.getElementClassName()).willReturn("TestSpriteA");
-			given(styleAdapter.getId()).willReturn(id);
-			var possibleMatches:Array = _selectorStorage.getPossibleMatchesFor(styleAdapter);
+			given(selectorAdapter.getAdaptedElement()).willReturn(new TestSpriteA());
+			given(selectorAdapter.getQualifiedElementClassName()).willReturn("net.wooga.fixtures.TestSpriteA");
+			given(selectorAdapter.getElementClassName()).willReturn("TestSpriteA");
+			given(selectorAdapter.getId()).willReturn(id);
+			var possibleMatches:Array = _selectorStorage.getPossibleMatchesFor(selectorAdapter);
 
 			assertThat(possibleMatches, containsExactlyInArray(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel1)));
 			assertThat(possibleMatches, containsExactlyInArray(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel3)));
@@ -138,12 +136,12 @@ package net.wooga.selectors.selectorstorage {
 
 			addSelectors([sel1, sel2, sel3, sel4, sel5, sel6]);
 
-			given(styleAdapter.getAdaptedElement()).willReturn(new TestSpriteA());
-			given(styleAdapter.getQualifiedElementClassName()).willReturn("net.wooga.fixtures.TestSpriteA");
-			given(styleAdapter.getElementClassName()).willReturn("TestSpriteA");
-			given(styleAdapter.getId()).willReturn(id);
-			given(styleAdapter.hasPseudoClass(PseudoClassName.hover)).willReturn(true);
-			var possibleMatches:Array = _selectorStorage.getPossibleMatchesFor(styleAdapter);
+			given(selectorAdapter.getAdaptedElement()).willReturn(new TestSpriteA());
+			given(selectorAdapter.getQualifiedElementClassName()).willReturn("net.wooga.fixtures.TestSpriteA");
+			given(selectorAdapter.getElementClassName()).willReturn("TestSpriteA");
+			given(selectorAdapter.getId()).willReturn(id);
+			given(selectorAdapter.hasPseudoClass(PseudoClassName.hover)).willReturn(true);
+			var possibleMatches:Array = _selectorStorage.getPossibleMatchesFor(selectorAdapter);
 
 			assertThat(possibleMatches, containsExactlyInArray(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel1)));
 			assertThat(possibleMatches, containsExactlyInArray(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel2)));
@@ -167,12 +165,12 @@ package net.wooga.selectors.selectorstorage {
 
 			addSelectors([sel1, sel2, sel3, sel4, sel5, sel6]);
 
-			given(styleAdapter.getAdaptedElement()).willReturn(new TestSpriteA());
-			given(styleAdapter.getQualifiedElementClassName()).willReturn("net.wooga.fixtures.TestSpriteA");
-			given(styleAdapter.getElementClassName()).willReturn("TestSpriteA");
-			given(styleAdapter.getId()).willReturn(id);
-			given(styleAdapter.hasPseudoClass(PseudoClassName.hover)).willReturn(false);
-			var possibleMatches:Array = _selectorStorage.getPossibleMatchesFor(styleAdapter);
+			given(selectorAdapter.getAdaptedElement()).willReturn(new TestSpriteA());
+			given(selectorAdapter.getQualifiedElementClassName()).willReturn("net.wooga.fixtures.TestSpriteA");
+			given(selectorAdapter.getElementClassName()).willReturn("TestSpriteA");
+			given(selectorAdapter.getId()).willReturn(id);
+			given(selectorAdapter.hasPseudoClass(PseudoClassName.hover)).willReturn(false);
+			var possibleMatches:Array = _selectorStorage.getPossibleMatchesFor(selectorAdapter);
 
 			assertThat(possibleMatches, containsExactlyInArray(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel6)));
 			assertThat(possibleMatches.length, equalTo(1));
@@ -191,14 +189,14 @@ package net.wooga.selectors.selectorstorage {
 
 			addSelectors([sel1, sel2, sel3, sel4, sel5, sel6]);
 
-			given(styleAdapter.getAdaptedElement()).willReturn(new SubClassOfTestSpriteA());
-			given(styleAdapter.getQualifiedElementClassName()).willReturn("net.wooga.fixtures.SubClassOfTestSpriteA");
-			given(styleAdapter.getElementClassName()).willReturn("SubClassOfTestSpriteA");
-			given(styleAdapter.getInterfacesAndClasses()).willReturn(new <String>[
+			given(selectorAdapter.getAdaptedElement()).willReturn(new SubClassOfTestSpriteA());
+			given(selectorAdapter.getQualifiedElementClassName()).willReturn("net.wooga.fixtures.SubClassOfTestSpriteA");
+			given(selectorAdapter.getElementClassName()).willReturn("SubClassOfTestSpriteA");
+			given(selectorAdapter.getInterfacesAndClasses()).willReturn(new <String>[
 				"TestSpriteA"
 			]);
 
-			var possibleMatches:Array = _selectorStorage.getPossibleMatchesFor(styleAdapter);
+			var possibleMatches:Array = _selectorStorage.getPossibleMatchesFor(selectorAdapter);
 
 			assertThat(possibleMatches, containsExactlyInArray(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel1)));
 			assertThat(possibleMatches, containsExactlyInArray(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel2)));
@@ -221,14 +219,14 @@ package net.wooga.selectors.selectorstorage {
 
 			addSelectors([sel1, sel2, sel3, sel4, sel5, sel6]);
 
-			given(styleAdapter.getAdaptedElement()).willReturn(new SubClassOfTestSpriteA());
-			given(styleAdapter.getQualifiedElementClassName()).willReturn("net.wooga.fixtures.SubClassOfTestSpriteA");
-			given(styleAdapter.getElementClassName()).willReturn("SubClassOfTestSpriteA");
-			given(styleAdapter.getInterfacesAndClasses()).willReturn(new <String>[
+			given(selectorAdapter.getAdaptedElement()).willReturn(new SubClassOfTestSpriteA());
+			given(selectorAdapter.getQualifiedElementClassName()).willReturn("net.wooga.fixtures.SubClassOfTestSpriteA");
+			given(selectorAdapter.getElementClassName()).willReturn("SubClassOfTestSpriteA");
+			given(selectorAdapter.getInterfacesAndClasses()).willReturn(new <String>[
 				"TestSpriteA"
 			]);
 
-			var possibleMatches:Array = _selectorStorage.getPossibleMatchesFor(styleAdapter);
+			var possibleMatches:Array = _selectorStorage.getPossibleMatchesFor(selectorAdapter);
 
 			assertThat(possibleMatches, containsExactlyInArray(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel1)));
 			assertThat(possibleMatches, containsExactlyInArray(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel2)));
@@ -251,13 +249,13 @@ package net.wooga.selectors.selectorstorage {
 
 			addSelectors([sel1, sel2, sel3, sel4, sel5, sel6]);
 
-			given(styleAdapter.getElementClassName()).willReturn("SubSubClassOfTestSpriteA");
-			given(styleAdapter.getInterfacesAndClasses()).willReturn(new <String>[
+			given(selectorAdapter.getElementClassName()).willReturn("SubSubClassOfTestSpriteA");
+			given(selectorAdapter.getInterfacesAndClasses()).willReturn(new <String>[
 				"TestSpriteA",
 				"SubClassOfTestSpriteA"
 			]);
 
-			var possibleMatches:Array = _selectorStorage.getPossibleMatchesFor(styleAdapter);
+			var possibleMatches:Array = _selectorStorage.getPossibleMatchesFor(selectorAdapter);
 
 			assertThat(possibleMatches, containsExactlyInArray(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel1)));
 			assertThat(possibleMatches, containsExactlyInArray(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel2)));

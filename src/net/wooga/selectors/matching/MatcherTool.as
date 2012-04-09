@@ -72,7 +72,6 @@ package net.wooga.selectors.matching {
 					}
 				}
 
-				//TODO (arneschroppe 08/04/2012) "is" is slow, use a property instead
 				if (matcher.matcherFamily == MatcherFamily.ANCESTOR_COMBINATOR) {
 					proceedWithParent = true;
 					break;

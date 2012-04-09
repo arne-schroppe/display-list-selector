@@ -659,7 +659,7 @@ package net.wooga.selectors {
 			var isASelector:Selector = _selectorFactory.createSelector(":is-a(TestSpriteA)").getSelectorAtIndex(0);
 			var elementSelector:Selector = _selectorFactory.createSelector("TestSpriteA").getSelectorAtIndex(0);
 
-			assertThat(isASelector.specificity.isLessThan(elementSelector.specificity), isTrue());
+			assertThat(isASelector.specificity.compare(elementSelector.specificity), equalTo(-1));
 		}
 
 
@@ -684,8 +684,7 @@ package net.wooga.selectors {
 			var withoutPseudoClass:Selector = _selectorFactory.createSelector(":is-a(TestSpriteA)").getSelectorAtIndex(0);
 			var withPseudoClass:Selector = _selectorFactory.createSelector(":is-a(TestSpriteA):enabled").getSelectorAtIndex(0);
 
-			assertThat(withoutPseudoClass.specificity.isEqualTo(withPseudoClass.specificity), isFalse());
-			assertThat(withoutPseudoClass.specificity.isLessThan(withPseudoClass.specificity), isTrue());
+			assertThat(withoutPseudoClass.specificity.compare(withPseudoClass.specificity), equalTo(-1));
 		}
 
 

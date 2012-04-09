@@ -1,11 +1,8 @@
 package net.wooga.selectors.matching.matchers.implementations.attributes {
 
-	import flashx.textLayout.debug.assert;
-
 	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 
 	import org.flexunit.assertThat;
-
 	import org.flexunit.rules.IMethodRule;
 	import org.hamcrest.object.equalTo;
 	import org.mockito.integrations.flexunit4.MockitoRule;

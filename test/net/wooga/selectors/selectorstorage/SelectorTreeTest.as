@@ -1,9 +1,7 @@
 package net.wooga.selectors.selectorstorage {
 
 	import net.wooga.fixtures.SubClassOfTestSpriteA;
-	import net.wooga.fixtures.SubSubClassOfTestSpriteA;
 	import net.wooga.fixtures.TestSpriteA;
-	import net.wooga.fixtures.matcher.containsExactlyInArray;
 	import net.wooga.fixtures.matcher.containsExactlyInArray;
 	import net.wooga.selectors.parser.Parser;
 	import net.wooga.selectors.parser.PseudoClassProvider;

@@ -4,17 +4,16 @@ package net.wooga.selectors.matching.matchers {
 	import flash.utils.getQualifiedClassName;
 
 	import net.arneschroppe.displaytreebuilder.DisplayTree;
-	import net.wooga.selectors.matching.matchers.implementations.TypeNameMatcher;
-	import net.wooga.selectors.selectoradapter.SelectorAdapter;
-	import net.wooga.fixtures.tools.ContextViewBasedTest;
 	import net.wooga.fixtures.TestSpriteA;
 	import net.wooga.fixtures.TestSpriteB;
 	import net.wooga.fixtures.TestSpriteC;
+	import net.wooga.fixtures.tools.ContextViewBasedTest;
 	import net.wooga.fixtures.tools.containsInArrayExactly;
 	import net.wooga.fixtures.tools.getAdapterForObject;
+	import net.wooga.selectors.matching.matchers.implementations.TypeNameMatcher;
+	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 
 	import org.hamcrest.assertThat;
-	import org.hamcrest.core.allOf;
 	import org.hamcrest.core.isA;
 	import org.hamcrest.core.throws;
 	import org.hamcrest.object.equalTo;
@@ -285,8 +284,9 @@ package net.wooga.selectors.matching.matchers {
 	}
 }
 
-import net.wooga.fixtures.TestSpriteB;
-import net.wooga.fixtures.TestSpriteC;
+
+
+
 
 
 

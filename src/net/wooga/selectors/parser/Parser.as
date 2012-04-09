@@ -5,10 +5,7 @@ package net.wooga.selectors.parser {
 	import net.wooga.selectors.ExternalPropertySource;
 	import net.wooga.selectors.PseudoElementSource;
 	import net.wooga.selectors.matching.matchers.Matcher;
-	import net.wooga.selectors.matching.matchers.implementations.combinators.AdjacentSiblingCombinator;
-	import net.wooga.selectors.matching.matchers.implementations.combinators.ChildCombinator;
 	import net.wooga.selectors.matching.matchers.implementations.ClassMatcher;
-	import net.wooga.selectors.matching.matchers.implementations.combinators.DescendantCombinator;
 	import net.wooga.selectors.matching.matchers.implementations.IdMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.PseudoClassMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.TypeNameMatcher;
@@ -18,11 +15,14 @@ package net.wooga.selectors.parser {
 	import net.wooga.selectors.matching.matchers.implementations.attributes.AttributeEndsWithMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.attributes.AttributeEqualsMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.attributes.AttributeExistsMatcher;
+	import net.wooga.selectors.matching.matchers.implementations.combinators.AdjacentSiblingCombinator;
+	import net.wooga.selectors.matching.matchers.implementations.combinators.ChildCombinator;
+	import net.wooga.selectors.matching.matchers.implementations.combinators.DescendantCombinator;
 	import net.wooga.selectors.matching.matchers.implementations.combinators.GeneralSiblingCombinator;
+	import net.wooga.selectors.namespace.selector_internal;
 	import net.wooga.selectors.pseudoclasses.IsA;
 	import net.wooga.selectors.pseudoclasses.PseudoClass;
 	import net.wooga.selectors.pseudoclasses.names.BuiltinPseudoClassName;
-	import net.wooga.selectors.namespace.selector_internal;
 	import net.wooga.selectors.tools.input.ParserInput;
 	import net.wooga.selectors.usagepatterns.implementations.SelectorImpl;
 

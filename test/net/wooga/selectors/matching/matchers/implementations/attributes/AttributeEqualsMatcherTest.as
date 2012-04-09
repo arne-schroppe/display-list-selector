@@ -3,13 +3,10 @@ package net.wooga.selectors.matching.matchers.implementations.attributes {
 	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 
 	import org.flexunit.assertThat;
-
 	import org.flexunit.rules.IMethodRule;
 	import org.hamcrest.object.equalTo;
-
 	import org.mockito.integrations.flexunit4.MockitoRule;
 	import org.mockito.integrations.given;
-
 
 	public class AttributeEqualsMatcherTest  {
 

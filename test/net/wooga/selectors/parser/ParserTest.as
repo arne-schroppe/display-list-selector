@@ -5,7 +5,6 @@ package net.wooga.selectors.parser {
 	import org.hamcrest.assertThat;
 	import org.hamcrest.core.isA;
 	import org.hamcrest.core.throws;
-
 	import org.hamcrest.object.equalTo;
 
 	public class ParserTest {
@@ -66,7 +65,6 @@ package net.wooga.selectors.parser {
 import net.wooga.selectors.parser.PseudoClassProvider;
 import net.wooga.selectors.pseudoclasses.PseudoClass;
 import net.wooga.selectors.selectoradapter.SelectorAdapter;
-
 
 class NullPseudoClassProvider implements PseudoClassProvider {
 

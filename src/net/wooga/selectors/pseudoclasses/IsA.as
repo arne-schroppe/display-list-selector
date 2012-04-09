@@ -17,7 +17,7 @@ package net.wooga.selectors.pseudoclasses {
 				throw new ArgumentError("Wrong argument count");
 			}
 
-			_typeName = arguments[0] as String;
+			_typeName = String(arguments[0]).replace(/\s/g, "");
 
 			if(/^(\w|\$)+$/i.test(_typeName)) {
 				_isQualifiedClassName = false;
@@ -25,12 +25,10 @@ package net.wooga.selectors.pseudoclasses {
 			else {
 				_isQualifiedClassName = true;
 			}
-			
-			if(_isQualifiedClassName && /^\s*((\w|\$)+\.)*(\w|\$)+\s*$/i.test(_typeName)) {
+
+			if(_isQualifiedClassName && /^\s*((\w|\$)+\.)+(\w|\$)+\s*$/i.test(_typeName)) {
 				_typeName = convertToDoubleColonForm(_typeName);
 			}
-
-			//TODO (arneschroppe 3/31/12) strip whitespace!
 		}
 
 

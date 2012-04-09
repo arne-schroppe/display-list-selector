@@ -84,6 +84,27 @@ package net.wooga.selectors {
 		}
 
 
+
+		[Test]
+		public function should_match_element_selector_with_whitespace():void {
+
+			_displayList.uses(contextView).containing
+					.a(TestSpriteA)
+					.a(TestSpriteB)
+					.a(TestSpriteC)
+					.end.finish();
+
+
+			testSelector("       TestSpriteB        ", function(matchedObjects:Array):void {
+				assertContainsObjectOfClass(matchedObjects, TestSpriteB);
+				assertDoesNotContainObjectOfClass(matchedObjects, TestSpriteA);
+				assertDoesNotContainObjectOfClass(matchedObjects, TestSpriteC);
+
+			});
+		}
+
+
+
 		[Test]
 		public function should_match_any_selector():void {
 

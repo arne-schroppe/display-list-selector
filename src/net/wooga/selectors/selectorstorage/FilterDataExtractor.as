@@ -17,7 +17,6 @@ package net.wooga.selectors.selectorstorage {
 
 		use namespace selector_internal;
 
-		//TODO (arneschroppe 06/04/2012) don't store filterdata inside selector, but return as separate object
 		public function getFilterData(selector:SelectorImpl):FilterData {
 
 			var filterData:FilterData = new FilterData();

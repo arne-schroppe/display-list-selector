@@ -32,7 +32,7 @@ package net.wooga.selectors {
 	import org.hamcrest.object.isTrue;
 	import org.hamcrest.object.strictlyEqualTo;
 
-	//TODO (arneschroppe 22/2/12) maybe we should rewrite these tests with mocked adapters instead of using the DisplayObjectStyleAdapter
+	//TODO (arneschroppe 22/2/12) maybe we should rewrite these tests with mocked adapters instead of using the DisplayObjectStyleAdapter ??
 	public class SelectorFactoryTest extends ContextViewBasedTest {
 
 
@@ -685,8 +685,7 @@ package net.wooga.selectors {
 
 
 
-		//Note: We cannot know the specific class (unless a fully qualified class name is given). That's why we cannot give a specificity based on the number of super classes
-		//TODO (arneschroppe 3/25/12) unless we check this kind of specificity at runtime?
+		//TODO (arneschroppe 09/04/2012) We cannot know the specific class (unless a fully qualified class name is given). That's why we cannot give a specificity based on the number of super classes
 //		[Test]
 //		public function isA_selector_for_more_abstract_class_should_have_lower_specificity_than_for_more_specialized_class():void {
 //

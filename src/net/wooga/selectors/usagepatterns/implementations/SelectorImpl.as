@@ -8,6 +8,8 @@ package net.wooga.selectors.usagepatterns.implementations {
 	import net.wooga.selectors.namespace.selector_internal;
 	import net.wooga.selectors.parser.FilterData;
 	import net.wooga.selectors.selectoradapter.SelectorAdapter;
+	import net.wooga.selectors.tools.WeakReference;
+	import net.wooga.selectors.tools.WeakReference;
 	import net.wooga.selectors.usagepatterns.*;
 
 	use namespace selector_internal;
@@ -21,8 +23,7 @@ package net.wooga.selectors.usagepatterns.implementations {
 		private var _pseudoElementName:String;
 		private var _pseudoElementSource:PseudoElementSource;
 
-		//TODO (arneschroppe 09/04/2012) this is only used by selector pool, make more elegant. we shouldn't keep a reference to this
-		private var _matchedObject:Object;
+		private var _matchedObjectReference:WeakReference;
 
 
 		public function isMatching(object:Object):Boolean {
@@ -69,9 +70,6 @@ package net.wooga.selectors.usagepatterns.implementations {
 		}
 
 
-
-
-
 		//TODO (arneschroppe 14/3/12) it might be good to get rid of this object
 		selector_internal function get filterData():FilterData {
 			return _filterData;
@@ -90,21 +88,26 @@ package net.wooga.selectors.usagepatterns.implementations {
 		}
 
 
-		selector_internal function set matchedObject(value:Object):void {
-			_matchedObject = value;
+		//TODO (arneschroppe 09/04/2012) these are only used by MatchedSelector
+
+		//Can be the actual display-object or the pseudo-element
+		selector_internal function set matchedObjectReference(value:Object):void {
+			if(_pseudoElementName) {
+				_matchedObjectReference = new WeakReference(_pseudoElementSource.pseudoElementForIdentifier(value, _pseudoElementName));
+			}
+			else {
+				_matchedObjectReference = new WeakReference(value);
+			}
+
 		}
 
-		selector_internal function get matchedObject():Object {
-			return _matchedObject;
+		selector_internal function get matchedObjectReference():Object {
+			return _matchedObjectReference;
 		}
 
 
 		public function getMatchedObject():Object {
-			if(_pseudoElementName) {
-				return _pseudoElementSource.pseudoElementForIdentifier(_matchedObject, _pseudoElementName);
-			}
-
-			return _matchedObject;
+			return _matchedObjectReference.referencedObject;
 		}
 	}
 }

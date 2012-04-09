@@ -1,5 +1,7 @@
 package net.wooga.selectors.selectorstorage {
 
+	import flash.utils.Dictionary;
+
 	import net.wooga.selectors.namespace.selector_internal;
 	import net.wooga.selectors.parser.FilterData;
 	import net.wooga.selectors.selectoradapter.SelectorAdapter;
@@ -11,10 +13,11 @@ package net.wooga.selectors.selectorstorage {
 
 	use namespace selector_internal;
 
-	public class SelectorTree {
+	public class SelectorFilter {
 
 
-		private var _filterRoot:SelectorFilterTreeNode;
+		//private var _filterRoot:SelectorFilterTreeNode;
+
 		private var _filterKeys:Vector.<SelectorTreeNodeKey> = new <SelectorTreeNodeKey>[
 			new TypeNameKey(),
 			new IdKey(),
@@ -22,14 +25,18 @@ package net.wooga.selectors.selectorstorage {
 		];
 
 		private var _numFilterKeys:int;
-		private var _foundSelectors:Array;
+		//private var _foundSelectors:Array;
+
 		private var _selectorsWereAdded:Boolean;
+
 		private var _filterDataExtractor:FilterDataExtractor = new FilterDataExtractor();
 
+		private var _map:Dictionary = new Dictionary();
 
-		public function SelectorTree() {
-			_filterRoot = new SelectorFilterTreeNode();
+		public function SelectorFilter() {
+			//_filterRoot = new SelectorFilterTreeNode();
 			_numFilterKeys = _filterKeys.length;
+			_map["@"] = [];
 		}
 
 
@@ -37,13 +44,13 @@ package net.wooga.selectors.selectorstorage {
 		public function add(parsedSelector:SelectorImpl):void {
 
 			var filterData:FilterData = _filterDataExtractor.getFilterData(parsedSelector);
-
 			_selectorsWereAdded = true;
-			addToNode(_filterRoot, 0, parsedSelector, filterData);
+
+			addToNode("", 0, parsedSelector, filterData);
 		}
 
 
-		private function addToNode(node:SelectorFilterTreeNode, keyIndex:int, selector:SelectorImpl, filterData:FilterData):Boolean {
+		private function addToNode(previousKey:String, keyIndex:int, selector:SelectorImpl, filterData:FilterData):Boolean {
 
 			if(keyIndex >= _filterKeys.length) {
 				return false;
@@ -52,7 +59,7 @@ package net.wooga.selectors.selectorstorage {
 			var nodeKey:SelectorTreeNodeKey = _filterKeys[keyIndex] as SelectorTreeNodeKey;
 
 			var hasKey:Boolean = nodeKey.selectorHasKey(selector, filterData);
-			var key:*;
+			var key:String;
 			if(hasKey) {
 				key = nodeKey.keyForSelector(selector, filterData);
 			}
@@ -60,30 +67,33 @@ package net.wooga.selectors.selectorstorage {
 				key = nodeKey.nullKey;
 			}
 
-			createKeyIfNeeded(node, key);
 
-			var canPlaceSelector:Boolean = addToNode(node.childNodes[key], keyIndex + 1, selector, filterData);
+			var canPlaceSelector:Boolean = addToNode(previousKey + "&&" + key, keyIndex + 1, selector, filterData);
 			if(canPlaceSelector) {
 				return true;
 			}
 			else if(hasKey) {
-				var targetNode:SelectorFilterTreeNode = node.childNodes[key] as SelectorFilterTreeNode;
-				targetNode.selectors.push(selector);
+				addToKey(key, selector)
 				return true;
 			}
+			
+			//we're in root key
 			else if(keyIndex == 0) {
-				node.selectors.push(selector);
+				(_map["@"] as Array).push(selector);
 			}
 
 			return false;
 		}
 
-
-		private function createKeyIfNeeded(node:SelectorFilterTreeNode, key:*):void {
-			if(!node.childNodes.hasOwnProperty(key)) {
-				node.childNodes[key] = new SelectorFilterTreeNode();
+		private function addToKey(key:String, selector:SelectorImpl):void {
+			if(!(key in _map)) {
+				_map[key] = [];
 			}
+
+			(_map[key] as Array).push(selector);
+			
 		}
+
 
 
 		public function getPossibleMatchesFor(object:SelectorAdapter):Array {
@@ -93,31 +103,38 @@ package net.wooga.selectors.selectorstorage {
 				_selectorsWereAdded = false;
 			}
 
-			_foundSelectors = [];
-			searchForMatches(_filterRoot, 0, object);
-			return _foundSelectors;
+			var keys:Array = searchForMatches([""], 0, object);
+
+			var selectors:Array = [].concat(_map["@"]);
+			for each(var key:String in keys) {
+				trace("Key: " + key)
+				selectors.concat(_map[key] as Array);
+			}
+
+			return selectors;
 		}
 
 
-		private function searchForMatches(node:SelectorFilterTreeNode, keyIndex:int, adapter:SelectorAdapter):void {
+		private function searchForMatches(previousKeys:Array, keyIndex:int, adapter:SelectorAdapter):Array {
 
-			if(!node) {
-				return ;
-			}
-
-			_foundSelectors = _foundSelectors.concat(node.selectors);
 
 			if(keyIndex >= _numFilterKeys) {
-				return;
+				return previousKeys;
 			}
 
 			var nodeKey:SelectorTreeNodeKey = _filterKeys[keyIndex] as SelectorTreeNodeKey;
-			var keys:Array = nodeKey.keysForAdapter(adapter, node.childNodes);
+			var keys:Array = nodeKey.keysForAdapter(adapter);
 
 			var len:int = keys.length
+			var newKeys:Array = [];
 			for(var i:int = 0; i < len; ++i ) {
-				searchForMatches(node.childNodes[keys[i] as String] as SelectorFilterTreeNode, keyIndex + 1, adapter);
+				for(var j:int = 0; j < previousKeys.length; ++j ) {
+					newKeys.push(previousKeys[j] + "&&" + keys[i]);
+				}
 			}
+
+
+			return searchForMatches(newKeys, keyIndex + 1, adapter);
 		}
 
 		//This is currently only used by the TypeNameKey (asc 2012-03-15)

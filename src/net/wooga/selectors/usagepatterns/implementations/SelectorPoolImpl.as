@@ -8,7 +8,7 @@ package net.wooga.selectors.usagepatterns.implementations {
 	import net.wooga.selectors.namespace.selector_internal;
 	import net.wooga.selectors.parser.Parser;
 	import net.wooga.selectors.selectoradapter.SelectorAdapter;
-	import net.wooga.selectors.selectorstorage.SelectorTree;
+	import net.wooga.selectors.selectorstorage.SelectorFilter;
 	import net.wooga.selectors.tools.SpecificityComparator;
 	import net.wooga.selectors.usagepatterns.*;
 
@@ -20,7 +20,7 @@ package net.wooga.selectors.usagepatterns.implementations {
 		private var _adapterSource:SelectorAdapterSource;
 		private var _parser:Parser;
 
-		private var _knownSelectors:SelectorTree = new SelectorTree();
+		private var _knownSelectors:SelectorFilter = new SelectorFilter();
 
 
 		public function SelectorPoolImpl(parser:Parser, matcher:MatcherTool, adapterSource:SelectorAdapterSource) {

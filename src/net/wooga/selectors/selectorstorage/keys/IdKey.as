@@ -17,7 +17,7 @@ package net.wooga.selectors.selectorstorage.keys {
 			return filterData.id;
 		}
 
-		public function keysForAdapter(adapter:SelectorAdapter, nodes:Dictionary):Array {
+		public function keysForAdapter(adapter:SelectorAdapter):Array {
 			return [adapter.getId(), NULL_KEY];
 		}
 

@@ -27,11 +27,11 @@ package net.wooga.selectors.selectorstorage.keys {
 		}
 
 
-		public function keysForAdapter(adapter:SelectorAdapter, nodes:Dictionary):Array {
+		public function keysForAdapter(adapter:SelectorAdapter):Array {
 			var className:String = adapter.getQualifiedElementClassName();
 			var keys:Array = getKeysForElement(className);
 			if(!keys) {
-				keys = createKeysForElement(adapter, nodes);
+				keys = createKeysForElement(adapter);
 			}
 
 			return keys;
@@ -42,19 +42,19 @@ package net.wooga.selectors.selectorstorage.keys {
 		}
 
 
-		private function createKeysForElement(adapter:SelectorAdapter, nodes:Dictionary):Array {
+		private function createKeysForElement(adapter:SelectorAdapter):Array {
 
 			var keys:Array = [];
 
 			var className:String = adapter.getElementClassName();
 			var isASelectorKey:String = IS_A_PREFIX + className;
 
-			addKeyIfItExistsInTree(className, keys, nodes);
-			addKeyIfItExistsInTree(isASelectorKey, keys, nodes);
-			addKeyIfItExistsInTree(nullKey, keys, nodes);
+			addKeyIfItExistsInTree(className, keys);
+			addKeyIfItExistsInTree(isASelectorKey, keys);
+			addKeyIfItExistsInTree(nullKey, keys);
 
 			//get super-classes
-			addTypes(adapter.getInterfacesAndClasses(), keys, nodes);
+			addTypes(adapter.getInterfacesAndClasses(), keys);
 
 			_typeToKeysMap[adapter.getQualifiedElementClassName()] = keys;
 
@@ -62,16 +62,14 @@ package net.wooga.selectors.selectorstorage.keys {
 		}
 
 
-		private function addKeyIfItExistsInTree(className:String, keys:Array, nodes:Dictionary):void {
-			if (className in nodes) {
-				keys.push(className);
-			}
+		private function addKeyIfItExistsInTree(className:String, keys:Array):void {
+			keys.push(className);
 		}
 
 
-		private function addTypes(types:Vector.<String>, keys:Array, nodes:Dictionary):void {
+		private function addTypes(types:Vector.<String>, keys:Array):void {
 			for each(var implementedType:String in types) {
-				addKeyIfItExistsInTree(IS_A_PREFIX + implementedType, keys, nodes);
+				addKeyIfItExistsInTree(IS_A_PREFIX + implementedType, keys);
 			}
 		}
 

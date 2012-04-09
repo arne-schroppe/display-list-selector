@@ -12,7 +12,7 @@ package net.wooga.selectors.selectorstorage.keys {
 		function selectorHasKey(parsedSelector:SelectorImpl, filterData:FilterData):Boolean;
 
 
-		function keysForAdapter(adapter:SelectorAdapter, nodes:Dictionary):Array;
+		function keysForAdapter(adapter:SelectorAdapter):Array;
 
 
 		function get nullKey():String;

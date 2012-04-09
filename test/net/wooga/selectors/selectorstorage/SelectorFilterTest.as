@@ -19,14 +19,14 @@ package net.wooga.selectors.selectorstorage {
 	import org.mockito.integrations.flexunit4.MockitoRule;
 	import org.mockito.integrations.given;
 
-	public class SelectorTreeTest implements PseudoClassProvider {
+	public class SelectorFilterTest implements PseudoClassProvider {
 
 		[Rule]
 		public var mockitoRule:IMethodRule = new MockitoRule();
 
 
 
-		private var _selectorStorage:SelectorTree;
+		private var _selectorStorage:SelectorFilter;
 		
 		private var _parser:Parser;
 
@@ -37,7 +37,7 @@ package net.wooga.selectors.selectorstorage {
 
 		[Before]
 		public function setUp():void {
-			_selectorStorage = new SelectorTree();
+			_selectorStorage = new SelectorFilter();
 			_parser = new Parser(null, null, this);
 		}
 

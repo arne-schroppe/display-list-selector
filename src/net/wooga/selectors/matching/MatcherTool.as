@@ -2,6 +2,8 @@ package net.wooga.selectors.matching {
 
 	import flash.utils.Dictionary;
 
+	import net.wooga.selectors.adaptermap.SelectorAdapterSource;
+
 	import net.wooga.selectors.matching.matchers.AncestorCombinator;
 	import net.wooga.selectors.matching.matchers.Combinator;
 	import net.wooga.selectors.matching.matchers.Matcher;
@@ -15,11 +17,11 @@ package net.wooga.selectors.matching {
 		private var _rootObject:Object;
 
 		private var _currentlyMatchedMatchers:Vector.<Matcher>;
-		private var _objectToAdapterMap:Dictionary; //TODO (arneschroppe 08/04/2012) use interface here?
+		private var _adapterSource:SelectorAdapterSource;
 
-		public function MatcherTool(rootObject:Object, objectToAdapterMap:Dictionary) {
+		public function MatcherTool(rootObject:Object, objectToAdapterMap:SelectorAdapterSource) {
 			_rootObject = rootObject;
-			_objectToAdapterMap = objectToAdapterMap;
+			_adapterSource = objectToAdapterMap;
 		}
 
 
@@ -108,7 +110,6 @@ package net.wooga.selectors.matching {
 			}
 
 
-
 			return result;
 		}
 
@@ -119,7 +120,7 @@ package net.wooga.selectors.matching {
 				return false;
 			}
 
-			return reverseMatch(_objectToAdapterMap[subject.getParentElement()], nextMatcher);
+			return reverseMatch(_adapterSource.getSelectorAdapterForObject(subject.getParentElement()), nextMatcher);
 		}
 
 
@@ -131,7 +132,7 @@ package net.wooga.selectors.matching {
 			}
 
 			var previousElement:Object = subject.getElementAtIndex(objectIndex - 1);
-			return reverseMatch(_objectToAdapterMap[previousElement], nextMatcher);
+			return reverseMatch(_adapterSource.getSelectorAdapterForObject(previousElement), nextMatcher);
 		}
 
 	}

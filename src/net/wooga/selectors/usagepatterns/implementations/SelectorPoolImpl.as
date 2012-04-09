@@ -2,6 +2,8 @@ package net.wooga.selectors.usagepatterns.implementations {
 
 	import flash.utils.Dictionary;
 
+	import net.wooga.selectors.adaptermap.SelectorAdapterSource;
+
 	import net.wooga.selectors.matching.MatcherTool;
 	import net.wooga.selectors.namespace.selector_internal;
 	import net.wooga.selectors.parser.Parser;
@@ -15,16 +17,16 @@ package net.wooga.selectors.usagepatterns.implementations {
 		use namespace selector_internal;
 
 		private var _matcher:MatcherTool;
-		private var _objectToSelectorAdapterMap:Dictionary;
+		private var _adapterSource:SelectorAdapterSource;
 		private var _parser:Parser;
 
 		private var _knownSelectors:SelectorTree = new SelectorTree();
 
 
-		public function SelectorPoolImpl(parser:Parser, matcher:MatcherTool, objectToSelectorAdapterMap:Dictionary) {
+		public function SelectorPoolImpl(parser:Parser, matcher:MatcherTool, adapterSource:SelectorAdapterSource) {
 			_parser = parser;
 			_matcher = matcher;
-			_objectToSelectorAdapterMap = objectToSelectorAdapterMap;
+			_adapterSource = adapterSource;
 
 		}
 
@@ -39,7 +41,7 @@ package net.wooga.selectors.usagepatterns.implementations {
 
 
 		public function getSelectorsMatchingObject(object:Object):Vector.<MatchedSelector> {
-			var adapter:SelectorAdapter = _objectToSelectorAdapterMap[object] as SelectorAdapter;
+			var adapter:SelectorAdapter = _adapterSource.getSelectorAdapterForObject(object);
 			if(!adapter) {
 				throw new ArgumentError("No style adapter registered for object " + object);
 			}

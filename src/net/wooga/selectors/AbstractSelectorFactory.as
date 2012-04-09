@@ -3,6 +3,8 @@ package net.wooga.selectors {
 	import flash.utils.Dictionary;
 	import flash.utils.getQualifiedClassName;
 
+	import net.wooga.selectors.adaptermap.SelectorAdapterMap;
+
 	import net.wooga.selectors.matching.MatcherTool;
 	import net.wooga.selectors.namespace.selector_internal;
 	import net.wooga.selectors.parser.Parser;
@@ -41,10 +43,11 @@ package net.wooga.selectors {
 		private var _parser:Parser;
 		private var _matcher:MatcherTool;
 
+		private var _selectorAdapterMap:SelectorAdapterMap;
 
 		private var _pseudoClassProvider:PseudoClassProviderImpl;
 
-		private var _objectToSelectorAdapterMap:Dictionary = new Dictionary();
+
 
 		private var _objectTypeToSelectorAdapterTypeMap:Dictionary = new Dictionary();
 		private var _defaultSelectorAdapterType:Class;
@@ -68,8 +71,9 @@ package net.wooga.selectors {
 			_pseudoClassProvider = new PseudoClassProviderImpl();
 			addDefaultPseudoClasses();
 
+			_selectorAdapterMap = new SelectorAdapterMap();
 			_parser = new Parser(externalPropertySource, pseudoElementSource, _pseudoClassProvider);
-			_matcher = new MatcherTool(_rootObject, _objectToSelectorAdapterMap);
+			_matcher = new MatcherTool(_rootObject, _selectorAdapterMap);
 
 			_isInitialized = true;
 		}
@@ -81,7 +85,7 @@ package net.wooga.selectors {
 			var selectors:Vector.<Selector> = new <Selector>[];
 			for each(var partialSelector:SelectorImpl in partialSelectors) {
 				partialSelector.matcherTool = _matcher;
-				partialSelector.objectToSelectorAdapterMap = _objectToSelectorAdapterMap;
+				partialSelector.adapterMap = _selectorAdapterMap;
 
 				selectors.push(partialSelector);
 			}
@@ -91,7 +95,7 @@ package net.wooga.selectors {
 
 
 		public function createSelectorPool():SelectorPool {
-			return new SelectorPoolImpl(_parser, _matcher, _objectToSelectorAdapterMap);
+			return new SelectorPoolImpl(_parser, _matcher, _selectorAdapterMap);
 		}
 
 
@@ -127,11 +131,11 @@ package net.wooga.selectors {
 
 		//TODO (arneschroppe 08/04/2012) test overrideDefaultSelectorAdapter !!
 		public function createSelectorAdapterFor(object:Object, overrideDefaultSelectorAdapter:Class = null):void {
-			if(object in _objectToSelectorAdapterMap) {
+			if(_selectorAdapterMap.hasAdapterForObject(object)) {
 				return;	
 			}
 
-			var SelectorClientClass:Class
+			var SelectorClientClass:Class;
 
 			if(overrideDefaultSelectorAdapter) {
 				checkAdapterType(overrideDefaultSelectorAdapter);
@@ -147,7 +151,7 @@ package net.wooga.selectors {
 			}
 
 			var selectorClient:SelectorAdapter = new SelectorClientClass();
-			_objectToSelectorAdapterMap[object] = selectorClient;
+			_selectorAdapterMap.setAdapterForObject(object, selectorClient);
 			selectorClient.register(object);
 		}
 
@@ -166,12 +170,7 @@ package net.wooga.selectors {
 
 		//TODO (arneschroppe 30/3/12) this method is untested
 		public function removeSelectorAdapterOf(object:Object):void {
-
-			if(object in _objectToSelectorAdapterMap) {
-				var selectorClient:SelectorAdapter = _objectToSelectorAdapterMap[object];
-				selectorClient.unregister();
-				delete _objectToSelectorAdapterMap[object];
-			}
+			_selectorAdapterMap.removeAdapterForObject(object);
 		}
 
 		private function addDefaultPseudoClasses():void {

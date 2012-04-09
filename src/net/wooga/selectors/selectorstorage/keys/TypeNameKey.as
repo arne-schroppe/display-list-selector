@@ -3,6 +3,7 @@ package net.wooga.selectors.selectorstorage.keys {
 	import flash.utils.Dictionary;
 
 	import net.wooga.selectors.namespace.selector_internal;
+	import net.wooga.selectors.parser.FilterData;
 	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 	import net.wooga.selectors.usagepatterns.implementations.SelectorImpl;
 
@@ -20,9 +21,9 @@ package net.wooga.selectors.selectorstorage.keys {
 		with the same name), but those would be filtered out in the next matching step.
 		*/
 
-		public function keyForSelector(parsedSelector:SelectorImpl):String {
-			var prefix:String = parsedSelector.filterData.isImmediateType ? "" : IS_A_PREFIX;
-			return prefix + parsedSelector.filterData.typeName;
+		public function keyForSelector(parsedSelector:SelectorImpl, filterData:FilterData):String {
+			var prefix:String = filterData.isImmediateType ? "" : IS_A_PREFIX;
+			return prefix + filterData.typeName;
 		}
 
 
@@ -75,8 +76,8 @@ package net.wooga.selectors.selectorstorage.keys {
 		}
 
 
-		public function selectorHasKey(parsedSelector:SelectorImpl):Boolean {
-			return parsedSelector.filterData.typeName && parsedSelector.filterData.typeName != "*";
+		public function selectorHasKey(parsedSelector:SelectorImpl, filterData:FilterData):Boolean {
+			return filterData.typeName && filterData.typeName != "*";
 		}
 
 

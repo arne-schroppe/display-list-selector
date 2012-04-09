@@ -4,8 +4,6 @@ package net.wooga.selectors.adaptermap {
 
 	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 
-	import org.hamcrest.object.isFalse;
-
 	public class SelectorAdapterMap implements SelectorAdapterSource{
 
 		private var _objectToSelectorAdapterMap:Dictionary = new Dictionary();

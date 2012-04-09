@@ -1,6 +1,7 @@
 package net.wooga.selectors.matching.matchers.implementations {
 
 	import net.wooga.selectors.matching.matchers.Matcher;
+	import net.wooga.selectors.matching.matchers.implementations.combinators.MatcherFamily;
 	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 
 	public class TypeNameMatcher implements Matcher {
@@ -55,6 +56,11 @@ package net.wooga.selectors.matching.matchers.implementations {
 
 		public function get typeName():String {
 			return _typeName;
+		}
+
+
+		public function get matcherFamily():MatcherFamily {
+			return MatcherFamily.SIMPLE_MATCHER;
 		}
 	}
 }

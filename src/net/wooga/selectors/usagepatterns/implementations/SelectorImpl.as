@@ -20,7 +20,7 @@ package net.wooga.selectors.usagepatterns.implementations {
 		private var _adapterSource:SelectorAdapterSource;
 		private var _matcherTool:MatcherTool;
 		private var _matchers:Vector.<Matcher> = new <Matcher>[];
-		private var _filterData:FilterData = new FilterData();
+
 		private var _pseudoElementName:String;
 		private var _pseudoElementSource:PseudoElementSource;
 
@@ -53,12 +53,6 @@ package net.wooga.selectors.usagepatterns.implementations {
 
 		public function getMatchedObject():Object {
 			return _matchedObjectReference.referencedObject;
-		}
-
-
-		//TODO (arneschroppe 14/3/12) it might be good to get rid of this object
-		selector_internal function get filterData():FilterData {
-			return _filterData;
 		}
 
 

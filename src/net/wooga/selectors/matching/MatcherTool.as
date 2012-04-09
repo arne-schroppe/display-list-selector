@@ -1,15 +1,10 @@
 package net.wooga.selectors.matching {
 
-	import flash.utils.Dictionary;
-
 	import net.wooga.selectors.adaptermap.SelectorAdapterSource;
-
-	import net.wooga.selectors.matching.matchers.AncestorCombinator;
-	import net.wooga.selectors.matching.matchers.Combinator;
 	import net.wooga.selectors.matching.matchers.Matcher;
-	import net.wooga.selectors.matching.matchers.SiblingCombinator;
-	import net.wooga.selectors.matching.matchers.implementations.combinators.DescendantCombinator;
-	import net.wooga.selectors.matching.matchers.implementations.combinators.GeneralSiblingCombinator;
+	import net.wooga.selectors.matching.matchers.implementations.combinators.Combinator;
+	import net.wooga.selectors.matching.matchers.implementations.combinators.CombinatorType;
+	import net.wooga.selectors.matching.matchers.implementations.combinators.MatcherFamily;
 	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 
 	public class MatcherTool {
@@ -48,14 +43,16 @@ package net.wooga.selectors.matching {
 			var retrySibling:Boolean = false;
 			var startMatcherIndex:int = nextMatcher;
 
-			var nextMatcherObject:Object = _currentlyMatchedMatchers[nextMatcher];
-			
-			if(nextMatcherObject is Combinator) {
+			var nextMatcherObject:Matcher = Matcher(_currentlyMatchedMatchers[nextMatcher]);
+
+			if(nextMatcherObject.matcherFamily != MatcherFamily.SIMPLE_MATCHER) {
+				var nextMatcherAsCombinator:Combinator = nextMatcherObject as Combinator;
+
 				nextMatcher--;
-				if (nextMatcherObject is DescendantCombinator) {
+				if (nextMatcherAsCombinator.type == CombinatorType.DESCENDANT) {
 					retryParent = true;
 				}
-				if (nextMatcherObject is GeneralSiblingCombinator) {
+				if (nextMatcherAsCombinator.type == CombinatorType.GENERAL_SIBLING) {
 					retrySibling = true;
 				}
 			}
@@ -76,11 +73,11 @@ package net.wooga.selectors.matching {
 				}
 
 				//TODO (arneschroppe 08/04/2012) "is" is slow, use a property instead
-				if (matcher is AncestorCombinator) {
+				if (matcher.matcherFamily == MatcherFamily.ANCESTOR_COMBINATOR) {
 					proceedWithParent = true;
 					break;
 				}
-				else if(matcher is SiblingCombinator) {
+				else if(matcher.matcherFamily == MatcherFamily.SIBLING_COMBINATOR) {
 					proceedWithParent = false;
 					break;
 				}

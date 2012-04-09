@@ -2,6 +2,7 @@ package net.wooga.selectors.matching.matchers.implementations.attributes {
 
 	import net.wooga.selectors.ExternalPropertySource;
 	import net.wooga.selectors.matching.matchers.Matcher;
+	import net.wooga.selectors.matching.matchers.implementations.combinators.MatcherFamily;
 	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 
 	public class AttributeContainsMatcher implements Matcher {
@@ -40,6 +41,11 @@ package net.wooga.selectors.matching.matchers.implementations.attributes {
 			}
 
 			return false;
+		}
+
+
+		public function get matcherFamily():MatcherFamily {
+			return MatcherFamily.SIMPLE_MATCHER;
 		}
 	}
 }

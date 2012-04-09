@@ -70,7 +70,6 @@ package {
 		public var settablePseudoClassTest:SettablePseudoClassTest;
 
 		public var displayObjectSelectorAdapterTest:DisplayObjectSelectorAdapterTest;
-		//public var parserTest:ParserTest; //TODO (arneschroppe 20/3/12) we should test the parser
 
 	}
 }

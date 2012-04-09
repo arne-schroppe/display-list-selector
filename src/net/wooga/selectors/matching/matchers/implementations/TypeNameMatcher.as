@@ -10,7 +10,7 @@ package net.wooga.selectors.matching.matchers.implementations {
 
 		private var _classNameOnly:Boolean;
 
-		//TODO (arneschroppe 23/2/12) always use the :: notation internally
+
 		public function TypeNameMatcher(typeName:String) {
 			if (typeName == "*") {
 				_matchAny = true;

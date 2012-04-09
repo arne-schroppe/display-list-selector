@@ -212,7 +212,7 @@ package net.wooga.selectors.parser {
 				return;
 			}
 
-			//TODO (arneschroppe 3/25/12) figure out specificity rules. We can't give isA selector a specificity based on super classes, since we don't know the specific class. But maybe we can, if it's a FQCN
+
 			if (_input.isNext("(")) {
 				checkSyntaxExtensionsAllowed();
 

@@ -115,7 +115,7 @@ package net.wooga.selectors.matching {
 
 		private function reverseMatchParentIfPossible(subject:SelectorAdapter, nextMatcher:int):Boolean {
 
-			//TODO (arneschroppe 22/2/12) we should use a isObjectEqualTo-method here
+			//TODO (arneschroppe 22/2/12)  should we use a isObjectEqualTo-method here ??
 			if (subject.getAdaptedElement() == _rootObject) {
 				return false;
 			}

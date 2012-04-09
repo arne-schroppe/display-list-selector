@@ -1,6 +1,6 @@
 package net.wooga.selectors.usagepatterns {
 
-	import net.wooga.selectors.Specificity;
+	import net.wooga.selectors.specificity.Specificity;
 
 	public interface SelectorDescription {
 		function get specificity():Specificity;

@@ -1,6 +1,6 @@
 package net.wooga.selectors.usagepatterns.implementations {
 
-	import net.wooga.selectors.Specificity;
+	import net.wooga.selectors.specificity.Specificity;
 	import net.wooga.selectors.usagepatterns.*;
 
 	public class SelectorDescriptionImpl implements SelectorDescription {

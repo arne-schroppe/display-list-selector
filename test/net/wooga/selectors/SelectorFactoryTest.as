@@ -32,7 +32,7 @@ package net.wooga.selectors {
 	import org.hamcrest.object.isTrue;
 	import org.hamcrest.object.strictlyEqualTo;
 
-	//TODO (arneschroppe 22/2/12) maybe we should rewrite these tests with mocked adapters instead of using the DisplayObjectStyleAdapter
+	//TODO (arneschroppe 22/2/12) maybe we should rewrite these tests with mocked adapters instead of using the DisplayObjectStyleAdapter ??
 	public class SelectorFactoryTest extends ContextViewBasedTest {
 
 
@@ -82,6 +82,27 @@ package net.wooga.selectors {
 				
 			});
 		}
+
+
+
+		[Test]
+		public function should_match_element_selector_with_whitespace():void {
+
+			_displayList.uses(contextView).containing
+					.a(TestSpriteA)
+					.a(TestSpriteB)
+					.a(TestSpriteC)
+					.end.finish();
+
+
+			testSelector("       TestSpriteB        ", function(matchedObjects:Array):void {
+				assertContainsObjectOfClass(matchedObjects, TestSpriteB);
+				assertDoesNotContainObjectOfClass(matchedObjects, TestSpriteA);
+				assertDoesNotContainObjectOfClass(matchedObjects, TestSpriteC);
+
+			});
+		}
+
 
 
 		[Test]
@@ -659,13 +680,12 @@ package net.wooga.selectors {
 			var isASelector:Selector = _selectorFactory.createSelector(":is-a(TestSpriteA)").getSelectorAtIndex(0);
 			var elementSelector:Selector = _selectorFactory.createSelector("TestSpriteA").getSelectorAtIndex(0);
 
-			assertThat(isASelector.specificity.isLessThan(elementSelector.specificity), isTrue());
+			assertThat(isASelector.specificity.compare(elementSelector.specificity), equalTo(-1));
 		}
 
 
 
-		//Note: We cannot know the specific class (unless a fully qualified class name is given). That's why we cannot give a specificity based on the number of super classes
-		//TODO (arneschroppe 3/25/12) unless we check this kind of specificity at runtime?
+		//TODO (arneschroppe 09/04/2012) We cannot know the specific class (unless a fully qualified class name is given). That's why we cannot give a specificity based on the number of super classes
 //		[Test]
 //		public function isA_selector_for_more_abstract_class_should_have_lower_specificity_than_for_more_specialized_class():void {
 //
@@ -684,8 +704,7 @@ package net.wooga.selectors {
 			var withoutPseudoClass:Selector = _selectorFactory.createSelector(":is-a(TestSpriteA)").getSelectorAtIndex(0);
 			var withPseudoClass:Selector = _selectorFactory.createSelector(":is-a(TestSpriteA):enabled").getSelectorAtIndex(0);
 
-			assertThat(withoutPseudoClass.specificity.isEqualTo(withPseudoClass.specificity), isFalse());
-			assertThat(withoutPseudoClass.specificity.isLessThan(withPseudoClass.specificity), isTrue());
+			assertThat(withoutPseudoClass.specificity.compare(withPseudoClass.specificity), equalTo(-1));
 		}
 
 

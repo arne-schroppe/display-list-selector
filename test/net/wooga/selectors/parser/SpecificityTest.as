@@ -1,11 +1,12 @@
 package net.wooga.selectors.parser {
 
+	import net.wooga.selectors.specificity.SpecificityComparison;
+
 	import org.hamcrest.assertThat;
+	import org.hamcrest.core.not;
 	import org.hamcrest.number.greaterThan;
 	import org.hamcrest.number.lessThan;
 	import org.hamcrest.object.equalTo;
-	import org.hamcrest.object.isFalse;
-	import org.hamcrest.object.isTrue;
 
 	public class SpecificityTest {
 
@@ -17,8 +18,7 @@ package net.wooga.selectors.parser {
 
 			var higherSpec:SpecificityImpl = specWith(2, 6, 0, 0, 0);
 
-			assertThat(higherSpec.isGreaterThan(smallerSpec), isTrue());
-			assertThat(higherSpec.isLessThan(smallerSpec), isFalse());
+			assertThat(higherSpec.compare(smallerSpec), equalTo(SpecificityComparison.GREATER_THAN));
 
 
 
@@ -26,39 +26,37 @@ package net.wooga.selectors.parser {
 			smallerSpec = specWith(0, 10, 0, 0, 0);
 			higherSpec = specWith(1, 0, 0, 0, 0);
 
-			assertThat(higherSpec.isGreaterThan(smallerSpec), isTrue());
-			assertThat(higherSpec.isLessThan(smallerSpec), isFalse());
+			assertThat(higherSpec.compare(smallerSpec), equalTo(SpecificityComparison.GREATER_THAN));
 
 
 
 			smallerSpec = specWith(0, 0, 5, 0, 0);
 			higherSpec = specWith(0, 1, 0, 0, 0);
 
-			assertThat(higherSpec.isGreaterThan(smallerSpec), isTrue());
-			assertThat(higherSpec.isLessThan(smallerSpec), isFalse());
+			assertThat(higherSpec.compare(smallerSpec), equalTo(SpecificityComparison.GREATER_THAN));
 
 
 
-			assertThat(specWith(2, 0, 0, 0, 0).isGreaterThan(specWith(1, 0, 0, 0, 0)), isTrue());
-			assertThat(specWith(0, 2, 0, 0, 0).isGreaterThan(specWith(0, 1, 0, 0, 0)), isTrue());
-			assertThat(specWith(0, 0, 2, 0, 0).isGreaterThan(specWith(0, 0, 1, 0, 0)), isTrue());
-			assertThat(specWith(0, 0, 0, 2, 0).isGreaterThan(specWith(0, 0, 0, 1, 0)), isTrue());
-			assertThat(specWith(0, 0, 0, 0, 2).isGreaterThan(specWith(0, 0, 0, 0, 1)), isTrue());
+			assertThat(specWith(2, 0, 0, 0, 0).compare(specWith(1, 0, 0, 0, 0)), equalTo(SpecificityComparison.GREATER_THAN));
+			assertThat(specWith(0, 2, 0, 0, 0).compare(specWith(0, 1, 0, 0, 0)), equalTo(SpecificityComparison.GREATER_THAN));
+			assertThat(specWith(0, 0, 2, 0, 0).compare(specWith(0, 0, 1, 0, 0)), equalTo(SpecificityComparison.GREATER_THAN));
+			assertThat(specWith(0, 0, 0, 2, 0).compare(specWith(0, 0, 0, 1, 0)), equalTo(SpecificityComparison.GREATER_THAN));
+			assertThat(specWith(0, 0, 0, 0, 2).compare(specWith(0, 0, 0, 0, 1)), equalTo(SpecificityComparison.GREATER_THAN));
 
 
 
-			assertThat(specWith(1, 0, 0, 0, 0).isGreaterThan(specWith(1, 0, 0, 0, 0)), isFalse());
-			assertThat(specWith(0, 1, 0, 0, 0).isGreaterThan(specWith(0, 1, 0, 0, 0)), isFalse());
-			assertThat(specWith(0, 0, 1, 0, 0).isGreaterThan(specWith(0, 0, 1, 0, 0)), isFalse());
-			assertThat(specWith(0, 0, 0, 1, 0).isGreaterThan(specWith(0, 0, 0, 1, 0)), isFalse());
-			assertThat(specWith(0, 0, 0, 0, 1).isGreaterThan(specWith(0, 0, 0, 0, 1)), isFalse());
+			assertThat(specWith(1, 0, 0, 0, 0).compare(specWith(1, 0, 0, 0, 0)), not(equalTo(SpecificityComparison.GREATER_THAN)));
+			assertThat(specWith(0, 1, 0, 0, 0).compare(specWith(0, 1, 0, 0, 0)), not(equalTo(SpecificityComparison.GREATER_THAN)));
+			assertThat(specWith(0, 0, 1, 0, 0).compare(specWith(0, 0, 1, 0, 0)), not(equalTo(SpecificityComparison.GREATER_THAN)));
+			assertThat(specWith(0, 0, 0, 1, 0).compare(specWith(0, 0, 0, 1, 0)), not(equalTo(SpecificityComparison.GREATER_THAN)));
+			assertThat(specWith(0, 0, 0, 0, 1).compare(specWith(0, 0, 0, 0, 1)), not(equalTo(SpecificityComparison.GREATER_THAN)));
 
 
-			assertThat(specWith(2, 0, 0, 0, 0).isGreaterThan(specWith(3, 0, 0, 0, 0)), isFalse());
-			assertThat(specWith(0, 2, 0, 0, 0).isGreaterThan(specWith(0, 3, 0, 0, 0)), isFalse());
-			assertThat(specWith(0, 0, 2, 0, 0).isGreaterThan(specWith(0, 0, 3, 0, 0)), isFalse());
-			assertThat(specWith(0, 0, 0, 2, 0).isGreaterThan(specWith(0, 0, 0, 3, 0)), isFalse());
-			assertThat(specWith(0, 0, 0, 0, 2).isGreaterThan(specWith(0, 0, 0, 0, 3)), isFalse());
+			assertThat(specWith(2, 0, 0, 0, 0).compare(specWith(3, 0, 0, 0, 0)), not(equalTo(SpecificityComparison.GREATER_THAN)));
+			assertThat(specWith(0, 2, 0, 0, 0).compare(specWith(0, 3, 0, 0, 0)), not(equalTo(SpecificityComparison.GREATER_THAN)));
+			assertThat(specWith(0, 0, 2, 0, 0).compare(specWith(0, 0, 3, 0, 0)), not(equalTo(SpecificityComparison.GREATER_THAN)));
+			assertThat(specWith(0, 0, 0, 2, 0).compare(specWith(0, 0, 0, 3, 0)), not(equalTo(SpecificityComparison.GREATER_THAN)));
+			assertThat(specWith(0, 0, 0, 0, 2).compare(specWith(0, 0, 0, 0, 3)), not(equalTo(SpecificityComparison.GREATER_THAN)));
 
 		}
 
@@ -70,46 +68,43 @@ package net.wooga.selectors.parser {
 
 			var higherSpec:SpecificityImpl = specWith(2, 6, 0, 0, 0);
 
-			assertThat(smallerSpec.isLessThan(higherSpec), isTrue());
-			assertThat(smallerSpec.isGreaterThan(higherSpec), isFalse());
+			assertThat(smallerSpec.compare(higherSpec), equalTo(SpecificityComparison.LESS_THAN));
 
 			smallerSpec = specWith(0, 10, 0, 0, 0);
 			higherSpec = specWith(1, 0, 0, 0, 0);
 
-			assertThat(smallerSpec.isLessThan(higherSpec), isTrue());
-			assertThat(smallerSpec.isGreaterThan(higherSpec), isFalse());
+			assertThat(smallerSpec.compare(higherSpec), equalTo(SpecificityComparison.LESS_THAN));
 
 
 			smallerSpec = specWith(0, 0, 5, 0, 0);
 
 			higherSpec = specWith(0, 1, 0, 0, 0);
 
-			assertThat(smallerSpec.isLessThan(higherSpec), isTrue());
-			assertThat(smallerSpec.isGreaterThan(higherSpec), isFalse());
+			assertThat(smallerSpec.compare(higherSpec), equalTo(SpecificityComparison.LESS_THAN));
 
 
 
 
-			assertThat(specWith(1, 0, 0, 0, 0).isLessThan(specWith(2, 0, 0, 0, 0)), isTrue());
-			assertThat(specWith(0, 1, 0, 0, 0).isLessThan(specWith(0, 2, 0, 0, 0)), isTrue());
-			assertThat(specWith(0, 0, 1, 0, 0).isLessThan(specWith(0, 0, 2, 0, 0)), isTrue());
-			assertThat(specWith(0, 0, 0, 1, 0).isLessThan(specWith(0, 0, 0, 2, 0)), isTrue());
-			assertThat(specWith(0, 0, 0, 0, 1).isLessThan(specWith(0, 0, 0, 0, 2)), isTrue());
+			assertThat(specWith(1, 0, 0, 0, 0).compare(specWith(2, 0, 0, 0, 0)), equalTo(SpecificityComparison.LESS_THAN));
+			assertThat(specWith(0, 1, 0, 0, 0).compare(specWith(0, 2, 0, 0, 0)), equalTo(SpecificityComparison.LESS_THAN));
+			assertThat(specWith(0, 0, 1, 0, 0).compare(specWith(0, 0, 2, 0, 0)), equalTo(SpecificityComparison.LESS_THAN));
+			assertThat(specWith(0, 0, 0, 1, 0).compare(specWith(0, 0, 0, 2, 0)), equalTo(SpecificityComparison.LESS_THAN));
+			assertThat(specWith(0, 0, 0, 0, 1).compare(specWith(0, 0, 0, 0, 2)), equalTo(SpecificityComparison.LESS_THAN));
+
+			
+
+			assertThat(specWith(1, 0, 0, 0, 0).compare(specWith(1, 0, 0, 0, 0)), not(equalTo(SpecificityComparison.LESS_THAN)));
+			assertThat(specWith(0, 1, 0, 0, 0).compare(specWith(0, 1, 0, 0, 0)), not(equalTo(SpecificityComparison.LESS_THAN)));
+			assertThat(specWith(0, 0, 1, 0, 0).compare(specWith(0, 0, 1, 0, 0)), not(equalTo(SpecificityComparison.LESS_THAN)));
+			assertThat(specWith(0, 0, 0, 1, 0).compare(specWith(0, 0, 0, 1, 0)), not(equalTo(SpecificityComparison.LESS_THAN)));
+			assertThat(specWith(0, 0, 0, 0, 1).compare(specWith(0, 0, 0, 0, 1)), not(equalTo(SpecificityComparison.LESS_THAN)));
 
 
-
-			assertThat(specWith(1, 0, 0, 0, 0).isLessThan(specWith(1, 0, 0, 0, 0)), isFalse());
-			assertThat(specWith(0, 1, 0, 0, 0).isLessThan(specWith(0, 1, 0, 0, 0)), isFalse());
-			assertThat(specWith(0, 0, 1, 0, 0).isLessThan(specWith(0, 0, 1, 0, 0)), isFalse());
-			assertThat(specWith(0, 0, 0, 1, 0).isLessThan(specWith(0, 0, 0, 1, 0)), isFalse());
-			assertThat(specWith(0, 0, 0, 0, 1).isLessThan(specWith(0, 0, 0, 0, 1)), isFalse());
-
-
-			assertThat(specWith(2, 0, 0, 0, 0).isLessThan(specWith(1, 0, 0, 0, 0)), isFalse());
-			assertThat(specWith(0, 2, 0, 0, 0).isLessThan(specWith(0, 1, 0, 0, 0)), isFalse());
-			assertThat(specWith(0, 0, 2, 0, 0).isLessThan(specWith(0, 0, 1, 0, 0)), isFalse());
-			assertThat(specWith(0, 0, 0, 2, 0).isLessThan(specWith(0, 0, 0, 1, 0)), isFalse());
-			assertThat(specWith(0, 0, 0, 0, 2).isLessThan(specWith(0, 0, 0, 0, 1)), isFalse());
+			assertThat(specWith(2, 0, 0, 0, 0).compare(specWith(1, 0, 0, 0, 0)), not(equalTo(SpecificityComparison.LESS_THAN)));
+			assertThat(specWith(0, 2, 0, 0, 0).compare(specWith(0, 1, 0, 0, 0)), not(equalTo(SpecificityComparison.LESS_THAN)));
+			assertThat(specWith(0, 0, 2, 0, 0).compare(specWith(0, 0, 1, 0, 0)), not(equalTo(SpecificityComparison.LESS_THAN)));
+			assertThat(specWith(0, 0, 0, 2, 0).compare(specWith(0, 0, 0, 1, 0)), not(equalTo(SpecificityComparison.LESS_THAN)));
+			assertThat(specWith(0, 0, 0, 0, 2).compare(specWith(0, 0, 0, 0, 1)), not(equalTo(SpecificityComparison.LESS_THAN)));
 
 		}
 
@@ -120,13 +115,13 @@ package net.wooga.selectors.parser {
 			var spec1:SpecificityImpl = specWith(12, 0, 0, 0, 0);
 			var spec2:SpecificityImpl = specWith(12, 0, 0, 0, 0);
 
-			assertThat(spec1.isEqualTo(spec2), isTrue());
+			assertThat(spec1.compare(spec2), equalTo(SpecificityComparison.EQUAL));
 
 
 			spec1 = specWith(12, 1, 0, 0, 0);
 			spec2 = specWith(12, 0, 0, 0, 0);
 
-			assertThat(spec1.isEqualTo(spec2), isFalse());
+			assertThat(spec1.compare(spec2), not(equalTo(SpecificityComparison.EQUAL)));
 		}
 
 

@@ -1,13 +1,10 @@
 package net.wooga.selectors.matching {
 
-	import flash.utils.Dictionary;
-
-	import net.wooga.selectors.matching.matchers.AncestorCombinator;
-	import net.wooga.selectors.matching.matchers.Combinator;
+	import net.wooga.selectors.adaptermap.SelectorAdapterSource;
 	import net.wooga.selectors.matching.matchers.Matcher;
-	import net.wooga.selectors.matching.matchers.SiblingCombinator;
-	import net.wooga.selectors.matching.matchers.implementations.combinators.DescendantCombinator;
-	import net.wooga.selectors.matching.matchers.implementations.combinators.GeneralSiblingCombinator;
+	import net.wooga.selectors.matching.matchers.implementations.combinators.Combinator;
+	import net.wooga.selectors.matching.matchers.implementations.combinators.CombinatorType;
+	import net.wooga.selectors.matching.matchers.implementations.combinators.MatcherFamily;
 	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 
 	public class MatcherTool {
@@ -15,11 +12,11 @@ package net.wooga.selectors.matching {
 		private var _rootObject:Object;
 
 		private var _currentlyMatchedMatchers:Vector.<Matcher>;
-		private var _objectToAdapterMap:Dictionary; //TODO (arneschroppe 08/04/2012) use interface here?
+		private var _adapterSource:SelectorAdapterSource;
 
-		public function MatcherTool(rootObject:Object, objectToAdapterMap:Dictionary) {
+		public function MatcherTool(rootObject:Object, objectToAdapterMap:SelectorAdapterSource) {
 			_rootObject = rootObject;
-			_objectToAdapterMap = objectToAdapterMap;
+			_adapterSource = objectToAdapterMap;
 		}
 
 
@@ -46,14 +43,16 @@ package net.wooga.selectors.matching {
 			var retrySibling:Boolean = false;
 			var startMatcherIndex:int = nextMatcher;
 
-			var nextMatcherObject:Object = _currentlyMatchedMatchers[nextMatcher];
-			
-			if(nextMatcherObject is Combinator) {
+			var nextMatcherObject:Matcher = Matcher(_currentlyMatchedMatchers[nextMatcher]);
+
+			if(nextMatcherObject.matcherFamily != MatcherFamily.SIMPLE_MATCHER) {
+				var nextMatcherAsCombinator:Combinator = nextMatcherObject as Combinator;
+
 				nextMatcher--;
-				if (nextMatcherObject is DescendantCombinator) {
+				if (nextMatcherAsCombinator.type == CombinatorType.DESCENDANT) {
 					retryParent = true;
 				}
-				if (nextMatcherObject is GeneralSiblingCombinator) {
+				if (nextMatcherAsCombinator.type == CombinatorType.GENERAL_SIBLING) {
 					retrySibling = true;
 				}
 			}
@@ -73,12 +72,11 @@ package net.wooga.selectors.matching {
 					}
 				}
 
-				//TODO (arneschroppe 08/04/2012) "is" is slow, use a property instead
-				if (matcher is AncestorCombinator) {
+				if (matcher.matcherFamily == MatcherFamily.ANCESTOR_COMBINATOR) {
 					proceedWithParent = true;
 					break;
 				}
-				else if(matcher is SiblingCombinator) {
+				else if(matcher.matcherFamily == MatcherFamily.SIBLING_COMBINATOR) {
 					proceedWithParent = false;
 					break;
 				}
@@ -108,18 +106,17 @@ package net.wooga.selectors.matching {
 			}
 
 
-
 			return result;
 		}
 
 		private function reverseMatchParentIfPossible(subject:SelectorAdapter, nextMatcher:int):Boolean {
 
-			//TODO (arneschroppe 22/2/12) we should use a isObjectEqualTo-method here
+			//TODO (arneschroppe 22/2/12)  should we use a isObjectEqualTo-method here ??
 			if (subject.getAdaptedElement() == _rootObject) {
 				return false;
 			}
 
-			return reverseMatch(_objectToAdapterMap[subject.getParentElement()], nextMatcher);
+			return reverseMatch(_adapterSource.getSelectorAdapterForObject(subject.getParentElement()), nextMatcher);
 		}
 
 
@@ -131,7 +128,7 @@ package net.wooga.selectors.matching {
 			}
 
 			var previousElement:Object = subject.getElementAtIndex(objectIndex - 1);
-			return reverseMatch(_objectToAdapterMap[previousElement], nextMatcher);
+			return reverseMatch(_adapterSource.getSelectorAdapterForObject(previousElement), nextMatcher);
 		}
 
 	}

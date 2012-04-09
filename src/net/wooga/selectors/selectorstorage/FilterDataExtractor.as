@@ -1,11 +1,12 @@
 package net.wooga.selectors.selectorstorage {
 
-	import net.wooga.selectors.matching.matchers.AncestorCombinator;
 	import net.wooga.selectors.matching.matchers.Matcher;
 	import net.wooga.selectors.matching.matchers.implementations.IdMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.PseudoClassMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.TypeNameMatcher;
+	import net.wooga.selectors.matching.matchers.implementations.combinators.MatcherFamily;
 	import net.wooga.selectors.namespace.selector_internal;
+	import net.wooga.selectors.parser.FilterData;
 	import net.wooga.selectors.pseudoclasses.IsA;
 	import net.wooga.selectors.pseudoclasses.SettablePseudoClass;
 	import net.wooga.selectors.pseudoclasses.names.PseudoClassName;
@@ -16,16 +17,13 @@ package net.wooga.selectors.selectorstorage {
 
 		use namespace selector_internal;
 
-		//TODO (arneschroppe 06/04/2012) don't store filterdata inside selector, but return as separate object
-		public function setupFilterData(selector:SelectorImpl):void {
+		public function getFilterData(selector:SelectorImpl):FilterData {
 
-			if(selector.filterData.isInitialized) {
-				return;
-			}
+			var filterData:FilterData = new FilterData();
 
 			var lastIdMatcher:IdMatcher = findMatcherInLastSimpleSelector(selector, IdMatcher) as IdMatcher;
 			if (lastIdMatcher) {
-				selector.filterData.id = lastIdMatcher.id;
+				filterData.id = lastIdMatcher.id;
 			}
 
 			var lastTypeMatcher:TypeNameMatcher = findMatcherInLastSimpleSelector(selector, TypeNameMatcher) as TypeNameMatcher;
@@ -33,27 +31,27 @@ package net.wooga.selectors.selectorstorage {
 
 
 			if(isA_PseudoClassInLastSimpleSelector) {
-				selector.filterData.typeName = isA_PseudoClassInLastSimpleSelector.typeName.split("::").pop();
-				selector.filterData.isImmediateType = false;
+				filterData.typeName = isA_PseudoClassInLastSimpleSelector.typeName.split("::").pop();
+				filterData.isImmediateType = false;
 			}
 			else if(lastTypeMatcher) {
-				selector.filterData.typeName = lastTypeMatcher.typeName ? lastTypeMatcher.typeName.split("::").pop() : null;
-				selector.filterData.isImmediateType = true;
+				filterData.typeName = lastTypeMatcher.typeName ? lastTypeMatcher.typeName.split("::").pop() : null;
+				filterData.isImmediateType = true;
 			}
 
-			selector.filterData.hasHover = hasHoverPseudoClassInLastSimpleSelector(selector);
+			filterData.hasHover = hasHoverPseudoClassInLastSimpleSelector(selector);
 
-			selector.filterData.isInitialized = true;
+			return filterData;
 		}
 
 
 		//TODO (arneschroppe 3/25/12) we need a test for this, specifically to test that not just any SettablePseudoClass triggers the hasHover flag
 		private function hasHoverPseudoClassInLastSimpleSelector(selector:SelectorImpl):Boolean {
 			var matchers:Vector.<Matcher> = selector.matchers;
-			for(var i:int = matchers.length-1; i >= 0 && !(matchers[i] is AncestorCombinator); --i) {
+			for(var i:int = matchers.length-1; i >= 0 && !(Matcher(matchers[i]).matcherFamily == MatcherFamily.ANCESTOR_COMBINATOR); --i) {
 				var matcher:Matcher = matchers[i];
 
-				if(matcher is AncestorCombinator) {
+				if(matcher.matcherFamily == MatcherFamily.ANCESTOR_COMBINATOR) {
 					return false;
 				}
 
@@ -71,10 +69,10 @@ package net.wooga.selectors.selectorstorage {
 
 		private function findIsAPseudoClassInLastSimpleSelector(selector:SelectorImpl):IsA {
 			var matchers:Vector.<Matcher> = selector.matchers;
-			for(var i:int = matchers.length-1; i >= 0 && !(matchers[i] is AncestorCombinator); --i) {
+			for(var i:int = matchers.length-1; i >= 0 && !(Matcher(matchers[i]).matcherFamily == MatcherFamily.ANCESTOR_COMBINATOR); --i) {
 				var matcher:Matcher = matchers[i];
 
-				if(matcher is AncestorCombinator) {
+				if(matcher.matcherFamily == MatcherFamily.ANCESTOR_COMBINATOR) {
 					return null;
 				}
 
@@ -91,7 +89,7 @@ package net.wooga.selectors.selectorstorage {
 		private function findMatcherInLastSimpleSelector(selector:SelectorImpl, MatcherType:Class):Matcher {
 
 			var matchers:Vector.<Matcher> = selector.matchers;
-			for(var i:int = matchers.length-1; i >= 0 && !(matchers[i] is AncestorCombinator); --i) {
+			for(var i:int = matchers.length-1; i >= 0 && !(Matcher(matchers[i]).matcherFamily == MatcherFamily.ANCESTOR_COMBINATOR); --i) {
 				var matcher:Matcher = matchers[i];
 				if(matcher is MatcherType) {
 					return matcher;

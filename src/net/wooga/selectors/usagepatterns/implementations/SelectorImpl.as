@@ -3,6 +3,7 @@ package net.wooga.selectors.usagepatterns.implementations {
 	import flash.utils.Dictionary;
 
 	import net.wooga.selectors.PseudoElementSource;
+	import net.wooga.selectors.adaptermap.SelectorAdapterSource;
 	import net.wooga.selectors.matching.MatcherTool;
 	import net.wooga.selectors.matching.matchers.Matcher;
 	import net.wooga.selectors.namespace.selector_internal;
@@ -16,10 +17,10 @@ package net.wooga.selectors.usagepatterns.implementations {
 
 	public class SelectorImpl extends SelectorDescriptionImpl implements Selector, MatchedSelector {
 
-		private var _objectToSelectorAdapterMap:Dictionary;
+		private var _adapterSource:SelectorAdapterSource;
 		private var _matcherTool:MatcherTool;
 		private var _matchers:Vector.<Matcher> = new <Matcher>[];
-		private var _filterData:FilterData = new FilterData();
+
 		private var _pseudoElementName:String;
 		private var _pseudoElementSource:PseudoElementSource;
 
@@ -27,7 +28,7 @@ package net.wooga.selectors.usagepatterns.implementations {
 
 
 		public function isMatching(object:Object):Boolean {
-			var adapter:SelectorAdapter = _objectToSelectorAdapterMap[object];
+			var adapter:SelectorAdapter = _adapterSource.getSelectorAdapterForObject(object);
 			if(!adapter) {
 				throw new ArgumentError("No selector adapter registered for object " + object);
 			}
@@ -55,12 +56,6 @@ package net.wooga.selectors.usagepatterns.implementations {
 		}
 
 
-		//TODO (arneschroppe 14/3/12) it might be good to get rid of this object
-		selector_internal function get filterData():FilterData {
-			return _filterData;
-		}
-
-
 		selector_internal function set pseudoElementName(value:String):void {
 			_pseudoElementName = value;
 		}
@@ -77,8 +72,8 @@ package net.wooga.selectors.usagepatterns.implementations {
 			return _pseudoElementSource;
 		}
 
-		selector_internal function set objectToSelectorAdapterMap(value:Dictionary):void {
-			_objectToSelectorAdapterMap = value;
+		selector_internal function set adapterMap(value:SelectorAdapterSource):void {
+			_adapterSource = value;
 		}
 
 		selector_internal function set matcherTool(value:MatcherTool):void {

@@ -1,6 +1,7 @@
 package net.wooga.selectors.selectorstorage {
 
 	import net.wooga.selectors.namespace.selector_internal;
+	import net.wooga.selectors.parser.FilterData;
 	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 	import net.wooga.selectors.selectorstorage.keys.HoverKey;
 	import net.wooga.selectors.selectorstorage.keys.IdKey;
@@ -35,14 +36,14 @@ package net.wooga.selectors.selectorstorage {
 
 		public function add(parsedSelector:SelectorImpl):void {
 
-			_filterDataExtractor.setupFilterData(parsedSelector);
+			var filterData:FilterData = _filterDataExtractor.getFilterData(parsedSelector);
 
 			_selectorsWereAdded = true;
-			addToNode(_filterRoot, 0, parsedSelector);
+			addToNode(_filterRoot, 0, parsedSelector, filterData);
 		}
 
 
-		private function addToNode(node:SelectorFilterTreeNode, keyIndex:int, selector:SelectorImpl):Boolean {
+		private function addToNode(node:SelectorFilterTreeNode, keyIndex:int, selector:SelectorImpl, filterData:FilterData):Boolean {
 
 			if(keyIndex >= _filterKeys.length) {
 				return false;
@@ -50,10 +51,10 @@ package net.wooga.selectors.selectorstorage {
 
 			var nodeKey:SelectorTreeNodeKey = _filterKeys[keyIndex] as SelectorTreeNodeKey;
 
-			var hasKey:Boolean = nodeKey.selectorHasKey(selector);
+			var hasKey:Boolean = nodeKey.selectorHasKey(selector, filterData);
 			var key:*;
 			if(hasKey) {
-				key = nodeKey.keyForSelector(selector);
+				key = nodeKey.keyForSelector(selector, filterData);
 			}
 			else {
 				key = nodeKey.nullKey;
@@ -61,7 +62,7 @@ package net.wooga.selectors.selectorstorage {
 
 			createKeyIfNeeded(node, key);
 
-			var canPlaceSelector:Boolean = addToNode(node.childNodes[key], keyIndex + 1, selector);
+			var canPlaceSelector:Boolean = addToNode(node.childNodes[key], keyIndex + 1, selector, filterData);
 			if(canPlaceSelector) {
 				return true;
 			}

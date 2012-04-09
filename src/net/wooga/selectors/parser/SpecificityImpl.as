@@ -1,13 +1,13 @@
 package net.wooga.selectors.parser {
 
-	import net.wooga.selectors.Specificity;
+	import net.wooga.selectors.specificity.Specificity;
 
 	internal class SpecificityImpl implements Specificity {
 		
 		private static const SPECIFICITY_BASE:int = 60;
+		private static const NUMBER_FOF_POSITIONS:int = 5;
 
-
-		private var _digits:Vector.<int> = new Vector.<int>(5, true);
+		private var _digits:Vector.<int> = new Vector.<int>(NUMBER_FOF_POSITIONS, true);
 		
 
 		
@@ -18,25 +18,21 @@ package net.wooga.selectors.parser {
 			return _numberValue;
 		}
 
-		public function isLessThan(other:Specificity):Boolean {
-			return other is SpecificityImpl ? compare(other as SpecificityImpl) == -1 : this.toNumber() < other.toNumber();
+		public function get positions():int {
+			return NUMBER_FOF_POSITIONS;
 		}
 
-		public function isGreaterThan(other:Specificity):Boolean {
-			return other is SpecificityImpl ? compare(other as SpecificityImpl) == 1 : this.toNumber() > other.toNumber();
+		public function digitAtPosition(position:int):int {
+			return _digits[position];
 		}
 
-		public function isEqualTo(other:Specificity):Boolean {
-			return other is SpecificityImpl ? compare(other as SpecificityImpl) == 0: this.toNumber() == other.toNumber();
-		}
 
-//TODO (arneschroppe 14/2/12) this is slighlty hacked, get the type right
 		public function compare(other:Specificity):int {
-			return compareFromPosition(other as SpecificityImpl, _digits.length-1);
+			return compareFromPosition(other, _digits.length-1);
 		}
 
 
-		private function compareFromPosition(other:SpecificityImpl, position:int):int {
+		private function compareFromPosition(other:Specificity, position:int):int {
 			if(position < 0) {
 				return 0;
 			}
@@ -44,9 +40,9 @@ package net.wooga.selectors.parser {
 			return comparePosition(other, position) || compareFromPosition(other, position - 1);
 		}
 
-		private function comparePosition(other:SpecificityImpl, position:int):int {
+		private function comparePosition(other:Specificity, position:int):int {
 			var here:int = this._digits[position];
-			var there:int = other._digits[position];
+			var there:int = other.digitAtPosition(position);
 			
 			if(here < there) {
 				return -1;
@@ -129,5 +125,7 @@ package net.wooga.selectors.parser {
 		public function toString():String {
 			return "[Specificity " + _digits.join(".") + "]";
 		}
+
+
 	}
 }

@@ -36,6 +36,31 @@ package net.wooga.selectors.usagepatterns.implementations {
 		}
 
 
+
+		public function getMatchedObjectFor(object:Object):Object {
+			if(!isMatching(object)) {
+				return null;
+			}
+			if(_pseudoElementName) {
+				return _pseudoElementSource.pseudoElementForIdentifier(object, _pseudoElementName);
+			}
+			
+			return object;
+		}
+
+
+
+		public function getMatchedObject():Object {
+			return _matchedObjectReference.referencedObject;
+		}
+
+
+		//TODO (arneschroppe 14/3/12) it might be good to get rid of this object
+		selector_internal function get filterData():FilterData {
+			return _filterData;
+		}
+
+
 		selector_internal function set pseudoElementName(value:String):void {
 			_pseudoElementName = value;
 		}
@@ -69,25 +94,6 @@ package net.wooga.selectors.usagepatterns.implementations {
 			return _matchers;
 		}
 
-
-		//TODO (arneschroppe 14/3/12) it might be good to get rid of this object
-		selector_internal function get filterData():FilterData {
-			return _filterData;
-		}
-
-
-		public function getMatchedObjectFor(object:Object):Object {
-			if(!isMatching(object)) {
-				return null;
-			}
-			if(_pseudoElementName) {
-				return _pseudoElementSource.pseudoElementForIdentifier(object, _pseudoElementName);
-			}
-			
-			return object;
-		}
-
-
 		//TODO (arneschroppe 09/04/2012) these are only used by MatchedSelector
 
 		//Can be the actual display-object or the pseudo-element
@@ -105,9 +111,5 @@ package net.wooga.selectors.usagepatterns.implementations {
 			return _matchedObjectReference;
 		}
 
-
-		public function getMatchedObject():Object {
-			return _matchedObjectReference.referencedObject;
-		}
 	}
 }

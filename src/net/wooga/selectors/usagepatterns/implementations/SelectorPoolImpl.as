@@ -52,10 +52,7 @@ package net.wooga.selectors.usagepatterns.implementations {
 			for(var i:int = 0; i < len; ++i) {
 				var selector:SelectorImpl = possibleMatches[i] as SelectorImpl;
 				if (_matcher.isObjectMatching(adapter, selector.matchers)) {
-
 					selector.matchedObjectReference = object;
-
-
 					//TODO (arneschroppe 3/18/12) use an object pool here, so we don't have the overhead of creating objects all the time. They're flyweight's anyway
 					matches.push(selector);
 				}

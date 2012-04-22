@@ -9,7 +9,6 @@ package net.wooga.selectors.usagepatterns {
 		function get isPseudoElementSelector():Boolean;
 		function get pseudoElementName():String;
 
-		//TODO (arneschroppe 07/04/2012) do we need this? we could also simply store this in the selectorgroup
 		function get selectorGroupString():String;
 	}
 }

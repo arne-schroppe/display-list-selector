@@ -7,7 +7,6 @@ package net.wooga.selectors.specificity {
 		function get positions():int;
 		function digitAtPosition(position:int):int;
 
-		function toNumber():Number;
 		function toString():String;
 	}
 }

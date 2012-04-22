@@ -28,8 +28,8 @@ package net.wooga.selectors {
 	import org.hamcrest.core.not;
 	import org.hamcrest.core.throws;
 	import org.hamcrest.object.equalTo;
+	import org.hamcrest.object.hasPropertyChain;
 	import org.hamcrest.object.hasPropertyWithValue;
-	import org.hamcrest.object.nullValue;
 	import org.hamcrest.object.strictlyEqualTo;
 
 	//TODO (arneschroppe 22/04/2012) selectors should be case insensitive ??
@@ -820,8 +820,6 @@ package net.wooga.selectors {
 		}
 
 
-		//TODO (arneschroppe 22/04/2012) in this test it matters whether TestSpriteC is added at the start or end!!! test for this and fix it!
-
 		[Test]
 		public function should_return_pseudo_element_selectors_matching_an_object():void {
 			var instances:Array = [];
@@ -849,6 +847,38 @@ package net.wooga.selectors {
 			assertThat(firstSelector.pseudoElementName, equalTo("test-element"));
 			assertThat(firstSelector.selectorString, equalTo("TestSpriteC::test-element"));
 			assertThat(firstSelector.selectorGroupString, equalTo("TestSpriteC::test-element"));
+		}
+
+
+
+
+		[Test]
+		public function should_not_match_pseudo_element_selectors_when_not_asked_for():void {
+			var instances:Array = [];
+			_displayList.uses(contextView).containing
+					.a(TestSpriteA)
+					.a(TestSpriteB)
+					.a(TestSpriteC) .whichWillBeStoredIn(instances)
+					.end.finish();
+
+
+			var displayObject:Object = instances[0];
+			_selectorFactory.createSelectorAdapterFor(displayObject);
+
+			var selectorPool:SelectorPool = _selectorFactory.createSelectorPool();
+			selectorPool.addSelector("TestSpriteC");
+			selectorPool.addSelector("TestSpriteC::test-element");
+			selectorPool.addSelector("TestSpriteC::test-element2");
+			selectorPool.addSelector("TestSpriteC::other-element");
+
+
+			var selectors:Vector.<SelectorDescription> = selectorPool.getSelectorsMatchingObject(displayObject);
+			assertThat(selectors.length, equalTo(1));
+
+			var firstSelector:SelectorDescription = selectors[0];
+			assertThat(firstSelector.pseudoElementName, equalTo(null));
+			assertThat(firstSelector.selectorString, equalTo("TestSpriteC"));
+			assertThat(firstSelector.selectorGroupString, equalTo("TestSpriteC"));
 		}
 
 
@@ -899,6 +929,50 @@ package net.wooga.selectors {
 			assertThat(firstSelector.isPseudoElementSelector, equalTo(false));
 			assertThat(firstSelector.selectorString, equalTo("TestSpriteC"));
 			assertThat(firstSelector.selectorGroupString, equalTo("TestSpriteC"));
+		}
+
+
+
+		[Test]
+		public function items_returned_by_selector_pool_should_be_sorted_by_specificity():void {
+			var instances:Array = [];
+			_displayList.uses(contextView).containing
+					.a(TestSpriteA)
+					.a(TestSpriteB)
+					.a(TestSpriteC) .withTheName("testName") .whichWillBeStoredIn(instances)
+					.end.finish();
+
+
+			var displayObject:Object = instances[0];
+			_selectorFactory.createSelectorAdapterFor(displayObject);
+
+			var selectorPool:SelectorPool = _selectorFactory.createSelectorPool();
+			selectorPool.addSelector("TestSpriteC"); //Specificity 0 0 1 0 => 5
+			selectorPool.addSelector("*"); //Specificity 0 0 0 0 => 7
+			selectorPool.addSelector(":is-a(TestSpriteC)"); //Specificity 0 0 0 1 => 6
+			selectorPool.addSelector("TestSpriteC#testName"); //Specificity 1 0 1 0  => 1
+			selectorPool.addSelector("#testName"); //Specificity 1 0 0 0 => 2
+			selectorPool.addSelector(":nth-child(3):nth-last-child(1)"); //Specificity 0 2 0 0 => 3
+
+
+			var selectors:Vector.<SelectorDescription> = selectorPool.getSelectorsMatchingObject(displayObject);
+
+			assertThat(selectors.length, equalTo(6));
+
+			assertThat(selectors[0], hasPropertyWithValue("selectorString", "*"));
+			assertThat(selectors[1], hasPropertyWithValue("selectorString", ":is-a(TestSpriteC)"));
+			assertThat(selectors[2], hasPropertyWithValue("selectorString", "TestSpriteC"));
+			assertThat(selectors[3], hasPropertyWithValue("selectorString", ":nth-child(3):nth-last-child(1)"));
+			assertThat(selectors[4], hasPropertyWithValue("selectorString", "#testName"));
+			assertThat(selectors[5], hasPropertyWithValue("selectorString", "TestSpriteC#testName"));
+
+
+			assertThat(selectors[0], hasPropertyWithValue("specificity", new SpecificityMatcher(0,0,0,0)));
+			assertThat(selectors[1], hasPropertyWithValue("specificity", new SpecificityMatcher(0,0,0,1)));
+			assertThat(selectors[2], hasPropertyWithValue("specificity", new SpecificityMatcher(0,0,1,0)));
+			assertThat(selectors[3], hasPropertyWithValue("specificity", new SpecificityMatcher(0,2,0,0)));
+			assertThat(selectors[4], hasPropertyWithValue("specificity", new SpecificityMatcher(1,0,0,0)));
+			assertThat(selectors[5], hasPropertyWithValue("specificity", new SpecificityMatcher(1,0,1,0)));
 		}
 
 
@@ -979,7 +1053,7 @@ package net.wooga.selectors {
 			}
 		}
 
-		//TODO (arneschroppe 3/18/12) test that items returned by a selectorpool are sorted by specificity
+
 	}
 }
 
@@ -987,6 +1061,10 @@ import flash.utils.Dictionary;
 
 import net.wooga.selectors.ExternalPropertySource;
 import net.wooga.selectors.selectoradapter.SelectorAdapter;
+import net.wooga.selectors.specificity.Specificity;
+
+import org.hamcrest.Description;
+import org.hamcrest.TypeSafeDiagnosingMatcher;
 
 class PropertyDictionary implements ExternalPropertySource {
 
@@ -1005,3 +1083,39 @@ class PropertyDictionary implements ExternalPropertySource {
 	}
 }
 
+
+class SpecificityMatcher extends TypeSafeDiagnosingMatcher {
+	private var _d:int;
+	private var _a:int;
+	private var _b:int;
+	private var _c:int;
+
+	public function SpecificityMatcher(a:int, b:int, c:int, d:int) {
+		super(Specificity);
+		_a = a;
+		_b = b;
+		_c = c;
+		_d = d;
+
+	}
+
+
+	override public function matchesSafely(specificityObject:Object, description:Description):Boolean {
+
+		var specificity:Specificity = specificityObject as Specificity;
+
+		var doesMatch:Boolean =  specificity.digitAtPosition(3) == _a && specificity.digitAtPosition(2) == _b && specificity.digitAtPosition(1) == _c && specificity.digitAtPosition(0) == _d;
+
+		if(!doesMatch) {
+			description.appendText("has value " + specificity.toString());
+		}
+
+		return doesMatch
+	}
+
+
+	override public function describeTo(description:Description):void {
+		description.appendText("specificity value of " + _a + "." + _b + "." + _c + "." + _d);
+	}
+
+}

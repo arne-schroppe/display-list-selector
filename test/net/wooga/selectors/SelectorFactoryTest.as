@@ -820,6 +820,8 @@ package net.wooga.selectors {
 		}
 
 
+		//TODO (arneschroppe 22/04/2012) in this test it matters whether TestSpriteC is added at the start or end!!! test for this and fix it!
+
 		[Test]
 		public function should_return_pseudo_element_selectors_matching_an_object():void {
 			var instances:Array = [];
@@ -834,10 +836,10 @@ package net.wooga.selectors {
 			_selectorFactory.createSelectorAdapterFor(displayObject);
 
 			var selectorPool:SelectorPool = _selectorFactory.createSelectorPool();
+			selectorPool.addSelector("TestSpriteC");
 			selectorPool.addSelector("TestSpriteC::test-element");
 			selectorPool.addSelector("TestSpriteC::test-element2");
 			selectorPool.addSelector("TestSpriteC::other-element");
-			selectorPool.addSelector("TestSpriteC");
 
 
 			var selectors:Vector.<SelectorDescription> = selectorPool.getPseudoElementSelectorsMatchingObject(displayObject, "test-element");

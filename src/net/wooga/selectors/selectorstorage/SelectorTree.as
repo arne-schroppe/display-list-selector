@@ -19,11 +19,13 @@ package net.wooga.selectors.selectorstorage {
 
 		private var _pseudoElementNameKey:PseudoElementNameKey = new PseudoElementNameKey();
 		private var _filterKeys:Vector.<SelectorTreeNodeKey> = new <SelectorTreeNodeKey>[
-			new TypeNameKey(),
 			_pseudoElementNameKey,
+			new TypeNameKey(),
 			new IdKey(),
 			new HoverKey()
 		];
+
+		private static const TYPE_NAME_KEY_INDEX:int = 1;
 
 		private var _numFilterKeys:int;
 		private var _foundSelectors:Array;
@@ -75,7 +77,7 @@ package net.wooga.selectors.selectorstorage {
 				targetNode.selectors.push(selector);
 				return true;
 			}
-			else if(keyIndex == 0) {
+			else if(keyIndex == TYPE_NAME_KEY_INDEX) {
 				node.selectors.push(selector);
 			}
 

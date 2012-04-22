@@ -4,7 +4,7 @@ package net.wooga.selectors.specificity {
 
 		function compare(other:Specificity):int;
 		
-		function get positions():int;
+		function get numberOfDigits():int;
 		function digitAtPosition(position:int):int;
 
 		function toString():String;

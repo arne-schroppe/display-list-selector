@@ -4,13 +4,12 @@ package net.wooga.selectors.parser {
 
 	internal class SpecificityImpl implements Specificity {
 		
-		private static const SPECIFICITY_BASE:int = 60;
 		private static const NUMBER_OF_POSITIONS:int = 5;
 
 		private var _digits:Vector.<int> = new Vector.<int>(NUMBER_OF_POSITIONS, true);
 
 
-		public function get positions():int {
+		public function get numberOfDigits():int {
 			return NUMBER_OF_POSITIONS;
 		}
 
@@ -56,7 +55,6 @@ package net.wooga.selectors.parser {
 		//if style is set from a manual style rule
 		public function set manualStyleRule(value:int):void {
 			_digits[4] = value;
-			//recalculateNumberValue();
 		}
 
 		public function get idSelector():int {
@@ -66,7 +64,6 @@ package net.wooga.selectors.parser {
 		//for id selectors
 		public function set idSelector(value:int):void {
 			_digits[3] = value;
-			//recalculateNumberValue();
 		}
 
 		public function get classAndAttributeAndPseudoSelectors():int {
@@ -76,7 +73,6 @@ package net.wooga.selectors.parser {
 		//class selectors, attributes selectors, and pseudo-classes in the selector
 		public function set classAndAttributeAndPseudoSelectors(value:int):void {
 			_digits[2] = value;
-			//recalculateNumberValue();
 		}
 
 
@@ -87,7 +83,6 @@ package net.wooga.selectors.parser {
 		//type selectors and pseudo-elements in the selector
 		public function set elementSelectorsAndPseudoElements(value:int):void {
 			_digits[1] = value;
-			//recalculateNumberValue();
 		}
 
 
@@ -98,20 +93,8 @@ package net.wooga.selectors.parser {
 		//is-A selectors
 		public function set isAPseudoClassSelectors(value:int):void {
 			_digits[0] = value;
-			//recalculateNumberValue();
 		}
 
-
-//
-//		private function recalculateNumberValue():void {
-//
-//			var result:Number = 0;
-//			for(var position:int = 0; position < _digits.length; ++position) {
-//				result += _digits[position] * Math.pow(SPECIFICITY_BASE, position)
-//			}
-//
-//			_numberValue = result;
-//		}
 
 
 		public function toString():String {

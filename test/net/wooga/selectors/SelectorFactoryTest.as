@@ -14,7 +14,6 @@ package net.wooga.selectors {
 	import net.wooga.selectors.displaylist.DisplayObjectSelectorAdapter;
 	import net.wooga.selectors.pseudoclasses.names.PseudoClassName;
 	import net.wooga.selectors.selectoradapter.SelectorPseudoClassEvent;
-	import net.wooga.selectors.usagepatterns.PseudoElementSelectorDescription;
 	import net.wooga.selectors.usagepatterns.Selector;
 	import net.wooga.selectors.usagepatterns.SelectorDescription;
 	import net.wooga.selectors.usagepatterns.SelectorGroup;
@@ -30,6 +29,8 @@ package net.wooga.selectors {
 	import org.hamcrest.core.throws;
 	import org.hamcrest.object.equalTo;
 	import org.hamcrest.object.hasPropertyWithValue;
+	import org.hamcrest.object.nullValue;
+	import org.hamcrest.object.strictlyEqualTo;
 
 	//TODO (arneschroppe 22/04/2012) selectors should be case insensitive ??
 	//TODO (arneschroppe 22/2/12) maybe we should rewrite these tests with mocked adapters instead of using the DisplayObjectStyleAdapter ??
@@ -839,76 +840,64 @@ package net.wooga.selectors {
 			selectorPool.addSelector("TestSpriteC");
 
 
-			var selectors:Vector.<PseudoElementSelectorDescription> = selectorPool.getPseudoElementSelectorsMatchingObject(displayObject, "test-element");
+			var selectors:Vector.<SelectorDescription> = selectorPool.getPseudoElementSelectorsMatchingObject(displayObject, "test-element");
 			assertThat(selectors.length, equalTo(1));
 
-			var firstSelector:PseudoElementSelectorDescription = selectors[0];
+			var firstSelector:SelectorDescription = selectors[0];
 			assertThat(firstSelector.pseudoElementName, equalTo("test-element"));
 			assertThat(firstSelector.selectorString, equalTo("TestSpriteC::test-element"));
 			assertThat(firstSelector.selectorGroupString, equalTo("TestSpriteC::test-element"));
 		}
 
-		/*
-		[Test]
-		public function should_return_registered_object_for_pseudo_element():void {
 
+
+		[Test]
+		public function should_match_pseudo_element():void {
 			var instances:Array = [];
 			_displayList.uses(contextView).containing
-				.a(TestSpriteA)
-				.a(TestSpriteB)
-				.a(TestSpriteB) .withTheName("test") .whichWillBeStoredIn(instances)
-			.end.finish();
+					.a(TestSpriteA)
+					.a(TestSpriteB)
+					.a(TestSpriteC) .whichWillBeStoredIn(instances)
+				.end.finish();
+
 
 			var displayObject:Object = instances[0];
-
-			var pseudoElement:String = "test 12345";
-			_pseudoElementMap.add(displayObject, "test-element", pseudoElement);
-
 			_selectorFactory.createSelectorAdapterFor(displayObject);
-			var selectorGroup:SelectorGroup = _selectorFactory.createSelector("TestSpriteB#test::test-element");
-			var selector:Selector = selectorGroup.getSelectorAtIndex(0);
 
-			assertThat(selector.getMatchedObjectFor(displayObject), strictlyEqualTo(pseudoElement));
+			var selectors:SelectorGroup = _selectorFactory.createSelector("TestSpriteC::test-element");
+			var firstSelector:Selector = selectors.getSelectorAtIndex(0);
 
+			assertThat(firstSelector.isMatching(displayObject), equalTo(true));
+			assertThat(firstSelector.pseudoElementName, equalTo("test-element"));
+			assertThat(firstSelector.isPseudoElementSelector, equalTo(true));
+			assertThat(firstSelector.selectorString, equalTo("TestSpriteC::test-element"));
+			assertThat(firstSelector.selectorGroupString, equalTo("TestSpriteC::test-element"));
 		}
-		*/
-
-
-//
-//
-//
-//		[Test]
-//		public function should_return_registered_object_for_pseudo_element_in_selector_pool():void {
-//
-//			var instances:Array = [];
-//			_displayList.uses(contextView).containing
-//					.a(TestSpriteA)
-//					.a(TestSpriteB)
-//					.a(TestSpriteB) .withTheName("test") .whichWillBeStoredIn(instances)
-//					.end.finish();
-//
-//			var displayObject:Object = instances[0];
-//
-//			var pseudoElement:String = "test 12345";
-//			_pseudoElementMap.add(displayObject, "test-element", pseudoElement);
-//			_selectorFactory.createSelectorAdapterFor(displayObject);
-//
-//
-//			var selectorPool:SelectorPool = _selectorFactory.createSelectorPool();
-//			selectorPool.addSelector("TestSpriteB#test::test-element");
-//
-//			var selectors:Vector.<MatchedSelector> = selectorPool.getSelectorsMatchingObject(displayObject);
-//
-//			var selector:MatchedSelector = selectors[0];
-//			assertThat(selectors.length, equalTo(1));
-//
-//			assertThat(selector.getMatchedObject(), strictlyEqualTo(pseudoElement));
-//
-//		}
 
 
 
+		[Test]
+		public function should_not_have_pseudo_element_name_set_if_it_is_not_pseudo_element_matcher():void {
+			var instances:Array = [];
+			_displayList.uses(contextView).containing
+					.a(TestSpriteA)
+					.a(TestSpriteB)
+					.a(TestSpriteC) .whichWillBeStoredIn(instances)
+					.end.finish();
 
+
+			var displayObject:Object = instances[0];
+			_selectorFactory.createSelectorAdapterFor(displayObject);
+
+			var selectors:SelectorGroup = _selectorFactory.createSelector("TestSpriteC");
+			var firstSelector:Selector = selectors.getSelectorAtIndex(0);
+
+			assertThat(firstSelector.isMatching(displayObject), equalTo(true));
+			assertThat(firstSelector.pseudoElementName, strictlyEqualTo(null));
+			assertThat(firstSelector.isPseudoElementSelector, equalTo(false));
+			assertThat(firstSelector.selectorString, equalTo("TestSpriteC"));
+			assertThat(firstSelector.selectorGroupString, equalTo("TestSpriteC"));
+		}
 
 
 

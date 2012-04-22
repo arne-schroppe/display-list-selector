@@ -9,13 +9,13 @@ package net.wooga.selectors.usagepatterns.implementations {
 
 	use namespace selector_internal;
 
-	public class SelectorImpl extends SelectorDescriptionImpl implements Selector, PseudoElementSelectorDescription {
+	public class SelectorImpl extends SelectorDescriptionImpl implements Selector {
 
 		private var _adapterSource:SelectorAdapterSource;
 		private var _matcherTool:MatcherTool;
 		private var _matchers:Vector.<Matcher> = new <Matcher>[];
 
-		private var _pseudoElementName:String;
+
 
 
 		public function isMatching(object:Object):Boolean {
@@ -46,12 +46,6 @@ package net.wooga.selectors.usagepatterns.implementations {
 			return _matchers;
 		}
 
-		public function get pseudoElementName():String {
-			return _pseudoElementName;
-		}
 
-		selector_internal function set pseudoElementNameInternal(value:String):void {
-			_pseudoElementName = value;
-		}
 	}
 }

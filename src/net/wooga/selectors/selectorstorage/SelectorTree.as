@@ -90,7 +90,7 @@ package net.wooga.selectors.selectorstorage {
 		}
 
 
-		public function getPossibleMatchesFor(object:SelectorAdapter):Array {
+		public function getPossibleMatchesFor(object:SelectorAdapter, pseudoElementName:String = null):Array {
 
 			if(_selectorsWereAdded) {
 				invalidateAllKeyCaches();
@@ -98,23 +98,11 @@ package net.wooga.selectors.selectorstorage {
 			}
 
 			_foundSelectors = [];
-			_pseudoElementNameKey.currentlyMatchedPseudoElement = PseudoElementNameKey.NULL_KEY;
+			_pseudoElementNameKey.currentlyMatchedPseudoElement = pseudoElementName ? pseudoElementName : PseudoElementNameKey.NULL_KEY;
 			searchForMatches(_filterRoot, 0, object);
 			return _foundSelectors;
 		}
 
-		public function getPossiblePseudoElementMatchesFor(object:SelectorAdapter, pseudoElementName:String = ""):Array {
-
-			if(_selectorsWereAdded) {
-				invalidateAllKeyCaches();
-				_selectorsWereAdded = false;
-			}
-
-			_foundSelectors = [];
-			_pseudoElementNameKey.currentlyMatchedPseudoElement = pseudoElementName;
-			searchForMatches(_filterRoot, 0, object);
-			return _foundSelectors;
-		}
 
 
 		private function searchForMatches(node:SelectorFilterTreeNode, keyIndex:int, adapter:SelectorAdapter):void {

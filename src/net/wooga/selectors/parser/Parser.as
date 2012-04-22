@@ -113,7 +113,7 @@ package net.wooga.selectors.parser {
 			_currentSelector.specificity = _specificity;
 
 			if(_pseudoElementName) {
-				_currentSelector.pseudoElementNameInternal = _pseudoElementName;
+				_currentSelector.pseudoElementName = _pseudoElementName;
 			}
 
 			_currentSelectorHasPseudoElement = false;

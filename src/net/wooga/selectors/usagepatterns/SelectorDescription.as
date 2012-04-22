@@ -7,6 +7,6 @@ package net.wooga.selectors.usagepatterns {
 		function get selectorString():String;
 
 		//TODO (arneschroppe 07/04/2012) do we need this? we could also simply store this in the selectorgroup
-		function get originalSelectorString():String;
+		function get selectorGroupString():String;
 	}
 }

@@ -30,7 +30,7 @@ package net.wooga.selectors.selectorstorage {
 		
 		private var _parser:Parser;
 
-		private static const ORIGINAL_SELECTOR_PROPERTY:String = "originalSelectorString";
+		private static const ORIGINAL_SELECTOR_PROPERTY:String = "selectorGroupString";
 
 		[Mock]
 		public var selectorAdapter:SelectorAdapter;
@@ -38,7 +38,7 @@ package net.wooga.selectors.selectorstorage {
 		[Before]
 		public function setUp():void {
 			_selectorStorage = new SelectorTree();
-			_parser = new Parser(null, null, this);
+			_parser = new Parser(null, this);
 		}
 
 
@@ -140,7 +140,7 @@ package net.wooga.selectors.selectorstorage {
 			given(selectorAdapter.getQualifiedElementClassName()).willReturn("net.wooga.fixtures.TestSpriteA");
 			given(selectorAdapter.getElementClassName()).willReturn("TestSpriteA");
 			given(selectorAdapter.getId()).willReturn(id);
-			given(selectorAdapter.hasPseudoClass(PseudoClassName.hover)).willReturn(true);
+			given(selectorAdapter.hasPseudoClass(PseudoClassName.HOVER)).willReturn(true);
 			var possibleMatches:Array = _selectorStorage.getPossibleMatchesFor(selectorAdapter);
 
 			assertThat(possibleMatches, containsExactlyInArray(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel1)));
@@ -169,7 +169,7 @@ package net.wooga.selectors.selectorstorage {
 			given(selectorAdapter.getQualifiedElementClassName()).willReturn("net.wooga.fixtures.TestSpriteA");
 			given(selectorAdapter.getElementClassName()).willReturn("TestSpriteA");
 			given(selectorAdapter.getId()).willReturn(id);
-			given(selectorAdapter.hasPseudoClass(PseudoClassName.hover)).willReturn(false);
+			given(selectorAdapter.hasPseudoClass(PseudoClassName.HOVER)).willReturn(false);
 			var possibleMatches:Array = _selectorStorage.getPossibleMatchesFor(selectorAdapter);
 
 			assertThat(possibleMatches, containsExactlyInArray(1, hasPropertyWithValue(ORIGINAL_SELECTOR_PROPERTY, sel6)));
@@ -282,7 +282,7 @@ package net.wooga.selectors.selectorstorage {
 
 		public function getPseudoClass(pseudoClassName:String):PseudoClass {
 			if(pseudoClassName == "hover") {
-				return new SettablePseudoClass(PseudoClassName.hover);
+				return new SettablePseudoClass(PseudoClassName.HOVER);
 			}
 			else if(pseudoClassName == "is-a") {
 				return new IsA();

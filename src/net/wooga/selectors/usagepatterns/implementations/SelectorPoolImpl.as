@@ -1,9 +1,6 @@
 package net.wooga.selectors.usagepatterns.implementations {
 
-	import flash.utils.Dictionary;
-
 	import net.wooga.selectors.adaptermap.SelectorAdapterSource;
-
 	import net.wooga.selectors.matching.MatcherTool;
 	import net.wooga.selectors.namespace.selector_internal;
 	import net.wooga.selectors.parser.Parser;
@@ -40,13 +37,10 @@ package net.wooga.selectors.usagepatterns.implementations {
 		}
 
 
-		public function getSelectorsMatchingObject(object:Object):Vector.<MatchedSelector> {
-			var adapter:SelectorAdapter = _adapterSource.getSelectorAdapterForObject(object);
-			if(!adapter) {
-				throw new ArgumentError("No style adapter registered for object " + object);
-			}
-
-			var matches:Vector.<MatchedSelector> = new <MatchedSelector>[];
+		//TODO (arneschroppe 22/04/2012) get rid of the duplicate code somehow, without compromising speed
+		public function getSelectorsMatchingObject(object:Object):Vector.<SelectorDescription> {
+			var adapter:SelectorAdapter = getAdapter(object);
+			var matches:Vector.<SelectorDescription> = new <SelectorDescription>[];
 
 			var possibleMatches:Array = _knownSelectors.getPossibleMatchesFor(adapter);
 
@@ -54,7 +48,6 @@ package net.wooga.selectors.usagepatterns.implementations {
 			for(var i:int = 0; i < len; ++i) {
 				var selector:SelectorImpl = possibleMatches[i] as SelectorImpl;
 				if (_matcher.isObjectMatching(adapter, selector.matchers)) {
-					selector.matchedObjectReference = object;
 					//TODO (arneschroppe 3/18/12) use an object pool here, so we don't have the overhead of creating objects all the time. They're flyweight's anyway
 					matches.push(selector);
 				}
@@ -68,5 +61,35 @@ package net.wooga.selectors.usagepatterns.implementations {
 		}
 
 
+		public function getPseudoElementSelectorsMatchingObject(object:Object, pseudoElement:String):Vector.<PseudoElementSelectorDescription> {
+			var adapter:SelectorAdapter = getAdapter(object);
+			var matches:Vector.<PseudoElementSelectorDescription> = new <PseudoElementSelectorDescription>[];
+
+			var possibleMatches:Array = _knownSelectors.getPossiblePseudoElementMatchesFor(adapter, pseudoElement);
+
+			var len:int = possibleMatches.length;
+			for(var i:int = 0; i < len; ++i) {
+				var selector:SelectorImpl = possibleMatches[i] as SelectorImpl;
+				if (_matcher.isObjectMatching(adapter, selector.matchers)) {
+					//TODO (arneschroppe 3/18/12) use an object pool here, so we don't have the overhead of creating objects all the time. They're flyweight's anyway
+					matches.push(selector);
+				}
+			}
+
+			//TODO (arneschroppe 3/18/12) because of the comma-separator in strings, it might be possible that selectors get added several times. we should make the vector unique
+			matches = matches.sort(SpecificityComparator.staticCompare);
+
+
+			return matches as Vector.<PseudoElementSelectorDescription>;
+		}
+
+
+		private function getAdapter(object:Object):SelectorAdapter {
+			var adapter:SelectorAdapter = _adapterSource.getSelectorAdapterForObject(object);
+			if (!adapter) {
+				throw new ArgumentError("No style adapter registered for object " + object);
+			}
+			return adapter;
+		}
 	}
 }

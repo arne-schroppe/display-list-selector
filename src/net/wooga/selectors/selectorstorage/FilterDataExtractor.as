@@ -57,7 +57,7 @@ package net.wooga.selectors.selectorstorage {
 
 				if( matcher is PseudoClassMatcher &&
 						(matcher as PseudoClassMatcher).pseudoClass is SettablePseudoClass &&
-						((matcher as PseudoClassMatcher).pseudoClass as SettablePseudoClass).pseudoClassName == PseudoClassName.hover) {
+						((matcher as PseudoClassMatcher).pseudoClass as SettablePseudoClass).pseudoClassName == PseudoClassName.HOVER) {
 					return true;
 				}
 			}

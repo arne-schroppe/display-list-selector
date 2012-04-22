@@ -3,7 +3,6 @@ package net.wooga.selectors.parser {
 	import flash.utils.Dictionary;
 
 	import net.wooga.selectors.ExternalPropertySource;
-	import net.wooga.selectors.PseudoElementSource;
 	import net.wooga.selectors.matching.matchers.Matcher;
 	import net.wooga.selectors.matching.matchers.implementations.ClassMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.IdMatcher;
@@ -33,7 +32,6 @@ package net.wooga.selectors.parser {
 
 
 		private var _externalPropertySource:ExternalPropertySource;
-		private var _pseudoElementSource:PseudoElementSource;
 		private var _pseudoClassProvider:PseudoClassProvider;
 
 		private var _isSyntaxExtensionAllowed:Boolean = true;
@@ -53,9 +51,8 @@ package net.wooga.selectors.parser {
 		private var _alreadyParsedSelectors:Dictionary = new Dictionary();
 
 
-		public function Parser(externalPropertySource:ExternalPropertySource, pseudoElementSource:PseudoElementSource, pseudoClassProvider:PseudoClassProvider) {
+		public function Parser(externalPropertySource:ExternalPropertySource, pseudoClassProvider:PseudoClassProvider) {
 			_externalPropertySource = externalPropertySource;
-			_pseudoElementSource = pseudoElementSource;
 			_pseudoClassProvider = pseudoClassProvider;
 		}
 
@@ -109,15 +106,14 @@ package net.wooga.selectors.parser {
 				return;
 			}
 
-			_currentSelector.originalSelectorString = _originalSelector;
+			_currentSelector.selectorGroupString = _originalSelector;
 
 			var subSelector:String = _input.getSubString(_subSelectorStartIndex, _subSelectorEndIndex);
 			_currentSelector.selectorString = subSelector;
 			_currentSelector.specificity = _specificity;
 
 			if(_pseudoElementName) {
-				_currentSelector.pseudoElementName = _pseudoElementName;
-				_currentSelector.pseudoElementSource = _pseudoElementSource;
+				_currentSelector.pseudoElementNameInternal = _pseudoElementName;
 			}
 
 			_currentSelectorHasPseudoElement = false;

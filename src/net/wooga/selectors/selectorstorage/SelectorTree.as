@@ -5,6 +5,7 @@ package net.wooga.selectors.selectorstorage {
 	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 	import net.wooga.selectors.selectorstorage.keys.HoverKey;
 	import net.wooga.selectors.selectorstorage.keys.IdKey;
+	import net.wooga.selectors.selectorstorage.keys.PseudoElementNameKey;
 	import net.wooga.selectors.selectorstorage.keys.SelectorTreeNodeKey;
 	import net.wooga.selectors.selectorstorage.keys.TypeNameKey;
 	import net.wooga.selectors.usagepatterns.implementations.SelectorImpl;
@@ -15,8 +16,11 @@ package net.wooga.selectors.selectorstorage {
 
 
 		private var _filterRoot:SelectorFilterTreeNode;
+
+		private var _pseudoElementNameKey:PseudoElementNameKey = new PseudoElementNameKey();
 		private var _filterKeys:Vector.<SelectorTreeNodeKey> = new <SelectorTreeNodeKey>[
 			new TypeNameKey(),
+			_pseudoElementNameKey,
 			new IdKey(),
 			new HoverKey()
 		];
@@ -94,6 +98,20 @@ package net.wooga.selectors.selectorstorage {
 			}
 
 			_foundSelectors = [];
+			_pseudoElementNameKey.currentlyMatchedPseudoElement = PseudoElementNameKey.NULL_KEY;
+			searchForMatches(_filterRoot, 0, object);
+			return _foundSelectors;
+		}
+
+		public function getPossiblePseudoElementMatchesFor(object:SelectorAdapter, pseudoElementName:String = ""):Array {
+
+			if(_selectorsWereAdded) {
+				invalidateAllKeyCaches();
+				_selectorsWereAdded = false;
+			}
+
+			_foundSelectors = [];
+			_pseudoElementNameKey.currentlyMatchedPseudoElement = pseudoElementName;
 			searchForMatches(_filterRoot, 0, object);
 			return _foundSelectors;
 		}
@@ -114,7 +132,7 @@ package net.wooga.selectors.selectorstorage {
 			var nodeKey:SelectorTreeNodeKey = _filterKeys[keyIndex] as SelectorTreeNodeKey;
 			var keys:Array = nodeKey.keysForAdapter(adapter, node.childNodes);
 
-			var len:int = keys.length
+			var len:int = keys.length;
 			for(var i:int = 0; i < len; ++i ) {
 				searchForMatches(node.childNodes[keys[i] as String] as SelectorFilterTreeNode, keyIndex + 1, adapter);
 			}

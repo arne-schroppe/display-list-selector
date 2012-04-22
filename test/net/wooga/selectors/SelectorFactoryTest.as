@@ -12,7 +12,9 @@ package net.wooga.selectors {
 	import net.wooga.fixtures.matcher.containsExactlyInArray;
 	import net.wooga.fixtures.tools.ContextViewBasedTest;
 	import net.wooga.selectors.displaylist.DisplayObjectSelectorAdapter;
-	import net.wooga.selectors.usagepatterns.MatchedSelector;
+	import net.wooga.selectors.pseudoclasses.names.PseudoClassName;
+	import net.wooga.selectors.selectoradapter.SelectorPseudoClassEvent;
+	import net.wooga.selectors.usagepatterns.PseudoElementSelectorDescription;
 	import net.wooga.selectors.usagepatterns.Selector;
 	import net.wooga.selectors.usagepatterns.SelectorDescription;
 	import net.wooga.selectors.usagepatterns.SelectorGroup;
@@ -28,10 +30,8 @@ package net.wooga.selectors {
 	import org.hamcrest.core.throws;
 	import org.hamcrest.object.equalTo;
 	import org.hamcrest.object.hasPropertyWithValue;
-	import org.hamcrest.object.isFalse;
-	import org.hamcrest.object.isTrue;
-	import org.hamcrest.object.strictlyEqualTo;
 
+	//TODO (arneschroppe 22/04/2012) selectors should be case insensitive ??
 	//TODO (arneschroppe 22/2/12) maybe we should rewrite these tests with mocked adapters instead of using the DisplayObjectStyleAdapter ??
 	public class SelectorFactoryTest extends ContextViewBasedTest {
 
@@ -41,16 +41,14 @@ package net.wooga.selectors {
 
 		private var _displayList:DisplayTree;
 		private var _propertyDictionary:PropertyDictionary;
-		private var _pseudoElementMap:PseudoElementMap;
 
 		override public function setUp():void {
 			super.setUp();
 			_propertyDictionary = new PropertyDictionary();
-			_pseudoElementMap = new PseudoElementMap();
 			_displayList = new DisplayTree();
 
 			_selectorFactory = new AbstractSelectorFactory();
-			_selectorFactory.initializeWith(contextView, _propertyDictionary, _pseudoElementMap);
+			_selectorFactory.initializeWith(contextView, _propertyDictionary);
 			_selectorFactory.setDefaultSelectorAdapter(DisplayObjectSelectorAdapter);
 
 
@@ -429,6 +427,33 @@ package net.wooga.selectors {
 
 
 		[Test]
+		public function should_also_match_unhovered_selectors_when_hovered():void {
+
+			var instances:Array = [];
+			_displayList.uses(contextView).containing
+					.a(TestSpriteC) .whichWillBeStoredIn(instances)
+				.end.finish();
+
+
+			var displayObject:DisplayObject = instances[0];
+			_selectorFactory.createSelectorAdapterFor(displayObject);
+			displayObject.dispatchEvent(new SelectorPseudoClassEvent(SelectorPseudoClassEvent.ADD_PSEUDO_CLASS, PseudoClassName.HOVER));
+
+			var selectorPool:SelectorPool = _selectorFactory.createSelectorPool();
+			selectorPool.addSelector("TestSpriteC:hover");
+			selectorPool.addSelector("TestSpriteC");
+			selectorPool.addSelector("TestSpriteA:hover");
+
+
+			var selectors:Vector.<SelectorDescription> = selectorPool.getSelectorsMatchingObject(displayObject);
+			assertThat(selectors.length, equalTo(2));
+			assertThat(selectors, containsExactlyInArray(1, hasPropertyWithValue("selectorString", "TestSpriteC:hover")));
+			assertThat(selectors, containsExactlyInArray(1, hasPropertyWithValue("selectorString", "TestSpriteC")));
+
+		}
+
+
+		[Test]
 		public function should_match_firstchild_pseudo_class():void {
 
 			_displayList.uses(contextView).containing
@@ -795,6 +820,36 @@ package net.wooga.selectors {
 
 
 		[Test]
+		public function should_return_pseudo_element_selectors_matching_an_object():void {
+			var instances:Array = [];
+			_displayList.uses(contextView).containing
+					.a(TestSpriteA)
+					.a(TestSpriteB)
+					.a(TestSpriteC) .whichWillBeStoredIn(instances)
+				.end.finish();
+
+
+			var displayObject:Object = instances[0];
+			_selectorFactory.createSelectorAdapterFor(displayObject);
+
+			var selectorPool:SelectorPool = _selectorFactory.createSelectorPool();
+			selectorPool.addSelector("TestSpriteC::test-element");
+			selectorPool.addSelector("TestSpriteC::test-element2");
+			selectorPool.addSelector("TestSpriteC::other-element");
+			selectorPool.addSelector("TestSpriteC");
+
+
+			var selectors:Vector.<PseudoElementSelectorDescription> = selectorPool.getPseudoElementSelectorsMatchingObject(displayObject, "test-element");
+			assertThat(selectors.length, equalTo(1));
+
+			var firstSelector:PseudoElementSelectorDescription = selectors[0];
+			assertThat(firstSelector.pseudoElementName, equalTo("test-element"));
+			assertThat(firstSelector.selectorString, equalTo("TestSpriteC::test-element"));
+			assertThat(firstSelector.selectorGroupString, equalTo("TestSpriteC::test-element"));
+		}
+
+		/*
+		[Test]
 		public function should_return_registered_object_for_pseudo_element():void {
 
 			var instances:Array = [];
@@ -816,39 +871,40 @@ package net.wooga.selectors {
 			assertThat(selector.getMatchedObjectFor(displayObject), strictlyEqualTo(pseudoElement));
 
 		}
+		*/
 
 
-
-
-
-		[Test]
-		public function should_return_registered_object_for_pseudo_element_in_selector_pool():void {
-
-			var instances:Array = [];
-			_displayList.uses(contextView).containing
-					.a(TestSpriteA)
-					.a(TestSpriteB)
-					.a(TestSpriteB) .withTheName("test") .whichWillBeStoredIn(instances)
-					.end.finish();
-
-			var displayObject:Object = instances[0];
-
-			var pseudoElement:String = "test 12345";
-			_pseudoElementMap.add(displayObject, "test-element", pseudoElement);
-			_selectorFactory.createSelectorAdapterFor(displayObject);
-			
-			
-			var selectorPool:SelectorPool = _selectorFactory.createSelectorPool();
-			selectorPool.addSelector("TestSpriteB#test::test-element");
-
-			var selectors:Vector.<MatchedSelector> = selectorPool.getSelectorsMatchingObject(displayObject);
-
-			var selector:MatchedSelector = selectors[0];
-			assertThat(selectors.length, equalTo(1));
-
-			assertThat(selector.getMatchedObject(), strictlyEqualTo(pseudoElement));
-
-		}
+//
+//
+//
+//		[Test]
+//		public function should_return_registered_object_for_pseudo_element_in_selector_pool():void {
+//
+//			var instances:Array = [];
+//			_displayList.uses(contextView).containing
+//					.a(TestSpriteA)
+//					.a(TestSpriteB)
+//					.a(TestSpriteB) .withTheName("test") .whichWillBeStoredIn(instances)
+//					.end.finish();
+//
+//			var displayObject:Object = instances[0];
+//
+//			var pseudoElement:String = "test 12345";
+//			_pseudoElementMap.add(displayObject, "test-element", pseudoElement);
+//			_selectorFactory.createSelectorAdapterFor(displayObject);
+//
+//
+//			var selectorPool:SelectorPool = _selectorFactory.createSelectorPool();
+//			selectorPool.addSelector("TestSpriteB#test::test-element");
+//
+//			var selectors:Vector.<MatchedSelector> = selectorPool.getSelectorsMatchingObject(displayObject);
+//
+//			var selector:MatchedSelector = selectors[0];
+//			assertThat(selectors.length, equalTo(1));
+//
+//			assertThat(selector.getMatchedObject(), strictlyEqualTo(pseudoElement));
+//
+//		}
 
 
 
@@ -904,7 +960,7 @@ package net.wooga.selectors {
 		}
 
 		private function selectorPoolMatchMethod(object:DisplayObject, selectorString:String, result:Array):void {
-			var matchingSelectors:Vector.<MatchedSelector> = _selectorPool.getSelectorsMatchingObject(object);
+			var matchingSelectors:Vector.<SelectorDescription> = _selectorPool.getSelectorsMatchingObject(object);
 			if (matchingSelectors.filter(filterFunctionFor(selectorString)).length > 0) {
 				result.push(object);
 			}
@@ -927,8 +983,8 @@ package net.wooga.selectors {
 
 
 		private function filterFunctionFor(selectorString:String):Function {
-			return function(item:SelectorDescription, index:int, vector:Vector.<MatchedSelector>):Boolean {
-				return item.originalSelectorString == selectorString;
+			return function(item:SelectorDescription, index:int, vector:Vector.<SelectorDescription>):Boolean {
+				return item.selectorGroupString == selectorString;
 			}
 		}
 
@@ -939,7 +995,6 @@ package net.wooga.selectors {
 import flash.utils.Dictionary;
 
 import net.wooga.selectors.ExternalPropertySource;
-import net.wooga.selectors.PseudoElementSource;
 import net.wooga.selectors.selectoradapter.SelectorAdapter;
 
 class PropertyDictionary implements ExternalPropertySource {
@@ -959,25 +1014,3 @@ class PropertyDictionary implements ExternalPropertySource {
 	}
 }
 
-class PseudoElementMap implements PseudoElementSource {
-	
-	
-	private var _map:Dictionary = new Dictionary();
-
-	public function add(object:Object, pseudoElementName:String, pseudoElement:Object):void {
-		
-		if(!(object in _map)) {
-			_map[object] = new Dictionary();
-		}
-		
-		if(!(pseudoElementName in _map[object])) {
-			_map[object][pseudoElementName] = pseudoElement;
-		}
-		
-	}
-
-
-	public function pseudoElementForIdentifier(matchedObject:Object, identifier:String):Object {
-		return _map[matchedObject][identifier];
-	}
-}

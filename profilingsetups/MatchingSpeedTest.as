@@ -5,7 +5,6 @@ package {
 
 	import net.arneschroppe.displaytreebuilder.DisplayTree;
 	import net.wooga.selectors.usagepatterns.SelectorPool;
-	import net.wooga.speed.profilingsetups.BasicProfilingSprite;
 
 	public class MatchingSpeedTest extends BasicProfilingSprite {
 

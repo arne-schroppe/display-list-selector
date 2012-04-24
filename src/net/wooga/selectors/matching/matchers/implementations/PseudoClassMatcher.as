@@ -1,6 +1,7 @@
 package net.wooga.selectors.matching.matchers.implementations {
 
 	import net.wooga.selectors.matching.matchers.Matcher;
+	import net.wooga.selectors.matching.matchers.implementations.combinators.MatcherFamily;
 	import net.wooga.selectors.pseudoclasses.PseudoClass;
 	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 
@@ -23,6 +24,10 @@ package net.wooga.selectors.matching.matchers.implementations {
 
 		public function isMatching(subject:SelectorAdapter):Boolean {
 			return _pseudoClass.isMatching(subject);
+		}
+
+		public function get matcherFamily():MatcherFamily {
+			return MatcherFamily.SIMPLE_MATCHER;
 		}
 	}
 }

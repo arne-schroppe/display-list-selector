@@ -27,32 +27,32 @@ package net.wooga.selectors.displaylist {
 
 		[Test]
 		public function should_change_hover_state():void {
-			assertThat(_adapter.hasPseudoClass(PseudoClassName.hover), equalTo(false));
-			adaptedSprite.dispatchEvent(new SelectorPseudoClassEvent(SelectorPseudoClassEvent.ADD_PSEUDO_CLASS, PseudoClassName.hover));
-			assertThat(_adapter.hasPseudoClass(PseudoClassName.hover), equalTo(true));
-			adaptedSprite.dispatchEvent(new SelectorPseudoClassEvent(SelectorPseudoClassEvent.REMOVE_PSEUDO_CLASS, PseudoClassName.hover));
-			assertThat(_adapter.hasPseudoClass(PseudoClassName.hover), equalTo(false));
+			assertThat(_adapter.hasPseudoClass(PseudoClassName.HOVER), equalTo(false));
+			adaptedSprite.dispatchEvent(new SelectorPseudoClassEvent(SelectorPseudoClassEvent.ADD_PSEUDO_CLASS, PseudoClassName.HOVER));
+			assertThat(_adapter.hasPseudoClass(PseudoClassName.HOVER), equalTo(true));
+			adaptedSprite.dispatchEvent(new SelectorPseudoClassEvent(SelectorPseudoClassEvent.REMOVE_PSEUDO_CLASS, PseudoClassName.HOVER));
+			assertThat(_adapter.hasPseudoClass(PseudoClassName.HOVER), equalTo(false));
 		}
 
 
 
 		[Test]
 		public function should_change_active_state():void {
-			assertThat(_adapter.hasPseudoClass(PseudoClassName.active), equalTo(false));
-			adaptedSprite.dispatchEvent(new SelectorPseudoClassEvent(SelectorPseudoClassEvent.ADD_PSEUDO_CLASS, PseudoClassName.active));
-			assertThat(_adapter.hasPseudoClass(PseudoClassName.active), equalTo(true));
-			adaptedSprite.dispatchEvent(new SelectorPseudoClassEvent(SelectorPseudoClassEvent.REMOVE_PSEUDO_CLASS, PseudoClassName.active));
-			assertThat(_adapter.hasPseudoClass(PseudoClassName.active), equalTo(false));
+			assertThat(_adapter.hasPseudoClass(PseudoClassName.ACTIVE), equalTo(false));
+			adaptedSprite.dispatchEvent(new SelectorPseudoClassEvent(SelectorPseudoClassEvent.ADD_PSEUDO_CLASS, PseudoClassName.ACTIVE));
+			assertThat(_adapter.hasPseudoClass(PseudoClassName.ACTIVE), equalTo(true));
+			adaptedSprite.dispatchEvent(new SelectorPseudoClassEvent(SelectorPseudoClassEvent.REMOVE_PSEUDO_CLASS, PseudoClassName.ACTIVE));
+			assertThat(_adapter.hasPseudoClass(PseudoClassName.ACTIVE), equalTo(false));
 		}
 
 
 		[Test]
 		public function should_change_focused_state():void {
-			assertThat(_adapter.hasPseudoClass(PseudoClassName.focus), equalTo(false));
-			adaptedSprite.dispatchEvent(new SelectorPseudoClassEvent(SelectorPseudoClassEvent.ADD_PSEUDO_CLASS, PseudoClassName.focus));
-			assertThat(_adapter.hasPseudoClass(PseudoClassName.focus), equalTo(true));
-			adaptedSprite.dispatchEvent(new SelectorPseudoClassEvent(SelectorPseudoClassEvent.REMOVE_PSEUDO_CLASS, PseudoClassName.focus));
-			assertThat(_adapter.hasPseudoClass(PseudoClassName.focus), equalTo(false));
+			assertThat(_adapter.hasPseudoClass(PseudoClassName.FOCUS), equalTo(false));
+			adaptedSprite.dispatchEvent(new SelectorPseudoClassEvent(SelectorPseudoClassEvent.ADD_PSEUDO_CLASS, PseudoClassName.FOCUS));
+			assertThat(_adapter.hasPseudoClass(PseudoClassName.FOCUS), equalTo(true));
+			adaptedSprite.dispatchEvent(new SelectorPseudoClassEvent(SelectorPseudoClassEvent.REMOVE_PSEUDO_CLASS, PseudoClassName.FOCUS));
+			assertThat(_adapter.hasPseudoClass(PseudoClassName.FOCUS), equalTo(false));
 		}
 	}
 }

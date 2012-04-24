@@ -1,6 +1,6 @@
 package net.wooga.selectors.tools {
 
-	import net.wooga.selectors.Specificity;
+	import net.wooga.selectors.specificity.Specificity;
 	import net.wooga.selectors.usagepatterns.SelectorDescription;
 
 	public class SpecificityComparator  {

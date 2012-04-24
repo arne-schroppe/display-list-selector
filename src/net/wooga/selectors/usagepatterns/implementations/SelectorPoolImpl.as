@@ -1,7 +1,6 @@
 package net.wooga.selectors.usagepatterns.implementations {
 
-	import flash.utils.Dictionary;
-
+	import net.wooga.selectors.adaptermap.SelectorAdapterSource;
 	import net.wooga.selectors.matching.MatcherTool;
 	import net.wooga.selectors.namespace.selector_internal;
 	import net.wooga.selectors.parser.Parser;
@@ -15,16 +14,16 @@ package net.wooga.selectors.usagepatterns.implementations {
 		use namespace selector_internal;
 
 		private var _matcher:MatcherTool;
-		private var _objectToSelectorAdapterMap:Dictionary;
+		private var _adapterSource:SelectorAdapterSource;
 		private var _parser:Parser;
 
 		private var _knownSelectors:SelectorTree = new SelectorTree();
 
 
-		public function SelectorPoolImpl(parser:Parser, matcher:MatcherTool, objectToSelectorAdapterMap:Dictionary) {
+		public function SelectorPoolImpl(parser:Parser, matcher:MatcherTool, adapterSource:SelectorAdapterSource) {
 			_parser = parser;
 			_matcher = matcher;
-			_objectToSelectorAdapterMap = objectToSelectorAdapterMap;
+			_adapterSource = adapterSource;
 
 		}
 
@@ -38,21 +37,21 @@ package net.wooga.selectors.usagepatterns.implementations {
 		}
 
 
-		public function getSelectorsMatchingObject(object:Object):Vector.<MatchedSelector> {
-			var adapter:SelectorAdapter = _objectToSelectorAdapterMap[object] as SelectorAdapter;
-			if(!adapter) {
-				throw new ArgumentError("No style adapter registered for object " + object);
-			}
+		public function getSelectorsMatchingObject(object:Object):Vector.<SelectorDescription> {
+			return getPseudoElementSelectorsMatchingObject(object, null);
+		}
 
-			var matches:Vector.<MatchedSelector> = new <MatchedSelector>[];
 
-			var possibleMatches:Array = _knownSelectors.getPossibleMatchesFor(adapter);
+		public function getPseudoElementSelectorsMatchingObject(object:Object, pseudoElement:String):Vector.<SelectorDescription> {
+			var adapter:SelectorAdapter = getAdapterOrThrowException(object);
+			var matches:Vector.<SelectorDescription> = new <SelectorDescription>[];
+
+			var possibleMatches:Array = _knownSelectors.getPossibleMatchesFor(adapter, pseudoElement);
 
 			var len:int = possibleMatches.length;
 			for(var i:int = 0; i < len; ++i) {
 				var selector:SelectorImpl = possibleMatches[i] as SelectorImpl;
 				if (_matcher.isObjectMatching(adapter, selector.matchers)) {
-					selector.matchedObjectReference = object;
 					//TODO (arneschroppe 3/18/12) use an object pool here, so we don't have the overhead of creating objects all the time. They're flyweight's anyway
 					matches.push(selector);
 				}
@@ -62,9 +61,16 @@ package net.wooga.selectors.usagepatterns.implementations {
 			matches = matches.sort(SpecificityComparator.staticCompare);
 
 
-			return matches;
+			return matches as Vector.<SelectorDescription>;
 		}
 
 
+		private function getAdapterOrThrowException(object:Object):SelectorAdapter {
+			var adapter:SelectorAdapter = _adapterSource.getSelectorAdapterForObject(object);
+			if (!adapter) {
+				throw new ArgumentError("No style adapter registered for object " + object);
+			}
+			return adapter;
+		}
 	}
 }

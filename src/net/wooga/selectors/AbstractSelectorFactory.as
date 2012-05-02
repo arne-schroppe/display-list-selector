@@ -3,6 +3,7 @@ package net.wooga.selectors {
 	import flash.utils.Dictionary;
 	import flash.utils.getQualifiedClassName;
 
+	import net.wooga.selectors.adaptermap.SelectorAdapterMap;
 	import net.wooga.selectors.matching.MatcherTool;
 	import net.wooga.selectors.namespace.selector_internal;
 	import net.wooga.selectors.parser.Parser;
@@ -41,10 +42,11 @@ package net.wooga.selectors {
 		private var _parser:Parser;
 		private var _matcher:MatcherTool;
 
+		private var _selectorAdapterMap:SelectorAdapterMap;
 
 		private var _pseudoClassProvider:PseudoClassProviderImpl;
 
-		private var _objectToSelectorAdapterMap:Dictionary = new Dictionary();
+
 
 		private var _objectTypeToSelectorAdapterTypeMap:Dictionary = new Dictionary();
 		private var _defaultSelectorAdapterType:Class;
@@ -52,7 +54,7 @@ package net.wooga.selectors {
 		private var _isInitialized:Boolean;
 
 
-		public function initializeWith(rootObject:Object, externalPropertySource:ExternalPropertySource = null, pseudoElementSource:PseudoElementSource = null):void {
+		public function initializeWith(rootObject:Object, externalPropertySource:ExternalPropertySource = null):void {
 
 			if(_isInitialized) {
 				throw new Error("Factory is already initialized");
@@ -68,8 +70,9 @@ package net.wooga.selectors {
 			_pseudoClassProvider = new PseudoClassProviderImpl();
 			addDefaultPseudoClasses();
 
-			_parser = new Parser(externalPropertySource, pseudoElementSource, _pseudoClassProvider);
-			_matcher = new MatcherTool(_rootObject, _objectToSelectorAdapterMap);
+			_selectorAdapterMap = new SelectorAdapterMap();
+			_parser = new Parser(externalPropertySource, _pseudoClassProvider);
+			_matcher = new MatcherTool(_rootObject, _selectorAdapterMap);
 
 			_isInitialized = true;
 		}
@@ -81,7 +84,7 @@ package net.wooga.selectors {
 			var selectors:Vector.<Selector> = new <Selector>[];
 			for each(var partialSelector:SelectorImpl in partialSelectors) {
 				partialSelector.matcherTool = _matcher;
-				partialSelector.objectToSelectorAdapterMap = _objectToSelectorAdapterMap;
+				partialSelector.adapterMap = _selectorAdapterMap;
 
 				selectors.push(partialSelector);
 			}
@@ -91,7 +94,7 @@ package net.wooga.selectors {
 
 
 		public function createSelectorPool():SelectorPool {
-			return new SelectorPoolImpl(_parser, _matcher, _objectToSelectorAdapterMap);
+			return new SelectorPoolImpl(_parser, _matcher, _selectorAdapterMap);
 		}
 
 
@@ -127,11 +130,11 @@ package net.wooga.selectors {
 
 		//TODO (arneschroppe 08/04/2012) test overrideDefaultSelectorAdapter !!
 		public function createSelectorAdapterFor(object:Object, overrideDefaultSelectorAdapter:Class = null):void {
-			if(object in _objectToSelectorAdapterMap) {
+			if(_selectorAdapterMap.hasAdapterForObject(object)) {
 				return;	
 			}
 
-			var SelectorClientClass:Class
+			var SelectorClientClass:Class;
 
 			if(overrideDefaultSelectorAdapter) {
 				checkAdapterType(overrideDefaultSelectorAdapter);
@@ -147,13 +150,13 @@ package net.wooga.selectors {
 			}
 
 			var selectorClient:SelectorAdapter = new SelectorClientClass();
-			_objectToSelectorAdapterMap[object] = selectorClient;
+			_selectorAdapterMap.setAdapterForObject(object, selectorClient);
 			selectorClient.register(object);
 		}
 
 
 		private function getSelectorAdapterClass(object:Object):Class {
-			//TODO (arneschroppe 3/30/12) we could also just set the class name in the adapter
+
 			var objectTypeName:String = getQualifiedClassName(object);
 			var SelectorClientClass:Class = _objectTypeToSelectorAdapterTypeMap[objectTypeName];
 			if (!SelectorClientClass) {
@@ -166,12 +169,7 @@ package net.wooga.selectors {
 
 		//TODO (arneschroppe 30/3/12) this method is untested
 		public function removeSelectorAdapterOf(object:Object):void {
-
-			if(object in _objectToSelectorAdapterMap) {
-				var selectorClient:SelectorAdapter = _objectToSelectorAdapterMap[object];
-				selectorClient.unregister();
-				delete _objectToSelectorAdapterMap[object];
-			}
+			_selectorAdapterMap.removeAdapterForObject(object);
 		}
 
 		private function addDefaultPseudoClasses():void {
@@ -191,16 +189,16 @@ package net.wooga.selectors {
 
 
 			for each(var pseudoClassName:String in [
-					PseudoClassName.hover,
-					PseudoClassName.active,
-					PseudoClassName.focus,
-					PseudoClassName.link,
-					PseudoClassName.visited,
-					PseudoClassName.target,
-					PseudoClassName.enabled,
-					PseudoClassName.disabled,
-					PseudoClassName.checked,
-					PseudoClassName.indeterminate]) {
+					PseudoClassName.HOVER,
+					PseudoClassName.ACTIVE,
+					PseudoClassName.FOCUS,
+					PseudoClassName.LINK,
+					PseudoClassName.VISITED,
+					PseudoClassName.TARGET,
+					PseudoClassName.ENABLED,
+					PseudoClassName.DISABLED,
+					PseudoClassName.CHECKED,
+					PseudoClassName.INDETERMINATE]) {
 				addPseudoClass(pseudoClassName, SettablePseudoClass, [pseudoClassName]);
 			}
 

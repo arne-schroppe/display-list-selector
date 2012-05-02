@@ -12,7 +12,8 @@ package net.wooga.selectors {
 	import net.wooga.fixtures.matcher.containsExactlyInArray;
 	import net.wooga.fixtures.tools.ContextViewBasedTest;
 	import net.wooga.selectors.displaylist.DisplayObjectSelectorAdapter;
-	import net.wooga.selectors.usagepatterns.MatchedSelector;
+	import net.wooga.selectors.pseudoclasses.names.PseudoClassName;
+	import net.wooga.selectors.selectoradapter.SelectorPseudoClassEvent;
 	import net.wooga.selectors.usagepatterns.Selector;
 	import net.wooga.selectors.usagepatterns.SelectorDescription;
 	import net.wooga.selectors.usagepatterns.SelectorGroup;
@@ -27,12 +28,12 @@ package net.wooga.selectors {
 	import org.hamcrest.core.not;
 	import org.hamcrest.core.throws;
 	import org.hamcrest.object.equalTo;
+	import org.hamcrest.object.hasPropertyChain;
 	import org.hamcrest.object.hasPropertyWithValue;
-	import org.hamcrest.object.isFalse;
-	import org.hamcrest.object.isTrue;
 	import org.hamcrest.object.strictlyEqualTo;
 
-	//TODO (arneschroppe 22/2/12) maybe we should rewrite these tests with mocked adapters instead of using the DisplayObjectStyleAdapter
+	//TODO (arneschroppe 22/04/2012) selectors should be case insensitive ??
+	//TODO (arneschroppe 22/2/12) maybe we should rewrite these tests with mocked adapters instead of using the DisplayObjectStyleAdapter ??
 	public class SelectorFactoryTest extends ContextViewBasedTest {
 
 
@@ -41,16 +42,14 @@ package net.wooga.selectors {
 
 		private var _displayList:DisplayTree;
 		private var _propertyDictionary:PropertyDictionary;
-		private var _pseudoElementMap:PseudoElementMap;
 
 		override public function setUp():void {
 			super.setUp();
 			_propertyDictionary = new PropertyDictionary();
-			_pseudoElementMap = new PseudoElementMap();
 			_displayList = new DisplayTree();
 
 			_selectorFactory = new AbstractSelectorFactory();
-			_selectorFactory.initializeWith(contextView, _propertyDictionary, _pseudoElementMap);
+			_selectorFactory.initializeWith(contextView, _propertyDictionary);
 			_selectorFactory.setDefaultSelectorAdapter(DisplayObjectSelectorAdapter);
 
 
@@ -82,6 +81,27 @@ package net.wooga.selectors {
 				
 			});
 		}
+
+
+
+		[Test]
+		public function should_match_element_selector_with_whitespace():void {
+
+			_displayList.uses(contextView).containing
+					.a(TestSpriteA)
+					.a(TestSpriteB)
+					.a(TestSpriteC)
+					.end.finish();
+
+
+			testSelector("       TestSpriteB        ", function(matchedObjects:Array):void {
+				assertContainsObjectOfClass(matchedObjects, TestSpriteB);
+				assertDoesNotContainObjectOfClass(matchedObjects, TestSpriteA);
+				assertDoesNotContainObjectOfClass(matchedObjects, TestSpriteC);
+
+			});
+		}
+
 
 
 		[Test]
@@ -408,6 +428,33 @@ package net.wooga.selectors {
 
 
 		[Test]
+		public function should_also_match_unhovered_selectors_when_hovered():void {
+
+			var instances:Array = [];
+			_displayList.uses(contextView).containing
+					.a(TestSpriteC) .whichWillBeStoredIn(instances)
+				.end.finish();
+
+
+			var displayObject:DisplayObject = instances[0];
+			_selectorFactory.createSelectorAdapterFor(displayObject);
+			displayObject.dispatchEvent(new SelectorPseudoClassEvent(SelectorPseudoClassEvent.ADD_PSEUDO_CLASS, PseudoClassName.HOVER));
+
+			var selectorPool:SelectorPool = _selectorFactory.createSelectorPool();
+			selectorPool.addSelector("TestSpriteC:hover");
+			selectorPool.addSelector("TestSpriteC");
+			selectorPool.addSelector("TestSpriteA:hover");
+
+
+			var selectors:Vector.<SelectorDescription> = selectorPool.getSelectorsMatchingObject(displayObject);
+			assertThat(selectors.length, equalTo(2));
+			assertThat(selectors, containsExactlyInArray(1, hasPropertyWithValue("selectorString", "TestSpriteC:hover")));
+			assertThat(selectors, containsExactlyInArray(1, hasPropertyWithValue("selectorString", "TestSpriteC")));
+
+		}
+
+
+		[Test]
 		public function should_match_firstchild_pseudo_class():void {
 
 			_displayList.uses(contextView).containing
@@ -659,13 +706,12 @@ package net.wooga.selectors {
 			var isASelector:Selector = _selectorFactory.createSelector(":is-a(TestSpriteA)").getSelectorAtIndex(0);
 			var elementSelector:Selector = _selectorFactory.createSelector("TestSpriteA").getSelectorAtIndex(0);
 
-			assertThat(isASelector.specificity.isLessThan(elementSelector.specificity), isTrue());
+			assertThat(isASelector.specificity.compare(elementSelector.specificity), equalTo(-1));
 		}
 
 
 
-		//Note: We cannot know the specific class (unless a fully qualified class name is given). That's why we cannot give a specificity based on the number of super classes
-		//TODO (arneschroppe 3/25/12) unless we check this kind of specificity at runtime?
+		//TODO (arneschroppe 09/04/2012) We cannot know the specific class (unless a fully qualified class name is given). That's why we cannot give a specificity based on the number of super classes
 //		[Test]
 //		public function isA_selector_for_more_abstract_class_should_have_lower_specificity_than_for_more_specialized_class():void {
 //
@@ -684,8 +730,7 @@ package net.wooga.selectors {
 			var withoutPseudoClass:Selector = _selectorFactory.createSelector(":is-a(TestSpriteA)").getSelectorAtIndex(0);
 			var withPseudoClass:Selector = _selectorFactory.createSelector(":is-a(TestSpriteA):enabled").getSelectorAtIndex(0);
 
-			assertThat(withoutPseudoClass.specificity.isEqualTo(withPseudoClass.specificity), isFalse());
-			assertThat(withoutPseudoClass.specificity.isLessThan(withPseudoClass.specificity), isTrue());
+			assertThat(withoutPseudoClass.specificity.compare(withPseudoClass.specificity), equalTo(-1));
 		}
 
 
@@ -776,64 +821,159 @@ package net.wooga.selectors {
 
 
 		[Test]
-		public function should_return_registered_object_for_pseudo_element():void {
-
+		public function should_return_pseudo_element_selectors_matching_an_object():void {
 			var instances:Array = [];
 			_displayList.uses(contextView).containing
-				.a(TestSpriteA)
-				.a(TestSpriteB)
-				.a(TestSpriteB) .withTheName("test") .whichWillBeStoredIn(instances)
-			.end.finish();
+					.a(TestSpriteA)
+					.a(TestSpriteB)
+					.a(TestSpriteC) .whichWillBeStoredIn(instances)
+				.end.finish();
+
 
 			var displayObject:Object = instances[0];
-
-			var pseudoElement:String = "test 12345";
-			_pseudoElementMap.add(displayObject, "test-element", pseudoElement);
-
 			_selectorFactory.createSelectorAdapterFor(displayObject);
-			var selectorGroup:SelectorGroup = _selectorFactory.createSelector("TestSpriteB#test::test-element");
-			var selector:Selector = selectorGroup.getSelectorAtIndex(0);
 
-			assertThat(selector.getMatchedObjectFor(displayObject), strictlyEqualTo(pseudoElement));
+			var selectorPool:SelectorPool = _selectorFactory.createSelectorPool();
+			selectorPool.addSelector("TestSpriteC");
+			selectorPool.addSelector("TestSpriteC::test-element");
+			selectorPool.addSelector("TestSpriteC::test-element2");
+			selectorPool.addSelector("TestSpriteC::other-element");
 
+
+			var selectors:Vector.<SelectorDescription> = selectorPool.getPseudoElementSelectorsMatchingObject(displayObject, "test-element");
+			assertThat(selectors.length, equalTo(1));
+
+			var firstSelector:SelectorDescription = selectors[0];
+			assertThat(firstSelector.pseudoElementName, equalTo("test-element"));
+			assertThat(firstSelector.selectorString, equalTo("TestSpriteC::test-element"));
+			assertThat(firstSelector.selectorGroupString, equalTo("TestSpriteC::test-element"));
 		}
-
 
 
 
 
 		[Test]
-		public function should_return_registered_object_for_pseudo_element_in_selector_pool():void {
-
+		public function should_not_match_pseudo_element_selectors_when_not_asked_for():void {
 			var instances:Array = [];
 			_displayList.uses(contextView).containing
 					.a(TestSpriteA)
 					.a(TestSpriteB)
-					.a(TestSpriteB) .withTheName("test") .whichWillBeStoredIn(instances)
+					.a(TestSpriteC) .whichWillBeStoredIn(instances)
 					.end.finish();
 
+
 			var displayObject:Object = instances[0];
-
-			var pseudoElement:String = "test 12345";
-			_pseudoElementMap.add(displayObject, "test-element", pseudoElement);
 			_selectorFactory.createSelectorAdapterFor(displayObject);
-			
-			
+
 			var selectorPool:SelectorPool = _selectorFactory.createSelectorPool();
-			selectorPool.addSelector("TestSpriteB#test::test-element");
+			selectorPool.addSelector("TestSpriteC");
+			selectorPool.addSelector("TestSpriteC::test-element");
+			selectorPool.addSelector("TestSpriteC::test-element2");
+			selectorPool.addSelector("TestSpriteC::other-element");
 
-			var selectors:Vector.<MatchedSelector> = selectorPool.getSelectorsMatchingObject(displayObject);
 
-			var selector:MatchedSelector = selectors[0];
+			var selectors:Vector.<SelectorDescription> = selectorPool.getSelectorsMatchingObject(displayObject);
 			assertThat(selectors.length, equalTo(1));
 
-			assertThat(selector.getMatchedObject(), strictlyEqualTo(pseudoElement));
-
+			var firstSelector:SelectorDescription = selectors[0];
+			assertThat(firstSelector.pseudoElementName, equalTo(null));
+			assertThat(firstSelector.selectorString, equalTo("TestSpriteC"));
+			assertThat(firstSelector.selectorGroupString, equalTo("TestSpriteC"));
 		}
 
 
 
+		[Test]
+		public function should_match_pseudo_element():void {
+			var instances:Array = [];
+			_displayList.uses(contextView).containing
+					.a(TestSpriteA)
+					.a(TestSpriteB)
+					.a(TestSpriteC) .whichWillBeStoredIn(instances)
+				.end.finish();
 
+
+			var displayObject:Object = instances[0];
+			_selectorFactory.createSelectorAdapterFor(displayObject);
+
+			var selectors:SelectorGroup = _selectorFactory.createSelector("TestSpriteC::test-element");
+			var firstSelector:Selector = selectors.getSelectorAtIndex(0);
+
+			assertThat(firstSelector.isMatching(displayObject), equalTo(true));
+			assertThat(firstSelector.pseudoElementName, equalTo("test-element"));
+			assertThat(firstSelector.isPseudoElementSelector, equalTo(true));
+			assertThat(firstSelector.selectorString, equalTo("TestSpriteC::test-element"));
+			assertThat(firstSelector.selectorGroupString, equalTo("TestSpriteC::test-element"));
+		}
+
+
+
+		[Test]
+		public function should_not_have_pseudo_element_name_set_if_it_is_not_pseudo_element_matcher():void {
+			var instances:Array = [];
+			_displayList.uses(contextView).containing
+					.a(TestSpriteA)
+					.a(TestSpriteB)
+					.a(TestSpriteC) .whichWillBeStoredIn(instances)
+					.end.finish();
+
+
+			var displayObject:Object = instances[0];
+			_selectorFactory.createSelectorAdapterFor(displayObject);
+
+			var selectors:SelectorGroup = _selectorFactory.createSelector("TestSpriteC");
+			var firstSelector:Selector = selectors.getSelectorAtIndex(0);
+
+			assertThat(firstSelector.isMatching(displayObject), equalTo(true));
+			assertThat(firstSelector.pseudoElementName, strictlyEqualTo(null));
+			assertThat(firstSelector.isPseudoElementSelector, equalTo(false));
+			assertThat(firstSelector.selectorString, equalTo("TestSpriteC"));
+			assertThat(firstSelector.selectorGroupString, equalTo("TestSpriteC"));
+		}
+
+
+
+		[Test]
+		public function items_returned_by_selector_pool_should_be_sorted_by_specificity():void {
+			var instances:Array = [];
+			_displayList.uses(contextView).containing
+					.a(TestSpriteA)
+					.a(TestSpriteB)
+					.a(TestSpriteC) .withTheName("testName") .whichWillBeStoredIn(instances)
+					.end.finish();
+
+
+			var displayObject:Object = instances[0];
+			_selectorFactory.createSelectorAdapterFor(displayObject);
+
+			var selectorPool:SelectorPool = _selectorFactory.createSelectorPool();
+			selectorPool.addSelector("TestSpriteC"); //Specificity 0 0 1 0 => 5
+			selectorPool.addSelector("*"); //Specificity 0 0 0 0 => 7
+			selectorPool.addSelector(":is-a(TestSpriteC)"); //Specificity 0 0 0 1 => 6
+			selectorPool.addSelector("TestSpriteC#testName"); //Specificity 1 0 1 0  => 1
+			selectorPool.addSelector("#testName"); //Specificity 1 0 0 0 => 2
+			selectorPool.addSelector(":nth-child(3):nth-last-child(1)"); //Specificity 0 2 0 0 => 3
+
+
+			var selectors:Vector.<SelectorDescription> = selectorPool.getSelectorsMatchingObject(displayObject);
+
+			assertThat(selectors.length, equalTo(6));
+
+			assertThat(selectors[0], hasPropertyWithValue("selectorString", "*"));
+			assertThat(selectors[1], hasPropertyWithValue("selectorString", ":is-a(TestSpriteC)"));
+			assertThat(selectors[2], hasPropertyWithValue("selectorString", "TestSpriteC"));
+			assertThat(selectors[3], hasPropertyWithValue("selectorString", ":nth-child(3):nth-last-child(1)"));
+			assertThat(selectors[4], hasPropertyWithValue("selectorString", "#testName"));
+			assertThat(selectors[5], hasPropertyWithValue("selectorString", "TestSpriteC#testName"));
+
+
+			assertThat(selectors[0], hasPropertyWithValue("specificity", new SpecificityMatcher(0,0,0,0)));
+			assertThat(selectors[1], hasPropertyWithValue("specificity", new SpecificityMatcher(0,0,0,1)));
+			assertThat(selectors[2], hasPropertyWithValue("specificity", new SpecificityMatcher(0,0,1,0)));
+			assertThat(selectors[3], hasPropertyWithValue("specificity", new SpecificityMatcher(0,2,0,0)));
+			assertThat(selectors[4], hasPropertyWithValue("specificity", new SpecificityMatcher(1,0,0,0)));
+			assertThat(selectors[5], hasPropertyWithValue("specificity", new SpecificityMatcher(1,0,1,0)));
+		}
 
 
 
@@ -885,7 +1025,7 @@ package net.wooga.selectors {
 		}
 
 		private function selectorPoolMatchMethod(object:DisplayObject, selectorString:String, result:Array):void {
-			var matchingSelectors:Vector.<MatchedSelector> = _selectorPool.getSelectorsMatchingObject(object);
+			var matchingSelectors:Vector.<SelectorDescription> = _selectorPool.getSelectorsMatchingObject(object);
 			if (matchingSelectors.filter(filterFunctionFor(selectorString)).length > 0) {
 				result.push(object);
 			}
@@ -908,20 +1048,23 @@ package net.wooga.selectors {
 
 
 		private function filterFunctionFor(selectorString:String):Function {
-			return function(item:SelectorDescription, index:int, vector:Vector.<MatchedSelector>):Boolean {
-				return item.originalSelectorString == selectorString;
+			return function(item:SelectorDescription, index:int, vector:Vector.<SelectorDescription>):Boolean {
+				return item.selectorGroupString == selectorString;
 			}
 		}
 
-		//TODO (arneschroppe 3/18/12) test that items returned by a selectorpool are sorted by specificity
+
 	}
 }
 
 import flash.utils.Dictionary;
 
 import net.wooga.selectors.ExternalPropertySource;
-import net.wooga.selectors.PseudoElementSource;
 import net.wooga.selectors.selectoradapter.SelectorAdapter;
+import net.wooga.selectors.specificity.Specificity;
+
+import org.hamcrest.Description;
+import org.hamcrest.TypeSafeDiagnosingMatcher;
 
 class PropertyDictionary implements ExternalPropertySource {
 
@@ -940,25 +1083,39 @@ class PropertyDictionary implements ExternalPropertySource {
 	}
 }
 
-class PseudoElementMap implements PseudoElementSource {
-	
-	
-	private var _map:Dictionary = new Dictionary();
 
-	public function add(object:Object, pseudoElementName:String, pseudoElement:Object):void {
-		
-		if(!(object in _map)) {
-			_map[object] = new Dictionary();
-		}
-		
-		if(!(pseudoElementName in _map[object])) {
-			_map[object][pseudoElementName] = pseudoElement;
-		}
-		
+class SpecificityMatcher extends TypeSafeDiagnosingMatcher {
+	private var _d:int;
+	private var _a:int;
+	private var _b:int;
+	private var _c:int;
+
+	public function SpecificityMatcher(a:int, b:int, c:int, d:int) {
+		super(Specificity);
+		_a = a;
+		_b = b;
+		_c = c;
+		_d = d;
+
 	}
 
 
-	public function pseudoElementForIdentifier(matchedObject:Object, identifier:String):Object {
-		return _map[matchedObject][identifier];
+	override public function matchesSafely(specificityObject:Object, description:Description):Boolean {
+
+		var specificity:Specificity = specificityObject as Specificity;
+
+		var doesMatch:Boolean =  specificity.digitAtPosition(3) == _a && specificity.digitAtPosition(2) == _b && specificity.digitAtPosition(1) == _c && specificity.digitAtPosition(0) == _d;
+
+		if(!doesMatch) {
+			description.appendText("has value " + specificity.toString());
+		}
+
+		return doesMatch
 	}
+
+
+	override public function describeTo(description:Description):void {
+		description.appendText("specificity value of " + _a + "." + _b + "." + _c + "." + _d);
+	}
+
 }

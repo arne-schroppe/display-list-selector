@@ -1,6 +1,7 @@
 package net.wooga.selectors.matching.matchers.implementations {
 
 	import net.wooga.selectors.matching.matchers.Matcher;
+	import net.wooga.selectors.matching.matchers.implementations.combinators.MatcherFamily;
 	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 
 	public class TypeNameMatcher implements Matcher {
@@ -10,7 +11,7 @@ package net.wooga.selectors.matching.matchers.implementations {
 
 		private var _classNameOnly:Boolean;
 
-		//TODO (arneschroppe 23/2/12) always use the :: notation internally
+
 		public function TypeNameMatcher(typeName:String) {
 			if (typeName == "*") {
 				_matchAny = true;
@@ -55,6 +56,11 @@ package net.wooga.selectors.matching.matchers.implementations {
 
 		public function get typeName():String {
 			return _typeName;
+		}
+
+
+		public function get matcherFamily():MatcherFamily {
+			return MatcherFamily.SIMPLE_MATCHER;
 		}
 	}
 }

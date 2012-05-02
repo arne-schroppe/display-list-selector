@@ -219,68 +219,6 @@ package net.wooga.selectors.matching.matchers {
 		}
 
 
-
-		//[Test]
-		//public function should_throw_exception_for_multiple_wildcards_in_body():void {
-		//
-		//	assertThat(function ():void {
-		//				new TypeNameMatcher("fixtures.**.TestSpritePack", true);
-		//			}, throws(isA(ArgumentError))
-		//	);
-		//}
-
-
-
-		//TODO (arneschroppe 18/1/12) uncomment this test later
-		//[Test]
-		//public function should_be_reasonably_fast():void {
-		//
-		//
-		//
-		//	var tree:DisplayTree = new DisplayTree();
-		//
-		//	var items:Array = [];
-		//
-		//	_matcher = new TypeNameMatcher("fixtures.package1.TestSpritePack", false);
-		//
-		//	tree.uses(contextView).containing
-		//			.a(net.wooga.fixtures.package1.TestSpritePack).whichWillBeStoredIn(items)
-		//			.a(net.wooga.fixtures.package1.TestSpritePack).whichWillBeStoredIn(items)
-		//			.a(net.wooga.fixtures.package1.TestSpritePack).whichWillBeStoredIn(items)
-		//			.a(TestSpriteA).whichWillBeStoredIn(items)
-		//			.a(TestSpriteA).whichWillBeStoredIn(items)
-		//			.a(net.wooga.fixtures.package2.TestSpritePack).whichWillBeStoredIn(items)
-		//			.a(net.wooga.fixtures.package2.TestSpritePack).whichWillBeStoredIn(items)
-		//			.a(net.wooga.fixtures.package2.TestSpritePack).whichWillBeStoredIn(items)
-		//			.a(net.wooga.fixtures.package2.TestSpritePack).whichWillBeStoredIn(items)
-		//			.end
-		//
-		//
-		//	var startTime:int = getTimer();
-		//
-		//	for(var i:int = 0; i < 20000; ++i) {
-		//		speedTestMethod(items);
-		//	}
-		//
-		//	var endTime:int = getTimer();
-		//
-		//	var duration:int = endTime - startTime;
-		//	trace(duration);
-		//	assertThat(duration, lessThan(900));
-		//}
-		//
-		//
-		//private function speedTestMethod(items:Array):void {
-		//
-		//	var matchedObjects:Array = [];
-		//
-		//	for(var i:int = 0; i < items.length; ++i) {
-		//		if(_matcher.isMatching(items[i])) {
-		//			matchedObjects.push(items[i]);
-		//		}
-		//	}
-		//
-		//}
 	}
 }
 

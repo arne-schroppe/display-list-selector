@@ -14,7 +14,7 @@ package net.wooga.selectors.parser {
 
 		[Before]
 		public function setUp():void {
-			_parser = new Parser(null, null, new NullPseudoClassProvider());
+			_parser = new Parser(null, new NullPseudoClassProvider());
 		}
 
 
@@ -37,9 +37,9 @@ package net.wooga.selectors.parser {
 			var result:Vector.<SelectorImpl> = _parser.parse("Elem1[xyz='abc']:hover, a > B Elem2, *:active");
 
 			assertThat(result.length, equalTo(3));
-			assertThat(result[0].originalSelectorString, equalTo("Elem1[xyz='abc']:hover, a > B Elem2, *:active"));
-			assertThat(result[1].originalSelectorString, equalTo("Elem1[xyz='abc']:hover, a > B Elem2, *:active"));
-			assertThat(result[2].originalSelectorString, equalTo("Elem1[xyz='abc']:hover, a > B Elem2, *:active"));
+			assertThat(result[0].selectorGroupString, equalTo("Elem1[xyz='abc']:hover, a > B Elem2, *:active"));
+			assertThat(result[1].selectorGroupString, equalTo("Elem1[xyz='abc']:hover, a > B Elem2, *:active"));
+			assertThat(result[2].selectorGroupString, equalTo("Elem1[xyz='abc']:hover, a > B Elem2, *:active"));
 
 		}
 

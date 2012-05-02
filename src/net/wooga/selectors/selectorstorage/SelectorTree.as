@@ -1,9 +1,11 @@
 package net.wooga.selectors.selectorstorage {
 
 	import net.wooga.selectors.namespace.selector_internal;
+	import net.wooga.selectors.parser.FilterData;
 	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 	import net.wooga.selectors.selectorstorage.keys.HoverKey;
 	import net.wooga.selectors.selectorstorage.keys.IdKey;
+	import net.wooga.selectors.selectorstorage.keys.PseudoElementNameKey;
 	import net.wooga.selectors.selectorstorage.keys.SelectorTreeNodeKey;
 	import net.wooga.selectors.selectorstorage.keys.TypeNameKey;
 	import net.wooga.selectors.usagepatterns.implementations.SelectorImpl;
@@ -14,11 +16,16 @@ package net.wooga.selectors.selectorstorage {
 
 
 		private var _filterRoot:SelectorFilterTreeNode;
+
+		private var _pseudoElementNameKey:PseudoElementNameKey = new PseudoElementNameKey();
 		private var _filterKeys:Vector.<SelectorTreeNodeKey> = new <SelectorTreeNodeKey>[
+			_pseudoElementNameKey,
 			new TypeNameKey(),
 			new IdKey(),
 			new HoverKey()
 		];
+
+		private static const TYPE_NAME_KEY_INDEX:int = 1;
 
 		private var _numFilterKeys:int;
 		private var _foundSelectors:Array;
@@ -35,14 +42,14 @@ package net.wooga.selectors.selectorstorage {
 
 		public function add(parsedSelector:SelectorImpl):void {
 
-			_filterDataExtractor.setupFilterData(parsedSelector);
+			var filterData:FilterData = _filterDataExtractor.getFilterData(parsedSelector);
 
 			_selectorsWereAdded = true;
-			addToNode(_filterRoot, 0, parsedSelector);
+			addToNode(_filterRoot, 0, parsedSelector, filterData);
 		}
 
 
-		private function addToNode(node:SelectorFilterTreeNode, keyIndex:int, selector:SelectorImpl):Boolean {
+		private function addToNode(node:SelectorFilterTreeNode, keyIndex:int, selector:SelectorImpl, filterData:FilterData):Boolean {
 
 			if(keyIndex >= _filterKeys.length) {
 				return false;
@@ -50,10 +57,10 @@ package net.wooga.selectors.selectorstorage {
 
 			var nodeKey:SelectorTreeNodeKey = _filterKeys[keyIndex] as SelectorTreeNodeKey;
 
-			var hasKey:Boolean = nodeKey.selectorHasKey(selector);
+			var hasKey:Boolean = nodeKey.selectorHasKey(selector, filterData);
 			var key:*;
 			if(hasKey) {
-				key = nodeKey.keyForSelector(selector);
+				key = nodeKey.keyForSelector(selector, filterData);
 			}
 			else {
 				key = nodeKey.nullKey;
@@ -61,7 +68,7 @@ package net.wooga.selectors.selectorstorage {
 
 			createKeyIfNeeded(node, key);
 
-			var canPlaceSelector:Boolean = addToNode(node.childNodes[key], keyIndex + 1, selector);
+			var canPlaceSelector:Boolean = addToNode(node.childNodes[key], keyIndex + 1, selector, filterData);
 			if(canPlaceSelector) {
 				return true;
 			}
@@ -70,7 +77,7 @@ package net.wooga.selectors.selectorstorage {
 				targetNode.selectors.push(selector);
 				return true;
 			}
-			else if(keyIndex == 0) {
+			else if(keyIndex == TYPE_NAME_KEY_INDEX) {
 				node.selectors.push(selector);
 			}
 
@@ -85,7 +92,7 @@ package net.wooga.selectors.selectorstorage {
 		}
 
 
-		public function getPossibleMatchesFor(object:SelectorAdapter):Array {
+		public function getPossibleMatchesFor(object:SelectorAdapter, pseudoElementName:String = null):Array {
 
 			if(_selectorsWereAdded) {
 				invalidateAllKeyCaches();
@@ -93,9 +100,11 @@ package net.wooga.selectors.selectorstorage {
 			}
 
 			_foundSelectors = [];
+			_pseudoElementNameKey.currentlyMatchedPseudoElement = pseudoElementName ? pseudoElementName : PseudoElementNameKey.NULL_KEY;
 			searchForMatches(_filterRoot, 0, object);
 			return _foundSelectors;
 		}
+
 
 
 		private function searchForMatches(node:SelectorFilterTreeNode, keyIndex:int, adapter:SelectorAdapter):void {
@@ -113,7 +122,7 @@ package net.wooga.selectors.selectorstorage {
 			var nodeKey:SelectorTreeNodeKey = _filterKeys[keyIndex] as SelectorTreeNodeKey;
 			var keys:Array = nodeKey.keysForAdapter(adapter, node.childNodes);
 
-			var len:int = keys.length
+			var len:int = keys.length;
 			for(var i:int = 0; i < len; ++i ) {
 				searchForMatches(node.childNodes[keys[i] as String] as SelectorFilterTreeNode, keyIndex + 1, adapter);
 			}

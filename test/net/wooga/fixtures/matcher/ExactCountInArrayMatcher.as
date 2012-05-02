@@ -12,8 +12,6 @@ package net.wooga.fixtures.matcher {
 			super(Object);
 			_matcher = matcher;
 			_expectedCount = expectedCount;
-
-
 		}
 
 

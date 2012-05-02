@@ -1,4 +1,4 @@
-package net.wooga.speed.profilingsetups  {
+package {
 
 	import flash.display.Sprite;
 	import flash.events.Event;

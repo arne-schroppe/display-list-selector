@@ -1,7 +1,6 @@
 package {
 
 	import net.wooga.selectors.usagepatterns.SelectorPool;
-	import net.wooga.speed.profilingsetups.BasicProfilingSprite;
 
 	public class ParsingSpeedTest extends BasicProfilingSprite {
 

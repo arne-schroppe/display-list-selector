@@ -19,7 +19,7 @@
           <sdk name="flex_sdk_4.6.0" />
         </dependencies>
         <compiler-options>
-          <option name="additionalOptions" value="-swf-version=14" />
+          <option name="additionalOptions" value="-swf-version=11" />
         </compiler-options>
         <packaging-air-desktop />
         <packaging-android />

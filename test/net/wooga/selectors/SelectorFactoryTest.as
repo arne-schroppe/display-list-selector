@@ -947,12 +947,12 @@ package net.wooga.selectors {
 			_selectorFactory.createSelectorAdapterFor(displayObject);
 
 			var selectorPool:SelectorPool = _selectorFactory.createSelectorPool();
-			selectorPool.addSelector("TestSpriteC"); //Specificity 0 0 1 0 => 5
-			selectorPool.addSelector("*"); //Specificity 0 0 0 0 => 7
-			selectorPool.addSelector(":is-a(TestSpriteC)"); //Specificity 0 0 0 1 => 6
-			selectorPool.addSelector("TestSpriteC#testName"); //Specificity 1 0 1 0  => 1
-			selectorPool.addSelector("#testName"); //Specificity 1 0 0 0 => 2
-			selectorPool.addSelector(":nth-child(3):nth-last-child(1)"); //Specificity 0 2 0 0 => 3
+			selectorPool.addSelector("TestSpriteC"); //Specificity 0 0 1 0 => 5.
+			selectorPool.addSelector("*"); //Specificity 0 0 0 0 => 7.
+			selectorPool.addSelector(":is-a(TestSpriteC)"); //Specificity 0 0 0 1 => 6.
+			selectorPool.addSelector("TestSpriteC#testName"); //Specificity 1 0 1 0  => 1.
+			selectorPool.addSelector("#testName"); //Specificity 1 0 0 0 => 2.
+			selectorPool.addSelector(":nth-child(3):nth-last-child(1)"); //Specificity 0 2 0 0 => 3.
 
 
 			var selectors:Vector.<SelectorDescription> = selectorPool.getSelectorsMatchingObject(displayObject);

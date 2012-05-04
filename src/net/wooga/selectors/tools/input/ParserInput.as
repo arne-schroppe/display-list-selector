@@ -17,7 +17,6 @@ package net.wooga.selectors.tools.input {
 			updateRemainingContent();
 		}
 
-
 		public function get remainingContent():String {
 			return _remainingContent;
 		}

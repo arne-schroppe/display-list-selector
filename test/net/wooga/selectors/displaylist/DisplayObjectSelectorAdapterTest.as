@@ -6,6 +6,8 @@ package net.wooga.selectors.displaylist {
 	import net.wooga.selectors.pseudoclasses.names.PseudoClassName;
 	import net.wooga.selectors.selectoradapter.SelectorPseudoClassEvent;
 
+	import org.flexunit.asserts.fail;
+
 	import org.hamcrest.assertThat;
 	import org.hamcrest.object.equalTo;
 
@@ -53,6 +55,13 @@ package net.wooga.selectors.displaylist {
 			assertThat(_adapter.hasPseudoClass(PseudoClassName.FOCUS), equalTo(true));
 			adaptedSprite.dispatchEvent(new SelectorPseudoClassEvent(SelectorPseudoClassEvent.REMOVE_PSEUDO_CLASS, PseudoClassName.FOCUS));
 			assertThat(_adapter.hasPseudoClass(PseudoClassName.FOCUS), equalTo(false));
+		}
+
+
+
+		[Test]
+		public function should_invalidate_caches_when_removed_from_stage():void {
+			fail("Implement me");
 		}
 	}
 }

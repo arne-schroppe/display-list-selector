@@ -14,6 +14,8 @@ package net.wooga.selectors.usagepatterns.implementations {
 		private var _pseudoElementName:String;
 
 
+
+
 		public function set specificity(value:Specificity):void {
 			_specificity = value;
 		}
@@ -56,5 +58,6 @@ package net.wooga.selectors.usagepatterns.implementations {
 		public function set pseudoElementName(value:String):void {
 			_pseudoElementName = value;
 		}
+
 	}
 }

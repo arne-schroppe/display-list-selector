@@ -16,8 +16,6 @@ package net.wooga.selectors.usagepatterns.implementations {
 		private var _matchers:Vector.<Matcher> = new <Matcher>[];
 
 
-
-
 		public function isMatching(object:Object):Boolean {
 			var adapter:SelectorAdapter = _adapterSource.getSelectorAdapterForObject(object);
 			if(!adapter) {

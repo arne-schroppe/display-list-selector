@@ -34,6 +34,7 @@ package net.wooga.selectors.parser {
 		private var _externalPropertySource:ExternalPropertySource;
 		private var _pseudoClassProvider:PseudoClassProvider;
 
+		//TODO (asc 4/5/12) remove this and allow syntax extensions always
 		private var _isSyntaxExtensionAllowed:Boolean = true;
 
 		private var _input:ParserInput;

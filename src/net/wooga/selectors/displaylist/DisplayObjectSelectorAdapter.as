@@ -2,6 +2,7 @@ package net.wooga.selectors.displaylist {
 
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
+	import flash.events.Event;
 	import flash.utils.Dictionary;
 	import flash.utils.describeType;
 	import flash.utils.getQualifiedClassName;
@@ -38,7 +39,13 @@ package net.wooga.selectors.displaylist {
 			_adaptedElement = DisplayObject(adaptedElement);
 			_adaptedElement.addEventListener(SelectorPseudoClassEvent.ADD_PSEUDO_CLASS, onAddPseudoClass);
 			_adaptedElement.addEventListener(SelectorPseudoClassEvent.REMOVE_PSEUDO_CLASS, onRemovePseudoClass);
+			_adaptedElement.addEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage);
 		}
+
+		private function onRemovedFromStage(event:Event):void {
+			invalidateCachedMatches();
+		}
+
 
 		private function onAddPseudoClass(event:SelectorPseudoClassEvent):void {
 			_pseudoClasses[event.pseudoClassName] = true;
@@ -73,7 +80,7 @@ package net.wooga.selectors.displaylist {
 			return _adaptedElement.parent ? _adaptedElement.parent.getChildIndex(_adaptedElement) : -1;
 		}
 
-		public function getNumberOfElementsInContainer():int {
+		public function getNumberOfElementsInSameLevel():int {
 			return _adaptedElement.parent ? _adaptedElement.parent.numChildren : 0;
 		}
 
@@ -181,6 +188,21 @@ package net.wooga.selectors.displaylist {
 				_qualifiedInterfacesAndClasses.push(className);
 				_interfacesAndClasses.push(className.split("::").pop());
 			}
+		}
+
+
+		private var _matchingSubSelectors:Object = new Object();
+
+		public function doesMatchSubSelector(subSelector:String):Boolean {
+			return _matchingSubSelectors[subSelector] !== undefined;
+		}
+
+		public function setMatchedSubSelector(subSelector:String):void {
+			_matchingSubSelectors[subSelector] = subSelector;
+		}
+
+		public function invalidateCachedMatches():void {
+			_matchingSubSelectors = new Object();
 		}
 	}
 }

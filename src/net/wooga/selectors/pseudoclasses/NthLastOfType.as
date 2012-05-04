@@ -13,7 +13,7 @@ package net.wooga.selectors.pseudoclasses {
 			var SubjectType:Class = getDefinitionByName(getQualifiedClassName(subject.getAdaptedElement())) as Class;
 			var current:Object;
 
-			var length:int = subject.getNumberOfElementsInContainer();
+			var length:int = subject.getNumberOfElementsInSameLevel();
 			for(var i:int = length-1; i>=0; --i) {
 				current = subject.getElementAtIndex(i);
 

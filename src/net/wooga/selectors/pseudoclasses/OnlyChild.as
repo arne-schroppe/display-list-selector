@@ -11,7 +11,7 @@ package net.wooga.selectors.pseudoclasses {
 		}
 
 		public function isMatching(subject:SelectorAdapter):Boolean {
-			return subject.getNumberOfElementsInContainer() == 1;
+			return subject.getNumberOfElementsInSameLevel() == 1;
 		}
 	}
 }

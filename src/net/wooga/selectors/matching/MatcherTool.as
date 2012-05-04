@@ -116,7 +116,9 @@ package net.wooga.selectors.matching {
 				return false;
 			}
 
-			return reverseMatch(_adapterSource.getSelectorAdapterForObject(subject.getParentElement()), nextMatcher);
+			var parentAdapter:SelectorAdapter = _adapterSource.getSelectorAdapterForObject(subject.getParentElement());
+			//TODO (asc 4/5/12) check if adapter matches remaining partial selector
+			return reverseMatch(parentAdapter, nextMatcher);
 		}
 
 

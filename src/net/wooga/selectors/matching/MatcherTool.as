@@ -2,6 +2,7 @@ package net.wooga.selectors.matching {
 
 	import net.wooga.selectors.adaptermap.SelectorAdapterSource;
 	import net.wooga.selectors.matching.matchers.Matcher;
+	import net.wooga.selectors.matching.matchers.MatcherSequence;
 	import net.wooga.selectors.matching.matchers.implementations.combinators.Combinator;
 	import net.wooga.selectors.matching.matchers.implementations.combinators.CombinatorType;
 	import net.wooga.selectors.matching.matchers.implementations.combinators.MatcherFamily;
@@ -11,7 +12,7 @@ package net.wooga.selectors.matching {
 
 		private var _rootObject:Object;
 
-		private var _currentlyMatchedMatchers:Vector.<Matcher>;
+		private var _currentlyMatchedMatcherSequences:Vector.<MatcherSequence>;
 		private var _adapterSource:SelectorAdapterSource;
 
 		public function MatcherTool(rootObject:Object, objectToAdapterMap:SelectorAdapterSource) {
@@ -20,94 +21,117 @@ package net.wooga.selectors.matching {
 		}
 
 
-		public function isObjectMatching(adapter:SelectorAdapter, matchers:Vector.<Matcher>):Boolean {
+		public function isObjectMatching(adapter:SelectorAdapter, matchers:Vector.<MatcherSequence>):Boolean {
 
-			_currentlyMatchedMatchers = matchers;
+			_currentlyMatchedMatcherSequences = matchers;
 
-			if (_currentlyMatchedMatchers.length == 0) {
+			if (_currentlyMatchedMatcherSequences.length == 0) {
 				return true;
 			}
 
-			return reverseMatch(adapter, _currentlyMatchedMatchers.length - 1);
+			return reverseMatch(adapter, _currentlyMatchedMatcherSequences.length - 1);
 		}
 
 
 
 		private function reverseMatch(subject:SelectorAdapter, nextMatcher:int):Boolean {
 
-			if (!subject) {
-				return false;
-			}
+			for (var i:int = _currentlyMatchedMatcherSequences.length - 1; i >= 0; --i) {
 
-			var retryParent:Boolean = false;
-			var retrySibling:Boolean = false;
-			var startMatcherIndex:int = nextMatcher;
+				var currentSequence:MatcherSequence = _currentlyMatchedMatcherSequences[i];
 
-			var nextMatcherObject:Matcher = Matcher(_currentlyMatchedMatchers[nextMatcher]);
+				var matchers:Vector.<Matcher> = currentSequence.elementMatchers;
 
-			if(nextMatcherObject.matcherFamily != MatcherFamily.SIMPLE_MATCHER) {
-				var nextMatcherAsCombinator:Combinator = nextMatcherObject as Combinator;
-
-				nextMatcher--;
-				if (nextMatcherAsCombinator.type == CombinatorType.DESCENDANT) {
-					retryParent = true;
-				}
-				if (nextMatcherAsCombinator.type == CombinatorType.GENERAL_SIBLING) {
-					retrySibling = true;
-				}
-			}
+				for (var j:int = matchers.length - 1; j >= 0; --j) {
+					var matcher:Matcher = matchers[j];
 
 
-
-			var proceedWithParent:Boolean; //if false: proceed with previous *siblings*
-			for (var i:int = nextMatcher; i >= 0; --i) {
-				var matcher:Matcher = _currentlyMatchedMatchers[i];
-
-				if (!matcher.isMatching(subject)) {
-					if(retryParent || retrySibling) {
-						break
-					}
-					else {
-						return false;
-					}
 				}
 
-				if (matcher.matcherFamily == MatcherFamily.ANCESTOR_COMBINATOR) {
-					proceedWithParent = true;
-					break;
-				}
-				else if(matcher.matcherFamily == MatcherFamily.SIBLING_COMBINATOR) {
-					proceedWithParent = false;
-					break;
-				}
 			}
 
 
-			if (i < 0) {
-				return true;
-			}
-
-			var result:Boolean;
-			if (i >= 0 && retryParent) {
-				result = reverseMatchParentIfPossible(subject, startMatcherIndex);
-				return result;
-			}
-			else if (i >= 0 && retrySibling){
-				result = reverseMatchPreviousSiblingIfPossible(subject, startMatcherIndex);
-				return result;
-			}
-
-
-			if(proceedWithParent) {
-				result = reverseMatchParentIfPossible(subject, i);
-			}
-			else {
-				result = reverseMatchPreviousSiblingIfPossible(subject, i);
-			}
-
-
-			return result;
+			return false;
 		}
+
+
+
+
+		////TODO (asc 4/5/12) don't use recursion, limit method calls
+		//private function reverseMatch(subject:SelectorAdapter, nextMatcher:int):Boolean {
+		//
+		//	if (!subject) {
+		//		return false;
+		//	}
+		//
+		//	var retryParent:Boolean = false;
+		//	var retrySibling:Boolean = false;
+		//	var startMatcherIndex:int = nextMatcher;
+		//
+		//	var nextMatcherObject:Matcher = Matcher(_currentlyMatchedMatcherSequences[nextMatcher]);
+		//
+		//	if(nextMatcherObject.matcherFamily != MatcherFamily.SIMPLE_MATCHER) {
+		//		var nextMatcherAsCombinator:Combinator = nextMatcherObject as Combinator;
+		//
+		//		nextMatcher--;
+		//		if (nextMatcherAsCombinator.type == CombinatorType.DESCENDANT) {
+		//			retryParent = true;
+		//		}
+		//		if (nextMatcherAsCombinator.type == CombinatorType.GENERAL_SIBLING) {
+		//			retrySibling = true;
+		//		}
+		//	}
+		//
+		//
+		//	var proceedWithParent:Boolean; //if false: proceed with previous *siblings*
+		//	for (var i:int = nextMatcher; i >= 0; --i) {
+		//		var matcher:Matcher = _currentlyMatchedMatcherSequences[i];
+		//
+		//		if (!matcher.isMatching(subject)) {
+		//			if(retryParent || retrySibling) {
+		//				break
+		//			}
+		//			else {
+		//				return false;
+		//			}
+		//		}
+		//
+		//		if (matcher.matcherFamily == MatcherFamily.ANCESTOR_COMBINATOR) {
+		//			proceedWithParent = true;
+		//			break;
+		//		}
+		//		else if(matcher.matcherFamily == MatcherFamily.SIBLING_COMBINATOR) {
+		//			proceedWithParent = false;
+		//			break;
+		//		}
+		//	}
+		//
+		//
+		//	if (i < 0) {
+		//		return true;
+		//	}
+		//
+		//	var result:Boolean;
+		//	if (i >= 0 && retryParent) {
+		//		result = reverseMatchParentIfPossible(subject, startMatcherIndex);
+		//		return result;
+		//	}
+		//	else if (i >= 0 && retrySibling){
+		//		result = reverseMatchPreviousSiblingIfPossible(subject, startMatcherIndex);
+		//		return result;
+		//	}
+		//
+		//
+		//	if(proceedWithParent) {
+		//		result = reverseMatchParentIfPossible(subject, i);
+		//	}
+		//	else {
+		//		result = reverseMatchPreviousSiblingIfPossible(subject, i);
+		//	}
+		//
+		//
+		//	return result;
+		//}
 
 		private function reverseMatchParentIfPossible(subject:SelectorAdapter, nextMatcher:int):Boolean {
 

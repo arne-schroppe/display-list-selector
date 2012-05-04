@@ -3,6 +3,7 @@ package net.wooga.selectors.usagepatterns.implementations {
 	import net.wooga.selectors.adaptermap.SelectorAdapterSource;
 	import net.wooga.selectors.matching.MatcherTool;
 	import net.wooga.selectors.matching.matchers.Matcher;
+	import net.wooga.selectors.matching.matchers.MatcherSequence;
 	import net.wooga.selectors.namespace.selector_internal;
 	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 	import net.wooga.selectors.usagepatterns.*;
@@ -13,7 +14,7 @@ package net.wooga.selectors.usagepatterns.implementations {
 
 		private var _adapterSource:SelectorAdapterSource;
 		private var _matcherTool:MatcherTool;
-		private var _matchers:Vector.<Matcher> = new <Matcher>[];
+		private var _matcherSequences:Vector.<MatcherSequence> = new <MatcherSequence>[];
 
 
 		public function isMatching(object:Object):Boolean {
@@ -22,7 +23,7 @@ package net.wooga.selectors.usagepatterns.implementations {
 				throw new ArgumentError("No selector adapter registered for object " + object);
 			}
 
-			return _matcherTool.isObjectMatching(adapter, _matchers);
+			return _matcherTool.isObjectMatching(adapter, _matcherSequences);
 		}
 
 
@@ -36,12 +37,12 @@ package net.wooga.selectors.usagepatterns.implementations {
 		}
 
 
-		selector_internal function set matchers(value:Vector.<Matcher>):void {
-			_matchers = value;
+		selector_internal function set matcherSequences(value:Vector.<MatcherSequence>):void {
+			_matcherSequences = value;
 		}
 
-		selector_internal function get matchers():Vector.<Matcher> {
-			return _matchers;
+		selector_internal function get matcherSequences():Vector.<MatcherSequence> {
+			return _matcherSequences;
 		}
 
 

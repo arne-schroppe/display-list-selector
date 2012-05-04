@@ -47,7 +47,7 @@ package net.wooga.selectors.selectorstorage {
 
 		//TODO (arneschroppe 3/25/12) we need a test for this, specifically to test that not just any SettablePseudoClass triggers the hasHover flag
 		private function hasHoverPseudoClassInLastSimpleSelector(selector:SelectorImpl):Boolean {
-			var matchers:Vector.<Matcher> = selector.matchers;
+			var matchers:Vector.<Matcher> = selector.matcherSequences;
 			for(var i:int = matchers.length-1; i >= 0 && !(Matcher(matchers[i]).matcherFamily == MatcherFamily.ANCESTOR_COMBINATOR); --i) {
 				var matcher:Matcher = matchers[i];
 
@@ -68,7 +68,7 @@ package net.wooga.selectors.selectorstorage {
 
 
 		private function findIsAPseudoClassInLastSimpleSelector(selector:SelectorImpl):IsA {
-			var matchers:Vector.<Matcher> = selector.matchers;
+			var matchers:Vector.<Matcher> = selector.matcherSequences;
 			for(var i:int = matchers.length-1; i >= 0 && !(Matcher(matchers[i]).matcherFamily == MatcherFamily.ANCESTOR_COMBINATOR); --i) {
 				var matcher:Matcher = matchers[i];
 
@@ -88,7 +88,7 @@ package net.wooga.selectors.selectorstorage {
 
 		private function findMatcherInLastSimpleSelector(selector:SelectorImpl, MatcherType:Class):Matcher {
 
-			var matchers:Vector.<Matcher> = selector.matchers;
+			var matchers:Vector.<Matcher> = selector.matcherSequences;
 			for(var i:int = matchers.length-1; i >= 0 && !(Matcher(matchers[i]).matcherFamily == MatcherFamily.ANCESTOR_COMBINATOR); --i) {
 				var matcher:Matcher = matchers[i];
 				if(matcher is MatcherType) {

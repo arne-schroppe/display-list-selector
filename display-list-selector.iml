@@ -10,7 +10,7 @@
   <component name="FlexBuildConfigurationManager" active="display-list-selector">
     <configurations>
       <configuration name="display-list-selector" output-type="Library" output-file="display_list_selector.swc" output-folder="$MODULE_DIR$/bin">
-        <dependencies target-player="10.1">
+        <dependencies target-player="11.1">
           <entries>
             <entry library-name="Libs" library-level="project">
               <dependency linkage="Merged" />

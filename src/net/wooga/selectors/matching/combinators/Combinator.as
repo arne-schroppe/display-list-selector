@@ -1,4 +1,5 @@
-package net.wooga.selectors.matching.matchers.implementations.combinators {
+package net.wooga.selectors.matching.combinators {
+
 
 	public class Combinator {
 

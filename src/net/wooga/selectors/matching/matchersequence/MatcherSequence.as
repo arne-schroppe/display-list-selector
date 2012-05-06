@@ -1,5 +1,7 @@
-package net.wooga.selectors.matching.matchers {
-	import net.wooga.selectors.matching.matchers.implementations.combinators.Combinator;
+package net.wooga.selectors.matching.matchersequence {
+
+	import net.wooga.selectors.matching.matchers.*;
+	import net.wooga.selectors.matching.combinators.Combinator;
 
 	public interface MatcherSequence {
 

@@ -2,7 +2,7 @@ package net.wooga.selectors.matching.matchers.implementations.attributes {
 
 	import net.wooga.selectors.ExternalPropertySource;
 	import net.wooga.selectors.matching.matchers.Matcher;
-	import net.wooga.selectors.matching.matchers.implementations.combinators.MatcherFamily;
+	import net.wooga.selectors.matching.combinators.MatcherFamily;
 	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 
 	public class AttributeContainsMatcher implements Matcher {

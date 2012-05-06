@@ -2,10 +2,10 @@ package net.wooga.selectors.matching {
 
 	import net.wooga.selectors.adaptermap.SelectorAdapterSource;
 	import net.wooga.selectors.matching.matchers.Matcher;
-	import net.wooga.selectors.matching.matchers.MatcherSequence;
-	import net.wooga.selectors.matching.matchers.implementations.combinators.Combinator;
-	import net.wooga.selectors.matching.matchers.implementations.combinators.CombinatorType;
-	import net.wooga.selectors.matching.matchers.implementations.combinators.MatcherFamily;
+	import net.wooga.selectors.matching.matchersequence.MatcherSequence;
+	import net.wooga.selectors.matching.combinators.Combinator;
+	import net.wooga.selectors.matching.combinators.CombinatorType;
+	import net.wooga.selectors.matching.combinators.MatcherFamily;
 	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 
 	public class MatcherTool {

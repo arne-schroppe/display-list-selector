@@ -1,10 +1,11 @@
 package net.wooga.selectors.selectorstorage {
 
 	import net.wooga.selectors.matching.matchers.Matcher;
+	import net.wooga.selectors.matching.matchersequence.MatcherSequence;
 	import net.wooga.selectors.matching.matchers.implementations.IdMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.PseudoClassMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.TypeNameMatcher;
-	import net.wooga.selectors.matching.matchers.implementations.combinators.MatcherFamily;
+	import net.wooga.selectors.matching.combinators.MatcherFamily;
 	import net.wooga.selectors.namespace.selector_internal;
 	import net.wooga.selectors.parser.FilterData;
 	import net.wooga.selectors.pseudoclasses.IsA;
@@ -47,7 +48,8 @@ package net.wooga.selectors.selectorstorage {
 
 		//TODO (arneschroppe 3/25/12) we need a test for this, specifically to test that not just any SettablePseudoClass triggers the hasHover flag
 		private function hasHoverPseudoClassInLastSimpleSelector(selector:SelectorImpl):Boolean {
-			var matchers:Vector.<Matcher> = selector.matcherSequences;
+			var matcherSequences:Vector.<MatcherSequence> = selector.matcherSequences;
+			var matchers:Vector.<Matcher> = matcherSequences[matcherSequences.length-1].elementMatchers;
 			for(var i:int = matchers.length-1; i >= 0 && !(Matcher(matchers[i]).matcherFamily == MatcherFamily.ANCESTOR_COMBINATOR); --i) {
 				var matcher:Matcher = matchers[i];
 
@@ -68,7 +70,9 @@ package net.wooga.selectors.selectorstorage {
 
 
 		private function findIsAPseudoClassInLastSimpleSelector(selector:SelectorImpl):IsA {
-			var matchers:Vector.<Matcher> = selector.matcherSequences;
+			var matcherSequences:Vector.<MatcherSequence> = selector.matcherSequences;
+			var matchers:Vector.<Matcher> = matcherSequences[matcherSequences.length-1].elementMatchers;
+
 			for(var i:int = matchers.length-1; i >= 0 && !(Matcher(matchers[i]).matcherFamily == MatcherFamily.ANCESTOR_COMBINATOR); --i) {
 				var matcher:Matcher = matchers[i];
 
@@ -88,7 +92,9 @@ package net.wooga.selectors.selectorstorage {
 
 		private function findMatcherInLastSimpleSelector(selector:SelectorImpl, MatcherType:Class):Matcher {
 
-			var matchers:Vector.<Matcher> = selector.matcherSequences;
+			var matcherSequences:Vector.<MatcherSequence> = selector.matcherSequences;
+			var matchers:Vector.<Matcher> = matcherSequences[matcherSequences.length-1].elementMatchers;
+
 			for(var i:int = matchers.length-1; i >= 0 && !(Matcher(matchers[i]).matcherFamily == MatcherFamily.ANCESTOR_COMBINATOR); --i) {
 				var matcher:Matcher = matchers[i];
 				if(matcher is MatcherType) {

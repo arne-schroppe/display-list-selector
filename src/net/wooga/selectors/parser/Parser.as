@@ -4,8 +4,10 @@ package net.wooga.selectors.parser {
 
 	import net.wooga.selectors.ExternalPropertySource;
 	import net.wooga.selectors.matching.matchers.Matcher;
+	import net.wooga.selectors.matching.matchersequence.MatcherSequence;
 	import net.wooga.selectors.matching.matchers.implementations.ClassMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.IdMatcher;
+	import net.wooga.selectors.matching.matchersequence.MatcherSequenceImpl;
 	import net.wooga.selectors.matching.matchers.implementations.PseudoClassMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.TypeNameMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.attributes.AttributeBeginsWithMatcher;
@@ -14,9 +16,9 @@ package net.wooga.selectors.parser {
 	import net.wooga.selectors.matching.matchers.implementations.attributes.AttributeEndsWithMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.attributes.AttributeEqualsMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.attributes.AttributeExistsMatcher;
-	import net.wooga.selectors.matching.matchers.implementations.combinators.Combinator;
-	import net.wooga.selectors.matching.matchers.implementations.combinators.CombinatorType;
-	import net.wooga.selectors.matching.matchers.implementations.combinators.MatcherFamily;
+	import net.wooga.selectors.matching.combinators.Combinator;
+	import net.wooga.selectors.matching.combinators.CombinatorType;
+	import net.wooga.selectors.matching.combinators.MatcherFamily;
 	import net.wooga.selectors.namespace.selector_internal;
 	import net.wooga.selectors.pseudoclasses.IsA;
 	import net.wooga.selectors.pseudoclasses.PseudoClass;
@@ -41,6 +43,9 @@ package net.wooga.selectors.parser {
 		private var _specificity:SpecificityImpl;
 
 		private var _currentSelector:SelectorImpl;
+		private var _currentMatcherSequence:MatcherSequenceImpl;
+
+
 		private var _subSelectorStartIndex:int = 0;
 		private var _subSelectorEndIndex:int = 0;
 		private var _currentSelectorHasPseudoElement:Boolean = false;
@@ -92,6 +97,8 @@ package net.wooga.selectors.parser {
 
 			endMatcherSequence();
 
+			_currentMatcherSequence = new MatcherSequenceImpl();
+
 			_currentSelector = new SelectorImpl();
 			_individualSelectors.push(_currentSelector);
 
@@ -108,6 +115,7 @@ package net.wooga.selectors.parser {
 			}
 
 			_currentSelector.selectorGroupString = _originalSelector;
+			_currentSelector.matcherSequences.push(_currentMatcherSequence);
 
 			var subSelector:String = _input.getSubString(_subSelectorStartIndex, _subSelectorEndIndex);
 			_currentSelector.selectorString = subSelector;
@@ -124,12 +132,15 @@ package net.wooga.selectors.parser {
 
 		private function selectorsGroup():void {
 
+
 			simpleSelectorSequence();
+			_currentSelector.matcherSequences.push(_currentMatcherSequence);
 
 			if (!_input.hasContentLeft) {
 				return;
 			}
 
+			_currentMatcherSequence = new MatcherSequenceImpl();
 			combinator();
 			selectorsGroup();
 		}
@@ -149,7 +160,7 @@ package net.wooga.selectors.parser {
 			var combinatorOnly:String = combinator.replace(/\s*/g, "");
 			if (combinatorOnly == ">") {
 				checkPseudoElement();
-				_currentSelector.matcherSequences.push(new Combinator(MatcherFamily.ANCESTOR_COMBINATOR, CombinatorType.CHILD));
+				_currentMatcherSequence.parentCombinator = new Combinator(MatcherFamily.ANCESTOR_COMBINATOR, CombinatorType.CHILD);
 			}
 			else if(combinatorOnly == ",") {
 				_subSelectorEndIndex = _input.currentIndex - combinator.length;
@@ -157,15 +168,15 @@ package net.wooga.selectors.parser {
 			}
 			else if(combinatorOnly == "+") {
 				checkPseudoElement();
-				_currentSelector.matcherSequences.push(new Combinator(MatcherFamily.SIBLING_COMBINATOR, CombinatorType.ADJACENT_SIBLING));
+				_currentMatcherSequence.parentCombinator = new Combinator(MatcherFamily.SIBLING_COMBINATOR, CombinatorType.ADJACENT_SIBLING);
 			}
 			else if(combinatorOnly == "~") {
 				checkPseudoElement();
-				_currentSelector.matcherSequences.push(new Combinator(MatcherFamily.SIBLING_COMBINATOR, CombinatorType.GENERAL_SIBLING));
+				_currentMatcherSequence.parentCombinator = new Combinator(MatcherFamily.SIBLING_COMBINATOR, CombinatorType.GENERAL_SIBLING);
 			}
 			else if (/\s+/.test(combinator)) {
 				checkPseudoElement();
-				_currentSelector.matcherSequences.push(new Combinator(MatcherFamily.ANCESTOR_COMBINATOR, CombinatorType.DESCENDANT));
+				_currentMatcherSequence.parentCombinator = new Combinator(MatcherFamily.ANCESTOR_COMBINATOR, CombinatorType.DESCENDANT);
 			}
 			
 			 
@@ -204,7 +215,7 @@ package net.wooga.selectors.parser {
 				className = "*";
 				//The *-selector does not limit the result set, so we wouldn't need to add it. We get exceptions though,
 				//if *-selector is the last selector, so we add it anyway.
-				_currentSelector.matcherSequences.push(new TypeNameMatcher(className));
+				_currentMatcherSequence.elementMatchers.push(new TypeNameMatcher(className));
 				return;
 			}
 
@@ -216,11 +227,11 @@ package net.wooga.selectors.parser {
 				className = _input.consumeRegex(/(\w|\.|\*)+/);
 				_input.consumeString(")");
 
-				_currentSelector.matcherSequences.push(new TypeNameMatcher(className));
+				_currentMatcherSequence.elementMatchers.push(new TypeNameMatcher(className));
 			}
 			else {
 				className = _input.consumeRegex(/\w+/);
-				_currentSelector.matcherSequences.push(new TypeNameMatcher(className));
+				_currentMatcherSequence.elementMatchers.push(new TypeNameMatcher(className));
 			}
 
 			_specificity.elementSelectorsAndPseudoElements++;
@@ -260,7 +271,7 @@ package net.wooga.selectors.parser {
 			_input.consume(1);
 			var id:String = _input.consumeRegex(/[a-zA-Z\-_]+/);
 			var matcher:Matcher = new IdMatcher(id);
-			_currentSelector.matcherSequences.push(matcher);
+			_currentMatcherSequence.elementMatchers.push(matcher);
 
 			_specificity.idSelector++;
 		}
@@ -285,7 +296,7 @@ package net.wooga.selectors.parser {
 			}
 			matcher.arguments = _pseudoClassArguments;
 
-			_currentSelector.matcherSequences.push(matcher);
+			_currentMatcherSequence.elementMatchers.push(matcher);
 
 			//Special treatment for is-a pseudoClass classes: their specificity is always lower than that of element selectors
 			if(matcher.pseudoClass is IsA) {
@@ -366,7 +377,7 @@ package net.wooga.selectors.parser {
 				matcher = matcherForCompareFunction(compareFunction, property, value);
 			}
 
-			_currentSelector.matcherSequences.push(matcher);
+			_currentMatcherSequence.elementMatchers.push(matcher);
 			_specificity.classAndAttributeAndPseudoSelectors++;
 		}
 

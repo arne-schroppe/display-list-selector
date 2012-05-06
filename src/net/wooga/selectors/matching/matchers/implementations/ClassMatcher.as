@@ -1,7 +1,7 @@
 package net.wooga.selectors.matching.matchers.implementations {
 
 	import net.wooga.selectors.matching.matchers.Matcher;
-	import net.wooga.selectors.matching.matchers.implementations.combinators.MatcherFamily;
+	import net.wooga.selectors.matching.combinators.MatcherFamily;
 	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 
 	public class ClassMatcher implements Matcher {

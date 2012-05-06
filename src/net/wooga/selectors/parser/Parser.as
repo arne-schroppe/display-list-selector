@@ -115,7 +115,6 @@ package net.wooga.selectors.parser {
 			}
 
 			_currentSelector.selectorGroupString = _originalSelector;
-			_currentSelector.matcherSequences.push(_currentMatcherSequence);
 
 			var subSelector:String = _input.getSubString(_subSelectorStartIndex, _subSelectorEndIndex);
 			_currentSelector.selectorString = subSelector;
@@ -262,7 +261,7 @@ package net.wooga.selectors.parser {
 			_input.consume(1);
 			var className:String = _input.consumeRegex(/[a-zA-Z\-_]+/);
 			var matcher:Matcher = new ClassMatcher(className);
-			_currentSelector.matcherSequences.push(matcher);
+			_currentMatcherSequence.elementMatchers.push(matcher);
 			_specificity.classAndAttributeAndPseudoSelectors++;
 		}
 

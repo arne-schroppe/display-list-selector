@@ -29,12 +29,12 @@ package net.wooga.selectors.matching {
 				return true;
 			}
 
-			return reverseMatch(adapter, _currentlyMatchedMatcherSequences.length - 1);
+			return reverseMatch(adapter);
 		}
 
 
 
-		private function reverseMatch(subject:SelectorAdapter, nextMatcher:int):Boolean {
+		private function reverseMatch(subject:SelectorAdapter):Boolean {
 
 			for (var i:int = _currentlyMatchedMatcherSequences.length - 1; i >= 0; --i) {
 
@@ -44,14 +44,36 @@ package net.wooga.selectors.matching {
 
 				for (var j:int = matchers.length - 1; j >= 0; --j) {
 					var matcher:Matcher = matchers[j];
+					if (!matcher.isMatching(subject)) {
+						return false;
+					}
+				}
 
+				if(!currentSequence.parentCombinator) {
+					break;
+				}
 
+				switch(currentSequence.parentCombinator.type) {
+					case CombinatorType.CHILD:
+						if (subject.getAdaptedElement() == _rootObject) {
+							return false;
+						}
+						subject = _adapterSource.getSelectorAdapterForObject(subject.getParentElement());
+						break;
+
+					case CombinatorType.ADJACENT_SIBLING:
+						var objectIndex:int = subject.getElementIndex();
+						if(objectIndex == 0) {
+							return false;
+						}
+						subject = _adapterSource.getSelectorAdapterForObject( subject.getElementAtIndex(objectIndex - 1) );
+						break;
 				}
 
 			}
 
 
-			return false;
+			return true;
 		}
 
 
@@ -133,29 +155,29 @@ package net.wooga.selectors.matching {
 		//	return result;
 		//}
 
-		private function reverseMatchParentIfPossible(subject:SelectorAdapter, nextMatcher:int):Boolean {
-
-			//TODO (arneschroppe 22/2/12)  should we use a isObjectEqualTo-method here ??
-			if (subject.getAdaptedElement() == _rootObject) {
-				return false;
-			}
-
-			var parentAdapter:SelectorAdapter = _adapterSource.getSelectorAdapterForObject(subject.getParentElement());
-			//TODO (asc 4/5/12) check if adapter matches remaining partial selector
-			return reverseMatch(parentAdapter, nextMatcher);
-		}
-
-
-		private function reverseMatchPreviousSiblingIfPossible(subject:SelectorAdapter, nextMatcher:int):Boolean {
-
-			var objectIndex:int = subject.getElementIndex();
-			if(objectIndex == 0) {
-				return false;
-			}
-
-			var previousElement:Object = subject.getElementAtIndex(objectIndex - 1);
-			return reverseMatch(_adapterSource.getSelectorAdapterForObject(previousElement), nextMatcher);
-		}
+//		private function reverseMatchParentIfPossible(subject:SelectorAdapter, nextMatcher:int):Boolean {
+//
+//			//TODO (arneschroppe 22/2/12)  should we use a isObjectEqualTo-method here ??
+//			if (subject.getAdaptedElement() == _rootObject) {
+//				return false;
+//			}
+//
+//			var parentAdapter:SelectorAdapter = _adapterSource.getSelectorAdapterForObject(subject.getParentElement());
+//			//TODO (asc 4/5/12) check if adapter matches remaining partial selector
+//			return reverseMatch(parentAdapter, nextMatcher);
+//		}
+//
+//
+//		private function reverseMatchPreviousSiblingIfPossible(subject:SelectorAdapter, nextMatcher:int):Boolean {
+//
+//			var objectIndex:int = subject.getElementIndex();
+//			if(objectIndex == 0) {
+//				return false;
+//			}
+//
+//			var previousElement:Object = subject.getElementAtIndex(objectIndex - 1);
+//			return reverseMatch(_adapterSource.getSelectorAdapterForObject(previousElement), nextMatcher);
+//		}
 
 	}
 }

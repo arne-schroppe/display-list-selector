@@ -1,5 +1,7 @@
 package net.wooga.selectors.matching {
 
+	import flash.debugger.enterDebugger;
+
 	import net.wooga.selectors.adaptermap.SelectorAdapterSource;
 	import net.wooga.selectors.matching.matchers.Matcher;
 	import net.wooga.selectors.matching.matchersequence.MatcherSequence;
@@ -43,7 +45,10 @@ package net.wooga.selectors.matching {
 			var hasMatch:Boolean = false;
 
 			var sequencesLength:int = _currentlyMatchedMatcherSequences.length;
+			trace("----");
 			for (var i:int = sequencesLength - 1; i >= 0; --i) {
+
+				trace("i: " + i);
 
 				var currentSequence:MatcherSequence = _currentlyMatchedMatcherSequences[i];
 
@@ -66,8 +71,7 @@ package net.wooga.selectors.matching {
 							return false;
 						}
 						subject = _adapterSource.getSelectorAdapterForObject(subject.getParentElement());
-						--i;
-						continue;
+
 					}
 					else if(continueWithSiblingOnFail) {
 						objectIndex = subject.getElementIndex();
@@ -79,6 +83,10 @@ package net.wooga.selectors.matching {
 					else {
 						return false;
 					}
+
+					++i; //rematch current sequence
+					trace("increased i: " + i);
+					continue;
 				}
 
 
@@ -87,18 +95,25 @@ package net.wooga.selectors.matching {
 				}
 
 
+				if (subject.getAdaptedElement() == _rootObject) {
+					return false;
+				}
+
+
 				switch(currentSequence.parentCombinator.type) {
-					case CombinatorType.DESCENDANT:
-						continueWithParentOnFail = true;
+					case CombinatorType.CHILD:
+						continueWithParentOnFail = false;
 						continueWithSiblingOnFail = false;
 						if (subject.getAdaptedElement() == _rootObject) {
 							return false;
 						}
-						subject = _adapterSource.getSelectorAdapterForObject(subject.getParentElement());
+						parent = subject.getParentElement();
+						subject = _adapterSource.getSelectorAdapterForObject(parent);
 						break;
 
-					case CombinatorType.CHILD:
-						continueWithParentOnFail = false;
+
+					case CombinatorType.DESCENDANT:
+						continueWithParentOnFail = true;
 						continueWithSiblingOnFail = false;
 						if (subject.getAdaptedElement() == _rootObject) {
 							return false;
@@ -135,6 +150,8 @@ package net.wooga.selectors.matching {
 			return true;
 		}
 
+
+		private var parent:Object; //TODO (asc 7/5/12) delete
 
 
 

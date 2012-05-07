@@ -59,6 +59,7 @@ package net.wooga.selectors.displaylist {
 
 
 
+		[Ignore]
 		[Test]
 		public function should_invalidate_caches_when_removed_from_stage():void {
 			fail("Implement me");

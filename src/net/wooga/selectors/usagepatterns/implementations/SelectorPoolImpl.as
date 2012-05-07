@@ -43,6 +43,7 @@ package net.wooga.selectors.usagepatterns.implementations {
 
 
 		public function getPseudoElementSelectorsMatchingObject(object:Object, pseudoElement:String):Vector.<SelectorDescription> {
+
 			var adapter:SelectorAdapter = getAdapterOrThrowException(object);
 			var matches:Vector.<SelectorDescription> = new <SelectorDescription>[];
 
@@ -51,6 +52,10 @@ package net.wooga.selectors.usagepatterns.implementations {
 			var len:int = possibleMatches.length;
 			for(var i:int = 0; i < len; ++i) {
 				var selector:SelectorImpl = possibleMatches[i] as SelectorImpl;
+
+				trace("----");
+				trace("----");
+				trace("Testing " + selector.selectorGroupString);
 				if (_matcher.isObjectMatching(adapter, selector.matcherSequences)) {
 					//TODO (arneschroppe 3/18/12) use an object pool here, so we don't have the overhead of creating objects all the time. They're flyweight's anyway
 					matches.push(selector);

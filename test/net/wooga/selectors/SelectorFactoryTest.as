@@ -272,9 +272,24 @@ package net.wooga.selectors {
 					.a(TestSpriteA).withTheName("test")
 				.end.finish();
 
-
 			testSelector("TestSpriteA#test", function(matchedObjects:Array):void {
 				assertThat(matchedObjects, containsExactlyInArray(1, isA(TestSpriteA)));
+				assertEquals(1, matchedObjects.length);
+			});
+		}
+
+
+		[Test]
+		public function should_match_only_css_id_selector():void {
+
+			_displayList.uses(contextView).containing
+					.a(TestSpriteA).withTheName("test")
+					.a(TestSpriteA)
+					.a(TestSpriteB)
+				.end.finish();
+
+			testSelector("#test", function(matchedObjects:Array):void {
+				assertThat(matchedObjects, containsExactlyInArray(1, allOf(isA(TestSpriteA), hasPropertyWithValue("name", "test")) ));
 				assertEquals(1, matchedObjects.length);
 			});
 		}

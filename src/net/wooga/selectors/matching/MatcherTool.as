@@ -36,33 +36,92 @@ package net.wooga.selectors.matching {
 
 		private function reverseMatch(subject:SelectorAdapter):Boolean {
 
-			for (var i:int = _currentlyMatchedMatcherSequences.length - 1; i >= 0; --i) {
+			var objectIndex:int;
+
+			var continueWithParentOnFail:Boolean = false;
+			var continueWithSiblingOnFail:Boolean = false;
+			var hasMatch:Boolean = false;
+
+			var sequencesLength:int = _currentlyMatchedMatcherSequences.length;
+			for (var i:int = sequencesLength - 1; i >= 0; --i) {
 
 				var currentSequence:MatcherSequence = _currentlyMatchedMatcherSequences[i];
 
 				var matchers:Vector.<Matcher> = currentSequence.elementMatchers;
 
-				for (var j:int = matchers.length - 1; j >= 0; --j) {
+				hasMatch = true;
+				var matchersLength:int = matchers.length;
+				for (var j:int = matchersLength - 1; j >= 0; --j) {
 					var matcher:Matcher = matchers[j];
 					if (!matcher.isMatching(subject)) {
+						hasMatch = false;
+						break;
+					}
+				}
+
+				if(!hasMatch) {
+
+					if(continueWithParentOnFail) {
+						if (subject.getAdaptedElement() == _rootObject) {
+							return false;
+						}
+						subject = _adapterSource.getSelectorAdapterForObject(subject.getParentElement());
+						--i;
+						continue;
+					}
+					else if(continueWithSiblingOnFail) {
+						objectIndex = subject.getElementIndex();
+						if(objectIndex == 0) {
+							return false;
+						}
+						subject = _adapterSource.getSelectorAdapterForObject( subject.getElementAtIndex(objectIndex - 1) );
+					}
+					else {
 						return false;
 					}
 				}
+
 
 				if(!currentSequence.parentCombinator) {
 					break;
 				}
 
+
 				switch(currentSequence.parentCombinator.type) {
-					case CombinatorType.CHILD:
+					case CombinatorType.DESCENDANT:
+						continueWithParentOnFail = true;
+						continueWithSiblingOnFail = false;
 						if (subject.getAdaptedElement() == _rootObject) {
 							return false;
 						}
 						subject = _adapterSource.getSelectorAdapterForObject(subject.getParentElement());
 						break;
 
+					case CombinatorType.CHILD:
+						continueWithParentOnFail = false;
+						continueWithSiblingOnFail = false;
+						if (subject.getAdaptedElement() == _rootObject) {
+							return false;
+						}
+						subject = _adapterSource.getSelectorAdapterForObject(subject.getParentElement());
+						break;
+
+
 					case CombinatorType.ADJACENT_SIBLING:
-						var objectIndex:int = subject.getElementIndex();
+						continueWithParentOnFail = false;
+						continueWithSiblingOnFail = false;
+						objectIndex = subject.getElementIndex();
+						if(objectIndex == 0) {
+							return false;
+						}
+						subject = _adapterSource.getSelectorAdapterForObject( subject.getElementAtIndex(objectIndex - 1) );
+						break;
+
+
+					case CombinatorType.GENERAL_SIBLING:
+						continueWithParentOnFail = false;
+						continueWithSiblingOnFail = true;
+						objectIndex = subject.getElementIndex();
 						if(objectIndex == 0) {
 							return false;
 						}

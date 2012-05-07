@@ -1,5 +1,6 @@
 package net.wooga.selectors.parser {
 
+	import flash.debugger.enterDebugger;
 	import flash.utils.Dictionary;
 
 	import net.wooga.selectors.ExternalPropertySource;
@@ -131,9 +132,14 @@ package net.wooga.selectors.parser {
 
 		private function selectorsGroup():void {
 
-
 			simpleSelectorSequence();
 			_currentSelector.matcherSequences.push(_currentMatcherSequence);
+
+			//is  the rest of the sequence whitespace?
+			if (_input.isNextMatching(/\s+$/)) {
+				whitespace();
+				return;
+			}
 
 			if (!_input.hasContentLeft) {
 				return;
@@ -153,10 +159,10 @@ package net.wooga.selectors.parser {
 		//TODO (arneschroppe 09/04/2012) comma should be handled in selectors group!
 		private function combinator():void {
 
+
 			var combinator:String = _input.consumeRegex(/(\s*>\s*)|(\s*,\s*)|(\s*\+\s*)|(\s*~\s*)|(\s+)/);
-
-
 			var combinatorOnly:String = combinator.replace(/\s*/g, "");
+
 			if (combinatorOnly == ">") {
 				checkPseudoElement();
 				_currentMatcherSequence.parentCombinator = new Combinator(MatcherFamily.ANCESTOR_COMBINATOR, CombinatorType.CHILD);

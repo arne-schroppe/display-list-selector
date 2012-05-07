@@ -989,8 +989,6 @@ package net.wooga.selectors {
 
 		private function testSelector(selectorString:String, assertions:Function):void {
 
-
-
 			var result:Array = getMatchedObjectsFromSelectorPool(selectorString);
 			assertions.call(this, result);
 

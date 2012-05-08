@@ -107,8 +107,8 @@ package net.wooga.selectors.matching {
 						if (subject.getAdaptedElement() == _rootObject) {
 							return false;
 						}
-						parent = subject.getParentElement();
-						subject = _adapterSource.getSelectorAdapterForObject(parent);
+						_parent = subject.getParentElement();
+						subject = _adapterSource.getSelectorAdapterForObject(_parent);
 						break;
 
 
@@ -151,7 +151,7 @@ package net.wooga.selectors.matching {
 		}
 
 
-		private var parent:Object; //TODO (asc 7/5/12) delete
+		private var _parent:Object; //TODO (asc 7/5/12) delete
 
 
 

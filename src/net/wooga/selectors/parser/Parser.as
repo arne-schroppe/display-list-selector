@@ -317,7 +317,7 @@ package net.wooga.selectors.parser {
 		private function functionalPseudo():PseudoClassMatcher {
 			var pseudoClassName:String = _input.consumeRegex(/[a-zA-Z][\w\-]*/);
 
-			if (pseudoClassName != BuiltinPseudoClassName.is_a && !_pseudoClassProvider.hasPseudoClass(pseudoClassName)) {
+			if (pseudoClassName != BuiltinPseudoClassName.IS_A && !_pseudoClassProvider.hasPseudoClass(pseudoClassName)) {
 				throw new ParserError("Unknown pseudoClass-class '" + pseudoClassName + "' (In selector: '" + _originalSelector + "')");
 			}
 

@@ -1,13 +1,9 @@
 package net.wooga.selectors.matching {
 
-	import flash.debugger.enterDebugger;
-
 	import net.wooga.selectors.adaptermap.SelectorAdapterSource;
+	import net.wooga.selectors.matching.combinators.CombinatorType;
 	import net.wooga.selectors.matching.matchers.Matcher;
 	import net.wooga.selectors.matching.matchersequence.MatcherSequence;
-	import net.wooga.selectors.matching.combinators.Combinator;
-	import net.wooga.selectors.matching.combinators.CombinatorType;
-	import net.wooga.selectors.matching.combinators.MatcherFamily;
 	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 
 	public class MatcherTool {
@@ -43,6 +39,7 @@ package net.wooga.selectors.matching {
 			var continueWithParentOnFail:Boolean = false;
 			var continueWithSiblingOnFail:Boolean = false;
 			var hasMatch:Boolean = false;
+			var parent:Object;
 
 			var sequencesLength:int = _currentlyMatchedMatcherSequences.length;
 			trace("----");
@@ -107,8 +104,8 @@ package net.wooga.selectors.matching {
 						if (subject.getAdaptedElement() == _rootObject) {
 							return false;
 						}
-						_parent = subject.getParentElement();
-						subject = _adapterSource.getSelectorAdapterForObject(_parent);
+						parent = subject.getParentElement();
+						subject = _adapterSource.getSelectorAdapterForObject(parent);
 						break;
 
 
@@ -151,7 +148,7 @@ package net.wooga.selectors.matching {
 		}
 
 
-		private var _parent:Object; //TODO (asc 7/5/12) delete
+
 
 
 

@@ -14,6 +14,8 @@ package net.wooga.selectors.usagepatterns.implementations {
 
 		private var _adapterSource:SelectorAdapterSource;
 		private var _matcherTool:MatcherTool;
+
+
 		private var _matcherSequences:Vector.<MatcherSequence> = new <MatcherSequence>[];
 
 

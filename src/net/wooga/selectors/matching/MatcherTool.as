@@ -47,19 +47,29 @@ package net.wooga.selectors.matching {
 			for (var i:int = sequencesLength - 1; i >= 0; --i) {
 
 
-				var currentSequence:MatcherSequence = _currentlyMatchedMatcherSequences[i];
+				var currentSequence:MatcherSequence = _currentlyMatchedMatcherSequences[i] as MatcherSequence;
 
-				var matchers:Vector.<Matcher> = currentSequence.elementMatchers;
 
 				hasMatch = true;
-				var matchersLength:int = matchers.length;
-				for (var j:int = matchersLength - 1; j >= 0; --j) {
-					var matcher:Matcher = matchers[j];
-					if (!matcher.isMatching(subject)) {
-						hasMatch = false;
-						break;
+
+				//TODO (arneschroppe 07/06/2012) also store if an element does NOT match a sequence, so we don't have to rematch that case
+				if(!subject.isMatchingSubSelector(currentSequence.normalizedSelectorSequenceString)) {
+
+					var matchers:Vector.<Matcher> = currentSequence.elementMatchers;
+					var matchersLength:int = matchers.length;
+					for (var j:int = matchersLength - 1; j >= 0; --j) {
+						var matcher:Matcher = matchers[j];
+						if (!matcher.isMatching(subject)) {
+							hasMatch = false;
+							break;
+						}
+					}
+
+					if(hasMatch) {
+						subject.setIsMatchingSubSelector(currentSequence.normalizedSelectorSequenceString);
 					}
 				}
+
 
 				if(!hasMatch) {
 

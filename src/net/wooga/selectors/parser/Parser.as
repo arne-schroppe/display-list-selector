@@ -1,14 +1,14 @@
 package net.wooga.selectors.parser {
 
-	import flash.debugger.enterDebugger;
 	import flash.utils.Dictionary;
 
 	import net.wooga.selectors.ExternalPropertySource;
+	import net.wooga.selectors.matching.combinators.Combinator;
+	import net.wooga.selectors.matching.combinators.CombinatorType;
+	import net.wooga.selectors.matching.combinators.MatcherFamily;
 	import net.wooga.selectors.matching.matchers.Matcher;
-	import net.wooga.selectors.matching.matchersequence.MatcherSequence;
 	import net.wooga.selectors.matching.matchers.implementations.ClassMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.IdMatcher;
-	import net.wooga.selectors.matching.matchersequence.MatcherSequenceImpl;
 	import net.wooga.selectors.matching.matchers.implementations.PseudoClassMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.TypeNameMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.attributes.AttributeBeginsWithMatcher;
@@ -17,9 +17,7 @@ package net.wooga.selectors.parser {
 	import net.wooga.selectors.matching.matchers.implementations.attributes.AttributeEndsWithMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.attributes.AttributeEqualsMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.attributes.AttributeExistsMatcher;
-	import net.wooga.selectors.matching.combinators.Combinator;
-	import net.wooga.selectors.matching.combinators.CombinatorType;
-	import net.wooga.selectors.matching.combinators.MatcherFamily;
+	import net.wooga.selectors.matching.matchersequence.MatcherSequenceImpl;
 	import net.wooga.selectors.namespace.selector_internal;
 	import net.wooga.selectors.pseudoclasses.IsA;
 	import net.wooga.selectors.pseudoclasses.PseudoClass;
@@ -30,6 +28,9 @@ package net.wooga.selectors.parser {
 	use namespace selector_internal;
 
 	public class Parser {
+
+		//TODO (arneschroppe 07/06/2012) this is a temporary solution. equal simple-selector-sequences should have same id or hash
+		private var _matcherSequenceIdCounter:int = 1;
 
 		private var _individualSelectors:Vector.<SelectorImpl>;
 
@@ -54,6 +55,8 @@ package net.wooga.selectors.parser {
 
 		private var _pseudoClassArguments:Array;
 		private var _originalSelector:String;
+
+		//private var _normalizedSimpleSelectorSequence:String;
 
 		private var _alreadyParsedSelectors:Dictionary = new Dictionary();
 
@@ -133,6 +136,8 @@ package net.wooga.selectors.parser {
 		private function selectorsGroup():void {
 
 			simpleSelectorSequence();
+
+			_currentMatcherSequence.normalizedSelectorSequenceString = (_matcherSequenceIdCounter++).toString()
 			_currentSelector.matcherSequences.push(_currentMatcherSequence);
 
 			//is  the rest of the sequence whitespace?

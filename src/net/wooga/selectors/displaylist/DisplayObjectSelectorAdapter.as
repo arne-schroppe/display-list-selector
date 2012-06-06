@@ -193,11 +193,11 @@ package net.wooga.selectors.displaylist {
 
 		private var _matchingSubSelectors:Object = new Object();
 
-		public function doesMatchSubSelector(subSelector:String):Boolean {
+		public function isMatchingSubSelector(subSelector:String):Boolean {
 			return _matchingSubSelectors[subSelector] !== undefined;
 		}
 
-		public function setMatchedSubSelector(subSelector:String):void {
+		public function setIsMatchingSubSelector(subSelector:String):void {
 			_matchingSubSelectors[subSelector] = subSelector;
 		}
 

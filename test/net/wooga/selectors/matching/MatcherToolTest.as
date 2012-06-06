@@ -12,7 +12,8 @@ package net.wooga.selectors.matching {
 	import net.wooga.selectors.matching.matchers.implementations.TypeNameMatcher;
 	import net.wooga.selectors.matching.matchersequence.MatcherSequence;
 	import net.wooga.selectors.matching.matchersequence.MatcherSequenceImpl;
-	import net.wooga.selectors.selectoradapter.SelectorAdapter;
+
+	import org.flexunit.asserts.fail;
 
 	import org.flexunit.rules.IMethodRule;
 	import org.hamcrest.assertThat;
@@ -113,6 +114,30 @@ package net.wooga.selectors.matching {
 			//Check that the matcher for TestSpriteB is only checked once!
 			verify(times(1)).that(testSpriteBMatcher.isMatching(any()));
 
+		}
+
+
+		//TODO (arneschroppe 07/06/2012) we also need a more complex example with several matchers in a matchersequence
+
+
+		[Ignore]
+		[Test]
+		public function should_invalidate_cached_matches_when_removing_object_from_stage():void {
+
+			//create same setup as in last test
+
+			//match all TestSpriteC's
+
+			//remove TestSpriteB from context view
+
+			//add it again
+
+			//match TestSpriteC's again
+
+			//verify that the TestSpriteBMatcher was called exactly twice
+
+
+			fail("implement me");
 		}
 	}
 }

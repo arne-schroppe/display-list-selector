@@ -7,8 +7,6 @@ package net.wooga.selectors.matching.matchersequence {
 	public class MatcherSequenceImpl implements MatcherSequence{
 
 
-
-
 		private var _elementMatchers:Vector.<Matcher> = new <Matcher>[];
 		private var _normalizedSelectorSequenceString:String;
 		private var _parentCombinator:Combinator;

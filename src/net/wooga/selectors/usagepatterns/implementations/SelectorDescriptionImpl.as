@@ -1,6 +1,6 @@
 package net.wooga.selectors.usagepatterns.implementations {
 
-	import net.wooga.selectors.namespace.selector_internal;
+	import net.wooga.selectors.namespaces.selector_internal;
 	import net.wooga.selectors.specificity.Specificity;
 	import net.wooga.selectors.usagepatterns.*;
 

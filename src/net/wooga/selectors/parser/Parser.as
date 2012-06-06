@@ -18,7 +18,7 @@ package net.wooga.selectors.parser {
 	import net.wooga.selectors.matching.matchers.implementations.attributes.AttributeEqualsMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.attributes.AttributeExistsMatcher;
 	import net.wooga.selectors.matching.matchersequence.MatcherSequenceImpl;
-	import net.wooga.selectors.namespace.selector_internal;
+	import net.wooga.selectors.namespaces.selector_internal;
 	import net.wooga.selectors.pseudoclasses.IsA;
 	import net.wooga.selectors.pseudoclasses.PseudoClass;
 	import net.wooga.selectors.pseudoclasses.names.BuiltinPseudoClassName;
@@ -28,6 +28,10 @@ package net.wooga.selectors.parser {
 	use namespace selector_internal;
 
 	public class Parser {
+
+
+		//TODO (arneschroppe 07/06/2012) keep a map of normalized simpleselectorsequences to thei matchersequences. Don't reparse known sequences. Maybe add a clone method, so we can reuse sequences with different parent combinators (i.e. clone the whole sequence but exchange the combinator). A shallow copy (i.e. no cloning of simpleselectors/matchers) would be sufficient here
+
 
 		//TODO (arneschroppe 07/06/2012) this is a temporary solution. equal simple-selector-sequences should have same id or hash
 		private var _matcherSequenceIdCounter:int = 1;

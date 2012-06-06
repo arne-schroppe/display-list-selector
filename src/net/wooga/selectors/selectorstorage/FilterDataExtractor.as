@@ -6,7 +6,7 @@ package net.wooga.selectors.selectorstorage {
 	import net.wooga.selectors.matching.matchers.implementations.PseudoClassMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.TypeNameMatcher;
 	import net.wooga.selectors.matching.combinators.MatcherFamily;
-	import net.wooga.selectors.namespace.selector_internal;
+	import net.wooga.selectors.namespaces.selector_internal;
 	import net.wooga.selectors.parser.FilterData;
 	import net.wooga.selectors.pseudoclasses.IsA;
 	import net.wooga.selectors.pseudoclasses.SettablePseudoClass;

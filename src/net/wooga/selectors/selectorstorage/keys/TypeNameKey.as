@@ -2,7 +2,7 @@ package net.wooga.selectors.selectorstorage.keys {
 
 	import flash.utils.Dictionary;
 
-	import net.wooga.selectors.namespace.selector_internal;
+	import net.wooga.selectors.namespaces.selector_internal;
 	import net.wooga.selectors.parser.FilterData;
 	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 	import net.wooga.selectors.usagepatterns.implementations.SelectorImpl;

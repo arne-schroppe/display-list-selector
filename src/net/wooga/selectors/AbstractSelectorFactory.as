@@ -5,7 +5,7 @@ package net.wooga.selectors {
 
 	import net.wooga.selectors.adaptermap.SelectorAdapterMap;
 	import net.wooga.selectors.matching.MatcherTool;
-	import net.wooga.selectors.namespace.selector_internal;
+	import net.wooga.selectors.namespaces.selector_internal;
 	import net.wooga.selectors.parser.Parser;
 	import net.wooga.selectors.pseudoclasses.FirstChild;
 	import net.wooga.selectors.pseudoclasses.FirstOfType;

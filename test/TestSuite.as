@@ -3,6 +3,7 @@ package {
 	import net.wooga.selectors.SelectorFactoryTest;
 	import net.wooga.selectors.displaylist.DisplayObjectSelectorAdapterTest;
 	import net.wooga.selectors.input.ParserInputTest;
+	import net.wooga.selectors.matching.MatcherToolTest;
 	import net.wooga.selectors.matching.matchers.PseudoClassMatcherTest;
 	import net.wooga.selectors.matching.matchers.TypeNameMatcherTest;
 	import net.wooga.selectors.matching.matchers.implementations.attributes.AbstractStringAttributeMatcherTest;
@@ -70,6 +71,8 @@ package {
 		public var settablePseudoClassTest:SettablePseudoClassTest;
 
 		public var displayObjectSelectorAdapterTest:DisplayObjectSelectorAdapterTest;
+
+		public var matcherToolTest:MatcherToolTest;
 
 	}
 }

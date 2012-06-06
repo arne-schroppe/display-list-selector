@@ -21,6 +21,7 @@ package net.wooga.selectors.matching {
 
 		public function isObjectMatching(adapter:SelectorAdapter, matchers:Vector.<MatcherSequence>):Boolean {
 
+			//TODO (arneschroppe 06/06/2012) give this to reversematch as parameter instead of field
 			_currentlyMatchedMatcherSequences = matchers;
 
 			if (_currentlyMatchedMatcherSequences.length == 0) {
@@ -42,10 +43,9 @@ package net.wooga.selectors.matching {
 			var parent:Object;
 
 			var sequencesLength:int = _currentlyMatchedMatcherSequences.length;
-			trace("----");
+
 			for (var i:int = sequencesLength - 1; i >= 0; --i) {
 
-				trace("i: " + i);
 
 				var currentSequence:MatcherSequence = _currentlyMatchedMatcherSequences[i];
 
@@ -82,7 +82,6 @@ package net.wooga.selectors.matching {
 					}
 
 					++i; //rematch current sequence
-					trace("increased i: " + i);
 					continue;
 				}
 
@@ -140,7 +139,6 @@ package net.wooga.selectors.matching {
 						subject = _adapterSource.getSelectorAdapterForObject( subject.getElementAtIndex(objectIndex - 1) );
 						break;
 				}
-
 			}
 
 

@@ -17,7 +17,7 @@ package net.wooga.selectors.displaylist {
 		private var _qualifiedElementClassName:String;
 		private var _qualifiedInterfacesAndClasses:Vector.<String>;
 		private var _interfacesAndClasses:Vector.<String>;
-
+		private var _matchingSubSelectors:Object = new Object();
 
 		private static var _implementedTypeCache:Dictionary = new Dictionary();
 
@@ -149,7 +149,7 @@ package net.wooga.selectors.displaylist {
 
 			return _interfacesAndClasses;
 		}
-		
+
 
 		private function extractImplementedTypes():void {
 
@@ -192,7 +192,7 @@ package net.wooga.selectors.displaylist {
 		}
 
 
-		private var _matchingSubSelectors:Object = new Object();
+
 
 		public function hasSubSelectorMatchResult(subSelector:String):Boolean {
 			return subSelector in _matchingSubSelectors;

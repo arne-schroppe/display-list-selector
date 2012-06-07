@@ -32,8 +32,9 @@ package net.wooga.selectors.selectoradapter {
 		function isEmpty():Boolean;
 
 
-		function isMatchingSubSelector(subSelector:String):Boolean;
-		function setIsMatchingSubSelector(subSelector:String):void;
+		function hasSubSelectorMatchResult(subSelector:String):Boolean;
+		function getSubSelectorMatchResult(subSelector:String):Boolean;
+		function setSubSelectorMatchResult(subSelector:String, isMatching:Boolean):void;
 
 		function invalidateCachedMatches():void;
 

@@ -119,8 +119,8 @@ package net.wooga.selectors.matching {
 
 		//TODO (arneschroppe 07/06/2012) we also need a more complex example with several matchers in a matchersequence
 
+		//TODO (arneschroppe 07/06/2012) we also need a test for not rematching failed matches
 
-		[Ignore]
 		[Test]
 		public function should_invalidate_cached_matches_when_removing_object_from_stage():void {
 

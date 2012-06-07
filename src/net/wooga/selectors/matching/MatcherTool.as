@@ -53,7 +53,9 @@ package net.wooga.selectors.matching {
 				hasMatch = true;
 
 				//TODO (arneschroppe 07/06/2012) also store if an element does NOT match a sequence, so we don't have to rematch that case
-				if(!subject.isMatchingSubSelector(currentSequence.normalizedSelectorSequenceString)) {
+
+				//TODO (arneschroppe 07/06/2012)
+				if(!subject.hasSubSelectorMatchResult(currentSequence.normalizedSelectorSequenceString)) {
 
 					var matchers:Vector.<Matcher> = currentSequence.elementMatchers;
 					var matchersLength:int = matchers.length;
@@ -65,9 +67,10 @@ package net.wooga.selectors.matching {
 						}
 					}
 
-					if(hasMatch) {
-						subject.setIsMatchingSubSelector(currentSequence.normalizedSelectorSequenceString);
-					}
+					subject.setSubSelectorMatchResult(currentSequence.normalizedSelectorSequenceString, hasMatch);
+				}
+				else {
+					hasMatch = subject.getSubSelectorMatchResult(currentSequence.normalizedSelectorSequenceString);
 				}
 
 

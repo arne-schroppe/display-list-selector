@@ -149,6 +149,7 @@ package net.wooga.selectors.displaylist {
 
 			return _interfacesAndClasses;
 		}
+		
 
 		private function extractImplementedTypes():void {
 
@@ -193,12 +194,16 @@ package net.wooga.selectors.displaylist {
 
 		private var _matchingSubSelectors:Object = new Object();
 
-		public function isMatchingSubSelector(subSelector:String):Boolean {
-			return _matchingSubSelectors[subSelector] !== undefined;
+		public function hasSubSelectorMatchResult(subSelector:String):Boolean {
+			return subSelector in _matchingSubSelectors;
 		}
 
-		public function setIsMatchingSubSelector(subSelector:String):void {
-			_matchingSubSelectors[subSelector] = subSelector;
+		public function getSubSelectorMatchResult(subSelector:String):Boolean {
+			return _matchingSubSelectors[subSelector];
+		}
+
+		public function setSubSelectorMatchResult(subSelector:String, isMatching:Boolean):void {
+			_matchingSubSelectors[subSelector] = isMatching;
 		}
 
 		public function invalidateCachedMatches():void {

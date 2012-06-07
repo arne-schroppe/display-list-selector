@@ -1,5 +1,5 @@
 package net.wooga.selectors.pseudoclasses.names {
-	public class BuiltinPseudoClassName {
+	public class StaticPseudoClassName {
 		public static const ROOT:String = "root";
 		public static const FIRST_CHILD:String = "first-child";
 		public static const LAST_CHILD:String = "last-child";

@@ -48,11 +48,21 @@ package net.wooga.selectors.displaylist {
 
 
 		private function onAddPseudoClass(event:SelectorPseudoClassEvent):void {
-			_pseudoClasses[event.pseudoClassName] = true;
+			addPseudoClass(event.pseudoClassName);
+		}
+
+		public function addPseudoClass(pseudoClassName:String):void {
+			_pseudoClasses[pseudoClassName] = true;
+			invalidateCachedMatches();
 		}
 
 		private function onRemovePseudoClass(event:SelectorPseudoClassEvent):void {
-			_pseudoClasses[event.pseudoClassName] = false;
+			removePseudoClass(event.pseudoClassName);
+		}
+
+		public  function removePseudoClass(pseudoClassName:String):void {
+			_pseudoClasses[pseudoClassName] = false;
+			invalidateCachedMatches();
 		}
 
 
@@ -66,11 +76,12 @@ package net.wooga.selectors.displaylist {
 		}
 
 
+		//TODO (arneschroppe 08/06/2012) we need to actively set this, otherwise we can't invalidate the cache
 		public function getId():String {
 			return _adaptedElement.name;
 		}
 
-
+		//TODO (arneschroppe 08/06/2012) we need to actively set this, otherwise we can't invalidate the cache
 		public function getClasses():Array {
 			return (CSS_CLASS_PARAMETER_NAME in _adaptedElement) ? _adaptedElement[CSS_CLASS_PARAMETER_NAME] : [];
 		}
@@ -92,9 +103,6 @@ package net.wooga.selectors.displaylist {
 			return _adaptedElement;
 		}
 
-		protected function set adaptedElement(value:DisplayObject):void {
-			_adaptedElement = value;
-		}
 
 		public function getParentElement():Object {
 			return _adaptedElement.parent;

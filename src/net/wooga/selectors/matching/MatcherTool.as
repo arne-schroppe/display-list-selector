@@ -49,12 +49,10 @@ package net.wooga.selectors.matching {
 
 				var currentSequence:MatcherSequence = _currentlyMatchedMatcherSequences[i] as MatcherSequence;
 
-
 				hasMatch = true;
 
 				//TODO (arneschroppe 07/06/2012) also store if an element does NOT match a sequence, so we don't have to rematch that case
 
-				//TODO (arneschroppe 07/06/2012)
 				if(!subject.hasSubSelectorMatchResult(currentSequence.normalizedSelectorSequenceString)) {
 
 					var matchers:Vector.<Matcher> = currentSequence.elementMatchers;

@@ -12,6 +12,7 @@ package net.wooga.selectors.selectoradapter {
 
 		private var _pseudoClassName:String;
 
+		//TODO (arneschroppe 08/06/2012) why is pseudoClassName not a PseudoClass ?
 		public function SelectorPseudoClassEvent(type:String, pseudoClassName:String) {
 			super(type);
 			_pseudoClassName = pseudoClassName;

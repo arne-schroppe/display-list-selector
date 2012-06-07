@@ -21,7 +21,7 @@ package net.wooga.selectors.parser {
 	import net.wooga.selectors.namespaces.selector_internal;
 	import net.wooga.selectors.pseudoclasses.IsA;
 	import net.wooga.selectors.pseudoclasses.PseudoClass;
-	import net.wooga.selectors.pseudoclasses.names.BuiltinPseudoClassName;
+	import net.wooga.selectors.pseudoclasses.names.StaticPseudoClassName;
 	import net.wooga.selectors.tools.input.ParserInput;
 	import net.wooga.selectors.usagepatterns.implementations.SelectorImpl;
 
@@ -326,7 +326,7 @@ package net.wooga.selectors.parser {
 		private function functionalPseudo():PseudoClassMatcher {
 			var pseudoClassName:String = _input.consumeRegex(/[a-zA-Z][\w\-]*/);
 
-			if (pseudoClassName != BuiltinPseudoClassName.IS_A && !_pseudoClassProvider.hasPseudoClass(pseudoClassName)) {
+			if (pseudoClassName != StaticPseudoClassName.IS_A && !_pseudoClassProvider.hasPseudoClass(pseudoClassName)) {
 				throw new ParserError("Unknown pseudoClass-class '" + pseudoClassName + "' (In selector: '" + _originalSelector + "')");
 			}
 

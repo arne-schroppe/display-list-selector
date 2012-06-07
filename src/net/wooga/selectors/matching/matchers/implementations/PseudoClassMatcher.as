@@ -10,13 +10,16 @@ package net.wooga.selectors.matching.matchers.implementations {
 		private var _pseudoClass:PseudoClass;
 
 
-		public function get pseudoClass():PseudoClass {
-			return _pseudoClass;
-		}
 
 		public function PseudoClassMatcher(pseudoClass:PseudoClass) {
 			_pseudoClass = pseudoClass;
 		}
+
+
+		public function get pseudoClass():PseudoClass {
+			return _pseudoClass;
+		}
+
 
 		public function set arguments(arguments:Array):void {
 			_pseudoClass.setArguments(arguments);

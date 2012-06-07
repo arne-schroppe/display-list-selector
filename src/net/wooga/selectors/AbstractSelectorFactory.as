@@ -21,7 +21,7 @@ package net.wooga.selectors {
 	import net.wooga.selectors.pseudoclasses.OnlyOfType;
 	import net.wooga.selectors.pseudoclasses.Root;
 	import net.wooga.selectors.pseudoclasses.SettablePseudoClass;
-	import net.wooga.selectors.pseudoclasses.names.BuiltinPseudoClassName;
+	import net.wooga.selectors.pseudoclasses.names.StaticPseudoClassName;
 	import net.wooga.selectors.pseudoclasses.names.PseudoClassName;
 	import net.wooga.selectors.pseudoclasses.provider.PseudoClassProviderImpl;
 	import net.wooga.selectors.selectoradapter.SelectorAdapter;
@@ -173,19 +173,19 @@ package net.wooga.selectors {
 		}
 
 		private function addDefaultPseudoClasses():void {
-			addPseudoClass(BuiltinPseudoClassName.IS_A, IsA);
-			addPseudoClass(BuiltinPseudoClassName.ROOT, Root, [_rootObject]);
-			addPseudoClass(BuiltinPseudoClassName.FIRST_CHILD, FirstChild);
-			addPseudoClass(BuiltinPseudoClassName.LAST_CHILD, LastChild);
-			addPseudoClass(BuiltinPseudoClassName.NTH_CHILD, NthChild);
-			addPseudoClass(BuiltinPseudoClassName.NTH_LAST_CHILD, NthLastChild);
-			addPseudoClass(BuiltinPseudoClassName.NTH_OF_TYPE, NthOfType);
-			addPseudoClass(BuiltinPseudoClassName.NTH_LAST_OF_TYPE, NthLastOfType);
-			addPseudoClass(BuiltinPseudoClassName.FIRST_OF_TYPE, FirstOfType);
-			addPseudoClass(BuiltinPseudoClassName.LAST_OF_TYPE, LastOfType);
-			addPseudoClass(BuiltinPseudoClassName.EMPTY, IsEmpty);
-			addPseudoClass(BuiltinPseudoClassName.ONLY_CHILD, OnlyChild);
-			addPseudoClass(BuiltinPseudoClassName.ONLY_OF_TYPE, OnlyOfType);
+			addPseudoClass(StaticPseudoClassName.IS_A, IsA);
+			addPseudoClass(StaticPseudoClassName.ROOT, Root, [_rootObject]);
+			addPseudoClass(StaticPseudoClassName.FIRST_CHILD, FirstChild);
+			addPseudoClass(StaticPseudoClassName.LAST_CHILD, LastChild);
+			addPseudoClass(StaticPseudoClassName.NTH_CHILD, NthChild);
+			addPseudoClass(StaticPseudoClassName.NTH_LAST_CHILD, NthLastChild);
+			addPseudoClass(StaticPseudoClassName.NTH_OF_TYPE, NthOfType);
+			addPseudoClass(StaticPseudoClassName.NTH_LAST_OF_TYPE, NthLastOfType);
+			addPseudoClass(StaticPseudoClassName.FIRST_OF_TYPE, FirstOfType);
+			addPseudoClass(StaticPseudoClassName.LAST_OF_TYPE, LastOfType);
+			addPseudoClass(StaticPseudoClassName.EMPTY, IsEmpty);
+			addPseudoClass(StaticPseudoClassName.ONLY_CHILD, OnlyChild);
+			addPseudoClass(StaticPseudoClassName.ONLY_OF_TYPE, OnlyOfType);
 
 
 			for each(var pseudoClassName:String in [

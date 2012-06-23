@@ -12,7 +12,7 @@ package net.wooga.selectors.matching.matchers.implementations {
 		}
 
 		public function isMatching(subject:SelectorAdapter):Boolean {
-			return subject.getClasses().indexOf(_className) != -1;
+			return subject.hasClass(_className);
 		}
 
 		public function get matcherFamily():MatcherFamily {

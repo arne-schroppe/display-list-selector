@@ -13,7 +13,7 @@ package net.wooga.selectors {
 	import net.wooga.fixtures.tools.ContextViewBasedTest;
 	import net.wooga.selectors.displaylist.DisplayObjectSelectorAdapter;
 	import net.wooga.selectors.pseudoclasses.names.PseudoClassName;
-	import net.wooga.selectors.selectoradapter.SelectorPseudoClassEvent;
+	import net.wooga.selectors.selectoradapter.SelectorEvent;
 	import net.wooga.selectors.usagepatterns.Selector;
 	import net.wooga.selectors.usagepatterns.SelectorDescription;
 	import net.wooga.selectors.usagepatterns.SelectorGroup;
@@ -453,7 +453,7 @@ package net.wooga.selectors {
 
 			var displayObject:DisplayObject = instances[0];
 			_selectorFactory.createSelectorAdapterFor(displayObject);
-			displayObject.dispatchEvent(new SelectorPseudoClassEvent(SelectorPseudoClassEvent.ADD_PSEUDO_CLASS, PseudoClassName.HOVER));
+			displayObject.dispatchEvent(new SelectorEvent(SelectorEvent.ADD_PSEUDO_CLASS, PseudoClassName.HOVER));
 
 			var selectorPool:SelectorPool = _selectorFactory.createSelectorPool();
 			selectorPool.addSelector("TestSpriteC:hover");

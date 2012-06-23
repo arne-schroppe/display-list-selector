@@ -4,7 +4,7 @@ package net.wooga.selectors.displaylist {
 
 	import net.wooga.fixtures.tools.ContextViewBasedTest;
 	import net.wooga.selectors.pseudoclasses.names.PseudoClassName;
-	import net.wooga.selectors.selectoradapter.SelectorPseudoClassEvent;
+	import net.wooga.selectors.selectoradapter.SelectorEvent;
 
 	import org.flexunit.asserts.fail;
 
@@ -30,9 +30,9 @@ package net.wooga.selectors.displaylist {
 		[Test]
 		public function should_change_hover_state():void {
 			assertThat(_adapter.hasPseudoClass(PseudoClassName.HOVER), equalTo(false));
-			adaptedSprite.dispatchEvent(new SelectorPseudoClassEvent(SelectorPseudoClassEvent.ADD_PSEUDO_CLASS, PseudoClassName.HOVER));
+			adaptedSprite.dispatchEvent(new SelectorEvent(SelectorEvent.ADD_PSEUDO_CLASS, PseudoClassName.HOVER));
 			assertThat(_adapter.hasPseudoClass(PseudoClassName.HOVER), equalTo(true));
-			adaptedSprite.dispatchEvent(new SelectorPseudoClassEvent(SelectorPseudoClassEvent.REMOVE_PSEUDO_CLASS, PseudoClassName.HOVER));
+			adaptedSprite.dispatchEvent(new SelectorEvent(SelectorEvent.REMOVE_PSEUDO_CLASS, PseudoClassName.HOVER));
 			assertThat(_adapter.hasPseudoClass(PseudoClassName.HOVER), equalTo(false));
 		}
 
@@ -41,9 +41,9 @@ package net.wooga.selectors.displaylist {
 		[Test]
 		public function should_change_active_state():void {
 			assertThat(_adapter.hasPseudoClass(PseudoClassName.ACTIVE), equalTo(false));
-			adaptedSprite.dispatchEvent(new SelectorPseudoClassEvent(SelectorPseudoClassEvent.ADD_PSEUDO_CLASS, PseudoClassName.ACTIVE));
+			adaptedSprite.dispatchEvent(new SelectorEvent(SelectorEvent.ADD_PSEUDO_CLASS, PseudoClassName.ACTIVE));
 			assertThat(_adapter.hasPseudoClass(PseudoClassName.ACTIVE), equalTo(true));
-			adaptedSprite.dispatchEvent(new SelectorPseudoClassEvent(SelectorPseudoClassEvent.REMOVE_PSEUDO_CLASS, PseudoClassName.ACTIVE));
+			adaptedSprite.dispatchEvent(new SelectorEvent(SelectorEvent.REMOVE_PSEUDO_CLASS, PseudoClassName.ACTIVE));
 			assertThat(_adapter.hasPseudoClass(PseudoClassName.ACTIVE), equalTo(false));
 		}
 
@@ -51,9 +51,9 @@ package net.wooga.selectors.displaylist {
 		[Test]
 		public function should_change_focused_state():void {
 			assertThat(_adapter.hasPseudoClass(PseudoClassName.FOCUS), equalTo(false));
-			adaptedSprite.dispatchEvent(new SelectorPseudoClassEvent(SelectorPseudoClassEvent.ADD_PSEUDO_CLASS, PseudoClassName.FOCUS));
+			adaptedSprite.dispatchEvent(new SelectorEvent(SelectorEvent.ADD_PSEUDO_CLASS, PseudoClassName.FOCUS));
 			assertThat(_adapter.hasPseudoClass(PseudoClassName.FOCUS), equalTo(true));
-			adaptedSprite.dispatchEvent(new SelectorPseudoClassEvent(SelectorPseudoClassEvent.REMOVE_PSEUDO_CLASS, PseudoClassName.FOCUS));
+			adaptedSprite.dispatchEvent(new SelectorEvent(SelectorEvent.REMOVE_PSEUDO_CLASS, PseudoClassName.FOCUS));
 			assertThat(_adapter.hasPseudoClass(PseudoClassName.FOCUS), equalTo(false));
 		}
 

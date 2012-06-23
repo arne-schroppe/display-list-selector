@@ -19,8 +19,7 @@ package net.wooga.selectors.selectoradapter {
 
 
 		function getId():String;
-		function getClasses():Array;
-
+		function hasClass(className:String):Boolean;
 		function hasPseudoClass(pseudoClassName:String):Boolean;
 
 		function getElementIndex():int;

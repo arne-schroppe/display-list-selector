@@ -1,5 +1,7 @@
 package net.wooga.selectors.matching {
 
+	import flash.display.Sprite;
+
 	import net.arneschroppe.displaytreebuilder.DisplayTree;
 	import net.wooga.fixtures.TestSpriteB;
 	import net.wooga.fixtures.TestSpriteC;
@@ -36,6 +38,7 @@ package net.wooga.selectors.matching {
 
 		//TODO (arneschroppe 07/06/2012) what about hover, etc ??
 		//TODO (arneschroppe 07/06/2012) solution: invalidate cache when hover changes (maybe selectively, if cache is tree based. matchersequence could have volatile flag)
+		//TODO (arneschroppe 08/06/2012) then what about name and css class? Maybe we can keep the cache for one frame or something like that?
 
 		[Rule]
 		public var mockitoRule:IMethodRule = new MockitoRule();
@@ -300,7 +303,7 @@ package net.wooga.selectors.matching {
 
 
 		[Test]
-		public function should_invalidate_cached_matches_when_volatile_property_changes():void {
+		public function should_invalidate_cached_matches_when_pseudoclass_changes():void {
 
 			var displayTree:DisplayTree = new DisplayTree();
 
@@ -360,6 +363,161 @@ package net.wooga.selectors.matching {
 
 
 			testSpriteBAdapter.addPseudoClass(PseudoClassName.HOVER);
+
+			//Due to a bug in Mockito, we can't change the return value we gave earlier. that's why hoverMatcher already succeeds in the first call (even though it should return false) and is not reset to return true here. (asc 08/07/2012)
+			//given(hoverMatcher.isMatching(eq(testSpriteBAdapter))).willReturn(true);
+
+			assertThat(_matcherTool.isObjectMatching(testSpriteC1Adapter, matcherSequences), equalTo(true));
+			assertThat(_matcherTool.isObjectMatching(testSpriteC2Adapter, matcherSequences), equalTo(true));
+			assertThat(_matcherTool.isObjectMatching(testSpriteC3Adapter, matcherSequences), equalTo(true));
+
+
+			//Matcher is checked twice because of cache invalidation
+			verify(times(2)).that(testSpriteBMatcher.isMatching(any()));
+			verify(times(2)).that(hoverMatcher.isMatching(any()));
+		}
+
+
+
+		[Test]
+		public function should_invalidate_cached_matches_when_css_id_changes():void {
+
+			var displayTree:DisplayTree = new DisplayTree();
+
+
+			var instances:Array = [];
+			displayTree.uses(contextView).containing
+					.a(TestSpriteB).whichWillBeStoredIn(instances).containing
+					.a(TestSpriteC).whichWillBeStoredIn(instances)
+					.a(TestSpriteC).whichWillBeStoredIn(instances)
+					.a(TestSpriteC).whichWillBeStoredIn(instances)
+					.end
+					.end.finish()
+
+			//create and save adapters for all these objects
+
+			var testSpriteBAdapter:DisplayObjectSelectorAdapter = new DisplayObjectSelectorAdapter();
+			_selectorAdapterMap.setAdapterForObject(instances[0], testSpriteBAdapter);
+			testSpriteBAdapter.register(instances[0]);
+
+			var testSpriteC1Adapter:DisplayObjectSelectorAdapter = new DisplayObjectSelectorAdapter();
+			_selectorAdapterMap.setAdapterForObject(instances[1], testSpriteC1Adapter);
+			testSpriteC1Adapter.register(instances[1]);
+
+			var testSpriteC2Adapter:DisplayObjectSelectorAdapter = new DisplayObjectSelectorAdapter();
+			_selectorAdapterMap.setAdapterForObject(instances[2], testSpriteC2Adapter);
+			testSpriteC2Adapter.register(instances[2]);
+
+			var testSpriteC3Adapter:DisplayObjectSelectorAdapter = new DisplayObjectSelectorAdapter();
+			_selectorAdapterMap.setAdapterForObject(instances[3], testSpriteC3Adapter);
+			testSpriteC3Adapter.register(instances[3]);
+
+
+
+
+			given(testSpriteBMatcher.isMatching(eq(testSpriteBAdapter))).willReturn(true);
+			given(hoverMatcher.isMatching(eq(testSpriteBAdapter))).willReturn(true);
+			var matcherSequence1:MatcherSequenceImpl = new MatcherSequenceImpl();
+			matcherSequence1.parentCombinator = null;
+			matcherSequence1.elementMatchers.push(testSpriteBMatcher);
+			matcherSequence1.elementMatchers.push(hoverMatcher);
+
+
+			given(testSpriteCMatcher.isMatching(eq(testSpriteC1Adapter))).willReturn(true);
+			given(testSpriteCMatcher.isMatching(eq(testSpriteC2Adapter))).willReturn(true);
+			given(testSpriteCMatcher.isMatching(eq(testSpriteC3Adapter))).willReturn(true);
+			var matcherSequence2:MatcherSequenceImpl = new MatcherSequenceImpl();
+			matcherSequence2.parentCombinator = new Combinator(MatcherFamily.ANCESTOR_COMBINATOR, CombinatorType.CHILD);
+			matcherSequence2.elementMatchers.push(testSpriteCMatcher);
+
+			var matcherSequences:Vector.<MatcherSequence> = new <MatcherSequence>[matcherSequence1, matcherSequence2];
+
+
+
+			assertThat(_matcherTool.isObjectMatching(testSpriteC1Adapter, matcherSequences), equalTo(true));
+			assertThat(_matcherTool.isObjectMatching(testSpriteC2Adapter, matcherSequences), equalTo(true));
+			assertThat(_matcherTool.isObjectMatching(testSpriteC3Adapter, matcherSequences), equalTo(true));
+
+
+			testSpriteBAdapter.setId("test123");
+
+			//Due to a bug in Mockito, we can't change the return value we gave earlier. that's why hoverMatcher already succeeds in the first call (even though it should return false) and is not reset to return true here. (asc 08/07/2012)
+			//given(hoverMatcher.isMatching(eq(testSpriteBAdapter))).willReturn(true);
+
+			assertThat(_matcherTool.isObjectMatching(testSpriteC1Adapter, matcherSequences), equalTo(true));
+			assertThat(_matcherTool.isObjectMatching(testSpriteC2Adapter, matcherSequences), equalTo(true));
+			assertThat(_matcherTool.isObjectMatching(testSpriteC3Adapter, matcherSequences), equalTo(true));
+
+
+			//Matcher is checked twice because of cache invalidation
+			verify(times(2)).that(testSpriteBMatcher.isMatching(any()));
+			verify(times(2)).that(hoverMatcher.isMatching(any()));
+		}
+
+
+
+
+		[Test]
+		public function should_invalidate_cached_matches_when_css_classes_change():void {
+
+			var displayTree:DisplayTree = new DisplayTree();
+
+
+			var instances:Array = [];
+			displayTree.uses(contextView).containing
+					.a(TestSpriteB).whichWillBeStoredIn(instances).containing
+					.a(TestSpriteC).whichWillBeStoredIn(instances)
+					.a(TestSpriteC).whichWillBeStoredIn(instances)
+					.a(TestSpriteC).whichWillBeStoredIn(instances)
+					.end
+					.end.finish()
+
+			//create and save adapters for all these objects
+
+			var testSpriteBAdapter:DisplayObjectSelectorAdapter = new DisplayObjectSelectorAdapter();
+			_selectorAdapterMap.setAdapterForObject(instances[0], testSpriteBAdapter);
+			testSpriteBAdapter.register(instances[0]);
+
+			var testSpriteC1Adapter:DisplayObjectSelectorAdapter = new DisplayObjectSelectorAdapter();
+			_selectorAdapterMap.setAdapterForObject(instances[1], testSpriteC1Adapter);
+			testSpriteC1Adapter.register(instances[1]);
+
+			var testSpriteC2Adapter:DisplayObjectSelectorAdapter = new DisplayObjectSelectorAdapter();
+			_selectorAdapterMap.setAdapterForObject(instances[2], testSpriteC2Adapter);
+			testSpriteC2Adapter.register(instances[2]);
+
+			var testSpriteC3Adapter:DisplayObjectSelectorAdapter = new DisplayObjectSelectorAdapter();
+			_selectorAdapterMap.setAdapterForObject(instances[3], testSpriteC3Adapter);
+			testSpriteC3Adapter.register(instances[3]);
+
+
+
+
+			given(testSpriteBMatcher.isMatching(eq(testSpriteBAdapter))).willReturn(true);
+			given(hoverMatcher.isMatching(eq(testSpriteBAdapter))).willReturn(true);
+			var matcherSequence1:MatcherSequenceImpl = new MatcherSequenceImpl();
+			matcherSequence1.parentCombinator = null;
+			matcherSequence1.elementMatchers.push(testSpriteBMatcher);
+			matcherSequence1.elementMatchers.push(hoverMatcher);
+
+
+			given(testSpriteCMatcher.isMatching(eq(testSpriteC1Adapter))).willReturn(true);
+			given(testSpriteCMatcher.isMatching(eq(testSpriteC2Adapter))).willReturn(true);
+			given(testSpriteCMatcher.isMatching(eq(testSpriteC3Adapter))).willReturn(true);
+			var matcherSequence2:MatcherSequenceImpl = new MatcherSequenceImpl();
+			matcherSequence2.parentCombinator = new Combinator(MatcherFamily.ANCESTOR_COMBINATOR, CombinatorType.CHILD);
+			matcherSequence2.elementMatchers.push(testSpriteCMatcher);
+
+			var matcherSequences:Vector.<MatcherSequence> = new <MatcherSequence>[matcherSequence1, matcherSequence2];
+
+
+
+			assertThat(_matcherTool.isObjectMatching(testSpriteC1Adapter, matcherSequences), equalTo(true));
+			assertThat(_matcherTool.isObjectMatching(testSpriteC2Adapter, matcherSequences), equalTo(true));
+			assertThat(_matcherTool.isObjectMatching(testSpriteC3Adapter, matcherSequences), equalTo(true));
+
+
+			testSpriteBAdapter.addClass("someTestClass");
 
 			//Due to a bug in Mockito, we can't change the return value we gave earlier. that's why hoverMatcher already succeeds in the first call (even though it should return false) and is not reset to return true here. (asc 08/07/2012)
 			//given(hoverMatcher.isMatching(eq(testSpriteBAdapter))).willReturn(true);

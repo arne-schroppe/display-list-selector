@@ -12,7 +12,7 @@ package net.wooga.selectors.displaylist {
 	public class DisplayObjectSelectorAdapter implements SelectorAdapter {
 
 		private var _adaptedElement:DisplayObject;
-		
+
 		private var _elementClassName:String;
 		private var _qualifiedElementClassName:String;
 		private var _qualifiedInterfacesAndClasses:Vector.<String>;
@@ -21,11 +21,12 @@ package net.wooga.selectors.displaylist {
 
 		private static var _implementedTypeCache:Dictionary = new Dictionary();
 
-		//TODO (arneschroppe 2/26/12) rename groups to classes
-		private static const CSS_CLASS_PARAMETER_NAME:String = "groups";
 
 
 		private var _pseudoClasses:Object = {};
+		private var _classes:Object = {};
+		private var _id:String = "";
+
 
 		public function DisplayObjectSelectorAdapter() {
 		}
@@ -37,31 +38,68 @@ package net.wooga.selectors.displaylist {
 			}
 
 			_adaptedElement = DisplayObject(adaptedElement);
-			_adaptedElement.addEventListener(SelectorPseudoClassEvent.ADD_PSEUDO_CLASS, onAddPseudoClass);
-			_adaptedElement.addEventListener(SelectorPseudoClassEvent.REMOVE_PSEUDO_CLASS, onRemovePseudoClass);
+			_adaptedElement.addEventListener(SelectorEvent.ADD_PSEUDO_CLASS, onAddPseudoClass);
+			_adaptedElement.addEventListener(SelectorEvent.REMOVE_PSEUDO_CLASS, onRemovePseudoClass);
+			_adaptedElement.addEventListener(SelectorEvent.SET_ID, onSetId);
+			_adaptedElement.addEventListener(SelectorEvent.ADD_CLASS, onAddClass);
+			_adaptedElement.addEventListener(SelectorEvent.REMOVE_CLASS, onRemoveClass);
 			_adaptedElement.addEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage);
 		}
+
 
 		private function onRemovedFromStage(event:Event):void {
 			invalidateCachedMatches();
 		}
 
 
-		private function onAddPseudoClass(event:SelectorPseudoClassEvent):void {
-			addPseudoClass(event.pseudoClassName);
+		private function onAddPseudoClass(event:SelectorEvent):void {
+			addPseudoClass(event.value);
 		}
+
+
+
+		private function onRemovePseudoClass(event:SelectorEvent):void {
+			removePseudoClass(event.value);
+		}
+
+
+
+		private function onSetId(event:SelectorEvent):void {
+			setId(event.value);
+		}
+
+
+		private function onAddClass(event:SelectorEvent):void {
+			addClass(event.value);
+		}
+
+		private function onRemoveClass(event:SelectorEvent):void {
+			removeClass(event.value);
+		}
+
 
 		public function addPseudoClass(pseudoClassName:String):void {
 			_pseudoClasses[pseudoClassName] = true;
 			invalidateCachedMatches();
 		}
 
-		private function onRemovePseudoClass(event:SelectorPseudoClassEvent):void {
-			removePseudoClass(event.pseudoClassName);
-		}
-
 		public  function removePseudoClass(pseudoClassName:String):void {
 			_pseudoClasses[pseudoClassName] = false;
+			invalidateCachedMatches();
+		}
+
+		public function setId(value:String):void {
+			_id = value;
+			invalidateCachedMatches();
+		}
+
+		public function addClass(className:String):void {
+			_classes[className] = true;
+			invalidateCachedMatches();
+		}
+
+		public function removeClass(className:String):void {
+			_classes[className] = false;
 			invalidateCachedMatches();
 		}
 
@@ -76,16 +114,19 @@ package net.wooga.selectors.displaylist {
 		}
 
 
-		//TODO (arneschroppe 08/06/2012) we need to actively set this, otherwise we can't invalidate the cache
 		public function getId():String {
-			return _adaptedElement.name;
+			return _id;
 		}
 
-		//TODO (arneschroppe 08/06/2012) we need to actively set this, otherwise we can't invalidate the cache
-		public function getClasses():Array {
-			return (CSS_CLASS_PARAMETER_NAME in _adaptedElement) ? _adaptedElement[CSS_CLASS_PARAMETER_NAME] : [];
+		public function hasClass(className:String):Boolean {
+			return _classes[className]
 		}
 
+
+
+		public function hasPseudoClass(pseudoClassName:String):Boolean {
+			return _pseudoClasses[pseudoClassName];
+		}
 
 		public function getElementIndex():int {
 			return _adaptedElement.parent ? _adaptedElement.parent.getChildIndex(_adaptedElement) : -1;
@@ -113,10 +154,6 @@ package net.wooga.selectors.displaylist {
 		}
 
 
-
-		public function hasPseudoClass(pseudoClassName:String):Boolean {
-			return _pseudoClasses[pseudoClassName];
-		}
 
 		public function getElementClassName():String {
 			if(!_elementClassName) {

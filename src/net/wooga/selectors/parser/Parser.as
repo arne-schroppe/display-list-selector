@@ -33,9 +33,6 @@ package net.wooga.selectors.parser {
 		//TODO (arneschroppe 07/06/2012) keep a map of normalized simpleselectorsequences to thei matchersequences. Don't reparse known sequences. Maybe add a clone method, so we can reuse sequences with different parent combinators (i.e. clone the whole sequence but exchange the combinator). A shallow copy (i.e. no cloning of simpleselectors/matchers) would be sufficient here
 
 
-		//TODO (arneschroppe 07/06/2012) this is a temporary solution. equal simple-selector-sequences should have same id or hash
-		private var _matcherSequenceIdCounter:int = 1;
-
 		private var _individualSelectors:Vector.<SelectorImpl>;
 
 
@@ -58,7 +55,7 @@ package net.wooga.selectors.parser {
 		private var _pseudoClassArguments:Array;
 		private var _originalSelector:String;
 
-		//private var _normalizedSimpleSelectorSequence:String;
+		private var _normalizedSimpleSelectorSequence:String;
 
 		private var _alreadyParsedSelectors:Dictionary = new Dictionary();
 
@@ -96,6 +93,7 @@ package net.wooga.selectors.parser {
 			_originalSelector = inputString;
 			_input = new ParserInput(inputString);
 			_individualSelectors = new <SelectorImpl>[];
+			_normalizedSimpleSelectorSequence = "";
 		}
 
 
@@ -103,7 +101,8 @@ package net.wooga.selectors.parser {
 
 			endMatcherSequence();
 
-			_currentMatcherSequence = new MatcherSequenceImpl();
+			_currentMatcherSequence = new MatcherSequenceImpl(); //TODO (arneschroppe 24/06/2012) seems to be duplicate code
+			_normalizedSimpleSelectorSequence = "";
 
 			_currentSelector = new SelectorImpl();
 			_individualSelectors.push(_currentSelector);
@@ -139,7 +138,8 @@ package net.wooga.selectors.parser {
 
 			simpleSelectorSequence();
 
-			_currentMatcherSequence.normalizedSelectorSequenceString = (_matcherSequenceIdCounter++).toString()
+			//TODO (arneschroppe 24/06/2012) maybe we should hash the normalized sequence?
+			_currentMatcherSequence.normalizedSelectorSequenceString = _normalizedSimpleSelectorSequence;
 			_currentSelector.matcherSequences.push(_currentMatcherSequence);
 
 			//is  the rest of the sequence whitespace?
@@ -152,7 +152,8 @@ package net.wooga.selectors.parser {
 				return;
 			}
 
-			_currentMatcherSequence = new MatcherSequenceImpl();
+			_currentMatcherSequence = new MatcherSequenceImpl(); //TODO (arneschroppe 24/06/2012) seems to be duplicate code
+			_normalizedSimpleSelectorSequence = "";
 			combinator();
 			selectorsGroup();
 		}
@@ -222,21 +223,23 @@ package net.wooga.selectors.parser {
 				//The *-selector does not limit the result set, so we wouldn't need to add it. We get exceptions though,
 				//if *-selector is the last selector, so we add it anyway.
 				_currentMatcherSequence.elementMatchers.push(new TypeNameMatcher(className));
+				_normalizedSimpleSelectorSequence += "*";
 				return;
 			}
 
 
 			if (_input.isNext("(")) {
-
 				_input.consume(1);
 				className = _input.consumeRegex(/(\w|\.|\*)+/);
 				_input.consumeString(")");
 
 				_currentMatcherSequence.elementMatchers.push(new TypeNameMatcher(className));
+				_normalizedSimpleSelectorSequence += "(" + className + ")";
 			}
 			else {
 				className = _input.consumeRegex(/\w+/);
 				_currentMatcherSequence.elementMatchers.push(new TypeNameMatcher(className));
+				_normalizedSimpleSelectorSequence += className;
 			}
 
 			_specificity.elementSelectorsAndPseudoElements++;
@@ -266,6 +269,9 @@ package net.wooga.selectors.parser {
 		private function cssClass():void {
 			_input.consume(1);
 			var className:String = _input.consumeRegex(/[a-zA-Z\-_]+/);
+
+			_normalizedSimpleSelectorSequence += "." + className;
+
 			var matcher:Matcher = new ClassMatcher(className);
 			_currentMatcherSequence.elementMatchers.push(matcher);
 			_specificity.classAndAttributeAndPseudoSelectors++;
@@ -275,6 +281,9 @@ package net.wooga.selectors.parser {
 		private function cssId():void {
 			_input.consume(1);
 			var id:String = _input.consumeRegex(/[a-zA-Z\-_]+/);
+
+			_normalizedSimpleSelectorSequence += "#" + id;
+
 			var matcher:Matcher = new IdMatcher(id);
 			_currentMatcherSequence.elementMatchers.push(matcher);
 
@@ -286,6 +295,8 @@ package net.wooga.selectors.parser {
 			_input.consumeString("::");
 			_pseudoElementName = _input.consumeRegex(/[a-zA-Z][\w\-]*/);
 
+			_normalizedSimpleSelectorSequence += "::" + _pseudoElementName;
+
 			_currentSelectorHasPseudoElement = true;
 
 			_specificity.elementSelectorsAndPseudoElements++;
@@ -293,6 +304,7 @@ package net.wooga.selectors.parser {
 
 		private function pseudoClass():void {
 			_input.consumeString(":");
+			_normalizedSimpleSelectorSequence += ":";
 			var matcher:PseudoClassMatcher = functionalPseudo();
 
 			_pseudoClassArguments = [];
@@ -316,6 +328,7 @@ package net.wooga.selectors.parser {
 
 		private function functionalPseudo():PseudoClassMatcher {
 			var pseudoClassName:String = _input.consumeRegex(/[a-zA-Z][\w\-]*/);
+			_normalizedSimpleSelectorSequence += pseudoClassName;
 
 			if (pseudoClassName != StaticPseudoClassName.IS_A && !_pseudoClassProvider.hasPseudoClass(pseudoClassName)) {
 				throw new ParserError("Unknown pseudoClass-class '" + pseudoClassName + "' (In selector: '" + _originalSelector + "')");
@@ -331,15 +344,18 @@ package net.wooga.selectors.parser {
 
 		private function pseudoClassArguments():void {
 			_input.consumeString("(");
+			_normalizedSimpleSelectorSequence += "(";
 			whitespace();
 			pseudoClassArgument();
 			_input.consumeString(")");
+			_normalizedSimpleSelectorSequence += ")";
 
 		}
 
 
 		private function pseudoClassArgument():void {
 			var argument:String = _input.consumeRegex(/[\w\+\-\.][\w\+\-\.\s]*/);
+			_normalizedSimpleSelectorSequence += argument;
 
 			_pseudoClassArguments.push(argument);
 
@@ -347,6 +363,7 @@ package net.wooga.selectors.parser {
 			if (_input.isNext(","))
 			{
 				_input.consume(1);
+				_normalizedSimpleSelectorSequence += ",";
 				whitespace();
 				pseudoClassArgument();
 			}
@@ -355,11 +372,12 @@ package net.wooga.selectors.parser {
 
 		private function attributeSelector():void {
 			_input.consumeString("[");
-
+			_normalizedSimpleSelectorSequence += "[";
 			whitespace();
 			attributeExpression();
 			whitespace();
 			_input.consumeString("]");
+			_normalizedSimpleSelectorSequence += "]";
 
 		}
 
@@ -372,6 +390,7 @@ package net.wooga.selectors.parser {
 			var matcher:Matcher;
 			if(_input.isNext("]")) {
 				matcher = new AttributeExistsMatcher(property);
+				_normalizedSimpleSelectorSequence += property;
 			}
 			else {
 				var compareFunction:String = comparisonFunction();
@@ -380,6 +399,7 @@ package net.wooga.selectors.parser {
 				whitespace();
 
 				matcher = matcherForCompareFunction(compareFunction, property, value);
+				_normalizedSimpleSelectorSequence += property + compareFunction + "'" + value + "'";
 			}
 
 			_currentMatcherSequence.elementMatchers.push(matcher);
@@ -412,7 +432,7 @@ package net.wooga.selectors.parser {
 
 		private function attributeValue():String {
 			var quotationType:String = _input.consumeRegex(/"|'/);
-			var value:String = _input.consumeRegex(new RegExp("[^\\s" + quotationType + "]+"));
+			var value:String = _input.consumeRegex(new RegExp("[^" + quotationType + "]+"));
 			_input.consumeString(quotationType);
 
 			return value;

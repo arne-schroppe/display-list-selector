@@ -127,6 +127,10 @@ package net.wooga.selectors {
 			}
 		}
 
+		//TODO (arneschroppe 24/06/2012) test this method!
+		public function getSelectorAdapterOf(object:Object):SelectorAdapter {
+			return _selectorAdapterMap.getSelectorAdapterForObject(object);
+		}
 
 		//TODO (arneschroppe 08/04/2012) test overrideDefaultSelectorAdapter !!
 		public function createSelectorAdapterFor(object:Object, overrideDefaultSelectorAdapter:Class = null):void {
@@ -134,24 +138,24 @@ package net.wooga.selectors {
 				return;	
 			}
 
-			var SelectorClientClass:Class;
+			var SelectorAdapterClass:Class;
 
 			if(overrideDefaultSelectorAdapter) {
 				checkAdapterType(overrideDefaultSelectorAdapter);
-				SelectorClientClass = overrideDefaultSelectorAdapter;
+				SelectorAdapterClass = overrideDefaultSelectorAdapter;
 			}
 			else {
-				SelectorClientClass = getSelectorAdapterClass(object);
+				SelectorAdapterClass = getSelectorAdapterClass(object);
 			}
 
-			if(!SelectorClientClass) {
+			if(!SelectorAdapterClass) {
 				//report("Warning! No selector client type registered for type " + getQualifiedClassName(object) + " and no default set!");
 				return;
 			}
 
-			var selectorClient:SelectorAdapter = new SelectorClientClass();
-			_selectorAdapterMap.setAdapterForObject(object, selectorClient);
-			selectorClient.register(object);
+			var selectorAdapter:SelectorAdapter = new SelectorAdapterClass();
+			_selectorAdapterMap.setAdapterForObject(object, selectorAdapter);
+			selectorAdapter.register(object);
 		}
 
 

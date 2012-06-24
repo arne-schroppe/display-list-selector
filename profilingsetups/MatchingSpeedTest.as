@@ -3,7 +3,7 @@ package {
 	import flash.display.Sprite;
 	import flash.text.TextField;
 
-	import net.arneschroppe.displaytreebuilder.DisplayTree;
+	import net.wooga.displaytreebuilder.DisplayTree;
 	import net.wooga.selectors.usagepatterns.SelectorPool;
 
 	public class MatchingSpeedTest extends BasicProfilingSprite {

@@ -1,5 +1,6 @@
 package net.wooga.selectors {
 
+	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 	import net.wooga.selectors.usagepatterns.SelectorGroup;
 	import net.wooga.selectors.usagepatterns.SelectorPool;
 
@@ -10,13 +11,14 @@ package net.wooga.selectors {
 		function createSelector(selectorString:String):SelectorGroup;
 		function createSelectorPool():SelectorPool;
 
-		function addPseudoClass(className:String, pseudoClassType:Class, constructorArguments:Array=null):void;
+		//function addPseudoClass(className:String, pseudoClassType:Class, constructorArguments:Array=null):void;
 
 
 		function setSelectorAdapterForType(adapterType:Class, objectType:Class):void;
 		function setDefaultSelectorAdapter(adapterType:Class):void;
 
 		function createSelectorAdapterFor(object:Object, overrideDefaultSelectorAdapter:Class = null):void;
+		function getSelectorAdapterOf(object:Object):SelectorAdapter;
 		function removeSelectorAdapterOf(object:Object):void;
 	}
 }

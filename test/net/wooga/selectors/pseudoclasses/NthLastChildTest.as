@@ -1,6 +1,6 @@
 package net.wooga.selectors.pseudoclasses {
 
-	import net.arneschroppe.displaytreebuilder.DisplayTree;
+	import net.wooga.displaytreebuilder.DisplayTree;
 	import net.wooga.fixtures.TestSpriteA;
 	import net.wooga.fixtures.tools.ContextViewBasedTest;
 	import net.wooga.fixtures.tools.getAdapterForObject;

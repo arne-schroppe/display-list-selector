@@ -4,7 +4,7 @@ package net.wooga.selectors {
 	import flash.display.DisplayObjectContainer;
 	import flash.display.MovieClip;
 
-	import net.arneschroppe.displaytreebuilder.DisplayTree;
+	import net.wooga.displaytreebuilder.DisplayTree;
 	import net.wooga.fixtures.TestSpriteA;
 	import net.wooga.fixtures.TestSpriteB;
 	import net.wooga.fixtures.TestSpriteC;
@@ -28,7 +28,6 @@ package net.wooga.selectors {
 	import org.hamcrest.core.not;
 	import org.hamcrest.core.throws;
 	import org.hamcrest.object.equalTo;
-	import org.hamcrest.object.hasPropertyChain;
 	import org.hamcrest.object.hasPropertyWithValue;
 	import org.hamcrest.object.strictlyEqualTo;
 
@@ -269,7 +268,7 @@ package net.wooga.selectors {
 		public function should_match_css_id_selector():void {
 
 			_displayList.uses(contextView).containing
-					.a(TestSpriteA).withTheName("test")
+					.a(TestSpriteA) .withASelectorAdapterFrom(_selectorFactory) .withTheId("test")
 				.end.finish();
 
 			testSelector("TestSpriteA#test", function(matchedObjects:Array):void {
@@ -283,13 +282,13 @@ package net.wooga.selectors {
 		public function should_match_only_css_id_selector():void {
 
 			_displayList.uses(contextView).containing
-					.a(TestSpriteA).withTheName("test")
-					.a(TestSpriteA)
+					.a(TestSpriteA) .withASelectorAdapterFrom(_selectorFactory) .withTheId("test")
 					.a(TestSpriteB)
+					.a(TestSpriteC)
 				.end.finish();
 
 			testSelector("#test", function(matchedObjects:Array):void {
-				assertThat(matchedObjects, containsExactlyInArray(1, allOf(isA(TestSpriteA), hasPropertyWithValue("name", "test")) ));
+				assertThat(matchedObjects, containsExactlyInArray(1, isA(TestSpriteA)) );
 				assertEquals(1, matchedObjects.length);
 			});
 		}
@@ -324,7 +323,7 @@ package net.wooga.selectors {
 			_displayList.uses(contextView).containing
 					.a(TestSpriteA)
 					.a(TestSpriteB)
-					.a(TestSpriteC).withTheProperty("groups").setToThe.value(["A", "B", "testClass", "C"])
+					.a(TestSpriteC) .withASelectorAdapterFrom(_selectorFactory) .withTheClasses("A", "B", "testClass", "C")
 				.end.finish();
 
 			testSelector("TestSpriteC.testClass", function(matchedObjects:Array):void {
@@ -644,7 +643,7 @@ package net.wooga.selectors {
 		public function should_match_id_and_attribute_selector():void {
 
 			_displayList.uses(contextView).containing
-					.a(TestSpriteC).withTheName("testName")
+					.a(TestSpriteC).withASelectorAdapterFrom(_selectorFactory).withTheId("testName")
 				.end.finish();
 
 			var values:Array = new Array();
@@ -954,8 +953,8 @@ package net.wooga.selectors {
 			_displayList.uses(contextView).containing
 					.a(TestSpriteA)
 					.a(TestSpriteB)
-					.a(TestSpriteC) .withTheName("testName") .whichWillBeStoredIn(instances)
-					.end.finish();
+					.a(TestSpriteC) .withASelectorAdapterFrom(_selectorFactory) .withTheId("testName") .whichWillBeStoredIn(instances)
+				.end.finish();
 
 
 			var displayObject:Object = instances[0];
@@ -1004,7 +1003,8 @@ package net.wooga.selectors {
 
 		private function testSelector(selectorString:String, assertions:Function):void {
 
-			var result:Array = getMatchedObjectsFromSelectorPool(selectorString);
+			var result:Array;
+			result = getMatchedObjectsFromSelectorPool(selectorString);
 			assertions.call(this, result);
 
 			result = getMatchedObjectsFromSingleSelector(selectorString);

@@ -1,8 +1,6 @@
 package net.wooga.selectors.matching {
 
-	import flash.display.Sprite;
-
-	import net.arneschroppe.displaytreebuilder.DisplayTree;
+	import net.wooga.displaytreebuilder.DisplayTree;
 	import net.wooga.fixtures.TestSpriteB;
 	import net.wooga.fixtures.TestSpriteC;
 	import net.wooga.fixtures.tools.ContextViewBasedTest;
@@ -17,12 +15,10 @@ package net.wooga.selectors.matching {
 	import net.wooga.selectors.matching.matchersequence.MatcherSequence;
 	import net.wooga.selectors.matching.matchersequence.MatcherSequenceImpl;
 	import net.wooga.selectors.pseudoclasses.OnlyChild;
-	import net.wooga.selectors.pseudoclasses.PseudoClass;
 	import net.wooga.selectors.pseudoclasses.SettablePseudoClass;
 	import net.wooga.selectors.pseudoclasses.names.PseudoClassName;
 
 	import org.flexunit.asserts.fail;
-
 	import org.flexunit.rules.IMethodRule;
 	import org.hamcrest.assertThat;
 	import org.hamcrest.object.equalTo;
@@ -30,7 +26,6 @@ package net.wooga.selectors.matching {
 	import org.mockito.integrations.eq;
 	import org.mockito.integrations.flexunit4.MockitoRule;
 	import org.mockito.integrations.given;
-	import org.mockito.integrations.inOrder;
 	import org.mockito.integrations.times;
 	import org.mockito.integrations.verify;
 

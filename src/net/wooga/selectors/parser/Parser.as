@@ -42,8 +42,6 @@ package net.wooga.selectors.parser {
 		private var _externalPropertySource:ExternalPropertySource;
 		private var _pseudoClassProvider:PseudoClassProvider;
 
-		//TODO (asc 4/5/12) remove this and allow syntax extensions always
-		private var _isSyntaxExtensionAllowed:Boolean = true;
 
 		private var _input:ParserInput;
 		private var _specificity:SpecificityImpl;
@@ -213,12 +211,6 @@ package net.wooga.selectors.parser {
 			classAndIdAndPseudoAndAttribute();
 		}
 
-		private function checkSyntaxExtensionsAllowed():void {
-			if (!_isSyntaxExtensionAllowed) {
-				throw new ParserError("Syntax extensions must be enabled before using them. (In selector: '" + _originalSelector + "')");
-			}
-		}
-
 
 
 		//TODO (arneschroppe 23/12/11) find out what makes up a valid identifier
@@ -235,7 +227,6 @@ package net.wooga.selectors.parser {
 
 
 			if (_input.isNext("(")) {
-				checkSyntaxExtensionsAllowed();
 
 				_input.consume(1);
 				className = _input.consumeRegex(/(\w|\.|\*)+/);

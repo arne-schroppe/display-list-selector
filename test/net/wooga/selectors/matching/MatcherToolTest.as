@@ -195,10 +195,11 @@ package net.wooga.selectors.matching {
 			var matcherSequences:Vector.<MatcherSequence> = new <MatcherSequence>[matcherSequence1, matcherSequence2];
 
 
-			//Sanity check
-			assertThat(_matcherTool.isObjectMatching(testSpriteC1Adapter, matcherSequences), equalTo(true));
-			assertThat(_matcherTool.isObjectMatching(testSpriteC2Adapter, matcherSequences), equalTo(true));
-			assertThat(_matcherTool.isObjectMatching(testSpriteC3Adapter, matcherSequences), equalTo(true));
+			for(var i:int = 0; i < 10; ++i) {
+				assertThat(_matcherTool.isObjectMatching(testSpriteC1Adapter, matcherSequences), equalTo(true));
+				assertThat(_matcherTool.isObjectMatching(testSpriteC2Adapter, matcherSequences), equalTo(true));
+				assertThat(_matcherTool.isObjectMatching(testSpriteC3Adapter, matcherSequences), equalTo(true));
+			}
 
 
 			//Check that the matcher for TestSpriteB is only checked once!
@@ -263,10 +264,11 @@ package net.wooga.selectors.matching {
 			var matcherSequences:Vector.<MatcherSequence> = new <MatcherSequence>[matcherSequence1, matcherSequence2];
 
 
-			//Sanity check
-			assertThat(_matcherTool.isObjectMatching(testSpriteC1Adapter, matcherSequences), equalTo(false));
-			assertThat(_matcherTool.isObjectMatching(testSpriteC2Adapter, matcherSequences), equalTo(false));
-			assertThat(_matcherTool.isObjectMatching(testSpriteC3Adapter, matcherSequences), equalTo(false));
+			for(var i:int = 0; i < 10; ++i) {
+				assertThat(_matcherTool.isObjectMatching(testSpriteC1Adapter, matcherSequences), equalTo(false));
+				assertThat(_matcherTool.isObjectMatching(testSpriteC2Adapter, matcherSequences), equalTo(false));
+				assertThat(_matcherTool.isObjectMatching(testSpriteC3Adapter, matcherSequences), equalTo(false));
+			}
 
 
 			//Check that the matcher for TestSpriteB is only checked once!

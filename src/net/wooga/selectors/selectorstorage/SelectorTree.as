@@ -1,6 +1,6 @@
 package net.wooga.selectors.selectorstorage {
 
-	import net.wooga.selectors.namespaces.selector_internal;
+
 	import net.wooga.selectors.parser.FilterData;
 	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 	import net.wooga.selectors.selectorstorage.keys.HoverKey;
@@ -10,7 +10,7 @@ package net.wooga.selectors.selectorstorage {
 	import net.wooga.selectors.selectorstorage.keys.TypeNameKey;
 	import net.wooga.selectors.usagepatterns.implementations.SelectorImpl;
 
-	use namespace selector_internal;
+	;
 
 	public class SelectorTree {
 

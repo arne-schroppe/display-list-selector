@@ -1,12 +1,11 @@
 package net.wooga.selectors.selectorstorage {
 
+	import net.wooga.selectors.matching.combinators.MatcherFamily;
 	import net.wooga.selectors.matching.matchers.Matcher;
-	import net.wooga.selectors.matching.matchersequence.MatcherSequence;
 	import net.wooga.selectors.matching.matchers.implementations.IdMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.PseudoClassMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.TypeNameMatcher;
-	import net.wooga.selectors.matching.combinators.MatcherFamily;
-	import net.wooga.selectors.namespaces.selector_internal;
+	import net.wooga.selectors.matching.matchersequence.MatcherSequence;
 	import net.wooga.selectors.parser.FilterData;
 	import net.wooga.selectors.pseudoclasses.IsA;
 	import net.wooga.selectors.pseudoclasses.SettablePseudoClass;
@@ -16,7 +15,7 @@ package net.wooga.selectors.selectorstorage {
 	//TODO (arneschroppe 06/04/2012) name of this class suggests, that we have a design error here
 	public class FilterDataExtractor {
 
-		use namespace selector_internal;
+		;
 
 		public function getFilterData(selector:SelectorImpl):FilterData {
 

@@ -2,7 +2,6 @@ package net.wooga.selectors.selectorstorage.keys {
 
 	import flash.utils.Dictionary;
 
-	import net.wooga.selectors.namespaces.selector_internal;
 	import net.wooga.selectors.parser.FilterData;
 	import net.wooga.selectors.pseudoclasses.names.PseudoClassName;
 	import net.wooga.selectors.selectoradapter.SelectorAdapter;
@@ -10,7 +9,7 @@ package net.wooga.selectors.selectorstorage.keys {
 
 	public class HoverKey implements SelectorTreeNodeKey {
 
-		use namespace selector_internal;
+		;
 
 		private static const NULL_KEY:String = "noHover";
 		private static const HOVER_KEY:String = "hover";

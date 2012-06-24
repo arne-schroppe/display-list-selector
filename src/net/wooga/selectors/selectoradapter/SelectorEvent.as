@@ -3,7 +3,6 @@ package net.wooga.selectors.selectoradapter {
 	import flash.events.Event;
 	import flash.utils.getQualifiedClassName;
 
-
 	//TODO (arneschroppe 23/06/2012) selectorevent doesn't need to be in this package. make an event based and a signal based adapter
 	public class SelectorEvent extends Event {
 

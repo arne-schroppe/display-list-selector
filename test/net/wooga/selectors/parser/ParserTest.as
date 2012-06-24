@@ -1,6 +1,6 @@
 package net.wooga.selectors.parser {
 
-	import net.wooga.selectors.namespaces.selector_internal;
+
 	import net.wooga.selectors.usagepatterns.implementations.SelectorImpl;
 
 	import org.hamcrest.assertThat;
@@ -60,7 +60,7 @@ package net.wooga.selectors.parser {
 			}, throws(isA(ParserError)));
 		}
 
-		use namespace selector_internal;
+
 
 		[Test]
 		public function should_correctly_transform_normalized_selector_sequence():void {

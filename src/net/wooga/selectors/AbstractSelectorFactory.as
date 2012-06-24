@@ -5,7 +5,6 @@ package net.wooga.selectors {
 
 	import net.wooga.selectors.adaptermap.SelectorAdapterMap;
 	import net.wooga.selectors.matching.MatcherTool;
-	import net.wooga.selectors.namespaces.selector_internal;
 	import net.wooga.selectors.parser.Parser;
 	import net.wooga.selectors.pseudoclasses.FirstChild;
 	import net.wooga.selectors.pseudoclasses.FirstOfType;
@@ -21,8 +20,8 @@ package net.wooga.selectors {
 	import net.wooga.selectors.pseudoclasses.OnlyOfType;
 	import net.wooga.selectors.pseudoclasses.Root;
 	import net.wooga.selectors.pseudoclasses.SettablePseudoClass;
-	import net.wooga.selectors.pseudoclasses.names.StaticPseudoClassName;
 	import net.wooga.selectors.pseudoclasses.names.PseudoClassName;
+	import net.wooga.selectors.pseudoclasses.names.StaticPseudoClassName;
 	import net.wooga.selectors.pseudoclasses.provider.PseudoClassProviderImpl;
 	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 	import net.wooga.selectors.tools.Types;
@@ -34,8 +33,6 @@ package net.wooga.selectors {
 	import net.wooga.selectors.usagepatterns.implementations.SelectorPoolImpl;
 
 	public class AbstractSelectorFactory implements SelectorFactory {
-
-		use namespace selector_internal;
 
 		private var _rootObject:Object;
 

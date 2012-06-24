@@ -18,14 +18,13 @@ package net.wooga.selectors.parser {
 	import net.wooga.selectors.matching.matchers.implementations.attributes.AttributeEqualsMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.attributes.AttributeExistsMatcher;
 	import net.wooga.selectors.matching.matchersequence.MatcherSequenceImpl;
-	import net.wooga.selectors.namespaces.selector_internal;
 	import net.wooga.selectors.pseudoclasses.IsA;
 	import net.wooga.selectors.pseudoclasses.PseudoClass;
 	import net.wooga.selectors.pseudoclasses.names.StaticPseudoClassName;
 	import net.wooga.selectors.tools.input.ParserInput;
 	import net.wooga.selectors.usagepatterns.implementations.SelectorImpl;
 
-	use namespace selector_internal;
+	;
 
 	public class Parser {
 

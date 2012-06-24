@@ -2,7 +2,6 @@ package net.wooga.selectors.usagepatterns.implementations {
 
 	import net.wooga.selectors.adaptermap.SelectorAdapterSource;
 	import net.wooga.selectors.matching.MatcherTool;
-	import net.wooga.selectors.namespaces.selector_internal;
 	import net.wooga.selectors.parser.Parser;
 	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 	import net.wooga.selectors.selectorstorage.SelectorTree;
@@ -11,7 +10,7 @@ package net.wooga.selectors.usagepatterns.implementations {
 
 	public class SelectorPoolImpl implements SelectorPool {
 
-		use namespace selector_internal;
+		;
 
 		private var _matcher:MatcherTool;
 		private var _adapterSource:SelectorAdapterSource;

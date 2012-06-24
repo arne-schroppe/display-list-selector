@@ -1,10 +1,10 @@
 package net.wooga.selectors.usagepatterns.implementations {
 
-	import net.wooga.selectors.namespaces.selector_internal;
+
 	import net.wooga.selectors.specificity.Specificity;
 	import net.wooga.selectors.usagepatterns.*;
 
-	use namespace selector_internal;
+	;
 
 	public class SelectorDescriptionImpl implements SelectorDescription {
 		private var _selectorString:String;

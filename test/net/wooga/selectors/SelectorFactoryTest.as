@@ -991,6 +991,7 @@ package net.wooga.selectors {
 
 
 
+
 		private function assertContainsObjectOfClass(objects:Array, Type:Class):void {
 			assertThat(objects, hasItem(isA(Type)));
 		}

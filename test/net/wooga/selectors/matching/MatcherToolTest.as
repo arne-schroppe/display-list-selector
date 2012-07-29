@@ -33,7 +33,6 @@ package net.wooga.selectors.matching {
 
 		//TODO (arneschroppe 07/06/2012) what about hover, etc ??
 		//TODO (arneschroppe 07/06/2012) solution: invalidate cache when hover changes (maybe selectively, if cache is tree based. matchersequence could have volatile flag)
-		//TODO (arneschroppe 08/06/2012) then what about name and css class? Maybe we can keep the cache for one frame or something like that?
 
 		[Rule]
 		public var mockitoRule:IMethodRule = new MockitoRule();

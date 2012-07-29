@@ -49,6 +49,11 @@ package net.wooga.selectors.displaylist {
 
 		private function onRemovedFromStage(event:Event):void {
 			invalidateCachedMatches();
+			removeEventListeners();
+		}
+
+		private function removeEventListeners():void {
+			//TODO (arneschroppe 29/07/2012) implement me. Use an AutoEventListenerManager or something like that. Something with a removeAll method
 		}
 
 

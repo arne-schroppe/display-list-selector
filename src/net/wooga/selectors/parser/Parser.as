@@ -24,8 +24,6 @@ package net.wooga.selectors.parser {
 	import net.wooga.selectors.tools.input.ParserInput;
 	import net.wooga.selectors.usagepatterns.implementations.SelectorImpl;
 
-	;
-
 	public class Parser {
 
 

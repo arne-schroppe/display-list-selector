@@ -6,4 +6,5 @@
 .idea/dictionaries
 .idea/copyright
 .idea/vcs.xml
+.project
 bin/*

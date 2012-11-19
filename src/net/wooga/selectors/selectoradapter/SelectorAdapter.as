@@ -35,7 +35,5 @@ package net.wooga.selectors.selectoradapter {
 		function getSubSelectorMatchResult(subSelector:String):Boolean;
 		function setSubSelectorMatchResult(subSelector:String, isMatching:Boolean):void;
 
-		function invalidateCachedMatches():void;
-
 	}
 }

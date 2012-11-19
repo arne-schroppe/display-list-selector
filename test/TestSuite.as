@@ -72,7 +72,8 @@ package {
 
 		public var displayObjectSelectorAdapterTest:DisplayObjectSelectorAdapterTest;
 
-		public var matcherToolTest:MatcherToolTest;
+		//TODO (arneschroppe 19/11/2012) only contains tests for caching. deactivated together with caching.
+		//public var matcherToolTest:MatcherToolTest;
 
 	}
 }

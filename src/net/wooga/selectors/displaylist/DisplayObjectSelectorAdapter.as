@@ -17,7 +17,6 @@ package net.wooga.selectors.displaylist {
 		private var _qualifiedElementClassName:String;
 		private var _qualifiedInterfacesAndClasses:Vector.<String>;
 		private var _interfacesAndClasses:Vector.<String>;
-		private var _matchingSubSelectors:Object = new Object();
 
 		private static var _implementedTypeCache:Dictionary = new Dictionary();
 
@@ -26,6 +25,9 @@ package net.wooga.selectors.displaylist {
 		private var _pseudoClasses:Object = {};
 		private var _classes:Object = {};
 		private var _id:String = "";
+
+		//TODO (arneschroppe 19/11/2012) Caching is disabled for now, as it doesn't seem to work reliably
+		//private var _matchingSubSelectors:Object = new Object();
 
 
 		public function DisplayObjectSelectorAdapter() {
@@ -245,19 +247,21 @@ package net.wooga.selectors.displaylist {
 
 
 		public function hasSubSelectorMatchResult(subSelector:String):Boolean {
-			return subSelector in _matchingSubSelectors;
+			return false;
+			//return subSelector in _matchingSubSelectors;
 		}
 
 		public function getSubSelectorMatchResult(subSelector:String):Boolean {
-			return _matchingSubSelectors[subSelector];
+			return false;
+			//return _matchingSubSelectors[subSelector];
 		}
 
 		public function setSubSelectorMatchResult(subSelector:String, isMatching:Boolean):void {
-			_matchingSubSelectors[subSelector] = isMatching;
+			//_matchingSubSelectors[subSelector] = isMatching;
 		}
 
 		public function invalidateCachedMatches():void {
-			_matchingSubSelectors = new Object();
+			//_matchingSubSelectors = new Object();
 		}
 	}
 }

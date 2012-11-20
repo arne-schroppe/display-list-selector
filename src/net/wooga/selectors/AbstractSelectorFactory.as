@@ -32,6 +32,13 @@ package net.wooga.selectors {
 	import net.wooga.selectors.usagepatterns.implementations.SelectorImpl;
 	import net.wooga.selectors.usagepatterns.implementations.SelectorPoolImpl;
 
+	//TODO (arneschroppe 20/11/2012) we need the one-selector-to-many-objects usage pattern! match using selector path?
+	//Selector path's might not work here: we have no reliable way of updating a path if an attribute changes. On the
+	//other hand, we could use a selector path for stuff we know about (type, css id, css class, position in container)
+	//and use slow methods to live-check for attributes.
+
+	//Do we also need many-objects-to-many-selectors? How would that be used?
+
 	public class AbstractSelectorFactory implements SelectorFactory {
 
 		private var _rootObject:Object;

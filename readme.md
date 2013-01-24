@@ -1,4 +1,3 @@
-
 #CSS Selectors for the display list
 
 An implementation of CSS3–selectors for flash. Selectors are
@@ -74,5 +73,5 @@ in parentheses. As an example:
     Sprite > (net.company.tool.view.Image)
 
 
-#A warning
+##A warning
 This library lacks a lot of optimizations. For many uses it will probably be too slow.

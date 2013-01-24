@@ -72,3 +72,7 @@ in parentheses. As an example:
 
     /* Fully qualified name */
     Sprite > (net.company.tool.view.Image)
+
+
+#A warning
+This library lacks a lot of optimizations. For many uses it will probably be too slow.

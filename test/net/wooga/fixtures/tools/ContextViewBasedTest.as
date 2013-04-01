@@ -1,8 +1,12 @@
 package net.wooga.fixtures.tools {
 
 	import flash.display.Sprite;
+	import flash.display.Stage;
 
-	import net.wooga.utils.flexunit.FlexUnitUtils;
+	import mx.core.FlexGlobals;
+
+	import spark.components.Application;
+
 
 	public class ContextViewBasedTest {
 
@@ -26,13 +30,33 @@ package net.wooga.fixtures.tools {
 
 		private function addContextViewToStage():void {
 			_contextView = new Sprite();
-			FlexUnitUtils.stage.addChild(_contextView);
+			myStage.addChild(_contextView);
 		}
 
 
 		private function removeContextViewFromStage():void {
-			FlexUnitUtils.stage.removeChild(_contextView);
+			myStage.removeChild(_contextView);
 			_contextView = null;
+		}
+
+
+
+		private static function get myStage():Stage {
+
+			var app:Object = FlexGlobals.topLevelApplication;
+
+			return mx.core.Application(app).stage;
+
+			/*
+			if (app is mx.core.Application) {
+				return mx.core.Application(app).stage;
+			} else if (app is spark.components.Application) {
+				return spark.components.Application(app).stage;
+			} else {
+				return null;
+			}
+			*/
+
 		}
 
 	}

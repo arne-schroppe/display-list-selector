@@ -1,7 +1,7 @@
-package net.wooga.selectors.usagepatterns.implementations {
+package net.wooga.selectors.selectors.implementations {
 
-	import net.wooga.selectors.usagepatterns.Selector;
-	import net.wooga.selectors.usagepatterns.SelectorGroup;
+	import net.wooga.selectors.selectors.Selector;
+	import net.wooga.selectors.selectors.SelectorGroup;
 
 	public class SelectorGroupImpl implements SelectorGroup {
 		private var _selectors:Vector.<Selector>;

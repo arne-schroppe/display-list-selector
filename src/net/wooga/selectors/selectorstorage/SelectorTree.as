@@ -8,7 +8,7 @@ package net.wooga.selectors.selectorstorage {
 	import net.wooga.selectors.selectorstorage.keys.PseudoElementNameKey;
 	import net.wooga.selectors.selectorstorage.keys.SelectorTreeNodeKey;
 	import net.wooga.selectors.selectorstorage.keys.TypeNameKey;
-	import net.wooga.selectors.usagepatterns.implementations.SelectorImpl;
+	import net.wooga.selectors.selectors.implementations.SelectorImpl;
 
 	use namespace selector_internal;
 

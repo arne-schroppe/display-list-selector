@@ -4,7 +4,7 @@ package {
 	import flash.text.TextField;
 
 	import net.arneschroppe.displaytreebuilder.DisplayTree;
-	import net.wooga.selectors.usagepatterns.SelectorPool;
+	import net.wooga.selectors.selectors.SelectorPool;
 
 	public class MatchingSpeedTest extends BasicProfilingSprite {
 

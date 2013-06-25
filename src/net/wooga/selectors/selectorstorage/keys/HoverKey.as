@@ -6,7 +6,7 @@ package net.wooga.selectors.selectorstorage.keys {
 	import net.wooga.selectors.parser.FilterData;
 	import net.wooga.selectors.pseudoclasses.names.PseudoClassName;
 	import net.wooga.selectors.selectoradapter.SelectorAdapter;
-	import net.wooga.selectors.usagepatterns.implementations.SelectorImpl;
+	import net.wooga.selectors.selectors.implementations.SelectorImpl;
 
 	public class HoverKey implements SelectorTreeNodeKey {
 

@@ -10,7 +10,7 @@ package net.wooga.selectors.selectorstorage {
 	import net.wooga.selectors.pseudoclasses.IsA;
 	import net.wooga.selectors.pseudoclasses.SettablePseudoClass;
 	import net.wooga.selectors.pseudoclasses.names.PseudoClassName;
-	import net.wooga.selectors.usagepatterns.implementations.SelectorImpl;
+	import net.wooga.selectors.selectors.implementations.SelectorImpl;
 
 	//TODO (arneschroppe 06/04/2012) name of this class suggests, that we have a design error here
 	public class FilterDataExtractor {

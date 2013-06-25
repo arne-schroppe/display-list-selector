@@ -1,4 +1,4 @@
-package net.wooga.selectors.usagepatterns.implementations {
+package net.wooga.selectors.selectors.implementations {
 
 	import net.wooga.selectors.adaptermap.SelectorAdapterSource;
 	import net.wooga.selectors.matching.MatcherTool;
@@ -7,7 +7,7 @@ package net.wooga.selectors.usagepatterns.implementations {
 	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 	import net.wooga.selectors.selectorstorage.SelectorTree;
 	import net.wooga.selectors.tools.SpecificityComparator;
-	import net.wooga.selectors.usagepatterns.*;
+	import net.wooga.selectors.selectors.*;
 
 	public class SelectorPoolImpl implements SelectorPool {
 
@@ -37,14 +37,14 @@ package net.wooga.selectors.usagepatterns.implementations {
 		}
 
 
-		public function getSelectorsMatchingObject(object:Object):Vector.<SelectorDescription> {
+		public function getSelectorsMatchingObject(object:Object):Vector.<Selector> {
 			return getPseudoElementSelectorsMatchingObject(object, null);
 		}
 
 
-		public function getPseudoElementSelectorsMatchingObject(object:Object, pseudoElement:String):Vector.<SelectorDescription> {
+		public function getPseudoElementSelectorsMatchingObject(object:Object, pseudoElement:String):Vector.<Selector> {
 			var adapter:SelectorAdapter = getAdapterOrThrowException(object);
-			var matches:Vector.<SelectorDescription> = new <SelectorDescription>[];
+			var matches:Vector.<Selector> = new <Selector>[];
 
 			var possibleMatches:Array = _knownSelectors.getPossibleMatchesFor(adapter, pseudoElement);
 
@@ -61,7 +61,7 @@ package net.wooga.selectors.usagepatterns.implementations {
 			matches = matches.sort(SpecificityComparator.staticCompare);
 
 
-			return matches as Vector.<SelectorDescription>;
+			return matches as Vector.<Selector>;
 		}
 
 

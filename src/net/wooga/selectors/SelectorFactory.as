@@ -1,7 +1,7 @@
 package net.wooga.selectors {
 
-	import net.wooga.selectors.usagepatterns.SelectorGroup;
-	import net.wooga.selectors.usagepatterns.SelectorPool;
+	import net.wooga.selectors.selectors.SelectorGroup;
+	import net.wooga.selectors.selectors.SelectorPool;
 
 	public interface SelectorFactory {
 

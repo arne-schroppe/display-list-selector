@@ -1,4 +1,4 @@
-package net.wooga.selectors.usagepatterns {
+package net.wooga.selectors.selectors {
 
 	public interface SelectorGroup {
 

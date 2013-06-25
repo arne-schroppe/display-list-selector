@@ -14,10 +14,10 @@ package net.wooga.selectors {
 	import net.wooga.selectors.displaylist.DisplayObjectSelectorAdapter;
 	import net.wooga.selectors.pseudoclasses.names.PseudoClassName;
 	import net.wooga.selectors.selectoradapter.SelectorPseudoClassEvent;
-	import net.wooga.selectors.usagepatterns.Selector;
-	import net.wooga.selectors.usagepatterns.SelectorDescription;
-	import net.wooga.selectors.usagepatterns.SelectorGroup;
-	import net.wooga.selectors.usagepatterns.SelectorPool;
+	import net.wooga.selectors.selectors.Selector;
+	import net.wooga.selectors.selectors.Selector;
+	import net.wooga.selectors.selectors.SelectorGroup;
+	import net.wooga.selectors.selectors.SelectorPool;
 
 	import org.flexunit.asserts.assertEquals;
 	import org.hamcrest.assertThat;
@@ -446,7 +446,7 @@ package net.wooga.selectors {
 			selectorPool.addSelector("TestSpriteA:hover");
 
 
-			var selectors:Vector.<SelectorDescription> = selectorPool.getSelectorsMatchingObject(displayObject);
+			var selectors:Vector.<Selector> = selectorPool.getSelectorsMatchingObject(displayObject);
 			assertThat(selectors.length, equalTo(2));
 			assertThat(selectors, containsExactlyInArray(1, hasPropertyWithValue("selectorString", "TestSpriteC:hover")));
 			assertThat(selectors, containsExactlyInArray(1, hasPropertyWithValue("selectorString", "TestSpriteC")));
@@ -840,10 +840,10 @@ package net.wooga.selectors {
 			selectorPool.addSelector("TestSpriteC::other-element");
 
 
-			var selectors:Vector.<SelectorDescription> = selectorPool.getPseudoElementSelectorsMatchingObject(displayObject, "test-element");
+			var selectors:Vector.<Selector> = selectorPool.getPseudoElementSelectorsMatchingObject(displayObject, "test-element");
 			assertThat(selectors.length, equalTo(1));
 
-			var firstSelector:SelectorDescription = selectors[0];
+			var firstSelector:Selector = selectors[0];
 			assertThat(firstSelector.pseudoElementName, equalTo("test-element"));
 			assertThat(firstSelector.selectorString, equalTo("TestSpriteC::test-element"));
 			assertThat(firstSelector.selectorGroupString, equalTo("TestSpriteC::test-element"));
@@ -872,10 +872,10 @@ package net.wooga.selectors {
 			selectorPool.addSelector("TestSpriteC::other-element");
 
 
-			var selectors:Vector.<SelectorDescription> = selectorPool.getSelectorsMatchingObject(displayObject);
+			var selectors:Vector.<Selector> = selectorPool.getSelectorsMatchingObject(displayObject);
 			assertThat(selectors.length, equalTo(1));
 
-			var firstSelector:SelectorDescription = selectors[0];
+			var firstSelector:Selector = selectors[0];
 			assertThat(firstSelector.pseudoElementName, equalTo(null));
 			assertThat(firstSelector.selectorString, equalTo("TestSpriteC"));
 			assertThat(firstSelector.selectorGroupString, equalTo("TestSpriteC"));
@@ -955,7 +955,7 @@ package net.wooga.selectors {
 			selectorPool.addSelector(":nth-child(3):nth-last-child(1)"); //Specificity 0 2 0 0 => 3
 
 
-			var selectors:Vector.<SelectorDescription> = selectorPool.getSelectorsMatchingObject(displayObject);
+			var selectors:Vector.<Selector> = selectorPool.getSelectorsMatchingObject(displayObject);
 
 			assertThat(selectors.length, equalTo(6));
 
@@ -1025,7 +1025,7 @@ package net.wooga.selectors {
 		}
 
 		private function selectorPoolMatchMethod(object:DisplayObject, selectorString:String, result:Array):void {
-			var matchingSelectors:Vector.<SelectorDescription> = _selectorPool.getSelectorsMatchingObject(object);
+			var matchingSelectors:Vector.<Selector> = _selectorPool.getSelectorsMatchingObject(object);
 			if (matchingSelectors.filter(filterFunctionFor(selectorString)).length > 0) {
 				result.push(object);
 			}
@@ -1048,7 +1048,7 @@ package net.wooga.selectors {
 
 
 		private function filterFunctionFor(selectorString:String):Function {
-			return function(item:SelectorDescription, index:int, vector:Vector.<SelectorDescription>):Boolean {
+			return function(item:Selector, index:int, vector:Vector.<Selector>):Boolean {
 				return item.selectorGroupString == selectorString;
 			}
 		}

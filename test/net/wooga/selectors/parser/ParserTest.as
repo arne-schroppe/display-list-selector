@@ -1,6 +1,6 @@
 package net.wooga.selectors.parser {
 
-	import net.wooga.selectors.usagepatterns.implementations.SelectorImpl;
+	import net.wooga.selectors.selectors.implementations.SelectorImpl;
 
 	import org.hamcrest.assertThat;
 	import org.hamcrest.core.isA;

@@ -10,7 +10,7 @@ package net.wooga.selectors.selectorstorage {
 	import net.wooga.selectors.pseudoclasses.SettablePseudoClass;
 	import net.wooga.selectors.pseudoclasses.names.PseudoClassName;
 	import net.wooga.selectors.selectoradapter.SelectorAdapter;
-	import net.wooga.selectors.usagepatterns.implementations.SelectorImpl;
+	import net.wooga.selectors.selectors.implementations.SelectorImpl;
 
 	import org.flexunit.rules.IMethodRule;
 	import org.hamcrest.assertThat;

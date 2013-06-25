@@ -26,12 +26,12 @@ package net.wooga.selectors {
 	import net.wooga.selectors.pseudoclasses.provider.PseudoClassProviderImpl;
 	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 	import net.wooga.selectors.tools.Types;
-	import net.wooga.selectors.usagepatterns.Selector;
-	import net.wooga.selectors.usagepatterns.SelectorGroup;
-	import net.wooga.selectors.usagepatterns.SelectorPool;
-	import net.wooga.selectors.usagepatterns.implementations.SelectorGroupImpl;
-	import net.wooga.selectors.usagepatterns.implementations.SelectorImpl;
-	import net.wooga.selectors.usagepatterns.implementations.SelectorPoolImpl;
+	import net.wooga.selectors.selectors.Selector;
+	import net.wooga.selectors.selectors.SelectorGroup;
+	import net.wooga.selectors.selectors.SelectorPool;
+	import net.wooga.selectors.selectors.implementations.SelectorGroupImpl;
+	import net.wooga.selectors.selectors.implementations.SelectorImpl;
+	import net.wooga.selectors.selectors.implementations.SelectorPoolImpl;
 
 	public class AbstractSelectorFactory implements SelectorFactory {
 

@@ -1,8 +1,8 @@
-package net.wooga.selectors.usagepatterns {
+package net.wooga.selectors.selectors {
 
 	import net.wooga.selectors.specificity.Specificity;
 
-	public interface SelectorDescription {
+	public interface Selector {
 		function get specificity():Specificity;
 		function get selectorString():String;
 
@@ -10,5 +10,7 @@ package net.wooga.selectors.usagepatterns {
 		function get pseudoElementName():String;
 
 		function get selectorGroupString():String;
+
+		function isMatching(object:Object):Boolean;
 	}
 }

@@ -2,7 +2,7 @@ package net.wooga.selectors.parser {
 
 	import net.wooga.selectors.specificity.Specificity;
 
-	internal class SpecificityImpl implements Specificity {
+	public class SpecificityImpl implements Specificity {
 		
 		private static const NUMBER_OF_POSITIONS:int = 5;
 

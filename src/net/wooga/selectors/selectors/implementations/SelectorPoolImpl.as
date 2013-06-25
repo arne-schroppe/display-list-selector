@@ -41,7 +41,7 @@ package net.wooga.selectors.selectors.implementations {
 			return getPseudoElementSelectorsMatchingObject(object, null);
 		}
 
-
+//TODO (asc 25/6/13) do these selectors have all their dependencies?
 		public function getPseudoElementSelectorsMatchingObject(object:Object, pseudoElement:String):Vector.<Selector> {
 			var adapter:SelectorAdapter = getAdapterOrThrowException(object);
 			var matches:Vector.<Selector> = new <Selector>[];

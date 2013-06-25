@@ -1,8 +1,8 @@
 package net.wooga.selectors.pseudoclasses {
 
-	import net.wooga.selectors.selectoradapter.SelectorAdapter;
+	import net.wooga.selectors.selectoradapter.ISelectorAdapter;
 
-	public class OnlyChild implements PseudoClass {
+	public class OnlyChild implements IPseudoClass {
 
 		public function setArguments(arguments:Array):void {
 			if (arguments.length != 0) {
@@ -10,7 +10,7 @@ package net.wooga.selectors.pseudoclasses {
 			}
 		}
 
-		public function isMatching(subject:SelectorAdapter):Boolean {
+		public function isMatching(subject:ISelectorAdapter):Boolean {
 			return subject.getNumberOfElementsInContainer() == 1;
 		}
 	}

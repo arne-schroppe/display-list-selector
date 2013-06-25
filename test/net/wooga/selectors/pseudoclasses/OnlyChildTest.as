@@ -11,7 +11,7 @@ package net.wooga.selectors.pseudoclasses {
 	public class OnlyChildTest extends ContextViewBasedTest {
 
 
-		private var _pseudoClass:PseudoClass;
+		private var _pseudoClass:IPseudoClass;
 
 
 		[Before]

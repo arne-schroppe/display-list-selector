@@ -1,9 +1,9 @@
 package net.wooga.selectors.matching.matchers.implementations.combinators {
 
-	import net.wooga.selectors.matching.matchers.Matcher;
-	import net.wooga.selectors.selectoradapter.SelectorAdapter;
+	import net.wooga.selectors.matching.matchers.IMatcher;
+	import net.wooga.selectors.selectoradapter.ISelectorAdapter;
 
-	public class Combinator implements Matcher{
+	public class Combinator implements IMatcher{
 
 		private var _matcherFamily:MatcherFamily;
 		private var _type:CombinatorType;
@@ -13,7 +13,7 @@ package net.wooga.selectors.matching.matchers.implementations.combinators {
 			_type = type;
 		}
 
-		public function isMatching(subject:SelectorAdapter):Boolean {
+		public function isMatching(subject:ISelectorAdapter):Boolean {
 			return true;
 		}
 

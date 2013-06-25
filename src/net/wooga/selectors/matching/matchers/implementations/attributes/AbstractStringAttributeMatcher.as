@@ -1,24 +1,24 @@
 package net.wooga.selectors.matching.matchers.implementations.attributes {
 
-	import net.wooga.selectors.ExternalPropertySource;
-	import net.wooga.selectors.matching.matchers.Matcher;
+	import net.wooga.selectors.IExternalPropertySource;
+	import net.wooga.selectors.matching.matchers.IMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.combinators.MatcherFamily;
-	import net.wooga.selectors.selectoradapter.SelectorAdapter;
+	import net.wooga.selectors.selectoradapter.ISelectorAdapter;
 
-	public class AbstractStringAttributeMatcher implements Matcher {
+	public class AbstractStringAttributeMatcher implements IMatcher {
 
 		private var _property:String;
-		private var _externalPropertySource:ExternalPropertySource;
+		private var _externalPropertySource:IExternalPropertySource;
 		private var _value:String;
 
 
-		public function AbstractStringAttributeMatcher(externalPropertySource:ExternalPropertySource, property:String, value:String) {
+		public function AbstractStringAttributeMatcher(externalPropertySource:IExternalPropertySource, property:String, value:String) {
 			_externalPropertySource = externalPropertySource;
 			_property = property;
 			_value = value;
 		}
 
-		public function isMatching(subject:SelectorAdapter):Boolean {
+		public function isMatching(subject:ISelectorAdapter):Boolean {
 			var objectValue:String;
 			var adapted:Object = subject.getAdaptedElement();
 			if (_property in adapted) {

@@ -14,9 +14,9 @@ package net.wooga.selectors.parser {
 		[Test]
 		public function testIsGreaterThan():void {
 
-			var smallerSpec:SpecificityImpl = specWith(1, 10, 0, 0, 0);
+			var smallerSpec:Specificity = specWith(1, 10, 0, 0, 0);
 
-			var higherSpec:SpecificityImpl = specWith(2, 6, 0, 0, 0);
+			var higherSpec:Specificity = specWith(2, 6, 0, 0, 0);
 
 			assertThat(higherSpec.compare(smallerSpec), equalTo(SpecificityComparison.GREATER_THAN));
 
@@ -64,9 +64,9 @@ package net.wooga.selectors.parser {
 		[Test]
 		public function testIsLessThan():void {
 
-			var smallerSpec:SpecificityImpl = specWith(1, 10, 0, 0, 0);
+			var smallerSpec:Specificity = specWith(1, 10, 0, 0, 0);
 
-			var higherSpec:SpecificityImpl = specWith(2, 6, 0, 0, 0);
+			var higherSpec:Specificity = specWith(2, 6, 0, 0, 0);
 
 			assertThat(smallerSpec.compare(higherSpec), equalTo(SpecificityComparison.LESS_THAN));
 
@@ -112,8 +112,8 @@ package net.wooga.selectors.parser {
 		[Test]
 		public function testIsEqualTo():void {
 
-			var spec1:SpecificityImpl = specWith(12, 0, 0, 0, 0);
-			var spec2:SpecificityImpl = specWith(12, 0, 0, 0, 0);
+			var spec1:Specificity = specWith(12, 0, 0, 0, 0);
+			var spec2:Specificity = specWith(12, 0, 0, 0, 0);
 
 			assertThat(spec1.compare(spec2), equalTo(SpecificityComparison.EQUAL));
 
@@ -125,8 +125,8 @@ package net.wooga.selectors.parser {
 		}
 
 		
-		private function specWith(a:int,  b:int,  c:int, d:int,  e:int):SpecificityImpl {
-			var spec:SpecificityImpl = new SpecificityImpl();
+		private function specWith(a:int,  b:int,  c:int, d:int,  e:int):Specificity {
+			var spec:Specificity = new Specificity();
 			spec.manualStyleRule = a;
 			spec.idSelector = b;
 			spec.classAndAttributeAndPseudoSelectors = c;

@@ -4,11 +4,11 @@ package net.wooga.selectors.pseudoclasses {
 	import flash.utils.getQualifiedClassName;
 
 	import net.wooga.selectors.pseudoclasses.nthchildren.NthOfX;
-	import net.wooga.selectors.selectoradapter.SelectorAdapter;
+	import net.wooga.selectors.selectoradapter.ISelectorAdapter;
 
 	public class NthLastOfType extends NthOfX {
 
-		override protected function indexOfObject(subject:SelectorAdapter):int {
+		override protected function indexOfObject(subject:ISelectorAdapter):int {
 			var index:int = 0;
 			var SubjectType:Class = getDefinitionByName(getQualifiedClassName(subject.getAdaptedElement())) as Class;
 			var current:Object;

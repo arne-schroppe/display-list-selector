@@ -1,8 +1,8 @@
 package net.wooga.selectors.pseudoclasses {
 
-	import net.wooga.selectors.selectoradapter.SelectorAdapter;
+	import net.wooga.selectors.selectoradapter.ISelectorAdapter;
 
-	public class Root implements PseudoClass {
+	public class Root implements IPseudoClass {
 
 		private var _rootView:Object;
 
@@ -11,7 +11,7 @@ package net.wooga.selectors.pseudoclasses {
 			_rootView = rootView;
 		}
 
-		public function isMatching(subject:SelectorAdapter):Boolean {
+		public function isMatching(subject:ISelectorAdapter):Boolean {
 			return subject.getAdaptedElement() === _rootView;
 		}
 

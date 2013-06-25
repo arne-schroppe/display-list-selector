@@ -1,14 +1,14 @@
 package net.wooga.selectors {
 
-	import net.wooga.selectors.selectors.SelectorGroup;
-	import net.wooga.selectors.selectors.SelectorPool;
+	import net.wooga.selectors.selectors.ISelectorGroup;
+	import net.wooga.selectors.selectors.ISelectorPool;
 
-	public interface SelectorFactory {
+	public interface ISelectorFactory {
 
-		function initializeWith(rootObject:Object, externalPropertySource:ExternalPropertySource = null):void;
+		function initializeWith(rootObject:Object, externalPropertySource:IExternalPropertySource = null):void;
 
-		function createSelector(selectorString:String):SelectorGroup;
-		function createSelectorPool():SelectorPool;
+		function createSelector(selectorString:String):ISelectorGroup;
+		function createSelectorPool():ISelectorPool;
 
 		function addPseudoClass(className:String, pseudoClassType:Class, constructorArguments:Array=null):void;
 

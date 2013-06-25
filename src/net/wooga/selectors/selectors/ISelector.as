@@ -1,9 +1,9 @@
 package net.wooga.selectors.selectors {
 
-	import net.wooga.selectors.specificity.Specificity;
+	import net.wooga.selectors.specificity.ISpecificity;
 
-	public interface Selector {
-		function get specificity():Specificity;
+	public interface ISelector {
+		function get specificity():ISpecificity;
 		function get selectorString():String;
 
 		function get isPseudoElementSelector():Boolean;

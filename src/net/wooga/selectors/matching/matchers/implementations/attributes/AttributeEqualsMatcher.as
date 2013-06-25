@@ -1,11 +1,11 @@
 package net.wooga.selectors.matching.matchers.implementations.attributes {
 
-	import net.wooga.selectors.ExternalPropertySource;
+	import net.wooga.selectors.IExternalPropertySource;
 
 	public class AttributeEqualsMatcher extends AbstractStringAttributeMatcher {
 
 
-		public function AttributeEqualsMatcher(externalPropertySource:ExternalPropertySource, property:String, value:String) {
+		public function AttributeEqualsMatcher(externalPropertySource:IExternalPropertySource, property:String, value:String) {
 			super(externalPropertySource, property, value);
 		}
 

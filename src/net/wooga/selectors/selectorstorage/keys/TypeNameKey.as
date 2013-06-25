@@ -4,10 +4,10 @@ package net.wooga.selectors.selectorstorage.keys {
 
 	import net.wooga.selectors.namespace.selector_internal;
 	import net.wooga.selectors.parser.FilterData;
-	import net.wooga.selectors.selectoradapter.SelectorAdapter;
-	import net.wooga.selectors.selectors.implementations.SelectorImpl;
+	import net.wooga.selectors.selectoradapter.ISelectorAdapter;
+	import net.wooga.selectors.selectors.implementations.Selector;
 
-	public class TypeNameKey implements SelectorTreeNodeKey {
+	public class TypeNameKey implements ISelectorTreeNodeKey {
 
 		use namespace selector_internal;
 
@@ -21,13 +21,13 @@ package net.wooga.selectors.selectorstorage.keys {
 		with the same name), but those would be filtered out in the next matching step.
 		*/
 
-		public function keyForSelector(parsedSelector:SelectorImpl, filterData:FilterData):String {
+		public function keyForSelector(parsedSelector:Selector, filterData:FilterData):String {
 			var prefix:String = filterData.isImmediateType ? "" : IS_A_PREFIX;
 			return prefix + filterData.typeName;
 		}
 
 
-		public function keysForAdapter(adapter:SelectorAdapter, nodes:Dictionary):Array {
+		public function keysForAdapter(adapter:ISelectorAdapter, nodes:Dictionary):Array {
 			var className:String = adapter.getQualifiedElementClassName();
 			var keys:Array = getKeysForElement(className);
 			if(!keys) {
@@ -42,7 +42,7 @@ package net.wooga.selectors.selectorstorage.keys {
 		}
 
 
-		private function createKeysForElement(adapter:SelectorAdapter, nodes:Dictionary):Array {
+		private function createKeysForElement(adapter:ISelectorAdapter, nodes:Dictionary):Array {
 
 			var keys:Array = [];
 
@@ -76,7 +76,7 @@ package net.wooga.selectors.selectorstorage.keys {
 		}
 
 
-		public function selectorHasKey(parsedSelector:SelectorImpl, filterData:FilterData):Boolean {
+		public function selectorHasKey(parsedSelector:Selector, filterData:FilterData):Boolean {
 			return filterData.typeName && filterData.typeName != "*";
 		}
 

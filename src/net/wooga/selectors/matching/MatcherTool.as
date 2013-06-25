@@ -1,26 +1,26 @@
 package net.wooga.selectors.matching {
 
-	import net.wooga.selectors.adaptermap.SelectorAdapterSource;
-	import net.wooga.selectors.matching.matchers.Matcher;
+	import net.wooga.selectors.adaptermap.ISelectorAdapterSource;
+	import net.wooga.selectors.matching.matchers.IMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.combinators.Combinator;
 	import net.wooga.selectors.matching.matchers.implementations.combinators.CombinatorType;
 	import net.wooga.selectors.matching.matchers.implementations.combinators.MatcherFamily;
-	import net.wooga.selectors.selectoradapter.SelectorAdapter;
+	import net.wooga.selectors.selectoradapter.ISelectorAdapter;
 
 	public class MatcherTool {
 
 		private var _rootObject:Object;
 
-		private var _currentlyMatchedMatchers:Vector.<Matcher>;
-		private var _adapterSource:SelectorAdapterSource;
+		private var _currentlyMatchedMatchers:Vector.<IMatcher>;
+		private var _adapterSource:ISelectorAdapterSource;
 
-		public function MatcherTool(rootObject:Object, objectToAdapterMap:SelectorAdapterSource) {
+		public function MatcherTool(rootObject:Object, objectToAdapterMap:ISelectorAdapterSource) {
 			_rootObject = rootObject;
 			_adapterSource = objectToAdapterMap;
 		}
 
 
-		public function isObjectMatching(adapter:SelectorAdapter, matchers:Vector.<Matcher>):Boolean {
+		public function isObjectMatching(adapter:ISelectorAdapter, matchers:Vector.<IMatcher>):Boolean {
 
 			_currentlyMatchedMatchers = matchers;
 
@@ -33,7 +33,7 @@ package net.wooga.selectors.matching {
 
 
 
-		private function reverseMatch(subject:SelectorAdapter, nextMatcher:int):Boolean {
+		private function reverseMatch(subject:ISelectorAdapter, nextMatcher:int):Boolean {
 
 			if (!subject) {
 				return false;
@@ -43,7 +43,7 @@ package net.wooga.selectors.matching {
 			var retrySibling:Boolean = false;
 			var startMatcherIndex:int = nextMatcher;
 
-			var nextMatcherObject:Matcher = Matcher(_currentlyMatchedMatchers[nextMatcher]);
+			var nextMatcherObject:IMatcher = IMatcher(_currentlyMatchedMatchers[nextMatcher]);
 
 			if(nextMatcherObject.matcherFamily != MatcherFamily.SIMPLE_MATCHER) {
 				var nextMatcherAsCombinator:Combinator = nextMatcherObject as Combinator;
@@ -61,7 +61,7 @@ package net.wooga.selectors.matching {
 
 			var proceedWithParent:Boolean; //if false: proceed with previous *siblings*
 			for (var i:int = nextMatcher; i >= 0; --i) {
-				var matcher:Matcher = _currentlyMatchedMatchers[i];
+				var matcher:IMatcher = _currentlyMatchedMatchers[i];
 
 				if (!matcher.isMatching(subject)) {
 					if(retryParent || retrySibling) {
@@ -109,7 +109,7 @@ package net.wooga.selectors.matching {
 			return result;
 		}
 
-		private function reverseMatchParentIfPossible(subject:SelectorAdapter, nextMatcher:int):Boolean {
+		private function reverseMatchParentIfPossible(subject:ISelectorAdapter, nextMatcher:int):Boolean {
 
 			//TODO (arneschroppe 22/2/12)  should we use a isObjectEqualTo-method here ??
 			if (subject.getAdaptedElement() == _rootObject) {
@@ -120,7 +120,7 @@ package net.wooga.selectors.matching {
 		}
 
 
-		private function reverseMatchPreviousSiblingIfPossible(subject:SelectorAdapter, nextMatcher:int):Boolean {
+		private function reverseMatchPreviousSiblingIfPossible(subject:ISelectorAdapter, nextMatcher:int):Boolean {
 
 			var objectIndex:int = subject.getElementIndex();
 			if(objectIndex == 0) {

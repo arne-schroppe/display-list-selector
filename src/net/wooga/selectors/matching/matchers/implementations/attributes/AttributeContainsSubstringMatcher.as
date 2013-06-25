@@ -1,12 +1,12 @@
 package net.wooga.selectors.matching.matchers.implementations.attributes {
 
-	import net.wooga.selectors.ExternalPropertySource;
+	import net.wooga.selectors.IExternalPropertySource;
 
 	public class AttributeContainsSubstringMatcher extends AbstractStringAttributeMatcher{
 
 		private var _canSucceed:Boolean;
 
-		public function AttributeContainsSubstringMatcher(externalPropertySource:ExternalPropertySource, property:String, value:String) {
+		public function AttributeContainsSubstringMatcher(externalPropertySource:IExternalPropertySource, property:String, value:String) {
 			super(externalPropertySource, property, value);
 			_canSucceed = (value !== "");
 		}

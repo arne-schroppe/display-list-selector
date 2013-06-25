@@ -1,33 +1,33 @@
 package net.wooga.selectors.selectors.implementations {
 
-	import net.wooga.selectors.adaptermap.SelectorAdapterSource;
+	import net.wooga.selectors.adaptermap.ISelectorAdapterSource;
 	import net.wooga.selectors.matching.MatcherTool;
-	import net.wooga.selectors.matching.matchers.Matcher;
+	import net.wooga.selectors.matching.matchers.IMatcher;
 	import net.wooga.selectors.namespace.selector_internal;
-	import net.wooga.selectors.selectoradapter.SelectorAdapter;
+	import net.wooga.selectors.selectoradapter.ISelectorAdapter;
 	import net.wooga.selectors.selectors.*;
-	import net.wooga.selectors.specificity.Specificity;
+	import net.wooga.selectors.specificity.ISpecificity;
 
 	use namespace selector_internal;
 
-	public class SelectorImpl implements Selector {
+	public class Selector implements ISelector {
 
 		private var _selectorString:String;
-		private var _specificity:Specificity;
+		private var _specificity:ISpecificity;
 		private var _selectorGroupString:String;
 
 		private var _pseudoElementName:String;
 
-		private var _adapterSource:SelectorAdapterSource;
+		private var _adapterSource:ISelectorAdapterSource;
 		private var _matcherTool:MatcherTool;
-		private var _matchers:Vector.<Matcher> = new <Matcher>[];
+		private var _matchers:Vector.<IMatcher> = new <IMatcher>[];
 
 
-		public function set specificity(value:Specificity):void {
+		public function set specificity(value:ISpecificity):void {
 			_specificity = value;
 		}
 
-		public function get specificity():Specificity {
+		public function get specificity():ISpecificity {
 			return _specificity;
 		}
 
@@ -69,7 +69,7 @@ package net.wooga.selectors.selectors.implementations {
 
 
 		public function isMatching(object:Object):Boolean {
-			var adapter:SelectorAdapter = _adapterSource.getSelectorAdapterForObject(object);
+			var adapter:ISelectorAdapter = _adapterSource.getSelectorAdapterForObject(object);
 			if(!adapter) {
 				throw new ArgumentError("No selector adapter registered for object " + object);
 			}
@@ -79,7 +79,7 @@ package net.wooga.selectors.selectors.implementations {
 
 
 
-		selector_internal function set adapterMap(value:SelectorAdapterSource):void {
+		selector_internal function set adapterMap(value:ISelectorAdapterSource):void {
 			_adapterSource = value;
 		}
 
@@ -88,11 +88,11 @@ package net.wooga.selectors.selectors.implementations {
 		}
 
 
-		selector_internal function set matchers(value:Vector.<Matcher>):void {
+		selector_internal function set matchers(value:Vector.<IMatcher>):void {
 			_matchers = value;
 		}
 
-		selector_internal function get matchers():Vector.<Matcher> {
+		selector_internal function get matchers():Vector.<IMatcher> {
 			return _matchers;
 		}
 

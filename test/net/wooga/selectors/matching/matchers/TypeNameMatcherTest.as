@@ -11,7 +11,7 @@ package net.wooga.selectors.matching.matchers {
 	import net.wooga.fixtures.tools.containsInArrayExactly;
 	import net.wooga.fixtures.tools.getAdapterForObject;
 	import net.wooga.selectors.matching.matchers.implementations.TypeNameMatcher;
-	import net.wooga.selectors.selectoradapter.SelectorAdapter;
+	import net.wooga.selectors.selectoradapter.ISelectorAdapter;
 
 	import org.hamcrest.assertThat;
 	import org.hamcrest.core.isA;
@@ -34,7 +34,7 @@ package net.wooga.selectors.matching.matchers {
 			super.tearDown();
 		}
 
-		private function getAdapterForObjectAtIndex(index:int):SelectorAdapter {
+		private function getAdapterForObjectAtIndex(index:int):ISelectorAdapter {
 			var object:DisplayObject = contextView.getChildAt(index);
 			return getAdapterForObject(object);
 		}

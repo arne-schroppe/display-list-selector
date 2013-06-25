@@ -1,10 +1,10 @@
 package net.wooga.selectors.pseudoclasses {
 
-	import net.wooga.selectors.selectoradapter.SelectorAdapter;
+	import net.wooga.selectors.selectoradapter.ISelectorAdapter;
 
 	public class LastOfType extends NthLastOfType {
 
-		override public function isMatching(subject:SelectorAdapter):Boolean {
+		override public function isMatching(subject:ISelectorAdapter):Boolean {
 			super.setArguments([1]);
 			return super.isMatching(subject);
 		}

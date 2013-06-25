@@ -9,7 +9,7 @@ package net.wooga.selectors.matching.matchers {
 	import net.wooga.fixtures.tools.ContextViewBasedTest;
 	import net.wooga.fixtures.tools.getAdapterForObject;
 	import net.wooga.selectors.matching.matchers.implementations.PseudoClassMatcher;
-	import net.wooga.selectors.selectoradapter.SelectorAdapter;
+	import net.wooga.selectors.selectoradapter.ISelectorAdapter;
 
 	import org.hamcrest.assertThat;
 	import org.hamcrest.collection.everyItem;
@@ -63,7 +63,7 @@ package net.wooga.selectors.matching.matchers {
 
 		}
 
-		private function getAdapterForObjectAtIndex(index:int):SelectorAdapter {
+		private function getAdapterForObjectAtIndex(index:int):ISelectorAdapter {
 			var object:DisplayObject = contextView.getChildAt(index);
 			return getAdapterForObject(object);
 		}
@@ -72,15 +72,15 @@ package net.wooga.selectors.matching.matchers {
 }
 
 import net.wooga.fixtures.TestSpriteC;
-import net.wooga.selectors.pseudoclasses.PseudoClass;
-import net.wooga.selectors.selectoradapter.SelectorAdapter;
+import net.wooga.selectors.pseudoclasses.IPseudoClass;
+import net.wooga.selectors.selectoradapter.ISelectorAdapter;
 
-class TestPseudoClass implements PseudoClass {
+class TestPseudoClass implements IPseudoClass {
 
 	public function setArguments(arguments:Array):void {
 	}
 
-	public function isMatching(subject:SelectorAdapter):Boolean {
+	public function isMatching(subject:ISelectorAdapter):Boolean {
 		return subject.getAdaptedElement() is TestSpriteC;
 	}
 }

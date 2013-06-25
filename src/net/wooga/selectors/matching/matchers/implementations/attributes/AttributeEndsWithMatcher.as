@@ -1,13 +1,13 @@
 package net.wooga.selectors.matching.matchers.implementations.attributes {
 
-	import net.wooga.selectors.ExternalPropertySource;
+	import net.wooga.selectors.IExternalPropertySource;
 
 	public class AttributeEndsWithMatcher extends AbstractStringAttributeMatcher{
 
 		private var _matchedValueLength:int;
 		private var _canSucceed:Boolean;
 
-		public function AttributeEndsWithMatcher(externalPropertySource:ExternalPropertySource, property:String, value:String) {
+		public function AttributeEndsWithMatcher(externalPropertySource:IExternalPropertySource, property:String, value:String) {
 			super(externalPropertySource, property, value);
 
 			_matchedValueLength = value.length;

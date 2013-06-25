@@ -1,8 +1,8 @@
 package net.wooga.selectors.matching.matchers.implementations.attributes {
 
 	import net.wooga.fixtures.tools.ContextViewBasedTest;
-	import net.wooga.selectors.ExternalPropertySource;
-	import net.wooga.selectors.selectoradapter.SelectorAdapter;
+	import net.wooga.selectors.IExternalPropertySource;
+	import net.wooga.selectors.selectoradapter.ISelectorAdapter;
 
 	import org.flexunit.rules.IMethodRule;
 	import org.mockito.integrations.any;
@@ -19,10 +19,10 @@ package net.wooga.selectors.matching.matchers.implementations.attributes {
 
 
 		[Mock]
-		public var externalPropertySource:ExternalPropertySource;
+		public var externalPropertySource:IExternalPropertySource;
 
 		[Mock]
-		public var adapter:SelectorAdapter;
+		public var adapter:ISelectorAdapter;
 
 		[Mock]
 		public var object:IObjectWithProperty;

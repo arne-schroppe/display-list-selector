@@ -4,13 +4,13 @@ package net.wooga.selectors.selectorstorage {
 	import net.wooga.fixtures.TestSpriteA;
 	import net.wooga.fixtures.matcher.containsExactlyInArray;
 	import net.wooga.selectors.parser.Parser;
-	import net.wooga.selectors.parser.PseudoClassProvider;
+	import net.wooga.selectors.parser.IPseudoClassProvider;
 	import net.wooga.selectors.pseudoclasses.IsA;
-	import net.wooga.selectors.pseudoclasses.PseudoClass;
+	import net.wooga.selectors.pseudoclasses.IPseudoClass;
 	import net.wooga.selectors.pseudoclasses.SettablePseudoClass;
 	import net.wooga.selectors.pseudoclasses.names.PseudoClassName;
-	import net.wooga.selectors.selectoradapter.SelectorAdapter;
-	import net.wooga.selectors.selectors.implementations.SelectorImpl;
+	import net.wooga.selectors.selectoradapter.ISelectorAdapter;
+	import net.wooga.selectors.selectors.implementations.Selector;
 
 	import org.flexunit.rules.IMethodRule;
 	import org.hamcrest.assertThat;
@@ -19,7 +19,7 @@ package net.wooga.selectors.selectorstorage {
 	import org.mockito.integrations.flexunit4.MockitoRule;
 	import org.mockito.integrations.given;
 
-	public class SelectorTreeTest implements PseudoClassProvider {
+	public class SelectorTreeTest implements IPseudoClassProvider {
 
 		[Rule]
 		public var mockitoRule:IMethodRule = new MockitoRule();
@@ -33,7 +33,7 @@ package net.wooga.selectors.selectorstorage {
 		private static const ORIGINAL_SELECTOR_PROPERTY:String = "selectorGroupString";
 
 		[Mock]
-		public var selectorAdapter:SelectorAdapter;
+		public var selectorAdapter:ISelectorAdapter;
 
 		[Before]
 		public function setUp():void {
@@ -268,9 +268,9 @@ package net.wooga.selectors.selectorstorage {
 		private function addSelectors(selectorsStrings:Array):void {
 
 			for each(var selectorString:String in selectorsStrings) {
-				var parsed:Vector.<SelectorImpl> = _parser.parse(selectorString);
+				var parsed:Vector.<Selector> = _parser.parse(selectorString);
 
-				for each(var selector:SelectorImpl in parsed) {
+				for each(var selector:Selector in parsed) {
 					_selectorStorage.add(selector);
 				}
 			}
@@ -280,7 +280,7 @@ package net.wooga.selectors.selectorstorage {
 			return pseudoClassName == "hover" || pseudoClassName == "is-a";
 		}
 
-		public function getPseudoClass(pseudoClassName:String):PseudoClass {
+		public function getPseudoClass(pseudoClassName:String):IPseudoClass {
 			if(pseudoClassName == "hover") {
 				return new SettablePseudoClass(PseudoClassName.HOVER);
 			}

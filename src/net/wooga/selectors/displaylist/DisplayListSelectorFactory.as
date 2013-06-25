@@ -18,7 +18,7 @@ package net.wooga.selectors.displaylist {
 			_autoCreateAdapters = autoCreateAdapters;
 		}
 
-		override public function initializeWith(rootObject:Object, externalPropertySource:ExternalPropertySource = null):void {
+		override public function initializeWith(rootObject:Object, externalPropertySource:IExternalPropertySource = null):void {
 			super.initializeWith(rootObject, externalPropertySource);
 
 			setDefaultSelectorAdapter(DisplayObjectSelectorAdapter);

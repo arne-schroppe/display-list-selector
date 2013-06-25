@@ -1,8 +1,8 @@
 package net.wooga.selectors.specificity {
-	public interface Specificity {
+	public interface ISpecificity {
 
 
-		function compare(other:Specificity):int;
+		function compare(other:ISpecificity):int;
 		
 		function get numberOfDigits():int;
 		function digitAtPosition(position:int):int;

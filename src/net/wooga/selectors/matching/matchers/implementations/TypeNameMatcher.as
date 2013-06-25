@@ -1,10 +1,10 @@
 package net.wooga.selectors.matching.matchers.implementations {
 
-	import net.wooga.selectors.matching.matchers.Matcher;
+	import net.wooga.selectors.matching.matchers.IMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.combinators.MatcherFamily;
-	import net.wooga.selectors.selectoradapter.SelectorAdapter;
+	import net.wooga.selectors.selectoradapter.ISelectorAdapter;
 
-	public class TypeNameMatcher implements Matcher {
+	public class TypeNameMatcher implements IMatcher {
 
 		private var _matchAny:Boolean = false;
 		private var _typeName:String;
@@ -37,13 +37,13 @@ package net.wooga.selectors.matching.matchers.implementations {
 		}
 
 
-		public function isMatching(subject:SelectorAdapter):Boolean {
+		public function isMatching(subject:ISelectorAdapter):Boolean {
 			return _matchAny || matchesType(subject);
 
 		}
 
 
-		private function matchesType(adapter:SelectorAdapter):Boolean {
+		private function matchesType(adapter:ISelectorAdapter):Boolean {
 
 			if(_classNameOnly) {
 				return adapter.getElementClassName() == _typeName;

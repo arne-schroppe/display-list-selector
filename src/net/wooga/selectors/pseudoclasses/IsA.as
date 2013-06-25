@@ -2,9 +2,9 @@ package net.wooga.selectors.pseudoclasses {
 
 	import flash.utils.Dictionary;
 
-	import net.wooga.selectors.selectoradapter.SelectorAdapter;
+	import net.wooga.selectors.selectoradapter.ISelectorAdapter;
 
-	public class IsA implements PseudoClass {
+	public class IsA implements IPseudoClass {
 
 		private var _typeName:String;
 		private var _isQualifiedClassName:Boolean;
@@ -37,7 +37,7 @@ package net.wooga.selectors.pseudoclasses {
 			return typeName.substring(0, index) + "::" + typeName.substring(index + 1, typeName.length);
 		}
 
-		public function isMatching(adapter:SelectorAdapter):Boolean {
+		public function isMatching(adapter:ISelectorAdapter):Boolean {
 			if(_isQualifiedClassName) {
 				return matchQualified(adapter)
 			} else {
@@ -50,7 +50,7 @@ package net.wooga.selectors.pseudoclasses {
 		}
 
 
-		private function matchQualified(adapter:SelectorAdapter):Boolean {
+		private function matchQualified(adapter:ISelectorAdapter):Boolean {
 
 			var cacheKey:String = createCacheKey(adapter.getQualifiedElementClassName());
 			if(_matchCache[cacheKey] !== undefined) {
@@ -65,7 +65,7 @@ package net.wooga.selectors.pseudoclasses {
 
 
 
-		private function matchUnqualified(adapter:SelectorAdapter):Boolean {
+		private function matchUnqualified(adapter:ISelectorAdapter):Boolean {
 
 			var cacheKey:String = createCacheKey(adapter.getQualifiedElementClassName());
 			if(_matchCache[cacheKey] !== undefined) {

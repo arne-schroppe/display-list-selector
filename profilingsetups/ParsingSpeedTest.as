@@ -1,6 +1,6 @@
 package {
 
-	import net.wooga.selectors.selectors.SelectorPool;
+	import net.wooga.selectors.selectors.ISelectorPool;
 
 	public class ParsingSpeedTest extends BasicProfilingSprite {
 
@@ -8,7 +8,7 @@ package {
 		override protected function performAction():void {
 
 			for (var i:int = 0; i < 100; ++i) {
-				var selectorPool:SelectorPool = _selectorFactory.createSelectorPool();
+				var selectorPool:ISelectorPool = _selectorFactory.createSelectorPool();
 
 				selectorPool.addSelector("Label");
 				selectorPool.addSelector("HeadsUpDisplay");

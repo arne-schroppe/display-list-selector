@@ -8,7 +8,7 @@ package net.wooga.selectors.displaylist {
 
 	import net.wooga.selectors.selectoradapter.*;
 
-	public class DisplayObjectSelectorAdapter implements SelectorAdapter {
+	public class DisplayObjectSelectorAdapter implements ISelectorAdapter {
 
 		private var _adaptedElement:DisplayObject;
 		

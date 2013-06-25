@@ -1,6 +1,6 @@
 package net.wooga.selectors.selectorstorage {
 
-	import net.wooga.selectors.matching.matchers.Matcher;
+	import net.wooga.selectors.matching.matchers.IMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.IdMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.PseudoClassMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.TypeNameMatcher;
@@ -10,14 +10,14 @@ package net.wooga.selectors.selectorstorage {
 	import net.wooga.selectors.pseudoclasses.IsA;
 	import net.wooga.selectors.pseudoclasses.SettablePseudoClass;
 	import net.wooga.selectors.pseudoclasses.names.PseudoClassName;
-	import net.wooga.selectors.selectors.implementations.SelectorImpl;
+	import net.wooga.selectors.selectors.implementations.Selector;
 
 	//TODO (arneschroppe 06/04/2012) name of this class suggests, that we have a design error here
 	public class FilterDataExtractor {
 
 		use namespace selector_internal;
 
-		public function getFilterData(selector:SelectorImpl):FilterData {
+		public function getFilterData(selector:Selector):FilterData {
 
 			var filterData:FilterData = new FilterData();
 
@@ -46,10 +46,10 @@ package net.wooga.selectors.selectorstorage {
 
 
 		//TODO (arneschroppe 3/25/12) we need a test for this, specifically to test that not just any SettablePseudoClass triggers the hasHover flag
-		private function hasHoverPseudoClassInLastSimpleSelector(selector:SelectorImpl):Boolean {
-			var matchers:Vector.<Matcher> = selector.matchers;
-			for(var i:int = matchers.length-1; i >= 0 && !(Matcher(matchers[i]).matcherFamily == MatcherFamily.ANCESTOR_COMBINATOR); --i) {
-				var matcher:Matcher = matchers[i];
+		private function hasHoverPseudoClassInLastSimpleSelector(selector:Selector):Boolean {
+			var matchers:Vector.<IMatcher> = selector.matchers;
+			for(var i:int = matchers.length-1; i >= 0 && !(IMatcher(matchers[i]).matcherFamily == MatcherFamily.ANCESTOR_COMBINATOR); --i) {
+				var matcher:IMatcher = matchers[i];
 
 				if(matcher.matcherFamily == MatcherFamily.ANCESTOR_COMBINATOR) {
 					return false;
@@ -67,10 +67,10 @@ package net.wooga.selectors.selectorstorage {
 
 
 
-		private function findIsAPseudoClassInLastSimpleSelector(selector:SelectorImpl):IsA {
-			var matchers:Vector.<Matcher> = selector.matchers;
-			for(var i:int = matchers.length-1; i >= 0 && !(Matcher(matchers[i]).matcherFamily == MatcherFamily.ANCESTOR_COMBINATOR); --i) {
-				var matcher:Matcher = matchers[i];
+		private function findIsAPseudoClassInLastSimpleSelector(selector:Selector):IsA {
+			var matchers:Vector.<IMatcher> = selector.matchers;
+			for(var i:int = matchers.length-1; i >= 0 && !(IMatcher(matchers[i]).matcherFamily == MatcherFamily.ANCESTOR_COMBINATOR); --i) {
+				var matcher:IMatcher = matchers[i];
 
 				if(matcher.matcherFamily == MatcherFamily.ANCESTOR_COMBINATOR) {
 					return null;
@@ -86,11 +86,11 @@ package net.wooga.selectors.selectorstorage {
 		}
 
 
-		private function findMatcherInLastSimpleSelector(selector:SelectorImpl, MatcherType:Class):Matcher {
+		private function findMatcherInLastSimpleSelector(selector:Selector, MatcherType:Class):IMatcher {
 
-			var matchers:Vector.<Matcher> = selector.matchers;
-			for(var i:int = matchers.length-1; i >= 0 && !(Matcher(matchers[i]).matcherFamily == MatcherFamily.ANCESTOR_COMBINATOR); --i) {
-				var matcher:Matcher = matchers[i];
+			var matchers:Vector.<IMatcher> = selector.matchers;
+			for(var i:int = matchers.length-1; i >= 0 && !(IMatcher(matchers[i]).matcherFamily == MatcherFamily.ANCESTOR_COMBINATOR); --i) {
+				var matcher:IMatcher = matchers[i];
 				if(matcher is MatcherType) {
 					return matcher;
 				}

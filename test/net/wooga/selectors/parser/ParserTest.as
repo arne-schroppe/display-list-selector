@@ -1,6 +1,6 @@
 package net.wooga.selectors.parser {
 
-	import net.wooga.selectors.selectors.implementations.SelectorImpl;
+	import net.wooga.selectors.selectors.implementations.Selector;
 
 	import org.hamcrest.assertThat;
 	import org.hamcrest.core.isA;
@@ -21,7 +21,7 @@ package net.wooga.selectors.parser {
 		[Test]
 		public function should_properly_extract_sub_selectors():void {
 
-			var result:Vector.<SelectorImpl> = _parser.parse("Elem1[xyz='abc']:hover, a > B Elem2, *:active");
+			var result:Vector.<Selector> = _parser.parse("Elem1[xyz='abc']:hover, a > B Elem2, *:active");
 
 			assertThat(result.length, equalTo(3));
 			assertThat(result[0].selectorString, equalTo("Elem1[xyz='abc']:hover"));
@@ -34,7 +34,7 @@ package net.wooga.selectors.parser {
 		[Test]
 		public function should_retain_original_selector_string():void {
 
-			var result:Vector.<SelectorImpl> = _parser.parse("Elem1[xyz='abc']:hover, a > B Elem2, *:active");
+			var result:Vector.<Selector> = _parser.parse("Elem1[xyz='abc']:hover, a > B Elem2, *:active");
 
 			assertThat(result.length, equalTo(3));
 			assertThat(result[0].selectorGroupString, equalTo("Elem1[xyz='abc']:hover, a > B Elem2, *:active"));
@@ -62,29 +62,29 @@ package net.wooga.selectors.parser {
 	}
 }
 
-import net.wooga.selectors.parser.PseudoClassProvider;
-import net.wooga.selectors.pseudoclasses.PseudoClass;
-import net.wooga.selectors.selectoradapter.SelectorAdapter;
+import net.wooga.selectors.parser.IPseudoClassProvider;
+import net.wooga.selectors.pseudoclasses.IPseudoClass;
+import net.wooga.selectors.selectoradapter.ISelectorAdapter;
 
-class NullPseudoClassProvider implements PseudoClassProvider {
+class NullPseudoClassProvider implements IPseudoClassProvider {
 
 
 	public function hasPseudoClass(pseudoClassName:String):Boolean {
 		return true;
 	}
 
-	public function getPseudoClass(pseudoClassName:String):PseudoClass {
+	public function getPseudoClass(pseudoClassName:String):IPseudoClass {
 		return new NullPseudoClass();
 	}
 }
 
 
-class NullPseudoClass implements PseudoClass {
+class NullPseudoClass implements IPseudoClass {
 
 	public function setArguments(arguments:Array):void {
 	}
 
-	public function isMatching(subject:SelectorAdapter):Boolean {
+	public function isMatching(subject:ISelectorAdapter):Boolean {
 		return false;
 	}
 }

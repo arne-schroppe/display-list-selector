@@ -1,6 +1,6 @@
 package net.wooga.selectors.matching.matchers.implementations.attributes {
 
-	import net.wooga.selectors.selectoradapter.SelectorAdapter;
+	import net.wooga.selectors.selectoradapter.ISelectorAdapter;
 
 	import org.flexunit.assertThat;
 	import org.flexunit.rules.IMethodRule;
@@ -17,7 +17,7 @@ package net.wooga.selectors.matching.matchers.implementations.attributes {
 		public var mockitoRule:IMethodRule = new MockitoRule();
 
 		[Mock]
-		public var adapter:SelectorAdapter;
+		public var adapter:ISelectorAdapter;
 
 		[Mock]
 		public var object:IObjectWithProperty;

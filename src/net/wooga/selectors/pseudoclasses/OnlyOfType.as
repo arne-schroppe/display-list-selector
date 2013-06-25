@@ -2,13 +2,13 @@ package net.wooga.selectors.pseudoclasses {
 
 	import flash.utils.getDefinitionByName;
 
-	import net.wooga.selectors.selectoradapter.SelectorAdapter;
+	import net.wooga.selectors.selectoradapter.ISelectorAdapter;
 
-	public class OnlyOfType implements PseudoClass {
+	public class OnlyOfType implements IPseudoClass {
 
 
 		//TODO (arneschroppe 08/04/2012) this is awfully slow
-		public function isMatching(subject:SelectorAdapter):Boolean {
+		public function isMatching(subject:ISelectorAdapter):Boolean {
 			var count:int = 0;
 			var SubjectType:Class = getDefinitionByName(subject.getQualifiedElementClassName()) as Class;
 			var current:Object;

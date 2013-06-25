@@ -1,14 +1,14 @@
 package net.wooga.selectors {
 
-	import net.wooga.selectors.selectoradapter.SelectorAdapter;
+	import net.wooga.selectors.selectoradapter.ISelectorAdapter;
 
-	internal class NullPropertySource implements ExternalPropertySource {
+	public class NullPropertySource implements IExternalPropertySource {
 
-		public function stringValueForProperty(subject:SelectorAdapter, name:String):String {
+		public function stringValueForProperty(subject:ISelectorAdapter, name:String):String {
 			return null;
 		}
 
-		public function collectionValueForProperty(subject:SelectorAdapter, name:String):Array {
+		public function collectionValueForProperty(subject:ISelectorAdapter, name:String):Array {
 			return null;
 		}
 	}

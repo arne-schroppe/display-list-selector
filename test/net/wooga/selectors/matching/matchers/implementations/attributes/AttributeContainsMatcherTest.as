@@ -9,7 +9,7 @@ package net.wooga.selectors.matching.matchers.implementations.attributes {
 	import net.wooga.fixtures.tools.ContextViewBasedTest;
 	import net.wooga.fixtures.tools.containsInArrayExactly;
 	import net.wooga.fixtures.tools.getAdapterForObject;
-	import net.wooga.selectors.selectoradapter.SelectorAdapter;
+	import net.wooga.selectors.selectoradapter.ISelectorAdapter;
 
 	import org.hamcrest.assertThat;
 	import org.hamcrest.core.isA;
@@ -64,7 +64,7 @@ package net.wooga.selectors.matching.matchers.implementations.attributes {
 		}
 
 
-		private function getAdapterForObjectAtIndex(index:int):SelectorAdapter {
+		private function getAdapterForObjectAtIndex(index:int):ISelectorAdapter {
 			var object:DisplayObject = contextView.getChildAt(index);
 			return getAdapterForObject(object);
 		}
@@ -73,16 +73,16 @@ package net.wooga.selectors.matching.matchers.implementations.attributes {
 
 import flash.utils.getQualifiedClassName;
 
-import net.wooga.selectors.ExternalPropertySource;
-import net.wooga.selectors.selectoradapter.SelectorAdapter;
+import net.wooga.selectors.IExternalPropertySource;
+import net.wooga.selectors.selectoradapter.ISelectorAdapter;
 
-class TestPropertySource implements ExternalPropertySource {
+class TestPropertySource implements IExternalPropertySource {
 
-	public function stringValueForProperty(subject:SelectorAdapter, name:String):String {
+	public function stringValueForProperty(subject:ISelectorAdapter, name:String):String {
 		throw new Error("Unexpected method called");
 	}
 
-	public function collectionValueForProperty(subject:SelectorAdapter, name:String):Array {
+	public function collectionValueForProperty(subject:ISelectorAdapter, name:String):Array {
 
 		if(name == "testProperty") {
 			var result:Array = new Array();

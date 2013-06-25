@@ -1,15 +1,15 @@
 package net.wooga.selectors.pseudoclasses {
 
-	import net.wooga.selectors.selectoradapter.SelectorAdapter;
+	import net.wooga.selectors.selectoradapter.ISelectorAdapter;
 
-	public class SettablePseudoClass implements PseudoClass {
+	public class SettablePseudoClass implements IPseudoClass {
 		private var _pseudoClassName:String;
 
 		public function SettablePseudoClass(pseudoClassName:String) {
 			_pseudoClassName = pseudoClassName;
 		}
 
-		public function isMatching(subject:SelectorAdapter):Boolean {
+		public function isMatching(subject:ISelectorAdapter):Boolean {
 			return subject.hasPseudoClass(_pseudoClassName);
 		}
 

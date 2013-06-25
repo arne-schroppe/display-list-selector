@@ -3,12 +3,12 @@ package net.wooga.selectors.pseudoclasses {
 	import flash.utils.getDefinitionByName;
 
 	import net.wooga.selectors.pseudoclasses.nthchildren.NthOfX;
-	import net.wooga.selectors.selectoradapter.SelectorAdapter;
+	import net.wooga.selectors.selectoradapter.ISelectorAdapter;
 
 	public class NthOfType extends NthOfX {
 
 
-		override protected function indexOfObject(subject:SelectorAdapter):int {
+		override protected function indexOfObject(subject:ISelectorAdapter):int {
 			var index:int = 0;
 			var SubjectType:Class = getDefinitionByName(subject.getQualifiedElementClassName()) as Class;
 			var current:Object;

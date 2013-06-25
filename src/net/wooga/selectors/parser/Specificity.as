@@ -1,8 +1,8 @@
 package net.wooga.selectors.parser {
 
-	import net.wooga.selectors.specificity.Specificity;
+	import net.wooga.selectors.specificity.ISpecificity;
 
-	public class SpecificityImpl implements Specificity {
+	public class Specificity implements ISpecificity {
 		
 		private static const NUMBER_OF_POSITIONS:int = 5;
 
@@ -18,12 +18,12 @@ package net.wooga.selectors.parser {
 		}
 
 
-		public function compare(other:Specificity):int {
+		public function compare(other:ISpecificity):int {
 			return compareFromPosition(other, _digits.length-1);
 		}
 
 
-		private function compareFromPosition(other:Specificity, position:int):int {
+		private function compareFromPosition(other:ISpecificity, position:int):int {
 			if(position < 0) {
 				return 0;
 			}
@@ -31,7 +31,7 @@ package net.wooga.selectors.parser {
 			return comparePosition(other, position) || compareFromPosition(other, position - 1);
 		}
 
-		private function comparePosition(other:Specificity, position:int):int {
+		private function comparePosition(other:ISpecificity, position:int):int {
 			var here:int = this._digits[position];
 			var there:int = other.digitAtPosition(position);
 			

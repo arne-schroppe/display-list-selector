@@ -12,7 +12,7 @@ package net.wooga.selectors.pseudoclasses {
 
 	public class NthLastOfTypeTest extends ContextViewBasedTest {
 
-		private var _pseudoClass:PseudoClass;
+		private var _pseudoClass:IPseudoClass;
 
 		[Before]
 		override public function setUp():void {

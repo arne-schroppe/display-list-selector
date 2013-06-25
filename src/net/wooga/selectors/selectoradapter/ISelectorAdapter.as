@@ -1,5 +1,5 @@
 package net.wooga.selectors.selectoradapter {
-	public interface SelectorAdapter {
+	public interface ISelectorAdapter {
 
 		//TODO (arneschroppe 08/04/2012) why are we using the word 'element' here? find a better term!
 

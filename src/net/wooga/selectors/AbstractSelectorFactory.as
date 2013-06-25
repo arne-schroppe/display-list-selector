@@ -23,17 +23,17 @@ package net.wooga.selectors {
 	import net.wooga.selectors.pseudoclasses.SettablePseudoClass;
 	import net.wooga.selectors.pseudoclasses.names.BuiltinPseudoClassName;
 	import net.wooga.selectors.pseudoclasses.names.PseudoClassName;
-	import net.wooga.selectors.pseudoclasses.provider.PseudoClassProviderImpl;
-	import net.wooga.selectors.selectoradapter.SelectorAdapter;
+	import net.wooga.selectors.pseudoclasses.provider.PseudoClassProvider;
+	import net.wooga.selectors.selectoradapter.ISelectorAdapter;
 	import net.wooga.selectors.tools.Types;
-	import net.wooga.selectors.selectors.Selector;
-	import net.wooga.selectors.selectors.SelectorGroup;
-	import net.wooga.selectors.selectors.SelectorPool;
-	import net.wooga.selectors.selectors.implementations.SelectorGroupImpl;
-	import net.wooga.selectors.selectors.implementations.SelectorImpl;
-	import net.wooga.selectors.selectors.implementations.SelectorPoolImpl;
+	import net.wooga.selectors.selectors.ISelector;
+	import net.wooga.selectors.selectors.ISelectorGroup;
+	import net.wooga.selectors.selectors.ISelectorPool;
+	import net.wooga.selectors.selectors.implementations.SelectorGroup;
+	import net.wooga.selectors.selectors.implementations.Selector;
+	import net.wooga.selectors.selectors.implementations.SelectorPool;
 
-	public class AbstractSelectorFactory implements SelectorFactory {
+	public class AbstractSelectorFactory implements ISelectorFactory {
 
 		use namespace selector_internal;
 
@@ -44,7 +44,7 @@ package net.wooga.selectors {
 
 		private var _selectorAdapterMap:SelectorAdapterMap;
 
-		private var _pseudoClassProvider:PseudoClassProviderImpl;
+		private var _pseudoClassProvider:PseudoClassProvider;
 
 
 
@@ -54,7 +54,7 @@ package net.wooga.selectors {
 		private var _isInitialized:Boolean;
 
 
-		public function initializeWith(rootObject:Object, externalPropertySource:ExternalPropertySource = null):void {
+		public function initializeWith(rootObject:Object, externalPropertySource:IExternalPropertySource = null):void {
 
 			if(_isInitialized) {
 				throw new Error("Factory is already initialized");
@@ -62,12 +62,12 @@ package net.wooga.selectors {
 			
 			_rootObject = rootObject;
 
-			var externalPropertySource:ExternalPropertySource = externalPropertySource;
+			var externalPropertySource:IExternalPropertySource = externalPropertySource;
 			if (externalPropertySource == null) {
 				externalPropertySource = new NullPropertySource();
 			}
 
-			_pseudoClassProvider = new PseudoClassProviderImpl();
+			_pseudoClassProvider = new PseudoClassProvider();
 			addDefaultPseudoClasses();
 
 			_selectorAdapterMap = new SelectorAdapterMap();
@@ -78,23 +78,23 @@ package net.wooga.selectors {
 		}
 
 
-		public function createSelector(selectorString:String):SelectorGroup {
-			var partialSelectors:Vector.<SelectorImpl> = _parser.parse(selectorString);
+		public function createSelector(selectorString:String):ISelectorGroup {
+			var partialSelectors:Vector.<Selector> = _parser.parse(selectorString);
 
-			var selectors:Vector.<Selector> = new <Selector>[];
-			for each(var partialSelector:SelectorImpl in partialSelectors) {
+			var selectors:Vector.<ISelector> = new <ISelector>[];
+			for each(var partialSelector:Selector in partialSelectors) {
 				partialSelector.matcherTool = _matcher;
 				partialSelector.adapterMap = _selectorAdapterMap;
 
 				selectors.push(partialSelector);
 			}
 			
-			return new SelectorGroupImpl(selectors);
+			return new SelectorGroup(selectors);
 		}
 
 
-		public function createSelectorPool():SelectorPool {
-			return new SelectorPoolImpl(_parser, _matcher, _selectorAdapterMap);
+		public function createSelectorPool():ISelectorPool {
+			return new SelectorPool(_parser, _matcher, _selectorAdapterMap);
 		}
 
 
@@ -122,8 +122,8 @@ package net.wooga.selectors {
 
 
 		private function checkAdapterType(adapterType:Class):void {
-			if (!Types.doesTypeImplementInterface(adapterType, SelectorAdapter)) {
-				throw new ArgumentError(getQualifiedClassName(adapterType) + " must implement " + getQualifiedClassName(SelectorAdapter) + " to be registered as an adapter");
+			if (!Types.doesTypeImplementInterface(adapterType, ISelectorAdapter)) {
+				throw new ArgumentError(getQualifiedClassName(adapterType) + " must implement " + getQualifiedClassName(ISelectorAdapter) + " to be registered as an adapter");
 			}
 		}
 
@@ -149,7 +149,7 @@ package net.wooga.selectors {
 				return;
 			}
 
-			var selectorClient:SelectorAdapter = new SelectorClientClass();
+			var selectorClient:ISelectorAdapter = new SelectorClientClass();
 			_selectorAdapterMap.setAdapterForObject(object, selectorClient);
 			selectorClient.register(object);
 		}

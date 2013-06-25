@@ -1,22 +1,22 @@
 package net.wooga.selectors.matching.matchers.implementations.attributes {
 
-	import net.wooga.selectors.ExternalPropertySource;
-	import net.wooga.selectors.matching.matchers.Matcher;
+	import net.wooga.selectors.IExternalPropertySource;
+	import net.wooga.selectors.matching.matchers.IMatcher;
 	import net.wooga.selectors.matching.matchers.implementations.combinators.MatcherFamily;
-	import net.wooga.selectors.selectoradapter.SelectorAdapter;
+	import net.wooga.selectors.selectoradapter.ISelectorAdapter;
 
-	public class AttributeContainsMatcher implements Matcher {
+	public class AttributeContainsMatcher implements IMatcher {
 		private var _property:String;
 		private var _value:String;
-		private var _externalPropertySource:ExternalPropertySource;
+		private var _externalPropertySource:IExternalPropertySource;
 
-		public function AttributeContainsMatcher(externalPropertySource:ExternalPropertySource, property:String, value:String) {
+		public function AttributeContainsMatcher(externalPropertySource:IExternalPropertySource, property:String, value:String) {
 			_externalPropertySource = externalPropertySource;
 			_property = property;
 			_value = value;
 		}
 
-		public function isMatching(subject:SelectorAdapter):Boolean {
+		public function isMatching(subject:ISelectorAdapter):Boolean {
 			if (!(_property in subject)) {
 				return getExternalProperty(subject);
 			} else {
@@ -24,7 +24,7 @@ package net.wooga.selectors.matching.matchers.implementations.attributes {
 			}
 		}
 
-		private function getObjectProperty(subject:SelectorAdapter):Boolean {
+		private function getObjectProperty(subject:ISelectorAdapter):Boolean {
 			var collection:Array = subject[_property] as Array;
 			if (collection && collection.indexOf(_value) != -1) {
 				return true;
@@ -33,7 +33,7 @@ package net.wooga.selectors.matching.matchers.implementations.attributes {
 			return false;
 		}
 
-		private function getExternalProperty(subject:SelectorAdapter):Boolean {
+		private function getExternalProperty(subject:ISelectorAdapter):Boolean {
 			var collection:Array = _externalPropertySource.collectionValueForProperty(subject, _property);
 
 			if (collection && collection.indexOf(_value) != -1) {

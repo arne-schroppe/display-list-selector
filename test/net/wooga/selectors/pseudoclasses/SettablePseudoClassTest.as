@@ -1,6 +1,6 @@
 package net.wooga.selectors.pseudoclasses {
 
-	import net.wooga.selectors.selectoradapter.SelectorAdapter;
+	import net.wooga.selectors.selectoradapter.ISelectorAdapter;
 
 	import org.flexunit.rules.IMethodRule;
 	import org.hamcrest.assertThat;
@@ -16,9 +16,9 @@ package net.wooga.selectors.pseudoclasses {
 		public var mockitoRule:IMethodRule = new MockitoRule();
 
 		[Mock]
-		public var subject:SelectorAdapter;
+		public var subject:ISelectorAdapter;
 
-		private var _hover:PseudoClass;
+		private var _hover:IPseudoClass;
 
 		private static const PSEUDO_CLASS_NAME:String = "pseudo-class-name";
 

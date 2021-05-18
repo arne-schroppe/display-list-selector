@@ -1,4 +1,4 @@
-#CSS Selectors for the display list
+# CSS Selectors for the display list
 
 An implementation of CSS3–selectors for flash. Selectors are
 of the form
@@ -10,7 +10,7 @@ of matched objects.
 
 
 
-##Basic usage
+## Basic usage
 
 First, initialize a factory for your selectors. The factory also holds data and settings that are relevant
 for all selectors
@@ -32,7 +32,7 @@ Selectors are modeled after the CSS3 selector standard but not all features have
 yet.
 
 
-##Usage scenarios
+## Usage scenarios
 
 The selector library supports two different usage scenarios by providing optimized objects for each. When
 a single selector needs to be matched against a single object the mentioned `SelectorGroup` should be used.
@@ -49,12 +49,12 @@ If many selectors need to be checked against a single object, though, a more opt
 The result is sorted by [specificity](http://www.w3.org/TR/selectors/#specificity).
 
 
-##Extended selector syntax
+## Extended selector syntax
 
 This library also supports an extended selector syntax, that is better suited in dealing with ActionScript objects.
 
 
-###The `is-a` pseudo class
+### The `is-a` pseudo class
 The regular element selector only matches if the element's classname equals the given identifier.
 The `is-a` pseudo class also matches superclasses and implemented interfaces. For example:
 
@@ -65,7 +65,7 @@ Please note that the `is-a` pseudo class has a *lower* specificity than the elem
 and therefore also has a lower specificity than other pseudo classes.
 
 
-###Qualified class names
+### Qualified class names
 Identifiers in element selectors can also be fully qualified class names, by wrapping them
 in parentheses. As an example: 
 
@@ -73,5 +73,5 @@ in parentheses. As an example:
     Sprite > (net.company.tool.view.Image)
 
 
-##A warning
+## A warning
 This library lacks a lot of optimizations. For many uses it will probably be too slow.
